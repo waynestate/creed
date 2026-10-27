@@ -37,6 +37,10 @@
                 "12": {
                     "active_until": "2026-08-13",
                     "security_until": "2027-02-24"
+                },
+                "13": {
+                    "active_until": "2027-09-17",
+                    "security_until": "2028-03-17"
                 }
             }
         },
@@ -53,6 +57,10 @@
                 "24": {
                     "active_until": "2026-10-20",
                     "security_until": "2028-04-30"
+                },
+                "26": {
+                    "active_until": "2027-10-20",
+                    "security_until": "2029-04-30"
                 }
             }
         },
@@ -73,6 +81,10 @@
                 "8.4": {
                     "active_until": "2029-04-30",
                     "security_until": "2032-04-30"
+                },
+                "9.7": {
+                    "active_until": "2031-04-30",
+                    "security_until": "2034-04-30"
                 }
             }
         },
