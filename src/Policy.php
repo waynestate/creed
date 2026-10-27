@@ -132,6 +132,8 @@ final class Policy
         }
         $supported = [];
         foreach (array_keys($versions) as $version) {
+            // json_decode turns keys like "10" into ints; versions are strings.
+            $version = (string) $version;
             $state = $this->stateOf($component, $version, $on);
             if ($state === State::Active || $state === State::Security) {
                 $supported[] = $version;
