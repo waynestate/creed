@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="CREED">
+<title>CREED</title>
+<rect width="512" height="512" rx="112" fill="#0C5449"/>
+<g transform="translate(-10.24 34.56) scale(1.04)">
+<path d="M198.2 104.25 A168 168 0 0 0 88 262 L88 358 L184 358 L184 262 A72 72 0 0 1 223.29 197.86 Z" fill="#FFFFFF"/>
+<path d="M313.8 104.25 A168 168 0 0 1 424 262 L424 358 L328 358 L328 262 A72 72 0 0 0 288.71 197.86 Z" fill="#FFFFFF"/>
+<path d="M218.48 64 L293.52 64 L252.8 216 L259.2 216 Z" fill="#FFCC33"/>
+</g>
+</svg>
