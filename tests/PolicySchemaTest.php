@@ -43,6 +43,13 @@ final class PolicySchemaTest extends TestCase
         self::assertSame([], $errors, 'The bundled policy must validate against the schema.');
     }
 
+    #[Test]
+    public function imagesObjectIsValid(): void
+    {
+        $errors = self::validateFile(__DIR__ . '/fixtures/with-images.json');
+        self::assertSame([], $errors, 'A version entry with an images object must validate.');
+    }
+
     /**
      * @return array<string, array{0: string}>
      */
@@ -53,6 +60,8 @@ final class PolicySchemaTest extends TestCase
             'unknown top-level key' => [__DIR__ . '/fixtures/unknown-key.json'],
             'bad date' => [__DIR__ . '/fixtures/bad-date.json'],
             'eol_grace_days as a string' => [__DIR__ . '/fixtures/grace-as-string.json'],
+            'unknown key inside images' => [__DIR__ . '/fixtures/images-unknown-key.json'],
+            'empty string inside images' => [__DIR__ . '/fixtures/images-empty-value.json'],
         ];
     }
 

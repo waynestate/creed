@@ -8,7 +8,7 @@ rest as "To be decided".
 - [Dependencies](dependencies.md)
 - [Auth](auth.md)
 - [Runtime and headers](runtime-and-headers.md)
-- [Deploying to Citadel](deploying-to-citadel.md)
+- [Deploy gate](deploy-gate.md)
 - [CI](ci.md)
 - [Accessibility](accessibility.md)
 - [Every OS](every-os.md)

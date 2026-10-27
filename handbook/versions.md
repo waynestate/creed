@@ -6,7 +6,7 @@ The policy states, from ADR-0003:
 |---|---|---|---|
 | active | silent | pass | |
 | security-only | ribbon warning in non-production; log line in production | warning | |
-| EOL | ribbon error in non-production; daily log line | fail | Citadel retires the image on its own schedule |
+| EOL | ribbon error in non-production; daily log line | fail | Citadel retires the image on its own schedule; elsewhere the owner retires it, and the gate fails either way |
 | EOL + 90 days | as above | fail; no override | |
 
 - The dates live in `policy/policy.json`. Every tool derives a version's state

@@ -40,8 +40,27 @@
                                     "type": "string",
                                     "format": "date"
                                 },
-                                "citadel_image": {
-                                    "type": "string"
+                                "images": {
+                                    "type": "object",
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "citadel": {
+                                            "type": "string",
+                                            "minLength": 1
+                                        },
+                                        "docker": {
+                                            "type": "string",
+                                            "minLength": 1
+                                        },
+                                        "openshift": {
+                                            "type": "string",
+                                            "minLength": 1
+                                        },
+                                        "coolify": {
+                                            "type": "string",
+                                            "minLength": 1
+                                        }
+                                    }
                                 }
                             }
                         }
