@@ -44,8 +44,10 @@ is inclusive, and the reader never guesses.
 
 ### Higher
 
-The PHP floor is `^8.2` today. It moves to `^8.3` on 2027-01-01, and stack
-packages raise their floor in a new major when a PHP version reaches EOL.
+CREED itself requires PHP `^8.3`, like every stack package, and CI tests it on
+8.3, 8.4 and 8.5. The policy's floor for apps is a different number: `^8.2`
+until PHP 8.2 reaches end of life on 2026-12-31, then `^8.3`. Creed has always
+been one version ahead of everyone else, at least by his own account.
 
 ## The handbook
 
@@ -58,7 +60,7 @@ No PHP on the machine? Fine. Docker runs the suite:
 ```
 docker run --rm -v "${PWD}:/app" -w /app composer:2 composer install --no-interaction
 docker run --rm -v "${PWD}:/app" -w /app php:8.4-cli vendor/bin/phpunit
-docker run --rm -v "${PWD}:/app" -w /app php:8.2-cli vendor/bin/phpunit
+docker run --rm -v "${PWD}:/app" -w /app php:8.3-cli vendor/bin/phpunit
 ```
 
 The policy validates against its schema:

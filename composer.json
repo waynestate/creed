@@ -9,7 +9,7 @@
         }
     ],
     "require": {
-        "php": "^8.2"
+        "php": "^8.3"
     },
     "require-dev": {
         "opis/json-schema": "^2.4",
@@ -30,7 +30,10 @@
         "validate-policy": "php bin/validate-policy.php"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "platform": {
+            "php": "8.3.0"
+        }
     },
     "minimum-stability": "stable",
     "prefer-stable": true
