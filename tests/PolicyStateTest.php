@@ -56,6 +56,14 @@ final class PolicyStateTest extends TestCase
     }
 
     #[Test]
+    public function oldestSupportedIntegerVersionKeysOn20261027(): void
+    {
+        $policy = Policy::bundled();
+        self::assertSame('12', $policy->oldestSupported('laravel', new DateTimeImmutable('2026-10-27')));
+        self::assertSame('22', $policy->oldestSupported('node', new DateTimeImmutable('2026-10-27')));
+    }
+
+    #[Test]
     public function unknownComponentThrows(): void
     {
         $this->expectException(InvalidArgumentException::class);
