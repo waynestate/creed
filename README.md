@@ -1,7 +1,7 @@
 # CREED
 
-<!-- TODO(lead): GIF -->
-TODO(lead): GIF (Creed band)
+![Singer of the band Creed in a white tank top and black leather pants on a stage with a red backdrop, one arm stretched out over a cheering crowd](https://media.giphy.com/media/BsQ4hGk3leUxGVCS5X/giphy.gif)
+<sub>GIF via [Giphy](https://giphy.com/gifs/creed-higher-BsQ4hGk3leUxGVCS5X)</sub>
 
 CREED is the Wayne State app stack's version policy, as data. One file,
 `policy/policy.json`, lists the support dates for PHP, Laravel, Node, MySQL,
@@ -74,8 +74,8 @@ product in the stack strongly recommends a git.wayne.edu instance runner. The
 case for it is written up in `design/instance-runner-case.md` in the
 coordination repo (`the stack`).
 
-<!-- TODO(lead): GIF -->
-TODO(lead): GIF (Creed Bratton)
+![Creed Bratton from The Office in a dark suit and blue shirt with a wide, wild-eyed grin](https://media.giphy.com/media/sg6OczNgfp7Jm/giphy.gif)
+<sub>GIF via [Giphy](https://giphy.com/gifs/creed-sg6OczNgfp7Jm)</sub>
 
 Creed Bratton, whose quality assurance work we all admire. His past is a
 mystery. Ours is in `policy/policy.json`, where it belongs.
