@@ -502,7 +502,7 @@ PROCTOR checks for CRLF in server files and case collisions are planned, not in 
 
 ### 35. Run the test suite on every supported PHP version
 
-CI runs the unit tests on 8.2, 8.3, 8.4 and 8.5, and the floor moves with the policy.
+CI runs the unit tests on 8.3, 8.4 and 8.5, from CREED's own floor up.
 
 Why: a library that works only on the newest PHP excludes half its users.
 
