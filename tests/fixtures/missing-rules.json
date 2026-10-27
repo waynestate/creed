@@ -1,0 +1,13 @@
+{
+    "schema_version": 1,
+    "components": {
+        "php": {
+            "versions": {
+                "8.2": {
+                    "active_until": "2024-12-31",
+                    "security_until": "2026-12-31"
+                }
+            }
+        }
+    }
+}

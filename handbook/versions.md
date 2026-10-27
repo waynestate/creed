@@ -1,0 +1,20 @@
+# Versions
+
+The policy states, from ADR-0003:
+
+| State | Runtime (Baseline) | Check / CI | Platform |
+|---|---|---|---|
+| active | silent | pass | |
+| security-only | ribbon warning in non-production; log line in production | warning | |
+| EOL | ribbon error in non-production; daily log line | fail | Citadel retires the image on its own schedule |
+| EOL + 90 days | as above | fail; no override | |
+
+- The dates live in `policy/policy.json`. Every tool derives a version's state
+  from the date, through the CREED reader. No other code decides state
+  (ADR-0003).
+- The PHP floor is `^8.2`, the oldest non-EOL version today (ADR-0003). It
+  moves to `^8.3` on 2027-01-01.
+- Stack packages raise their own `php` floor in a new major when a PHP version
+  reaches EOL, so security fixes require the upgrade (ADR-0003).
+- `policy.json` is a contract, versioned like WayneUI's `/v2/`. Older Check
+  versions must still read newer policy files (ADR-0003).

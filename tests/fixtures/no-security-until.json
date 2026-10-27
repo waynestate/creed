@@ -1,0 +1,20 @@
+{
+    "schema_version": 1,
+    "components": {
+        "php": {
+            "versions": {
+                "9.9": {
+                    "active_until": "2030-12-31"
+                }
+            }
+        }
+    },
+    "rules": {
+        "audit_severity_threshold": "high",
+        "banned_constraints": [
+            "dev-*",
+            "*"
+        ],
+        "eol_grace_days": 90
+    }
+}

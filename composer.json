@@ -1,0 +1,37 @@
+{
+    "name": "waynestate/creed",
+    "description": "The Wayne State app stack version policy as data, with a framework-free PHP reader.",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Wayne State University, Enterprise Applications"
+        }
+    ],
+    "require": {
+        "php": "^8.2"
+    },
+    "require-dev": {
+        "opis/json-schema": "^2.4",
+        "phpunit/phpunit": "^11.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Waynestate\\Creed\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Waynestate\\Creed\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "validate-policy": "php bin/validate-policy.php"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

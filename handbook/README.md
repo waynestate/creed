@@ -1,0 +1,15 @@
+# The CREED handbook
+
+The rules for the Wayne State app stack, chapter by chapter. Each chapter
+states what the ADRs have already decided, with the ADR number, and marks the
+rest as "To be decided".
+
+- [Versions](versions.md)
+- [Dependencies](dependencies.md)
+- [Auth](auth.md)
+- [Runtime and headers](runtime-and-headers.md)
+- [Deploying to Citadel](deploying-to-citadel.md)
+- [CI](ci.md)
+- [Accessibility](accessibility.md)
+- [Every OS](every-os.md)
+- [Overrides](overrides.md)

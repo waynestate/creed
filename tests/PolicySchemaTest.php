@@ -1,0 +1,66 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Waynestate\Creed\Tests;
+
+use Opis\JsonSchema\Validator;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\TestCase;
+
+final class PolicySchemaTest extends TestCase
+{
+    /**
+     * Validate a policy file against the bundled schema.
+     *
+     * @return list<string> the validation errors, empty when valid
+     */
+    private static function validateFile(string $path): array
+    {
+        // Decode as objects, not assoc arrays: opis reports a PHP assoc array
+        // as having no JSON type, so "type": "object" would never match.
+        $schema = json_decode((string) file_get_contents(dirname(__DIR__) . '/policy/policy.schema.json'), false);
+        $data = json_decode((string) file_get_contents($path), false);
+
+        $validator = new Validator();
+        $result = $validator->validate($data, $schema);
+
+        if ($result->isValid()) {
+            return [];
+        }
+
+        $error = $result->error();
+        $where = $error->data()->fullPath();
+        $where = $where === [] ? '(root)' : implode('.', $where);
+        return [$error->message() . ' at ' . $where];
+    }
+
+    #[Test]
+    public function bundledPolicyIsValid(): void
+    {
+        $errors = self::validateFile(dirname(__DIR__) . '/policy/policy.json');
+        self::assertSame([], $errors, 'The bundled policy must validate against the schema.');
+    }
+
+    /**
+     * @return array<string, array{0: string}>
+     */
+    public static function brokenFixtures(): array
+    {
+        return [
+            'missing rules block' => [__DIR__ . '/fixtures/missing-rules.json'],
+            'unknown top-level key' => [__DIR__ . '/fixtures/unknown-key.json'],
+            'bad date' => [__DIR__ . '/fixtures/bad-date.json'],
+            'eol_grace_days as a string' => [__DIR__ . '/fixtures/grace-as-string.json'],
+        ];
+    }
+
+    #[Test]
+    #[DataProvider('brokenFixtures')]
+    public function brokenPolicyIsRejected(string $path): void
+    {
+        $errors = self::validateFile($path);
+        self::assertNotSame([], $errors, "Expected validation errors for {$path}");
+    }
+}
