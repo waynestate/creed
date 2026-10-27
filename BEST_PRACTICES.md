@@ -668,8 +668,9 @@ Why: pinning without rebuilding freezes the bugs; rebuilding without pinning cha
 
 Sources: [Docker build best practices](https://docs.docker.com/build/building/best-practices/).
 
-How the stack holds it: `Not yet`. The schema already allows an optional `citadel_image` string on each version, but no
-entry in `policy.json` uses it, and no rebuild schedule is written.
+How the stack holds it: `Not yet`. The schema already allows an optional `images` object on each version, keyed by
+target (`citadel`, `docker`, `openshift`, `coolify`), but no entry in `policy.json` uses it, and no rebuild schedule is
+written.
 
 ### 45. Treat the CI host as part of the supply chain
 
@@ -885,7 +886,7 @@ Added in the second pass (2026-10-27):
 24. Write down "gates must run on any GitLab tier" and confirm the tier of git.wayne.edu (practice 42).
 25. Add a secrets chapter section on `APP_KEY`: rotation, the session driver, and a scan that works on Windows, macOS and
     Linux (practice 43; extends item 10).
-26. Fill `citadel_image` for supported versions and write a rebuild schedule for base images (practice 44).
+26. Fill `images` for supported versions and write a rebuild schedule for base images (practice 44).
 27. Ask the owners of git.wayne.edu to publish its GitLab patch level and a patch routine (practice 45).
 28. Record each Laravel release's minimum database in the policy, and add a check against the platform database
     (practice 46).
