@@ -886,12 +886,14 @@ Added in the second pass (2026-10-27):
 24. Write down "gates must run on any GitLab tier" and confirm the tier of git.wayne.edu (practice 42).
 25. Add a secrets chapter section on `APP_KEY`: rotation, the session driver, and a scan that works on Windows, macOS and
     Linux (practice 43; extends item 10).
-26. Fill `images` for supported versions and write a rebuild schedule for base images (practice 44).
+26. Fill `images` for supported versions, per target (Citadel and elsewhere), and write a rebuild schedule for base
+    images (practice 44).
 27. Ask the owners of git.wayne.edu to publish its GitLab patch level and a patch routine (practice 45).
 28. Record each Laravel release's minimum database in the policy, and add a check against the platform database
     (practice 46).
 29. Write down the MySQL auth plugin step and the rule "list LTS lines only" (practice 47).
-30. State a target for adding a new PHP image to Citadel and a notice period for retiring one (practice 48).
+30. State a target for adding a new PHP image, per target (Citadel and elsewhere), and a notice period for retiring
+    one (practice 48).
 31. Decide how `active_until` is derived for Node 27 and later, which have no Maintenance phase (practice 49).
 32. Build the freshness job against the endoflife.date API with the filter rules in practice 50 (extends item 2).
 33. Decide strict or tolerant schema validation, and add a test with an old schema and reader against a new file
