@@ -151,6 +151,29 @@ final class Policy
     }
 
     /**
+     * The newest patch release of a version, from the policy's latest_patch
+     * field.
+     *
+     * The dates say a branch is supported until when; latest_patch says which
+     * patch is current in it. Null when the version has no latest_patch,
+     * because the field is optional and the reader does not guess.
+     *
+     * @throws InvalidArgumentException if the component or version is unknown
+     */
+    public function latestPatch(string $component, string $version): ?string
+    {
+        $versions = $this->components[$component]['versions'] ?? null;
+        if ($versions === null) {
+            throw new InvalidArgumentException("Unknown component: {$component}");
+        }
+        if (!array_key_exists($version, $versions)) {
+            throw new InvalidArgumentException("Unknown version of {$component}: {$version}");
+        }
+        $latest = $versions[$version]['latest_patch'] ?? null;
+        return is_string($latest) ? $latest : null;
+    }
+
+    /**
      * The rules block, as an array.
      *
      * @return array<string, mixed>

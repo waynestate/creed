@@ -52,6 +52,13 @@ final class PolicySchemaTest extends TestCase
     }
 
     #[Test]
+    public function latestPatchFieldsAreValid(): void
+    {
+        $errors = self::validateFile(__DIR__ . '/fixtures/with-latest-patch.json');
+        self::assertSame([], $errors, 'A version entry with latest_patch fields must validate.');
+    }
+
+    #[Test]
     public function toolsObjectIsValid(): void
     {
         $errors = self::validateFile(__DIR__ . '/fixtures/with-tools.json');

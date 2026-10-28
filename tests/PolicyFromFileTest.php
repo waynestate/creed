@@ -48,6 +48,36 @@ final class PolicyFromFileTest extends TestCase
     }
 
     #[Test]
+    public function latestPatchReturnsTheFieldWhenPresent(): void
+    {
+        $policy = Policy::fromFile(__DIR__ . '/fixtures/with-latest-patch.json');
+        self::assertSame('8.3.36', $policy->latestPatch('php', '8.3'));
+    }
+
+    #[Test]
+    public function latestPatchIsNullWhenAbsent(): void
+    {
+        $policy = Policy::fromFile(__DIR__ . '/fixtures/with-latest-patch.json');
+        self::assertNull($policy->latestPatch('php', '8.4'));
+    }
+
+    #[Test]
+    public function latestPatchUnknownComponentThrows(): void
+    {
+        $policy = Policy::fromFile(__DIR__ . '/fixtures/with-latest-patch.json');
+        $this->expectException(InvalidArgumentException::class);
+        $policy->latestPatch('cobol', '8.3');
+    }
+
+    #[Test]
+    public function latestPatchUnknownVersionThrows(): void
+    {
+        $policy = Policy::fromFile(__DIR__ . '/fixtures/with-latest-patch.json');
+        $this->expectException(InvalidArgumentException::class);
+        $policy->latestPatch('php', '7.4');
+    }
+
+    #[Test]
     public function invalidJsonThrows(): void
     {
         $this->expectException(InvalidArgumentException::class);
