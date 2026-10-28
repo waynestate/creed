@@ -24,19 +24,19 @@ deterministic: the inspection day is the newest `latest_patch_checked` in
 
 ## What it makes
 
-- `docs/readme/hero.jpg` — the title page, with the running head and binding
+- `docs/readme/hero.jpg`: the title page, with the running head and binding
   hidden.
-- `docs/readme/form-cr1.svg` — Form CR-1, filled in four times on the page's
+- `docs/readme/form-cr1.svg`: Form CR-1, filled in four times on the page's
   own inspector (PHP 8.2 now and on 2027-01-01, PHP 8.1, Laravel 13), each
   certificate typed and stamped. The finding, clause and stamp words are the
   page's; the verdict is checked against `policy.json` and the build fails if
   they disagree. Under `prefers-reduced-motion` it is the first certificate,
   already stamped.
-- `docs/readme/gallery.jpg` — a contact sheet of three mobile crops from
+- `docs/readme/gallery.jpg`: a contact sheet of three mobile crops from
   `site/screenshots/sections/`.
-- `docs/readme/board.jpg` — the brand board, re-encoded.
-- `docs/readme/cast/*.png` — one 96×96 mark per stack part.
-- `docs/readme/badges/*.svg` — `php`, `licence` and `policy`, generated
+- `docs/readme/board.jpg`: the brand board, re-encoded.
+- `docs/readme/cast/*.png`: one 96×96 mark per stack part.
+- `docs/readme/badges/*.svg`: `php`, `licence` and `policy`, generated
   locally by `badge-maker`.
 
 Every file must stay at or under 300 KB, and no captured text may name an

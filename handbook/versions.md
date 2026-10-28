@@ -23,7 +23,7 @@ The stack's version policy states:
 
 ## Latest patches
 
-Each version can also carry a `latest_patch` — the newest patch release for
+Each version can also carry a `latest_patch`: the newest patch release for
 that version as of a `latest_patch_checked` date. It is informational: a
 version's state (active, security-only, EOL) is still derived from the dates
 alone (the stack's version policy); `latest_patch` only tells you how far behind the newest

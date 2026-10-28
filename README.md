@@ -18,7 +18,7 @@ Checks: `composer ci` (the same command runs on GitLab and GitHub).
 
 Front page: [`site/index.html`](site/index.html), a static page you can open in a browser or serve from `site/`.
 
-One command, two clouds, zero excuses — higher.
+One command, two clouds, zero excuses. Higher.
 
 ![Singer of the band Creed in a white tank top and black leather pants on a stage with a red backdrop, one arm stretched out over a cheering crowd](https://media.giphy.com/media/BsQ4hGk3leUxGVCS5X/giphy.gif)
 <sub>GIF via [Giphy](https://giphy.com/gifs/creed-higher-BsQ4hGk3leUxGVCS5X)</sub>
@@ -63,16 +63,16 @@ $floor = $policy->oldestSupported('php', new DateTimeImmutable('2026-10-27'));
 
 The reader's public members, one line each:
 
-- `Policy::bundled()`, `Policy::fromFile($path)`, `Policy::fromArray($data)` — load a policy; `origin()` says where it came from.
-- `stateOf($component, $version, $on)` — the state, or an exception; `tryStateOf()` is the same answer as `null` when it cannot be answered.
-- `oldestSupported($component, $on)` — the lowest version still Active or Security; `supported()` lists all of them, oldest first.
-- `latestPatch($component, $version)` — the current patch in that line; `latestPatchChecked()` says when it was last checked.
-- `line($component, $version)` — the raw line: `active_until`, `security_until`, `latest_patch`, `latest_patch_checked` (each a string or null) and `current` (true or null).
-- `activeUntil()`, `securityUntil()` — those dates as `DateTimeImmutable`, or null.
-- `daysToEol($component, $version, $on)` — whole days until `security_until`, signed; `isPastGrace()` says whether the grace period is over.
-- `resolveVersion($component, $version)` — the policy line a full version like `8.3.12` belongs to.
-- `isAheadOfPolicy($component, $version)` — whether a version sorts above every line the policy lists.
-- `hasComponent()`, `components()`, `versions($component)`, `tools()`, `toolMinimum($tool)`, `rules()` — the shape of the policy itself.
+- `Policy::bundled()`, `Policy::fromFile($path)`, `Policy::fromArray($data)`: load a policy; `origin()` says where it came from.
+- `stateOf($component, $version, $on)`: the state, or an exception; `tryStateOf()` is the same answer as `null` when it cannot be answered.
+- `oldestSupported($component, $on)`: the lowest version still Active or Security; `supported()` lists all of them, oldest first.
+- `latestPatch($component, $version)`: the current patch in that line; `latestPatchChecked()` says when it was last checked.
+- `line($component, $version)`: the raw line, with `active_until`, `security_until`, `latest_patch`, `latest_patch_checked` (each a string or null) and `current` (true or null).
+- `activeUntil()`, `securityUntil()`: those dates as `DateTimeImmutable`, or null.
+- `daysToEol($component, $version, $on)`: whole days until `security_until`, signed; `isPastGrace()` says whether the grace period is over.
+- `resolveVersion($component, $version)`: the policy line a full version like `8.3.12` belongs to.
+- `isAheadOfPolicy($component, $version)`: whether a version sorts above every line the policy lists.
+- `hasComponent()`, `components()`, `versions($component)`, `tools()`, `toolMinimum($tool)`, `rules()`: the shape of the policy itself.
 
 One last time: the reader answers, it does not guess.
 
@@ -94,7 +94,7 @@ is inclusive, and the reader never guesses.
 
 ### Versions CREED hasn't heard of
 
-The reader refuses what it does not know — except the newest thing. A version
+The reader refuses what it does not know, except the newest thing. A version
 that sorts above every line the policy lists is `Active`, and
 `isAheadOfPolicy()` says so. A version that falls between listed lines is
 still unknown, and still throws. Current versions are never refused.
@@ -120,7 +120,7 @@ The rules, chapter by chapter, live in [`handbook/`](handbook/README.md).
 `latest_patch` fields in `policy/policy.json`, and proposes new Vue lines from
 endoflife.date. A scheduled CI job runs it every
 Monday and fails the pipeline when the policy is stale; a person then runs the
-tool and commits the result. CI never pushes — it only raises its hand.
+tool and commits the result. CI never pushes. It only raises its hand.
 
 The schedule is a GitLab project setting, not a file in this repo: someone
 creates it under CI/CD > Schedules (weekly, Monday). The GitHub mirror runs the
