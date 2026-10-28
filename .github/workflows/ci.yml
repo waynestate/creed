@@ -4,13 +4,39 @@ on:
   push:
     branches: ['**']
     tags: ['v*', '*.*.*']
+  schedule:
+    - cron: '17 6 * * 1'
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
   ci:
+    if: github.event_name == 'push'
     uses: waynestate/preflight/.github/workflows/php-package.yml@65711c350bd0ddf637f0933482d7bdae2a9b3c3b # pin to a PREFLIGHT tag at its first GitHub release
     with:
       php-versions: '["8.3","8.4","8.5"]'
       ci-command: composer ci
+
+  # Runs on the weekly schedule and on demand. It re-reads the upstream feeds
+  # and rewrites the latest_patch fields in policy/policy.json, then fails the
+  # run if the policy was stale. CI never pushes: a person runs the tool and
+  # commits the result.
+  refresh-patches:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.4'
+          tools: composer:2.10.3
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+      - name: Refresh patches
+        run: php bin/refresh-patches.php
+      - name: Check for a stale policy
+        run: git diff --exit-code policy/policy.json
