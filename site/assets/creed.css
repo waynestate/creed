@@ -558,7 +558,8 @@ img { max-width: 100%; height: auto; }
 
 /* -------------------------------------------------------- colophon */
 .colophon { background: var(--green); color: var(--paper); padding-block: 3rem 3.5rem; border-top: 4px solid var(--gold); }
-.colophon__inner { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1.5rem; max-width: 52rem; }
+.colophon__inner { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1.5rem; }
+.colophon__inner > div:last-child { max-width: 48rem; }
 .colophon__mark img { border-radius: 10px; box-shadow: 0 0 0 1px rgba(255, 204, 51, .6); }
 .colophon__title { font-family: var(--mono); font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); margin: 0 0 .5rem; }
 .colophon p { margin: 0 0 .6rem; }
@@ -593,4 +594,21 @@ img { max-width: 100%; height: auto; }
 @media print {
   .runhead, .thumbs, .binding, .toast, .form-cr1__fields { display: none; }
   body { background: #fff; }
+}
+
+/* Table 2-1 on a phone: each edition becomes one ruled entry, state first. */
+.code-table td { white-space: nowrap; }
+@media (max-width: 640px) {
+  .code-table__scroll { overflow: visible; }
+  .code-table table, .code-table tbody, .code-table tr, .code-table th, .code-table td { display: block; min-width: 0; }
+  .code-table thead { display: none; }
+  .code-table tr[data-c], .code-table tbody tr:last-child { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: .15rem .75rem; padding: .55rem .5rem; border-bottom: 1px solid var(--rule); }
+  .code-table tr[data-c] > *, .code-table tbody tr:last-child > * { border: 0; padding: 0; }
+  .code-table tr > td:last-child { grid-column: 2; grid-row: 1; justify-self: end; }
+  .code-table tr > td:nth-child(2), .code-table tr > td:nth-child(3), .code-table tr > td:nth-child(4) { grid-column: 1 / -1; font-size: .8rem; color: var(--ink-2); white-space: normal; }
+  .code-table tr[data-c] > td:nth-child(2)::before { content: "Active until "; }
+  .code-table tr[data-c] > td:nth-child(3)::before { content: "Security until "; }
+  .code-table tr[data-c] > td:nth-child(4)::before { content: "Latest patch "; }
+  .code-table tr[data-c] > td::before { font-family: var(--sans); font-size: .78rem; color: var(--ink-2); }
+  .code-table__group th { padding: .5rem; border-bottom: 1px solid var(--ink); }
 }
