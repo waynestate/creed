@@ -39,6 +39,7 @@
         ],
         "test": "phpunit",
         "validate-policy": "php bin/validate-policy.php",
+        "export": "php bin/export.php",
         "lint": "pint --test",
         "fix": "pint",
         "analyse": "phpstan analyse --memory-limit=1G"

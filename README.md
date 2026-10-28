@@ -93,6 +93,22 @@ The schedule is a GitLab project setting, not a file in this repo: someone
 creates it under CI/CD > Schedules (weekly, Monday). The GitHub mirror runs the
 same check on a cron and on demand.
 
+## Carrying CREED in another package
+
+CREED is not on Packagist yet, so PROCTOR, BOOSTER, ROLLCALL and ADVISOR each
+carry a generated copy of the reader under their own namespace, and two tools
+in one app never fight over a class name (ADR-0015 in the stack's coordination
+repo). CREED owns the generator and the check:
+
+```
+php bin/export.php --namespace=Waynestate\Proctor\Creed --to=vendor/creed-copy
+php bin/export.php --check --namespace=Waynestate\Proctor\Creed --to=vendor/creed-copy
+```
+
+The copy is the reader with the namespace rewritten and `bundled()` repointed
+at its own `policy.json`; `--check` fails when the copy drifts from the source.
+Creed Bratton would have a form for this.
+
 ## Tests
 
 No PHP on the machine? Fine. Docker runs the suite:
