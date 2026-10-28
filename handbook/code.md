@@ -122,3 +122,4 @@ for plain bans, and a custom rule only when neither fits.
 - OWASP SQL Injection Prevention Cheat Sheet:
   https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet.html
 - GitLab Code Quality: https://docs.gitlab.com/ci/testing/code_quality/
+- OWASP ASVS: https://asvs.owasp.org/
