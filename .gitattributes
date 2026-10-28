@@ -19,3 +19,7 @@
 /phpunit.xml.dist export-ignore
 /.gitattributes   export-ignore
 /.gitignore       export-ignore
+
+# README art: the images and the kit that makes them.
+/docs/readme        export-ignore
+/scripts/readme-art export-ignore
