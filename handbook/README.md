@@ -7,6 +7,7 @@ rest as "To be decided".
 - [Versions](versions.md)
 - [Dependencies](dependencies.md)
 - [Auth](auth.md)
+- [Databases](databases.md)
 - [Runtime and headers](runtime-and-headers.md)
 - [Deploy gate](deploy-gate.md)
 - [CI](ci.md)
