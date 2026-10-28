@@ -608,3 +608,13 @@ img { max-width: 100%; height: auto; }
   .code-table tr[data-c] > td::before { font-family: var(--sans); font-size: .78rem; color: var(--ink-2); }
   .code-table__group th { padding: .5rem; border-bottom: 1px solid var(--ink); }
 }
+
+/* Part names in the stack list link to each part's own front page. They keep
+   this page's colours; the underline is the only new thing. */
+.part-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .18em;
+}
+.part-link:hover { text-decoration-thickness: 2px; }
