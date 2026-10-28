@@ -159,7 +159,7 @@ the minimums for the Laravel adapter and state no end-of-life policy for v2.
 How the stack holds it: `Enforced`. The schema now allows a line marked `"current": true` with no dates
 (`policy/policy.schema.json`), and `policy.json` lists Vue 3 and Inertia 2 that way, with no invented dates. The schema
 requires `security_until` on every line that is not current, so a made-up date is never needed and a dated line can't
-skip its dates. A version newer than every listed line is treated as current (ADR-0015, "current versions are never
+skip its dates. A version newer than every listed line is treated as current ("current versions are never
 refused").
 
 ### 10. Keep the policy a versioned contract that old tools can still read

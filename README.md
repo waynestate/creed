@@ -130,8 +130,8 @@ same check on a cron and on demand.
 
 CREED is not on Packagist yet, so PROCTOR, BOOSTER, ROLLCALL and ADVISOR each
 carry a generated copy of the reader under their own namespace, and two tools
-in one app never fight over a class name (ADR-0015 in the stack's coordination
-repo). CREED owns the generator and the check:
+in one app never fight over a class name (the generator below keeps the copies
+in step). CREED owns the generator and the check:
 
 ```
 php bin/export.php --namespace=Waynestate\Proctor\Creed --to=vendor/creed-copy
