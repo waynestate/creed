@@ -18,3 +18,17 @@ The policy states, from ADR-0003:
   reaches EOL, so security fixes require the upgrade (ADR-0003).
 - `policy.json` is a contract, versioned like WayneUI's `/v2/`. Older Check
   versions must still read newer policy files (ADR-0003).
+
+## Tool minimums
+
+The `tools` block sets a minimum version for a developer tool. Each key is a
+tool name, each value a `minimum` version. Today it holds Composer at 2.8.0.
+
+Composer 2.8.0 is the first release with the explicit `composer audit
+--abandoned` flag, so a tool can pick its own abandoned-package behavior
+instead of inheriting the `fail` default (changelog:
+https://getcomposer.org/changelog/2.8.0).
+
+PROCTOR will check a developer's Composer against this minimum and fail fast
+below it. The minimum is a floor, not a ceiling: we do not go lower, no matter
+how the crowd sings for more.

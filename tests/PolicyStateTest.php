@@ -98,4 +98,16 @@ final class PolicyStateTest extends TestCase
         self::assertSame(['dev-*', '*'], $rules['banned_constraints']);
         self::assertSame(90, $rules['eol_grace_days']);
     }
+
+    #[Test]
+    public function toolMinimumComposerFromBundledPolicy(): void
+    {
+        self::assertSame('2.8.0', Policy::bundled()->toolMinimum('composer'));
+    }
+
+    #[Test]
+    public function toolMinimumUnlistedToolIsNull(): void
+    {
+        self::assertNull(Policy::bundled()->toolMinimum('npm'));
+    }
 }

@@ -68,6 +68,25 @@
                 }
             }
         },
+        "tools": {
+            "type": "object",
+            "propertyNames": {
+                "pattern": "^[a-z][a-z0-9-]*$"
+            },
+            "additionalProperties": {
+                "type": "object",
+                "required": [
+                    "minimum"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                    "minimum": {
+                        "type": "string",
+                        "pattern": "^\\d+\\.\\d+\\.\\d+$"
+                    }
+                }
+            }
+        },
         "rules": {
             "type": "object",
             "required": [

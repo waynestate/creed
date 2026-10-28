@@ -50,6 +50,13 @@ final class PolicySchemaTest extends TestCase
         self::assertSame([], $errors, 'A version entry with an images object must validate.');
     }
 
+    #[Test]
+    public function toolsObjectIsValid(): void
+    {
+        $errors = self::validateFile(__DIR__ . '/fixtures/with-tools.json');
+        self::assertSame([], $errors, 'A policy with a tools object must validate.');
+    }
+
     /**
      * @return array<string, array{0: string}>
      */
@@ -62,6 +69,8 @@ final class PolicySchemaTest extends TestCase
             'eol_grace_days as a string' => [__DIR__ . '/fixtures/grace-as-string.json'],
             'unknown key inside images' => [__DIR__ . '/fixtures/images-unknown-key.json'],
             'empty string inside images' => [__DIR__ . '/fixtures/images-empty-value.json'],
+            'tool minimum not a full version' => [__DIR__ . '/fixtures/tools-bad-minimum.json'],
+            'unknown key inside a tool' => [__DIR__ . '/fixtures/tools-unknown-key.json'],
         ];
     }
 
