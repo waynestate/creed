@@ -1,0 +1,26 @@
+{
+    "schema_version": 1,
+    "components": {
+        "php": {
+            "versions": {
+                "8.3": {
+                    "security_until": "2027-12-31"
+                }
+            }
+        }
+    },
+    "tools": {
+        "composer": {
+            "minimum": "2.8.0",
+            "maximum": "3.0.0"
+        }
+    },
+    "rules": {
+        "audit_severity_threshold": "high",
+        "banned_constraints": [
+            "dev-*",
+            "*"
+        ],
+        "eol_grace_days": 90
+    }
+}
