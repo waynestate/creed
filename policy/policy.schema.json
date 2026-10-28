@@ -47,6 +47,9 @@
                                     "type": "string",
                                     "format": "date"
                                 },
+                                "current": {
+                                    "type": "boolean"
+                                },
                                 "images": {
                                     "type": "object",
                                     "additionalProperties": false,
@@ -69,6 +72,28 @@
                                         }
                                     }
                                 }
+                            },
+                            "if": {
+                                "properties": {
+                                    "current": {
+                                        "const": true
+                                    }
+                                },
+                                "required": [
+                                    "current"
+                                ]
+                            },
+                            "then": {
+                                "not": {
+                                    "required": [
+                                        "security_until"
+                                    ]
+                                }
+                            },
+                            "else": {
+                                "required": [
+                                    "security_until"
+                                ]
                             }
                         }
                     }
