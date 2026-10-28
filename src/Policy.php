@@ -27,9 +27,15 @@ final class Policy
     private array $rules;
 
     /**
+     * Where this policy came from: the file path for fromFile(), 'bundled'
+     * for bundled(), 'array' for fromArray().
+     */
+    private string $origin;
+
+    /**
      * @param array<string, mixed> $data
      */
-    private function __construct(array $data)
+    private function __construct(array $data, string $origin)
     {
         if (!isset($data['schema_version'])) {
             throw new InvalidArgumentException('Policy file is missing "schema_version".');
@@ -37,6 +43,7 @@ final class Policy
         $this->components = $data['components'] ?? [];
         $this->tools = $data['tools'] ?? [];
         $this->rules = $data['rules'] ?? [];
+        $this->origin = $origin;
     }
 
     /**
@@ -44,7 +51,7 @@ final class Policy
      */
     public static function bundled(): self
     {
-        return self::fromFile(dirname(__DIR__) . '/policy/policy.json');
+        return new self(self::loadFile(dirname(__DIR__) . '/policy/policy.json'), 'bundled');
     }
 
     /**
@@ -53,6 +60,41 @@ final class Policy
      * @throws InvalidArgumentException on invalid JSON or a missing schema_version
      */
     public static function fromFile(string $path): self
+    {
+        return new self(self::loadFile($path), $path);
+    }
+
+    /**
+     * Build a policy from an already-decoded array, with the same validation
+     * as fromFile(): a missing schema_version is refused.
+     *
+     * @param array<string, mixed> $data
+     *
+     * @throws InvalidArgumentException on a missing schema_version
+     */
+    public static function fromArray(array $data): self
+    {
+        return new self($data, 'array');
+    }
+
+    /**
+     * Where this policy came from: the file path for fromFile(), 'bundled'
+     * for bundled(), 'array' for fromArray().
+     */
+    public function origin(): string
+    {
+        return $this->origin;
+    }
+
+    /**
+     * Read and decode a policy file.
+     *
+     * @return array<string, mixed>
+     *
+     * @throws InvalidArgumentException on a missing file or invalid JSON
+     * @throws RuntimeException when the file cannot be read
+     */
+    private static function loadFile(string $path): array
     {
         if (!is_file($path)) {
             throw new InvalidArgumentException("Policy file not found: {$path}");
@@ -65,7 +107,7 @@ final class Policy
         if (!is_array($data)) {
             throw new InvalidArgumentException('Invalid JSON in policy file: ' . json_last_error_msg());
         }
-        return new self($data);
+        return $data;
     }
 
     /**
@@ -122,6 +164,26 @@ final class Policy
     }
 
     /**
+     * What state is this version in on this date, or null when it cannot be
+     * answered.
+     *
+     * The safe twin of stateOf(): it returns null instead of throwing for an
+     * unknown component, an unknown version, a null version, or a version
+     * with no security_until. stateOf() is unchanged and keeps throwing.
+     */
+    public function tryStateOf(string $component, ?string $version, DateTimeImmutable $on): ?State
+    {
+        if ($version === null) {
+            return null;
+        }
+        try {
+            return $this->stateOf($component, $version, $on);
+        } catch (InvalidArgumentException) {
+            return null;
+        }
+    }
+
+    /**
      * The lowest version of a component that is still Active or Security.
      *
      * Eol and EolGraceExpired are not supported. Null when nothing is.
@@ -129,6 +191,25 @@ final class Policy
      * @throws InvalidArgumentException if the component is unknown
      */
     public function oldestSupported(string $component, DateTimeImmutable $on): ?string
+    {
+        $supported = $this->supported($component, $on);
+        if ($supported === []) {
+            return null;
+        }
+        return $supported[0];
+    }
+
+    /**
+     * Every version of a component that is still Active or Security, oldest
+     * first.
+     *
+     * Eol and EolGraceExpired are not supported. Empty when nothing is.
+     *
+     * @return list<string>
+     *
+     * @throws InvalidArgumentException if the component is unknown
+     */
+    public function supported(string $component, DateTimeImmutable $on): array
     {
         $versions = $this->components[$component]['versions'] ?? null;
         if ($versions === null) {
@@ -139,15 +220,12 @@ final class Policy
             // json_decode turns keys like "10" into ints; versions are strings.
             $version = (string) $version;
             $state = $this->stateOf($component, $version, $on);
-            if ($state === State::Active || $state === State::Security) {
+            if ($state->isSupported()) {
                 $supported[] = $version;
             }
         }
-        if ($supported === []) {
-            return null;
-        }
         usort($supported, static fn(string $a, string $b): int => version_compare($a, $b));
-        return $supported[0];
+        return $supported;
     }
 
     /**
@@ -192,5 +270,180 @@ final class Policy
     {
         $minimum = $this->tools[$tool]['minimum'] ?? null;
         return is_string($minimum) ? $minimum : null;
+    }
+
+    /**
+     * Whether the policy lists a component at all.
+     */
+    public function hasComponent(string $component): bool
+    {
+        return isset($this->components[$component]);
+    }
+
+    /**
+     * The names of every component in the policy, in file order.
+     *
+     * @return list<string>
+     */
+    public function components(): array
+    {
+        return array_map(static fn(string|int $key): string => (string) $key, array_keys($this->components));
+    }
+
+    /**
+     * The names of every developer tool in the policy's tools block, in file
+     * order.
+     *
+     * @return list<string>
+     */
+    public function tools(): array
+    {
+        return array_map(static fn(string|int $key): string => (string) $key, array_keys($this->tools));
+    }
+
+    /**
+     * The versions of a component, oldest first.
+     *
+     * Empty when the component is unknown or lists no versions.
+     *
+     * @return list<string>
+     */
+    public function versions(string $component): array
+    {
+        $versions = $this->components[$component]['versions'] ?? null;
+        if ($versions === null) {
+            return [];
+        }
+        $list = array_map(static fn(string|int $key): string => (string) $key, array_keys($versions));
+        usort($list, static fn(string $a, string $b): int => version_compare($a, $b));
+        return $list;
+    }
+
+    /**
+     * One version line, with exactly the four fields the policy may carry.
+     *
+     * Each field is a string or null, as in the JSON. Null when the component
+     * or version is unknown.
+     *
+     * @return array{active_until: ?string, security_until: ?string, latest_patch: ?string, latest_patch_checked: ?string}|null
+     */
+    public function line(string $component, string $version): ?array
+    {
+        $versions = $this->components[$component]['versions'] ?? null;
+        if ($versions === null) {
+            return null;
+        }
+        if (!array_key_exists($version, $versions)) {
+            return null;
+        }
+        $entry = $versions[$version];
+        return [
+            'active_until' => $this->stringOrNull($entry['active_until'] ?? null),
+            'security_until' => $this->stringOrNull($entry['security_until'] ?? null),
+            'latest_patch' => $this->stringOrNull($entry['latest_patch'] ?? null),
+            'latest_patch_checked' => $this->stringOrNull($entry['latest_patch_checked'] ?? null),
+        ];
+    }
+
+    /**
+     * The active_until date of a version, or null when absent or unknown.
+     */
+    public function activeUntil(string $component, string $version): ?DateTimeImmutable
+    {
+        $line = $this->line($component, $version);
+        if ($line === null || $line['active_until'] === null) {
+            return null;
+        }
+        return new DateTimeImmutable($line['active_until']);
+    }
+
+    /**
+     * The security_until date of a version, or null when absent or unknown.
+     */
+    public function securityUntil(string $component, string $version): ?DateTimeImmutable
+    {
+        $line = $this->line($component, $version);
+        if ($line === null || $line['security_until'] === null) {
+            return null;
+        }
+        return new DateTimeImmutable($line['security_until']);
+    }
+
+    /**
+     * The latest_patch_checked date of a version, or null when absent or
+     * unknown.
+     */
+    public function latestPatchChecked(string $component, string $version): ?string
+    {
+        $line = $this->line($component, $version);
+        return $line === null ? null : $line['latest_patch_checked'];
+    }
+
+    /**
+     * Whole days until a version's security_until date.
+     *
+     * Zero on that day, positive before it, negative after it. Null when the
+     * component or version is unknown, or the version has no security_until.
+     */
+    public function daysToEol(string $component, string $version, DateTimeImmutable $on): ?int
+    {
+        $securityUntil = $this->securityUntil($component, $version);
+        if ($securityUntil === null) {
+            return null;
+        }
+        $onDay = new DateTimeImmutable($on->format('Y-m-d'));
+        $eolDay = new DateTimeImmutable($securityUntil->format('Y-m-d'));
+        $interval = $onDay->diff($eolDay);
+        $days = $interval->days;
+        return $interval->invert === 1 ? -$days : $days;
+    }
+
+    /**
+     * Whether a version is past its EOL grace period on this date.
+     *
+     * True only when the state is EolGraceExpired. False for an unknown
+     * component or version, because the reader does not guess.
+     */
+    public function isPastGrace(string $component, string $version, DateTimeImmutable $on): bool
+    {
+        return $this->tryStateOf($component, $version, $on) === State::EolGraceExpired;
+    }
+
+    /**
+     * The policy line a full version belongs to.
+     *
+     * The longest listed version that is a prefix of the given one on a dot
+     * boundary: 8.3.12 resolves to 8.3, and 13.1 resolves to 13 when the
+     * policy lists 13. Null when no listed version matches, or the component
+     * is unknown.
+     */
+    public function resolveVersion(string $component, string $version): ?string
+    {
+        $versions = $this->components[$component]['versions'] ?? null;
+        if ($versions === null) {
+            return null;
+        }
+        $best = null;
+        foreach (array_keys($versions) as $listed) {
+            // json_decode turns keys like "10" into ints; versions are strings.
+            $listed = (string) $listed;
+            if ($version !== $listed && !str_starts_with($version, $listed . '.')) {
+                continue;
+            }
+            if ($best === null) {
+                $best = $listed;
+            } elseif (strlen($listed) > strlen($best)) {
+                $best = $listed;
+            }
+        }
+        return $best;
+    }
+
+    /**
+     * A policy field as a string, or null when it is not one.
+     */
+    private function stringOrNull(mixed $value): ?string
+    {
+        return is_string($value) ? $value : null;
     }
 }

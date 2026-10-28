@@ -15,4 +15,14 @@ enum State: string
     case Security = 'security';
     case Eol = 'eol';
     case EolGraceExpired = 'eol_grace_expired';
+
+    /**
+     * Whether an app may still declare a version in this state.
+     *
+     * Active and Security are supported; Eol and EolGraceExpired are not.
+     */
+    public function isSupported(): bool
+    {
+        return $this === self::Active || $this === self::Security;
+    }
 }

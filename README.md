@@ -48,6 +48,22 @@ $floor = $policy->oldestSupported('php', new DateTimeImmutable('2026-10-27'));
 // '8.2'
 ```
 
+### Reading the policy from PHP
+
+The reader's public members, one line each:
+
+- `Policy::bundled()`, `Policy::fromFile($path)`, `Policy::fromArray($data)` — load a policy; `origin()` says where it came from.
+- `stateOf($component, $version, $on)` — the state, or an exception; `tryStateOf()` is the same answer as `null` when it cannot be answered.
+- `oldestSupported($component, $on)` — the lowest version still Active or Security; `supported()` lists all of them, oldest first.
+- `latestPatch($component, $version)` — the current patch in that line; `latestPatchChecked()` says when it was last checked.
+- `line($component, $version)` — the raw line: `active_until`, `security_until`, `latest_patch`, `latest_patch_checked`, each a string or null.
+- `activeUntil()`, `securityUntil()` — those dates as `DateTimeImmutable`, or null.
+- `daysToEol($component, $version, $on)` — whole days until `security_until`, signed; `isPastGrace()` says whether the grace period is over.
+- `resolveVersion($component, $version)` — the policy line a full version like `8.3.12` belongs to.
+- `hasComponent()`, `components()`, `versions($component)`, `tools()`, `toolMinimum($tool)`, `rules()` — the shape of the policy itself.
+
+One last time: the reader answers, it does not guess.
+
 ### With Arms Wide Open
 
 The support window stays open until `security_until`. A version is still
@@ -76,6 +92,22 @@ tool and commits the result. CI never pushes — it only raises its hand.
 The schedule is a GitLab project setting, not a file in this repo: someone
 creates it under CI/CD > Schedules (weekly, Monday). The GitHub mirror runs the
 same check on a cron and on demand.
+
+## Carrying CREED in another package
+
+CREED is not on Packagist yet, so PROCTOR, BOOSTER, ROLLCALL and ADVISOR each
+carry a generated copy of the reader under their own namespace, and two tools
+in one app never fight over a class name (ADR-0015 in the stack's coordination
+repo). CREED owns the generator and the check:
+
+```
+php bin/export.php --namespace=Waynestate\Proctor\Creed --to=vendor/creed-copy
+php bin/export.php --check --namespace=Waynestate\Proctor\Creed --to=vendor/creed-copy
+```
+
+The copy is the reader with the namespace rewritten and `bundled()` repointed
+at its own `policy.json`; `--check` fails when the copy drifts from the source.
+Creed Bratton would have a form for this.
 
 ## Tests
 
