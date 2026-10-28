@@ -4,21 +4,23 @@ declare(strict_types=1);
 
 /**
  * Refreshes the latest_patch and latest_patch_checked fields of the PHP,
- * Laravel, and Node versions in policy/policy.json from the upstream feeds.
+ * Laravel, and Node versions in policy/policy.json from the upstream feeds,
+ * and proposes new Vue lines from endoflife.date.
  *
  * Feeds:
  *   PHP         https://www.php.net/releases/active.php
  *   Laravel     https://repo.packagist.org/p2/laravel/framework.json
  *   Node        https://nodejs.org/dist/index.json
  *   Cross-check https://endoflife.date/api/v1/products/php/
+ *   Vue lines   https://endoflife.date/api/v1/products/vue/
  *
  * Usage:
  *   php bin/refresh-patches.php [--dry-run] [--offline <dir>] [--policy <path>]
  *
  *   --dry-run        Print what would change without writing the policy.
  *   --offline <dir>  Read the feeds from <dir> instead of fetching them.
- *                    Expects php.json, laravel.json, node.json, and
- *                    endoflife-php.json in <dir>.
+ *                    Expects php.json, laravel.json, node.json,
+ *                    endoflife-php.json, and endoflife-vue.json in <dir>.
  *   --policy <path>  Path to the policy file (default: policy/policy.json).
  *
  * Exit codes:
@@ -26,9 +28,10 @@ declare(strict_types=1);
  *   3  the policy was updated (or --dry-run with changes to show)
  *   1  a feed could not be fetched or parsed
  *
- * The endoflife.date feed is a cross-check only: if it is missing or
- * disagrees with php.net, a warning is printed but the run continues,
- * because php.net is the source of record for PHP.
+ * The endoflife.date feeds are optional: the PHP one is a cross-check only,
+ * and the Vue one proposes new lines. When either is missing or unparseable,
+ * a warning is printed and the run continues, because php.net is the source
+ * of record for PHP and a proposal is only a proposal.
  */
 
 use Composer\Semver\Comparator;
@@ -327,6 +330,135 @@ function parseEndOfLifeFeed(string $json): array
 }
 
 /**
+ * Parse an endoflife.date product feed into its release list.
+ *
+ * @return list<array{name: string, isEol: bool, eolFrom: ?string, eoasFrom: ?string}>
+ *
+ * @throws RuntimeException when the feed is not the expected shape
+ */
+function parseEndOfLifeReleases(string $json): array
+{
+    $data = json_decode($json, false);
+    if (!is_object($data)) {
+        throw new RuntimeException('endoflife.date feed: expected a JSON object');
+    }
+    $result = jsonChild($data, 'result');
+    if ($result === null) {
+        throw new RuntimeException('endoflife.date feed: missing "result" object');
+    }
+    $releases = get_object_vars($result);
+    $releases = $releases['releases'] ?? null;
+    if (!is_array($releases)) {
+        throw new RuntimeException('endoflife.date feed: missing "releases" array');
+    }
+
+    /** @var list<array{name: string, isEol: bool, eolFrom: ?string, eoasFrom: ?string}> $lines */
+    $lines = [];
+    foreach ($releases as $release) {
+        if (!is_object($release)) {
+            continue;
+        }
+        $name = jsonStr($release, 'name');
+        $vars = get_object_vars($release);
+        $isEol = $vars['isEol'] ?? null;
+        if ($name === null || !is_bool($isEol)) {
+            continue;
+        }
+        $lines[] = [
+            'name' => $name,
+            'isEol' => $isEol,
+            'eolFrom' => jsonStr($release, 'eolFrom'),
+            'eoasFrom' => jsonStr($release, 'eoasFrom'),
+        ];
+    }
+
+    return $lines;
+}
+
+/**
+ * Whether a release name resolves to a line the policy already lists.
+ *
+ * @param array<int|string, mixed> $versions
+ */
+function resolvesToListedLine(string $name, array $versions): bool
+{
+    foreach (array_keys($versions) as $listed) {
+        $listed = (string) $listed;
+        if ($name === $listed || str_starts_with($name, $listed . '.')) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+/**
+ * Propose new version lines for a component from an endoflife.date release
+ * list.
+ *
+ * Releases are grouped at the granularity the policy already uses: by full
+ * release name when the policy lists dotted lines, by major otherwise. A
+ * group that resolves to a listed line is skipped. The highest release in a
+ * group decides: not EOL means a current line, EOL means EOL dates (with
+ * active_until only when the feed carries an eoasFrom date).
+ *
+ * @param list<array{name: string, isEol: bool, eolFrom: ?string, eoasFrom: ?string}> $releases
+ * @param array<int|string, mixed> $versions
+ *
+ * @return array<string, array<string, mixed>>
+ */
+function proposeAdditions(string $component, array $releases, array $versions): array
+{
+    $dotted = false;
+    foreach (array_keys($versions) as $listed) {
+        if (str_contains((string) $listed, '.')) {
+            $dotted = true;
+            break;
+        }
+    }
+
+    /** @var array<string, list<array{name: string, isEol: bool, eolFrom: ?string, eoasFrom: ?string}>> $groups */
+    $groups = [];
+    foreach ($releases as $release) {
+        $key = $dotted ? $release['name'] : (string) explode('.', $release['name'])[0];
+        if (resolvesToListedLine($key, $versions)) {
+            continue;
+        }
+        $groups[$key][] = $release;
+    }
+
+    /** @var array<string, array<string, mixed>> $proposals */
+    $proposals = [];
+    foreach ($groups as $key => $members) {
+        $highest = null;
+        foreach ($members as $member) {
+            if ($highest === null || version_compare($member['name'], $highest['name']) > 0) {
+                $highest = $member;
+            }
+        }
+        if ($highest === null) {
+            continue;
+        }
+        if ($highest['isEol'] === false) {
+            $proposals[$key] = ['current' => true];
+            continue;
+        }
+        if ($highest['eolFrom'] === null) {
+            fwrite(STDERR, "warning: {$component} {$key} is EOL but has no eolFrom date, skipping\n");
+            continue;
+        }
+        $entry = [];
+        if ($highest['eoasFrom'] !== null) {
+            $entry['active_until'] = $highest['eoasFrom'];
+        }
+        $entry['security_until'] = $highest['eolFrom'];
+        $proposals[$key] = $entry;
+    }
+
+    return $proposals;
+}
+
+/**
  * Encode a string as a JSON string literal, unescaping slashes and unicode.
  *
  * @throws RuntimeException when the string cannot be encoded
@@ -436,7 +568,8 @@ $feeds = [
     'php' => ['file' => 'php.json', 'url' => 'https://www.php.net/releases/active.php'],
     'laravel' => ['file' => 'laravel.json', 'url' => 'https://repo.packagist.org/p2/laravel/framework.json'],
     'node' => ['file' => 'node.json', 'url' => 'https://nodejs.org/dist/index.json'],
-    'endoflife' => ['file' => 'endoflife-php.json', 'url' => 'https://endoflife.date/api/v1/products/php/'],
+    'endoflife-php' => ['file' => 'endoflife-php.json', 'url' => 'https://endoflife.date/api/v1/products/php/'],
+    'endoflife-vue' => ['file' => 'endoflife-vue.json', 'url' => 'https://endoflife.date/api/v1/products/vue/'],
 ];
 
 // The primary feeds are required; a failure here stops the run.
@@ -449,12 +582,18 @@ try {
     exit(1);
 }
 
-// The endoflife feed is a cross-check only; a failure here is a warning.
-$endOfLifeJson = null;
+// The endoflife feeds are optional; a failure here is a warning.
+$endOfLifePhpJson = null;
 try {
-    $endOfLifeJson = loadFeed($feeds['endoflife']['file'], $feeds['endoflife']['url'], $offlineDir);
+    $endOfLifePhpJson = loadFeed($feeds['endoflife-php']['file'], $feeds['endoflife-php']['url'], $offlineDir);
 } catch (RuntimeException $e) {
-    fwrite(STDERR, 'warning: no endoflife.date cross-check: ' . $e->getMessage() . "\n");
+    fwrite(STDERR, 'warning: no endoflife.date PHP cross-check: ' . $e->getMessage() . "\n");
+}
+$endOfLifeVueJson = null;
+try {
+    $endOfLifeVueJson = loadFeed($feeds['endoflife-vue']['file'], $feeds['endoflife-vue']['url'], $offlineDir);
+} catch (RuntimeException $e) {
+    fwrite(STDERR, 'warning: no endoflife.date Vue feed: ' . $e->getMessage() . "\n");
 }
 
 try {
@@ -467,11 +606,19 @@ try {
 }
 
 $endOfLifeLatest = null;
-if ($endOfLifeJson !== null) {
+if ($endOfLifePhpJson !== null) {
     try {
-        $endOfLifeLatest = parseEndOfLifeFeed($endOfLifeJson);
+        $endOfLifeLatest = parseEndOfLifeFeed($endOfLifePhpJson);
     } catch (RuntimeException $e) {
-        fwrite(STDERR, 'warning: could not parse endoflife.date cross-check: ' . $e->getMessage() . "\n");
+        fwrite(STDERR, 'warning: could not parse endoflife.date PHP cross-check: ' . $e->getMessage() . "\n");
+    }
+}
+$vueReleases = null;
+if ($endOfLifeVueJson !== null) {
+    try {
+        $vueReleases = parseEndOfLifeReleases($endOfLifeVueJson);
+    } catch (RuntimeException $e) {
+        fwrite(STDERR, 'warning: could not parse endoflife.date Vue feed: ' . $e->getMessage() . "\n");
     }
 }
 
@@ -547,6 +694,20 @@ foreach ($updates as $component => $latestMap) {
         $entry->latest_patch = $latest;
         $entry->latest_patch_checked = $today;
         $changes[] = "{$component} {$versionKey}: " . ($current ?? '(none)') . " -> {$latest}";
+    }
+}
+
+// Propose new Vue lines from endoflife.date. A proposal is a change like
+// any other: it is printed, and written unless --dry-run.
+if ($vueReleases !== null) {
+    $vueComponent = jsonChild($components, 'vue');
+    $vueVersions = $vueComponent === null ? null : jsonChild($vueComponent, 'versions');
+    if ($vueVersions !== null) {
+        foreach (proposeAdditions('vue', $vueReleases, get_object_vars($vueVersions)) as $key => $entry) {
+            $vueVersions->{$key} = (object) $entry;
+            $summary = isset($entry['current']) ? 'current' : 'security until ' . (string) $entry['security_until'];
+            $changes[] = "vue {$key}: (none) -> {$summary}";
+        }
     }
 }
 

@@ -1,0 +1,26 @@
+{
+    "schema_version": "1.2.1",
+    "result": {
+        "name": "vue",
+        "releases": [
+            {
+                "name": "3.5",
+                "isEol": false,
+                "eolFrom": null,
+                "eoasFrom": null
+            },
+            {
+                "name": "3.4",
+                "isEol": true,
+                "eolFrom": "2024-09-03",
+                "eoasFrom": "2024-09-03"
+            },
+            {
+                "name": "2.7",
+                "isEol": true,
+                "eolFrom": "2023-12-31",
+                "eoasFrom": "2023-12-31"
+            }
+        ]
+    }
+}

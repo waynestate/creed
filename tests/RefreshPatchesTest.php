@@ -41,7 +41,7 @@ final class RefreshPatchesTest extends TestCase
         }
         $this->tmpDirs[] = $tmp;
 
-        foreach (['php.json', 'laravel.json', 'node.json', 'endoflife-php.json'] as $name) {
+        foreach (['php.json', 'laravel.json', 'node.json', 'endoflife-php.json', 'endoflife-vue.json'] as $name) {
             copy(__DIR__ . '/fixtures/feeds/' . $name, $feedsDir . '/' . $name);
         }
         foreach ($feedOverrides as $name => $contents) {
@@ -188,6 +188,67 @@ final class RefreshPatchesTest extends TestCase
         );
         self::assertSame(1, $exit, 'a malformed feed must exit 1');
         self::assertStringContainsString('php.net feed', $stderr);
+    }
+
+    #[Test]
+    public function vueFeedProposesACurrentLine(): void
+    {
+        [$exit, , , $policyPath] = $this->runRefresh('refresh-policy-vue.json');
+        self::assertSame(3, $exit, 'a proposed Vue line is a change, so the script must exit 3');
+
+        $policy = $this->readPolicy($policyPath);
+
+        // The listed line is untouched...
+        self::assertSame('2023-12-31', $this->versionField($policy, 'vue', '2', 'active_until'));
+        self::assertSame('2023-12-31', $this->versionField($policy, 'vue', '2', 'security_until'));
+        // ...and the unlisted 3.x line is proposed as current.
+        $entry = $this->versionEntry($policy, 'vue', '3');
+        self::assertNotNull($entry, 'the 3.x line must be proposed');
+        $vars = get_object_vars($entry);
+        self::assertTrue($vars['current'] ?? false);
+        self::assertArrayNotHasKey('security_until', $vars);
+    }
+
+    #[Test]
+    public function vueFeedProposesEolDatesForAnUnlistedLine(): void
+    {
+        $feed = <<<'JSON'
+{
+    "schema_version": "1.2.1",
+    "result": {
+        "name": "vue",
+        "releases": [
+            {
+                "name": "3.5",
+                "isEol": true,
+                "eolFrom": "2027-09-03",
+                "eoasFrom": "2026-09-03"
+            }
+        ]
+    }
+}
+JSON;
+        [$exit, , , $policyPath] = $this->runRefresh(
+            'refresh-policy-vue.json',
+            ['endoflife-vue.json' => $feed],
+        );
+        self::assertSame(3, $exit);
+
+        $policy = $this->readPolicy($policyPath);
+        self::assertSame('2026-09-03', $this->versionField($policy, 'vue', '3', 'active_until'));
+        self::assertSame('2027-09-03', $this->versionField($policy, 'vue', '3', 'security_until'));
+    }
+
+    #[Test]
+    public function malformedVueFeedIsAWarningNotAFailure(): void
+    {
+        [$exit, $stdout, $stderr] = $this->runRefresh(
+            'refresh-policy-vue.json',
+            ['endoflife-vue.json' => "{ this is not valid json"],
+        );
+        self::assertSame(0, $exit, 'a missing or broken Vue feed must not fail the run');
+        self::assertStringContainsString('No changes.', $stdout);
+        self::assertStringContainsString('endoflife.date Vue feed', $stderr);
     }
 
     /**
