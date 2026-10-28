@@ -770,7 +770,8 @@ How the stack holds it: `Not yet`. Node 26 is in `policy.json` correctly; the ma
 endoflife.date serves JSON at `/api/v1/products/<product>/`. Each release has `releaseDate`, `isLts`, `eoasFrom`, `eolFrom`,
 `isMaintained` and a `latest` patch with its date. For PHP, `eoasFrom` and `eolFrom` equal php.net's two columns for 8.2 to
 8.5. For MySQL the labels object holds `eoas`, `discontinued`, `eol` and `eoes`; the exact strings were not re-read this
-pass. `policy.json` maps `eoas` to Premier and `eol` to Extended. The job should filter out lines the policy
+pass. For MySQL, the job should write `eoasFrom` (end of Premier support) to `active_until` and `eolFrom` (end of
+Extended support) to `security_until`; `policy.json` has no Premier or Extended labels of its own. The job should filter out lines the policy
 deliberately omits, and can also read `latest` to feed the patch floor in practice 37.
 
 Why: practice 8 says "compare with a feed" but not what to compare or what to ignore.
