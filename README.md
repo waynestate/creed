@@ -1,7 +1,18 @@
+<div align="center">
+  <a href="site/index.html"><img src="docs/readme/hero.jpg" width="100%" alt="CREED's front page: the title page of the Wayne State App Stack Code, 2026 edition, with clause §0.1 spelling out the name, and a green cloth-bound book stamped with CREED's keystone arch mark."></a>
+</div>
+
 # CREED
 
-[![CI](https://github.com/waynestate/creed/actions/workflows/ci.yml/badge.svg)](https://github.com/waynestate/creed/actions/workflows/ci.yml)
-[![GitHub Actions](https://github.com/waynestate/creed/actions/workflows/ci.yml/badge.svg)](https://github.com/waynestate/creed/actions/workflows/ci.yml)
+<div align="center">
+  <img src="docs/readme/badges/php.svg" alt="php ^8.3">
+  <img src="docs/readme/badges/license.svg" alt="licence MIT">
+  <img src="docs/readme/badges/policy.svg" alt="policy schema v1, 6 components">
+  <a href="https://github.com/waynestate/creed/actions/workflows/ci.yml"><img src="https://github.com/waynestate/creed/actions/workflows/ci.yml/badge.svg" alt="GitHub CI"></a>
+</div>
+
+**The standard everything rests on.** The Wayne State App Stack Code: one policy file, one reader, and an
+inspector who stamps what he finds.
 
 Checks: `composer ci` (the same command runs on GitLab and GitHub).
 
@@ -71,6 +82,15 @@ The support window stays open until `security_until`. A version is still
 `Security` on that day, moves to `Eol` the day after, and stays in `Eol` for
 `eol_grace_days` (90) more days before it is `EolGraceExpired`. The boundary
 is inclusive, and the reader never guesses.
+
+<div align="center"><img src="docs/readme/form-cr1.svg" width="100%" alt="Form CR-1 from the front page, filled in four times from policy.json and stamped: PHP 8.2 on 2026-10-28 is Security only, 64 days left; PHP 8.2 on 2027-01-01 is EOL, in grace until 2027-03-31; PHP 8.1 on 2026-10-28 is past grace; Laravel 13 on 2026-10-28 is Supported."></div>
+<div align="center"><sub>Form CR-1, as the front page fills it in: four real rows of <code>policy/policy.json</code>, the same answers <code>Policy::stateOf</code> gives, stamped.</sub></div>
+
+<details>
+<summary><b>Read the rest of the book</b>: the contents, Table 2-1 and the errata slip, as printed on a phone</summary>
+<br>
+<div align="center"><img src="docs/readme/gallery.jpg" width="100%" alt="Three pages of the front page on a phone: the table of contents (ten chapters, 54 practices), Table 2-1 with each PHP edition's dates and state, and the errata slip of open amendments."></div>
+</details>
 
 ### Versions CREED hasn't heard of
 
@@ -148,3 +168,30 @@ recommends a git.wayne.edu instance runner.
 
 Creed Bratton, whose quality assurance work we all admire. His past is a
 mystery. Ours is in `policy/policy.json`, where it belongs.
+
+<details>
+<summary><b>The brand board</b>: the keystone arch, the lockups, the cloth, the ink and the type</summary>
+<br>
+<div align="center"><img src="docs/readme/board.jpg" width="100%" alt="CREED's brand board: the stone arch mark with its gold keystone, lockups, the palette and the type."></div>
+</details>
+
+<div align="center"><b>Authorities having jurisdiction</b><br><sub>WayneUI and the stack. Every one of them reads its dates from here.</sub></div>
+
+<div align="center">
+  <a href="https://github.com/waynestate/wayne-ui" title="WayneUI"><img src="docs/readme/cast/wayneui.png" width="40" alt="WayneUI"></a>
+  <a href="https://github.com/waynestate/creed" title="CREED"><img src="docs/readme/cast/creed.png" width="40" alt="CREED"></a>
+  <a href="https://github.com/waynestate/proctor" title="PROCTOR"><img src="docs/readme/cast/proctor.png" width="40" alt="PROCTOR"></a>
+  <a href="https://github.com/waynestate/sesame" title="SESAME"><img src="docs/readme/cast/sesame.png" width="40" alt="SESAME"></a>
+  <a href="https://github.com/waynestate/helmet" title="HELMET"><img src="docs/readme/cast/helmet.png" width="40" alt="HELMET"></a>
+  <a href="https://github.com/waynestate/sourdough" title="Sourdough"><img src="docs/readme/cast/sourdough.png" width="40" alt="Sourdough"></a>
+  <a href="https://github.com/waynestate/squire" title="SQUIRE"><img src="docs/readme/cast/squire.png" width="40" alt="SQUIRE"></a>
+  <a href="https://github.com/waynestate/preflight" title="PREFLIGHT"><img src="docs/readme/cast/preflight.png" width="40" alt="PREFLIGHT"></a>
+  <a href="https://github.com/waynestate/pinstripe" title="Pinstripe"><img src="docs/readme/cast/pinstripe.png" width="40" alt="Pinstripe"></a>
+  <a href="https://github.com/waynestate/booster" title="BOOSTER"><img src="docs/readme/cast/booster.png" width="40" alt="BOOSTER"></a>
+  <a href="https://github.com/waynestate/rollcall" title="ROLLCALL"><img src="docs/readme/cast/rollcall.png" width="40" alt="ROLLCALL"></a>
+  <a href="https://github.com/waynestate/drawbridge" title="DRAWBRIDGE"><img src="docs/readme/cast/drawbridge.png" width="40" alt="DRAWBRIDGE"></a>
+  <a href="https://github.com/waynestate/advisor" title="ADVISOR"><img src="docs/readme/cast/advisor.png" width="40" alt="ADVISOR"></a>
+  <a href="https://github.com/waynestate/weld" title="WELD"><img src="docs/readme/cast/weld.png" width="40" alt="WELD"></a>
+</div>
+
+<div align="center"><sub>Images are regenerated from the front page and the policy by <a href="scripts/readme-art/README.md"><code>scripts/readme-art</code></a>. Inspected, stamped, and filed one version ahead.</sub></div>
