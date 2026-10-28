@@ -65,6 +65,13 @@ final class PolicySchemaTest extends TestCase
         self::assertSame([], $errors, 'A policy with a tools object must validate.');
     }
 
+    #[Test]
+    public function currentOnlyLineIsValid(): void
+    {
+        $errors = self::validateFile(__DIR__ . '/fixtures/current-only.json');
+        self::assertSame([], $errors, 'A version entry marked current must validate.');
+    }
+
     /**
      * @return array<string, array{0: string}>
      */
@@ -79,6 +86,8 @@ final class PolicySchemaTest extends TestCase
             'empty string inside images' => [__DIR__ . '/fixtures/images-empty-value.json'],
             'tool minimum not a full version' => [__DIR__ . '/fixtures/tools-bad-minimum.json'],
             'unknown key inside a tool' => [__DIR__ . '/fixtures/tools-unknown-key.json'],
+            'current line with security_until' => [__DIR__ . '/fixtures/current-with-security-until.json'],
+            'neither current nor security_until' => [__DIR__ . '/fixtures/no-security-until.json'],
         ];
     }
 

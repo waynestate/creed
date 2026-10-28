@@ -56,10 +56,11 @@ The reader's public members, one line each:
 - `stateOf($component, $version, $on)` — the state, or an exception; `tryStateOf()` is the same answer as `null` when it cannot be answered.
 - `oldestSupported($component, $on)` — the lowest version still Active or Security; `supported()` lists all of them, oldest first.
 - `latestPatch($component, $version)` — the current patch in that line; `latestPatchChecked()` says when it was last checked.
-- `line($component, $version)` — the raw line: `active_until`, `security_until`, `latest_patch`, `latest_patch_checked`, each a string or null.
+- `line($component, $version)` — the raw line: `active_until`, `security_until`, `latest_patch`, `latest_patch_checked` (each a string or null) and `current` (true or null).
 - `activeUntil()`, `securityUntil()` — those dates as `DateTimeImmutable`, or null.
 - `daysToEol($component, $version, $on)` — whole days until `security_until`, signed; `isPastGrace()` says whether the grace period is over.
 - `resolveVersion($component, $version)` — the policy line a full version like `8.3.12` belongs to.
+- `isAheadOfPolicy($component, $version)` — whether a version sorts above every line the policy lists.
 - `hasComponent()`, `components()`, `versions($component)`, `tools()`, `toolMinimum($tool)`, `rules()` — the shape of the policy itself.
 
 One last time: the reader answers, it does not guess.
@@ -70,6 +71,17 @@ The support window stays open until `security_until`. A version is still
 `Security` on that day, moves to `Eol` the day after, and stays in `Eol` for
 `eol_grace_days` (90) more days before it is `EolGraceExpired`. The boundary
 is inclusive, and the reader never guesses.
+
+### Versions CREED hasn't heard of
+
+The reader refuses what it does not know — except the newest thing. A version
+that sorts above every line the policy lists is `Active`, and
+`isAheadOfPolicy()` says so. A version that falls between listed lines is
+still unknown, and still throws. Current versions are never refused.
+
+A line marked `"current": true` is `Active` on every date and carries no
+`security_until`: the policy says the line is current, and the reader does not
+guess when it stops being so.
 
 ### Higher
 
@@ -84,8 +96,9 @@ The rules, chapter by chapter, live in [`handbook/`](handbook/README.md).
 
 ## Keeping the patches fresh
 
-`bin/refresh-patches.php` re-reads the upstream feeds and rewrites the
-`latest_patch` fields in `policy/policy.json`. A scheduled CI job runs it every
+`bin/refresh-patches.php` re-reads the upstream feeds, rewrites the
+`latest_patch` fields in `policy/policy.json`, and proposes new Vue lines from
+endoflife.date. A scheduled CI job runs it every
 Monday and fails the pipeline when the policy is stale; a person then runs the
 tool and commits the result. CI never pushes — it only raises its hand.
 

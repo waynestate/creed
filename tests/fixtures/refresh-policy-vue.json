@@ -1,0 +1,13 @@
+{
+    "schema_version": 1,
+    "components": {
+        "vue": {
+            "versions": {
+                "2": {
+                    "active_until": "2023-12-31",
+                    "security_until": "2023-12-31"
+                }
+            }
+        }
+    }
+}

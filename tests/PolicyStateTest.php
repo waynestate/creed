@@ -110,4 +110,105 @@ final class PolicyStateTest extends TestCase
     {
         self::assertNull(Policy::bundled()->toolMinimum('npm'));
     }
+
+    // --- current lines and versions ahead of the policy ---
+
+    #[Test]
+    public function currentLineIsActiveOnEveryDate(): void
+    {
+        $policy = Policy::bundled();
+        self::assertSame(State::Active, $policy->stateOf('vue', '3', new DateTimeImmutable('2026-10-27')));
+        self::assertSame(State::Active, $policy->stateOf('vue', '3', new DateTimeImmutable('2035-01-01')));
+    }
+
+    #[Test]
+    public function currentLineHasNoDates(): void
+    {
+        $policy = Policy::bundled();
+        self::assertNull($policy->activeUntil('vue', '3'));
+        self::assertNull($policy->securityUntil('vue', '3'));
+        self::assertNull($policy->daysToEol('vue', '3', new DateTimeImmutable('2026-10-27')));
+    }
+
+    #[Test]
+    public function currentLineIsSupported(): void
+    {
+        $policy = Policy::bundled();
+        self::assertSame(['3'], $policy->supported('vue', new DateTimeImmutable('2026-10-27')));
+    }
+
+    #[Test]
+    public function vuePatchResolvesToTheCurrentLine(): void
+    {
+        $policy = Policy::bundled();
+        self::assertSame('3', $policy->resolveVersion('vue', '3.5.22'));
+        self::assertSame(State::Active, $policy->stateOf('vue', '3.5.22', new DateTimeImmutable('2026-10-27')));
+    }
+
+    #[Test]
+    public function inertiaTwoIsActive(): void
+    {
+        $policy = Policy::bundled();
+        self::assertSame(State::Active, $policy->stateOf('inertia', '2', new DateTimeImmutable('2026-10-27')));
+        self::assertSame(State::Active, $policy->stateOf('inertia', '2.0.0', new DateTimeImmutable('2026-10-27')));
+    }
+
+    #[Test]
+    public function versionAheadOfPolicyIsActive(): void
+    {
+        $policy = Policy::bundled();
+        self::assertTrue($policy->isAheadOfPolicy('node', '28'));
+        self::assertSame(State::Active, $policy->stateOf('node', '28', new DateTimeImmutable('2026-10-27')));
+    }
+
+    #[Test]
+    public function isAheadOfPolicyIsFalseForListedAndGapVersions(): void
+    {
+        $policy = Policy::bundled();
+        self::assertFalse($policy->isAheadOfPolicy('php', '8.3'));
+        self::assertFalse($policy->isAheadOfPolicy('php', '8.3.12'));
+        self::assertFalse($policy->isAheadOfPolicy('php', '8.0'));
+        self::assertFalse($policy->isAheadOfPolicy('php', '7.4'));
+        self::assertTrue($policy->isAheadOfPolicy('php', '9.0'));
+    }
+
+    #[Test]
+    public function gapVersionBetweenLinesThrows(): void
+    {
+        $policy = Policy::fromArray([
+            'schema_version' => 1,
+            'components' => [
+                'php' => [
+                    'versions' => [
+                        '8.1' => ['security_until' => '2025-12-31'],
+                        '8.9' => ['security_until' => '2030-12-31'],
+                    ],
+                ],
+            ],
+            'rules' => ['eol_grace_days' => 90],
+        ]);
+        $this->expectException(InvalidArgumentException::class);
+        $policy->stateOf('php', '8.5', new DateTimeImmutable('2026-10-27'));
+    }
+
+    #[Test]
+    public function isAheadOfPolicyThrowsForAnUnknownComponent(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        Policy::bundled()->isAheadOfPolicy('cobol', '8.2');
+    }
+
+    #[Test]
+    public function unlistedVersionOfAComponentWithNoLinesIsActive(): void
+    {
+        $policy = Policy::fromArray([
+            'schema_version' => 1,
+            'components' => [
+                'inertia' => ['versions' => []],
+            ],
+            'rules' => ['eol_grace_days' => 90],
+        ]);
+        self::assertTrue($policy->isAheadOfPolicy('inertia', '2.1'));
+        self::assertSame(State::Active, $policy->stateOf('inertia', '2.1', new DateTimeImmutable('2026-10-27')));
+    }
 }

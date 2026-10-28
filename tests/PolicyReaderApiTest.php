@@ -50,6 +50,11 @@ final class PolicyReaderApiTest extends TestCase
                         '13' => ['active_until' => '2027-09-17', 'security_until' => '2028-03-17'],
                     ],
                 ],
+                'vue' => [
+                    'versions' => [
+                        '3' => ['current' => true],
+                    ],
+                ],
                 'empty' => ['versions' => []],
             ],
             'tools' => [
@@ -163,7 +168,7 @@ final class PolicyReaderApiTest extends TestCase
     #[Test]
     public function componentsListsEveryComponentInFileOrder(): void
     {
-        self::assertSame(['php', 'laravel', 'empty'], $this->testPolicy()->components());
+        self::assertSame(['php', 'laravel', 'vue', 'empty'], $this->testPolicy()->components());
     }
 
     #[Test]
@@ -195,7 +200,7 @@ final class PolicyReaderApiTest extends TestCase
     // --- line ---
 
     #[Test]
-    public function lineReturnsExactlyTheFourFields(): void
+    public function lineReturnsExactlyTheFiveFields(): void
     {
         $line = $this->testPolicy()->line('php', '8.2');
         self::assertSame([
@@ -203,6 +208,7 @@ final class PolicyReaderApiTest extends TestCase
             'security_until' => '2026-12-31',
             'latest_patch' => '8.2.35',
             'latest_patch_checked' => '2026-10-28',
+            'current' => null,
         ], $line);
     }
 
@@ -227,6 +233,20 @@ final class PolicyReaderApiTest extends TestCase
             'security_until' => '2025-12-31',
             'latest_patch' => null,
             'latest_patch_checked' => null,
+            'current' => null,
+        ], $line);
+    }
+
+    #[Test]
+    public function lineReportsCurrentLines(): void
+    {
+        $line = $this->testPolicy()->line('vue', '3');
+        self::assertSame([
+            'active_until' => null,
+            'security_until' => null,
+            'latest_patch' => null,
+            'latest_patch_checked' => null,
+            'current' => true,
         ], $line);
     }
 

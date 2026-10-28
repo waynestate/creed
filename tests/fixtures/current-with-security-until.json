@@ -1,0 +1,21 @@
+{
+    "schema_version": 1,
+    "components": {
+        "vue": {
+            "versions": {
+                "3": {
+                    "current": true,
+                    "security_until": "2030-12-31"
+                }
+            }
+        }
+    },
+    "rules": {
+        "audit_severity_threshold": "high",
+        "banned_constraints": [
+            "dev-*",
+            "*"
+        ],
+        "eol_grace_days": 90
+    }
+}
