@@ -26,11 +26,12 @@ final class PolicySchemaTest extends TestCase
         $validator = new Validator();
         $result = $validator->validate($data, $schema);
 
-        if ($result->isValid()) {
+        // isValid() is error() === null, so a null error means the file is valid.
+        $error = $result->error();
+        if ($error === null) {
             return [];
         }
 
-        $error = $result->error();
         $where = $error->data()->fullPath();
         $where = $where === [] ? '(root)' : implode('.', $where);
         return [$error->message() . ' at ' . $where];

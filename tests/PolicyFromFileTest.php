@@ -19,15 +19,15 @@ final class PolicyFromFileTest extends TestCase
         $policy = Policy::fromFile(__DIR__ . '/fixtures/good.json');
         self::assertSame(
             State::Security,
-            $policy->stateOf('php', '8.2', new DateTimeImmutable('2026-12-31'))
+            $policy->stateOf('php', '8.2', new DateTimeImmutable('2026-12-31')),
         );
         self::assertSame(
             State::EolGraceExpired,
-            $policy->stateOf('php', '8.2', new DateTimeImmutable('2027-04-01'))
+            $policy->stateOf('php', '8.2', new DateTimeImmutable('2027-04-01')),
         );
         self::assertSame(
             '8.3',
-            $policy->oldestSupported('php', new DateTimeImmutable('2027-01-01'))
+            $policy->oldestSupported('php', new DateTimeImmutable('2027-01-01')),
         );
     }
 
@@ -39,11 +39,11 @@ final class PolicyFromFileTest extends TestCase
         $policy = Policy::fromFile(__DIR__ . '/fixtures/with-images.json');
         self::assertSame(
             State::Security,
-            $policy->stateOf('php', '8.3', new DateTimeImmutable('2026-12-31'))
+            $policy->stateOf('php', '8.3', new DateTimeImmutable('2026-12-31')),
         );
         self::assertSame(
             '8.3',
-            $policy->oldestSupported('php', new DateTimeImmutable('2027-01-01'))
+            $policy->oldestSupported('php', new DateTimeImmutable('2027-01-01')),
         );
     }
 

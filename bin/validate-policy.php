@@ -24,12 +24,13 @@ $data = json_decode((string) file_get_contents($policyPath), false);
 $validator = new Validator();
 $result = $validator->validate($data, $schema);
 
-if ($result->isValid()) {
+// isValid() is error() === null, so a null error means the policy is valid.
+$error = $result->error();
+if ($error === null) {
     echo "policy/policy.json is valid.\n";
     exit(0);
 }
 
-$error = $result->error();
 $path = $error->data()->fullPath();
 $where = $path === [] ? '(root)' : implode('.', $path);
 echo $error->message() . ' at ' . $where . "\n";
