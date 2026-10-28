@@ -17,7 +17,7 @@ anywhere (Citadel, any web server, or `python -m http.server` inside `site/` for
   Appendix A, the quick start per OS. Clause §c.n maps to practice numbers: §2.1 is practice 11.
 - magic: the inspection stamp. Pick a runtime, a version and a day on Form CR-1, and the inspector's rubber stamp
   thunks onto the certificate with the state `Policy::stateOf` would return (SUPPORTED, SECURITY ONLY, EOL in grace,
-  EOL grace expired, or REFUSED for a version the policy does not list, because the reader does not guess). The
+  EOL grace expired, or REFUSED for an unlisted version that is not newer than every line, because the reader does not guess; current versions are never refused). The
   certificate shows the real reader call and its return value, the clause that applies is highlighted in the book,
   the row lights up in Table 2-1, and earlier stamps stay behind as faint impressions. The result is live-region
   text. The first time the form comes into view, the stamp comes down on the filled-in certificate.

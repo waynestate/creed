@@ -85,7 +85,8 @@
   /* A copy of the dates in policy/policy.json (2026-10-28), for this page
      only. The policy file is the source; real tools read it through
      Waynestate\Creed\Policy, never through a copy like this one. We know.
-     [active_until, security_until]. The rules mirror src/Policy.php. */
+     [active_until, security_until], or "current" for a line the policy
+     marks "current": true. The rules mirror src/Policy.php. */
   var POLICY = {
     eol_grace_days: 90,
     components: {
@@ -93,8 +94,8 @@
       laravel: { "10": ["2024-08-06", "2025-02-04"], "11": ["2025-09-03", "2026-03-12"], "12": ["2026-08-13", "2027-02-24"], "13": ["2027-09-17", "2028-03-17"] },
       node: { "20": ["2024-10-22", "2026-04-30"], "22": ["2025-10-21", "2027-04-30"], "24": ["2026-10-20", "2028-04-30"], "26": ["2027-10-20", "2029-04-30"] },
       mysql: { "5.6": ["2018-02-28", "2021-02-28"], "5.7": ["2020-10-31", "2023-10-31"], "8.0": ["2025-04-30", "2026-04-30"], "8.4": ["2029-04-30", "2032-04-30"], "9.7": ["2031-04-30", "2034-04-30"] },
-      vue: { "2": ["2023-12-31", "2023-12-31"] },
-      inertia: {}
+      vue: { "2": ["2023-12-31", "2023-12-31"], "3": "current" },
+      inertia: { "2": "current" }
     }
   };
   var NAMES = { php: "PHP", laravel: "Laravel", node: "Node", mysql: "MySQL", vue: "Vue", inertia: "Inertia" };
@@ -117,12 +118,38 @@
   function versionsOf(c) { return Object.keys(POLICY.components[c] || {}).sort(cmpVersion); }
   function graceEnd(c, v) { return addDays(POLICY.components[c][v][1], POLICY.eol_grace_days); }
 
-  // Same order and same refusals as Policy::stateOf.
+  // The policy line a version belongs to, or null. Mirrors Policy::resolveVersion.
+  function resolveVersion(component, version) {
+    var best = null;
+    Object.keys(POLICY.components[component] || {}).forEach(function (l) {
+      if (version !== l && version.indexOf(l + ".") !== 0) return;
+      if (best === null || l.length > best.length) best = l;
+    });
+    return best;
+  }
+  // Whether a version sorts above every listed line. Mirrors Policy::isAheadOfPolicy.
+  function isAheadOfPolicy(component, version) {
+    var versions = POLICY.components[component];
+    if (!versions) throw new Error("Unknown component: " + component);
+    if (resolveVersion(component, version) !== null) return false;
+    return Object.keys(versions).every(function (l) {
+      var prefix = version.split(".").slice(0, l.split(".").length).join(".");
+      return cmpVersion(prefix, l) > 0;
+    });
+  }
+
+  // Same order and same refusals as Policy::stateOf. Current versions are
+  // never refused: a current line, or a version newer than every line, is Active.
   function stateOf(component, version, day) {
     var versions = POLICY.components[component];
     if (!versions) throw new Error("Unknown component: " + component);
-    if (!Object.prototype.hasOwnProperty.call(versions, version)) throw new Error("Unknown version of " + component + ": " + version);
-    var activeUntil = versions[version][0], securityUntil = versions[version][1];
+    var line = resolveVersion(component, version);
+    if (line === null) {
+      if (isAheadOfPolicy(component, version)) return "active";
+      throw new Error("Unknown version of " + component + ": " + version);
+    }
+    if (versions[line] === "current") return "active";
+    var activeUntil = versions[line][0], securityUntil = versions[line][1];
     if (!securityUntil) throw new Error("Version " + version + " of " + component + " has no security_until, and this reader does not guess.");
     if (activeUntil !== null && day <= activeUntil) return "active";
     if (day <= securityUntil) return "security";
@@ -157,10 +184,11 @@
       serial: $("[data-cert-serial]"), top: $("[data-ink-top]"), word: $("[data-ink-word]"), sub: $("[data-ink-sub]")
     };
     var serial = 1;
-    var DEFAULTS = { php: "8.2", laravel: "12", node: "24", mysql: "8.0", vue: "2", inertia: "3" };
-    // Versions people will ask about that the policy does not list. The
-    // reader refuses them, and so does the inspector.
-    var UNLISTED = { vue: ["3"], inertia: ["2", "3"] };
+    var DEFAULTS = { php: "8.2", laravel: "12", node: "24", mysql: "8.0", vue: "3", inertia: "2" };
+    // Versions people will ask about that the policy does not list. One older
+    // than every line, which the reader refuses, and some newer than every
+    // line, which it calls Active: current versions are never refused.
+    var UNLISTED = { php: [["8.0", "not in the policy"]], vue: [["4", "newer than the policy"]], inertia: [["3", "newer than the policy"]] };
 
     function component() { return $("input[name=component]:checked", form).value; }
 
@@ -168,13 +196,14 @@
       var listed = versionsOf(c);
       var html = "";
       listed.forEach(function (v) { html += "<option value=\"" + v + "\">" + v + "</option>"; });
-      (UNLISTED[c] || []).forEach(function (v) { html += "<option value=\"" + v + "\">" + v + " (not in the policy)</option>"; });
+      (UNLISTED[c] || []).forEach(function (u) { html += "<option value=\"" + u[0] + "\">" + u[0] + " (" + u[1] + ")</option>"; });
       verSel.innerHTML = html;
       verSel.value = DEFAULTS[c];
     }
 
-    function clauseFor(c, state) {
-      if (state === "refused") return "c-1-4";
+    function clauseFor(c, v, state) {
+      if (state === "refused" || resolveVersion(c, v) === null) return "c-1-4";
+      if (c === "inertia") return "c-1-9";
       if (c === "vue") return "c-1-9";
       if (state === "eol") return "c-5-1";
       if (state === "eol_grace_expired") return "c-1-5";
@@ -184,9 +213,16 @@
     function findingFor(c, v, day, state, err) {
       var name = NAMES[c];
       if (state === "refused") {
-        return (UNLISTED[c] ? name + " " + v + " publishes no end dates, so the policy does not list it. " : "") + "The reader refuses to guess, and so does the inspector.";
+        return name + " " + v + " is not in the policy, and it is not newer than every line the policy lists. The reader refuses to guess, and so does the inspector.";
       }
-      var e = POLICY.components[c][v];
+      var line = resolveVersion(c, v);
+      if (line === null) {
+        return name + " " + v + " is newer than every line the policy lists, so it is Active. Current versions are never refused. Passes.";
+      }
+      var e = POLICY.components[c][line];
+      if (e === "current") {
+        return "A current line: Active on every date. " + name + " publishes no end date, and the policy does not invent one. Passes.";
+      }
       var later = versionsOf(c).filter(function (x) { return cmpVersion(x, v) > 0 && stateOf(c, x, day) === "active"; });
       var floor = oldestSupported(c, day);
       if (state === "active") {
@@ -238,7 +274,7 @@
         state = "refused";
         returns = "InvalidArgumentException: " + err.message;
       }
-      var clauseId = clauseFor(c, state);
+      var clauseId = clauseFor(c, v, state);
       var clauseEl = document.getElementById(clauseId);
       var title = clauseEl ? $(".clause__title", clauseEl).textContent.trim().replace(/\.$/, "") : "";
       var sec = title.split(" ")[0];
