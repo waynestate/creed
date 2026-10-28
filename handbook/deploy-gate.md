@@ -19,7 +19,7 @@ released, and refuses EOL PHP (ADR-0006).
 - Citadel runs the gate in its release hook: `proctor gate` in `runGitPull()`,
   against the fetched commit, before it is checked out (ADR-0006).
 - The gate is pending the Citadel team (D-005). Until it is adopted,
-  enforcement is CI on GitLab (ADR-0006).
+  enforcement is CI on the test GitLab instance (ADR-0006).
 
 ## Elsewhere
 
