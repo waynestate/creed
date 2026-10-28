@@ -99,10 +99,10 @@
         </div>
 
         <dl class="tally" aria-label="How the 54 practices are held today">
-          <div class="tally__item tally__item--enforced"><dt>Enforced</dt><dd>4</dd></div>
+          <div class="tally__item tally__item--enforced"><dt>Enforced</dt><dd>5</dd></div>
           <div class="tally__item tally__item--checked"><dt>Checked</dt><dd>7</dd></div>
           <div class="tally__item tally__item--documented"><dt>Documented</dt><dd>14</dd></div>
-          <div class="tally__item tally__item--notyet"><dt>Not yet</dt><dd>29</dd></div>
+          <div class="tally__item tally__item--notyet"><dt>Not yet</dt><dd>28</dd></div>
         </dl>
       </div>
 
@@ -142,7 +142,7 @@
       </header>
 
       <ol class="toc" data-reveal>
-        <li><a href="#ch-1"><span class="toc__no">1</span><span class="toc__name">The version policy as data</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§1.1–§1.10</span></a><span class="toc__bar" role="img" aria-label="4 enforced, 3 documented, 3 not yet"><i class="e" style="--n:4"></i><i class="d" style="--n:3"></i><i class="n" style="--n:3"></i></span></li>
+        <li><a href="#ch-1"><span class="toc__no">1</span><span class="toc__name">The version policy as data</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§1.1–§1.10</span></a><span class="toc__bar" role="img" aria-label="5 enforced, 3 documented, 2 not yet"><i class="e" style="--n:5"></i><i class="d" style="--n:3"></i><i class="n" style="--n:2"></i></span></li>
         <li><a href="#ch-2"><span class="toc__no">2</span><span class="toc__name">PHP and framework versions</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§2.1–§2.7</span></a><span class="toc__bar" role="img" aria-label="2 checked, 1 documented, 4 not yet"><i class="c" style="--n:2"></i><i class="d" style="--n:1"></i><i class="n" style="--n:4"></i></span></li>
         <li><a href="#ch-3"><span class="toc__no">3</span><span class="toc__name">Dependencies</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§3.1–§3.6</span></a><span class="toc__bar" role="img" aria-label="3 checked, 2 documented, 1 not yet"><i class="c" style="--n:3"></i><i class="d" style="--n:2"></i><i class="n" style="--n:1"></i></span></li>
         <li><a href="#ch-4"><span class="toc__no">4</span><span class="toc__name">Secrets and configuration</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§4.1–§4.3</span></a><span class="toc__bar" role="img" aria-label="3 not yet"><i class="n" style="--n:3"></i></span></li>
@@ -318,9 +318,9 @@
         <div class="clause__body">
           <h3 class="clause__title"><span class="clause__sec">§1.9</span> Model support honestly when a project publishes no dates.</h3>
           <p>Vue 3 and Inertia publish no fixed end dates. Do not invent them. The policy marks Vue 3 and Inertia 2 <code>"current": true</code>: Active on every date, with no <code>security_until</code>. Vue 2 keeps its real end, 2023-12-31.</p>
-          <p class="xref"><span class="xref__label">Open</span> The schema now refuses a current line that carries <code>security_until</code>, and a line that carries neither. The stamp waits for the re-rating in <a href="#errata">Erratum E-2</a>.</p>
+          <p class="xref"><span class="xref__label">Held by</span> the schema, which refuses a current line that carries <code>security_until</code> and a dated line without it; <code>PolicySchemaTest</code> covers both.</p>
         </div>
-        <span class="stamp stamp--notyet">Not yet</span>
+        <span class="stamp stamp--enforced">Enforced</span>
         <aside class="margin-note"><b>Rationale.</b> A made-up date is worse than an honest "no date".</aside>
       </div>
     </div>
@@ -658,7 +658,6 @@
             <thead><tr><th scope="col">No.</th><th scope="col">Clause</th><th scope="col">Erratum or amendment</th><th scope="col">Status</th></tr></thead>
             <tbody>
               <tr><th scope="row">E-1</th><td>Table 2-1</td><td>Laravel 13 <code>active_until</code> is 2027-09-17, but Laravel's page gives only "Q3 2027". Find the source and record it, or remove the date (§1.3, §1.6).</td><td><span class="open">Open</span></td></tr>
-              <tr><th scope="row">E-2</th><td>§1.9</td><td>Amendment: the schema now has <code>"current": true</code> for a line with no published end, and the policy lists Vue 3 and Inertia 2 that way. <code>BEST_PRACTICES.md</code> still rates the practice Not yet; re-rate it.</td><td><span class="open">Open</span></td></tr>
               <tr><th scope="row">E-4</th><td>§9.3</td><td>Strict or tolerant schema: can an older tool still read a newer policy that only added a field? A test with an old schema and reader decides.</td><td><span class="open">Open</span></td></tr>
               <tr><th scope="row">E-5</th><td>§9.1</td><td>Node 27 and later have no Maintenance phase on the new yearly schedule, so how <code>active_until</code> is derived needs a new rule.</td><td><span class="open">Open</span></td></tr>
               <tr><th scope="row">E-6</th><td>Ch. 10</td><td>The accessibility chapter: aim at WCAG 2.2 AA, after confirming which legal dates apply. To be decided.</td><td><span class="open">Open</span></td></tr>
