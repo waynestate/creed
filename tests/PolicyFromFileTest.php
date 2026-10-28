@@ -35,7 +35,8 @@ final class PolicyFromFileTest extends TestCase
     public function readerIgnoresImagesKey(): void
     {
         // The reader does not read images; an older reader must still read a
-        // policy file that carries the key (ADR-0003).
+        // policy file that carries the key, since the policy file is the
+        // source of supported versions and dates.
         $policy = Policy::fromFile(__DIR__ . '/fixtures/with-images.json');
         self::assertSame(
             State::Security,
