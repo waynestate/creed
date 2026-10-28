@@ -180,11 +180,13 @@ the schema will reject a file that only added a field. Only the reader is forgiv
 ### 11. Run non-EOL PHP only
 
 Apps declare and run a PHP version that php.net lists as supported. EOL PHP is not supported by the stack, with no
-exceptions. On 2026-10-27 that means 8.2 (security only, to 2026-12-31), 8.3, 8.4 and 8.5.
+exceptions. On 2026-10-27 that means 8.2 (security only, to 2026-12-31), 8.3, 8.4 and 8.5. PHP 8.6 ships 2026-11-19 and
+will be added when php.net lists its dates.
 
 Why: an EOL branch receives no security fixes.
 
 Sources: [PHP supported versions](https://www.php.net/supported-versions.php), [PHP EOL table](https://www.php.net/eol.php),
+[PHP 8.6 release page](https://wiki.php.net/todo/php86),
 [GOV.UK Publishing manual, keeping software current](https://docs.publishing.service.gov.uk/manual/keeping-software-current.html),
 [OWASP ASVS](https://asvs.owasp.org/) (second pass: the ASVS home page gives version 5.0.0 but, as read, names no chapter
 on outdated components, so this is a general reference; the OWASP Top 10:2025 category A03, "Software Supply Chain
@@ -248,12 +250,14 @@ gate. A supported branch is not enough on its own: see practice 38 for the Octob
 
 ### 16. Use a Node release that is in LTS or maintenance
 
-Build front ends on a Node line that has not reached end of life. On 2026-10-27: 22 (to 2027-04-30), 24 (to
-2028-04-30) and 26 (LTS from 2026-10-28, to 2029-04-30). Node 20 reached end of life on 2026-04-30.
+Build front ends on a Node line that has not reached end of life. On 2026-10-27: 22 (to 2027-04-30), 24 (in
+maintenance since 2026-10-20, to 2028-04-30) and 26 (LTS from 2026-10-28, to 2029-04-30). Node 20 reached end of
+life on 2026-04-30.
 
 Why: build tools run with your credentials and your source.
 
-Sources: [Node.js release schedule](https://github.com/nodejs/Release).
+Sources: [Node.js release schedule](https://github.com/nodejs/Release),
+[Node release schedule data](https://raw.githubusercontent.com/nodejs/Release/main/schedule.json).
 
 How the stack holds it: `Not yet`. The dates for 20, 22, 24 and 26 are in `policy.json` (second pass: 26 was added after
 the first pass, and its dates match the Node schedule). No check reads an app's Node version. Node 27 changes the
@@ -262,7 +266,7 @@ schedule shape: see practice 49.
 ### 17. Choose a supported MySQL, and say when the platform lags
 
 MySQL 8.4 LTS has Premier support to 2029-04-30 and Extended to 2032-04-30. MySQL 9.7 LTS is newer. MySQL 8.0 ended on
-2026-04-30. Versions 5.7 and 5.6 ended in 2023 and 2021.
+2026-04-30 and is past CREED's 90-day grace since 2026-07-29. Versions 5.7 and 5.6 ended in 2023 and 2021.
 
 Why: a database that no longer gets fixes holds everything above it back.
 
@@ -324,11 +328,14 @@ Choose `ignore`, `report` or `fail` for abandoned packages and write it down. Co
 Why: an abandoned package gets no fix when the next advisory lands.
 
 Sources: [Composer CLI reference, `audit`](https://getcomposer.org/doc/03-cli.md),
-[Composer config reference](https://getcomposer.org/doc/06-config.md#audit).
+[Composer config reference](https://getcomposer.org/doc/06-config.md#audit),
+[Composer releases](https://github.com/composer/composer/releases).
 
 Second pass: you may already have a choice without writing one. The current config page gives `audit.abandoned` a default
 of `fail` (since Composer 2.7; it was `report` in 2.6), and says the whole `audit` section is deprecated in favour of
-`config.policy`, where blocking abandoned packages (`block`) is off by default. The same page says the legacy keys keep
+`config.policy`, where blocking abandoned packages (`block`) is off by default. Composer 2.10 added `config.policy`
+(2.10.0 on 2026-05-28), with advisory, abandoned and malware blocks; the latest stable is 2.10.3. The same page says the
+legacy keys keep
 working only while the matching `policy` section is absent. So the stack should write down which Composer version its CI
 uses, and which of the two config styles it follows.
 
@@ -593,7 +600,8 @@ stolen tokens to publish new tags. Packagist responded with malware warnings imp
 public transparency log, and tag immutability for stable versions. It also warns that `composer update` refreshes lock
 entries, so a lock file alone does not protect against a re-tagged version. A cooldown policy (`policy.cooldown.period`,
 for example `"7 days"`) is documented on Composer's config page; the releases page lists it in 2.11.0-RC1, a pre-release,
-while 2.10.3 is the stable release shown. On the front-end side, the Shai-Hulud worm (GitHub was notified on 2025-09-14)
+while 2.10.3 is the stable release shown. Dependabot's cooldown supports Composer and defaults to 3 days, so it is a
+usable control now. On the front-end side, the Shai-Hulud worm (GitHub was notified on 2025-09-14)
 spread through post-install scripts, and GitHub removed more than 500 compromised packages.
 
 Why: Packagist says malicious versions are often caught within hours, so a short delay can remove the window. It does not
@@ -602,6 +610,7 @@ remove it every time: one report this pass read says hijacked npm packages in a 
 Sources: [Packagist supply chain security update](https://blog.packagist.com/an-update-on-composer-packagist-supply-chain-security),
 [Composer config, `policy`](https://getcomposer.org/doc/06-config.md#policy),
 [Composer releases](https://github.com/composer/composer/releases),
+[Dependabot options reference](https://docs.github.com/en/code-security/dependabot/working-with-dependabot/dependabot-options-reference),
 [GitHub: plan for a more secure npm supply chain](https://github.blog/security/supply-chain-security/our-plan-for-a-more-secure-npm-supply-chain/),
 [OWASP Top 10:2025](https://top10.owasp.org/2025) (A03, Software Supply Chain Failures).
 
@@ -626,13 +635,16 @@ How the stack holds it: `Not yet`. PREFLIGHT has `proctor`, `php-test` and `comp
 
 ### 42. Gate on tools that work on every GitLab tier
 
-GitLab's docs list dependency scanning and secret push protection as Ultimate. Pipeline secret detection is listed for
+GitLab's docs list dependency scanning and secret push protection as Ultimate. GitLab's security policies (scan execution,
+merge request approval, pipeline execution, vulnerability management, dependency firewall) are Ultimate-only, so CREED does
+not depend on them. Pipeline secret detection is listed for
 Free, Premium and Ultimate, but its findings in merge request reports and the vulnerability report are Ultimate only. GitLab
 accessibility testing (Pa11y) is listed for Free, Premium and Ultimate. The tier of git.wayne.edu was not checked.
 
 Why: a gate that needs a licence the instance may not have is a gate that never runs.
 
 Sources: [GitLab dependency scanning](https://docs.gitlab.com/user/application_security/dependency_scanning/),
+[GitLab security policies](https://docs.gitlab.com/user/application_security/policies/),
 [GitLab secret detection](https://docs.gitlab.com/user/application_security/secret_detection/),
 [pipeline secret detection](https://docs.gitlab.com/user/application_security/secret_detection/pipeline/),
 [secret push protection](https://docs.gitlab.com/user/application_security/secret_detection/secret_push_protection/).
@@ -757,9 +769,9 @@ How the stack holds it: `Not yet`. Node 26 is in `policy.json` correctly; the ma
 
 endoflife.date serves JSON at `/api/v1/products/<product>/`. Each release has `releaseDate`, `isLts`, `eoasFrom`, `eolFrom`,
 `isMaintained` and a `latest` patch with its date. For PHP, `eoasFrom` and `eolFrom` equal php.net's two columns for 8.2 to
-8.5. For MySQL the labels are `eoas` = "Premier Support" and `eol` = "Extended Support", which is the mapping
-`policy.json` already uses. The job should filter out lines the policy deliberately omits, and can also read `latest`
-to feed the patch floor in practice 37.
+8.5. For MySQL the labels object holds `eoas`, `discontinued`, `eol` and `eoes`; the exact strings were not re-read this
+pass. `policy.json` maps `eoas` to Premier and `eol` to Extended. The job should filter out lines the policy
+deliberately omits, and can also read `latest` to feed the patch floor in practice 37.
 
 Why: practice 8 says "compare with a feed" but not what to compare or what to ignore.
 
@@ -828,6 +840,7 @@ These are places where a source disagrees with the repository or with an earlier
   now.** Second pass: all three entries match the vendor pages. Laravel 13: released 2026-03-17, security fixes to
   2028-03-17 (the page still shows bug fixes as "Q3 2027", and the policy holds 2027-09-17, which the page does not
   state; see the open item below). Node 26: LTS from 2026-10-28, maintenance from 2027-10-20, end of life 2029-04-30.
+  endoflife.date shows 2027-10-27 for the same field ([endoflife.date Node API](https://endoflife.date/api/v1/products/nodejs/)).
   MySQL 9.7: Premier to 2031-04-30 and Extended to 2034-04-30 on endoflife.date. ADR-0003 says "Q1 2028" for Laravel 13;
   the page gives the day.
 - **Open item: Laravel 13 `active_until` is 2027-09-17 in `policy.json`.** The Laravel release page gives "Q3 2027" for
