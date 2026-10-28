@@ -4,22 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>CREED — The standard everything rests on.</title>
-<meta name="description" content="CREED is the Wayne State app stack's written standards: a handbook, plus one machine-readable policy file that every other tool reads. Version support dates for PHP, Laravel, Node and MySQL, and the rules every check runs against.">
+<meta name="description" content="CREED is the Wayne State app stack's code book: a handbook of numbered practices, plus policy.json, one file of support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader every other tool asks: what state is this version in, on this date?">
 <meta name="theme-color" content="#0c5449">
 <link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
 <!--
   WayneUI 2.0.8, copied from its documented static path
   (wayne-ui/apps/site/public/v2, via WELD's site) so this page works offline.
-  Tokens, container, buttons, skip link and focus ring come from there; the
-  record sleeve is CREED's own, in creed.css.
+  Tokens, container, skip link, focus ring and Lato come from there. The code
+  book (paper, chapters, clauses, stamps) is CREED's own, in creed.css.
 -->
 <link rel="stylesheet" href="assets/wayne-ui/wayne-ui.css">
 <link rel="stylesheet" href="assets/creed.css">
 <script>
-  /* Spin the record only for people who are happy with motion. Everyone else
-     gets the record already out of its sleeve, every word printed, nothing
-     turning. Same album, no needle noise. */
+  /* Only people who are happy with motion get the press and the thunk.
+     Everyone else gets the book already printed and every stamp already
+     inked. The inspector still signs off; he just doesn't slam the desk. */
   if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
     document.documentElement.classList.add("motion");
   }
@@ -27,439 +27,763 @@
 </head>
 <body>
 <a class="wsu-skip-link" href="#main">Skip to content</a>
+<div class="binding" aria-hidden="true"></div>
 
-<header class="topbar">
-  <div class="wsu-container topbar__inner">
-    <a class="topbar__brand" href="#main">
-      <img src="brand/creed-avatar-256.png" width="32" height="32" alt="">
+<header class="runhead">
+  <div class="wsu-container runhead__inner">
+    <a class="runhead__brand" href="#main">
+      <img src="brand/creed-avatar-256.png" width="28" height="28" alt="">
       <span>CREED</span>
     </a>
-    <nav class="topbar__nav" aria-label="On this page">
-      <a href="#tracklist">Tracklist</a>
-      <a href="#liner-notes">Liner notes</a>
-      <a href="#credits">Credits</a>
-      <a href="#quick-start">Quick start</a>
+    <span class="runhead__edition" aria-hidden="true">Wayne State App Stack Code · 2026 Edition</span>
+    <nav class="runhead__nav" aria-label="On this page">
+      <a href="#contents">Contents</a>
+      <a href="#inspection">Inspect</a>
+      <a href="#errata">Errata</a>
+      <a href="#appendix-a">Adopt</a>
     </nav>
-    <span class="topbar__cat" aria-hidden="true">WSU-001 · 33⅓</span>
   </div>
 </header>
 
+<!-- Thumb index: printed chapter tabs on the fore-edge, the way a code book
+     lets an inspector open straight to Chapter 2. Wide screens only; the
+     same links are in the contents. -->
+<nav class="thumbs" aria-label="Chapter tabs">
+  <a href="#ch-1" data-thumb="ch-1"><span>1</span><em>Policy as data</em></a>
+  <a href="#ch-2" data-thumb="ch-2"><span>2</span><em>Versions</em></a>
+  <a href="#ch-3" data-thumb="ch-3"><span>3</span><em>Dependencies</em></a>
+  <a href="#ch-4" data-thumb="ch-4"><span>4</span><em>Secrets</em></a>
+  <a href="#ch-5" data-thumb="ch-5"><span>5</span><em>Overrides</em></a>
+  <a href="#ch-6" data-thumb="ch-6"><span>6</span><em>The handbook</em></a>
+  <a href="#ch-7" data-thumb="ch-7"><span>7</span><em>Patching</em></a>
+  <a href="#errata" data-thumb="errata"><span>E</span><em>Errata</em></a>
+  <a href="#appendix-a" data-thumb="appendix-a"><span>A</span><em>Adopt</em></a>
+</nav>
+
 <main id="main">
 
-  <!-- ============================================================ cover -->
-  <section class="cover" aria-labelledby="cover-title">
-    <div class="wsu-container cover__grid">
+  <!-- ======================================================= title page -->
+  <section class="title-page" aria-labelledby="title">
+    <div class="wsu-container title-page__grid">
 
-      <div class="cover__art" data-cover>
-        <!-- The record sits behind the sleeve and slides out on load. Its label
-             carries the mark as provided, unchanged, on a gold paper label. -->
-        <div class="disc disc--hero" aria-hidden="true">
-          <div class="disc__spin">
-            <div class="disc__label">
-              <svg class="disc__ring-text" viewBox="0 0 200 200">
-                <defs><path id="hero-ring" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
-                <text><textPath href="#hero-ring">CREED · HUMAN READABLE · SIDE A · 33⅓ RPM · WSU-001 ·</textPath></text>
-              </svg>
-              <img class="disc__mark" src="brand/creed-avatar-256.png" width="256" height="256" alt="">
-            </div>
-          </div>
-          <div class="disc__sheen"></div>
+      <div class="title-page__text">
+        <p class="edition"><span>Wayne State App Stack</span><span aria-hidden="true">·</span><span>2026 Edition</span><span aria-hidden="true">·</span><span>Adopted 2026-10-28</span></p>
+        <h1 id="title" class="title">
+          <span class="title__name">CREED</span>
+          <span class="title__sub">The Wayne State App Stack Code</span>
+        </h1>
+
+        <div class="clause clause--title" aria-labelledby="short-title">
+          <p class="clause__no" id="short-title"><span>§0.1</span> Short title</p>
+          <p class="short-title__lead">This code shall be known as CREED, which stands for</p>
+          <p class="acronym" aria-label="C and IT Rules for Every Enterprise Developer">
+            <span class="acronym__word">C&amp;IT</span>
+            <span class="acronym__word">Rules</span>
+            <span class="acronym__word">for</span>
+            <span class="acronym__word">Every</span>
+            <span class="acronym__word">Enterprise</span>
+            <span class="acronym__word">Developer</span>
+          </p>
+          <p class="short-title__tail">and may be cited as <em>the standard everything rests on</em>.</p>
         </div>
 
-        <figure class="sleeve">
-          <div class="sleeve__face">
-            <p class="sleeve__band" aria-hidden="true">CREED</p>
-            <img class="sleeve__mark" src="brand/creed-avatar-1024.png" width="1024" height="1024" alt="CREED mark: a stone arch whose gold keystone holds the other stones in place">
-            <p class="sleeve__album" aria-hidden="true">Human Readable</p>
-            <p class="sleeve__advisory" aria-hidden="true"><span>Standards advisory</span><span>Explicit versions</span></p>
-            <span class="sleeve__ring" aria-hidden="true"></span>
-            <span class="sleeve__glare" aria-hidden="true"></span>
-          </div>
-          <figcaption class="wsu-sr-only">The album cover: the CREED mark on green, with the album title Human Readable.</figcaption>
-        </figure>
+        <p class="lede">The written development standards for Wayne State's app stack: a handbook of numbered practices, plus <code>policy.json</code>, one file of support dates for PHP, Laravel, Node, MySQL, Vue and Inertia. A small PHP reader answers the one question every other tool asks: <em>what state is this version in, on this date?</em></p>
 
-        <p class="hype" aria-hidden="true">
-          <span class="hype__small">Includes the hit single</span>
-          <span class="hype__big">“Run non-EOL PHP only”</span>
-          <span class="hype__small">54 practices · 1 file</span>
-        </p>
+        <div class="title-page__actions">
+          <a class="btn btn--ink" href="#inspection">Inspect a version</a>
+          <a class="btn btn--rule" href="#contents">Read the code</a>
+        </div>
+
+        <dl class="tally" aria-label="How the 54 practices are held today">
+          <div class="tally__item tally__item--enforced"><dt>Enforced</dt><dd>4</dd></div>
+          <div class="tally__item tally__item--checked"><dt>Checked</dt><dd>7</dd></div>
+          <div class="tally__item tally__item--documented"><dt>Documented</dt><dd>14</dd></div>
+          <div class="tally__item tally__item--notyet"><dt>Not yet</dt><dd>29</dd></div>
+        </dl>
       </div>
 
-      <div class="cover__copy">
-        <p class="kicker">WSU-001 · the standards LP · stereo</p>
-        <h1 class="cover__title" id="cover-title">CREED</h1>
-        <!-- The acronym as a designed moment: every word the same weight and
-             colour. Screen readers get one sentence; the animated copy, split
-             so each word can drop in like a needle, is hidden from them. -->
-        <p class="acro">
-          <span class="wsu-sr-only">CREED stands for C&amp;IT Rules for Every Enterprise Developer.</span>
-          <span class="acro__line" aria-hidden="true"><span class="acro__word" style="--i:0">C&amp;IT</span> <span class="acro__word" style="--i:1">Rules</span> <span class="acro__word" style="--i:2">for</span> <span class="acro__word" style="--i:3">Every</span> <span class="acro__word" style="--i:4">Enterprise</span> <span class="acro__word" style="--i:5">Developer.</span></span>
-        </p>
-        <p class="cover__tagline">The standard everything rests on.</p>
-        <p class="cover__blurb">The Wayne State app stack's written standards: a handbook, plus <code>policy.json</code>, one file of support dates for PHP, Laravel, Node, MySQL, Vue and Inertia and the rules every check runs against. A small PHP reader answers the one question every tool asks: <em>what state is this version in, on this date?</em></p>
-
-        <div class="cmd">
-          <code class="cmd__code" id="hero-cmd"><span class="cmd__dim">$</span> composer require waynestate/creed</code>
-          <button class="cmd__copy" type="button" data-copy="composer require waynestate/creed">Copy</button>
+      <!-- The book: green cloth, the mark set in as a blind-stamped plate,
+           foil title, page block and printed chapter tabs on the fore-edge. -->
+      <div class="book" aria-hidden="true">
+        <div class="book__pages">
+          <span class="book__tab" style="--t:0">1</span>
+          <span class="book__tab" style="--t:1">2</span>
+          <span class="book__tab" style="--t:2">3</span>
+          <span class="book__tab" style="--t:3">4</span>
+          <span class="book__tab" style="--t:4">5</span>
+          <span class="book__tab" style="--t:5">6</span>
+          <span class="book__tab" style="--t:6">7</span>
         </div>
-
-        <p class="cover__cta">
-          <a class="wsu-btn wsu-btn--accent wsu-btn--lg needle-btn" href="#tracklist" data-drop-needle>
-            <span class="needle-btn__icon" aria-hidden="true"></span>Drop the needle
-          </a>
-          <a class="cover__link" href="#liner-notes">Read the liner notes</a>
-        </p>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ========================================================= tracklist -->
-  <section class="tracklist" id="tracklist" aria-labelledby="tracklist-title">
-    <div class="wsu-container">
-      <header class="sec-head" data-reveal>
-        <p class="kicker kicker--ochre">Side A · Side B · one hidden track</p>
-        <h2 id="tracklist-title">The tracklist</h2>
-        <p>Each standard is a track. Drop the needle to play them in order, or pick one and the arm finds the groove. Played at 78&nbsp;rpm, so it takes a minute, not forty-seven.</p>
-      </header>
-
-      <div class="tracklist__grid">
-
-        <!-- The deck. The tonearm is a small drawing, not the mark. -->
-        <div class="deck" data-deck>
-          <div class="deck__plinth">
-            <div class="deck__platter">
-              <div class="disc disc--deck">
-                <div class="disc__spin">
-                  <div class="disc__label">
-                    <svg class="disc__ring-text" viewBox="0 0 200 200" aria-hidden="true">
-                      <defs><path id="deck-ring" d="M100,100 m-78,0 a78,78 0 1,1 156,0 a78,78 0 1,1 -156,0"/></defs>
-                      <text><textPath href="#deck-ring" data-side-text>SIDE A · THE POLICY · CREED · WSU-001 · 33⅓ ·</textPath></text>
-                    </svg>
-                    <img class="disc__mark" src="brand/creed-avatar-256.png" width="256" height="256" alt="">
-                  </div>
-                </div>
-                <div class="disc__sheen" aria-hidden="true"></div>
-              </div>
-            </div>
-            <svg class="tonearm" viewBox="0 0 400 400" aria-hidden="true">
-              <rect class="tonearm__rest" x="361" y="306" width="18" height="34" rx="5"/>
-              <circle class="tonearm__base" cx="370" cy="40" r="26"/>
-              <g class="tonearm__arm">
-                <rect class="tonearm__weight" x="358" y="-4" width="24" height="22" rx="4"/>
-                <line class="tonearm__tube" x1="370" y1="16" x2="370" y2="300"/>
-                <path class="tonearm__head" d="M362 296 h16 l-2 40 h-12 z"/>
-                <line class="tonearm__stylus" x1="370" y1="336" x2="370" y2="342"/>
-                <circle class="tonearm__pivot" cx="370" cy="40" r="10"/>
-              </g>
-            </svg>
-            <span class="deck__led" aria-hidden="true"></span>
-            <span class="deck__speed" aria-hidden="true">33 · 45 · <b>78</b></span>
-          </div>
-
-          <div class="nowplaying">
-            <p class="nowplaying__label">Now playing</p>
-            <p class="nowplaying__title" data-np-title>Nothing yet. The needle is up.</p>
-            <p class="nowplaying__why" data-np-why>Press play, or pick a track.</p>
-            <div class="nowplaying__bar" aria-hidden="true"><span data-np-bar></span></div>
-            <div class="nowplaying__row">
-              <button class="play-btn" type="button" data-play aria-pressed="false">
-                <span class="play-btn__icon" aria-hidden="true"></span>
-                <span data-play-label>Drop the needle</span>
-              </button>
-              <span class="nowplaying__time" data-np-time aria-hidden="true">0:00</span>
-            </div>
-            <p class="wsu-sr-only" aria-live="polite" data-np-live></p>
-          </div>
+        <div class="book__cover">
+          <span class="book__rule book__rule--top"></span>
+          <span class="book__plate"><img src="brand/creed-avatar-512.png" width="512" height="512" alt=""></span>
+          <span class="book__foil book__foil--name">CREED</span>
+          <span class="book__foil book__foil--sub">Wayne State App Stack Code</span>
+          <span class="book__foil book__foil--ed">2026 Edition</span>
+          <span class="book__rule book__rule--bottom"></span>
         </div>
-
-        <div class="sides">
-          <div class="side" data-reveal>
-            <h3 class="side__title"><span class="side__letter">A</span> The policy <span class="side__total">23:57</span></h3>
-            <ol class="tracks">
-              <li><button class="track" type="button" data-track data-time="3:41" aria-expanded="false" aria-controls="t-a1">
-                <span class="track__no">A1</span><span class="track__name">Keep one policy, and let one reader decide state</span><span class="tag tag--documented">Documented</span><span class="track__time">3:41</span></button>
-                <div class="track__notes" id="t-a1" hidden><p>Every tool reads <code>policy.json</code> through the CREED reader. No other code decides whether a version is active, security-only or EOL.</p><p class="why">Why: two tools with two copies of a date will eventually disagree.</p></div></li>
-              <li><button class="track" type="button" data-track data-time="2:58" aria-expanded="false" aria-controls="t-a2">
-                <span class="track__no">A2</span><span class="track__name">Validate the policy against a schema in CI</span><span class="tag tag--enforced">Enforced</span><span class="track__time">2:58</span></button>
-                <div class="track__notes" id="t-a2" hidden><p>A bad date, a wrong type or an unknown key fails the build. <code>PolicySchemaTest</code> and <code>composer validate-policy</code> both check it.</p><p class="why">Why: a typo in a date silently changes what every tool reports.</p></div></li>
-              <li><button class="track" type="button" data-track data-time="2:10" aria-expanded="false" aria-controls="t-a3">
-                <span class="track__no">A3</span><span class="track__name">Write dates as ISO 8601 days, never prose</span><span class="tag tag--enforced">Enforced</span><span class="track__time">2:10</span></button>
-                <div class="track__notes" id="t-a3" hidden><p>Dates are <code>YYYY-MM-DD</code>. “Q3 2027” is not a date the schema will take.</p><p class="why">Why: tools compare dates as strings, and a vague date cannot be compared.</p></div></li>
-              <li><button class="track" type="button" data-track data-time="4:04" aria-expanded="false" aria-controls="t-a4">
-                <span class="track__no">A4</span><span class="track__name">Make the reader refuse to guess</span><span class="tag tag--enforced">Enforced</span><span class="track__time">4:04</span></button>
-                <div class="track__notes" id="t-a4" hidden><p>A version with no <code>security_until</code> is an error, not a silent pass. So is an unknown component or version. Track length: 4:04, not found.</p><p class="why">Why: a tool that guesses turns missing data into a green check.</p></div></li>
-              <li><button class="track" type="button" data-track data-time="5:30" aria-expanded="false" aria-controls="t-a5">
-                <span class="track__no">A5</span><span class="track__name">Compute state from the date, with an inclusive end and a stated grace period</span><span class="tag tag--enforced">Enforced</span><span class="track__time">5:30</span></button>
-                <div class="track__notes" id="t-a5" hidden><p>Still supported on its <code>security_until</code> day, EOL the next, and past grace after <code>eol_grace_days</code> (90).</p><p class="why">Why: everyone must get the same answer on the same day, including on the boundary.</p></div></li>
-              <li><button class="track" type="button" data-track data-time="3:12" aria-expanded="false" aria-controls="t-a6">
-                <span class="track__no">A6</span><span class="track__name">Raise the floor on the day the old version ends</span><span class="tag tag--documented">Documented</span><span class="track__time">3:12</span></button>
-                <div class="track__notes" id="t-a6" hidden><p>The apps' PHP floor moves from <code>^8.2</code> to <code>^8.3</code> on 2027-01-01.</p><p class="why">Why: it is the only way a dependency floor can force an upgrade.</p></div></li>
-              <li><button class="track" type="button" data-track data-time="2:22" aria-expanded="false" aria-controls="t-a7">
-                <span class="track__no">A7</span><span class="track__name">Judge with deterministic checks only</span><span class="tag tag--documented">Documented</span><span class="track__time">2:22</span></button>
-                <div class="track__notes" id="t-a7" hidden><p>No gate depends on a language model's opinion. A model may explain a failure; it does not decide pass or fail.</p><p class="why">Why: a gate must give the same answer twice.</p></div></li>
-            </ol>
-          </div>
-
-          <div class="side" data-reveal>
-            <h3 class="side__title"><span class="side__letter">B</span> Your app <span class="side__total">25:28</span></h3>
-            <ol class="tracks">
-              <li><button class="track" type="button" data-track data-time="3:52" aria-expanded="false" aria-controls="t-b1">
-                <span class="track__no">B1</span><span class="track__name">Run non-EOL PHP only</span><span class="tag tag--checked">Checked</span><span class="track__time">3:52</span></button>
-                <div class="track__notes" id="t-b1" hidden><p>Apps declare and run a PHP version that php.net lists as supported. The single, as promised on the sticker.</p><p class="why">Why: an EOL branch receives no security fixes.</p></div></li>
-              <li><button class="track" type="button" data-track data-time="4:12" aria-expanded="false" aria-controls="t-b2">
-                <span class="track__no">B2</span><span class="track__name">Treat security-only as a countdown, not a resting place</span><span class="tag tag--checked">Checked</span><span class="track__time">4:12</span></button>
-                <div class="track__notes" id="t-b2" hidden><p>Security-only warns now and fails the day after <code>security_until</code>. Plan the move before then.</p><p class="why">Why: moving on a deadline day is how upgrades go wrong.</p></div></li>
-              <li><button class="track" type="button" data-track data-time="2:47" aria-expanded="false" aria-controls="t-b3">
-                <span class="track__no">B3</span><span class="track__name">Commit the lock file</span><span class="tag tag--checked">Checked</span><span class="track__time">2:47</span></button>
-                <div class="track__notes" id="t-b3" hidden><p><code>composer.lock</code> lives in the app's repository, and CI runs <code>composer install</code>, so everyone gets the same versions.</p><p class="why">Why: without a lock, a build next week is a different build.</p></div></li>
-              <li><button class="track" type="button" data-track data-time="3:05" aria-expanded="false" aria-controls="t-b4">
-                <span class="track__no">B4</span><span class="track__name">Ban open-ended constraints</span><span class="tag tag--checked">Checked</span><span class="track__time">3:05</span></button>
-                <div class="track__notes" id="t-b4" hidden><p>No <code>dev-*</code> branches and no <code>*</code> on runtime dependencies. Use carets, such as <code>^2.4</code>.</p><p class="why">Why: an open constraint lets an unreviewed change into production.</p></div></li>
-              <li><button class="track" type="button" data-track data-time="3:33" aria-expanded="false" aria-controls="t-b5">
-                <span class="track__no">B5</span><span class="track__name">Audit dependencies and fail at a stated severity</span><span class="tag tag--checked">Checked</span><span class="track__time">3:33</span></button>
-                <div class="track__notes" id="t-b5" hidden><p><code>composer audit --locked</code> in CI fails at or above the policy threshold: <code>high</code>.</p><p class="why">Why: known advisories are the cheapest attacks to run.</p></div></li>
-              <li><button class="track" type="button" data-track data-time="4:01" aria-expanded="false" aria-controls="t-b6">
-                <span class="track__no">B6</span><span class="track__name">Make every exception named, dated and visible</span><span class="tag tag--checked">Checked</span><span class="track__time">4:01</span></button>
-                <div class="track__notes" id="t-b6" hidden><p>An override sits in the app's <code>policy-overrides.json</code> with a reason and an expiry, and every run prints it.</p><p class="why">Why: an exception without an end date becomes the rule.</p></div></li>
-              <li><button class="track" type="button" data-track data-time="3:58" aria-expanded="false" aria-controls="t-b7">
-                <span class="track__no">B7</span><span class="track__name">Run the test suite on every supported PHP version</span><span class="tag tag--checked">Checked</span><span class="track__time">3:58</span></button>
-                <div class="track__notes" id="t-b7" hidden><p>CREED's own CI runs on PHP 8.3, 8.4 and 8.5, from its floor up.</p><p class="why">Why: a library that works only on the newest PHP leaves out half its users.</p></div></li>
-              <li class="track--hidden-li"><button class="track track--hidden" type="button" data-track data-time="1:59" aria-expanded="false" aria-controls="t-b8">
-                <span class="track__no">B8</span><span class="track__name">Hidden track: Recommend a git.wayne.edu instance runner</span><span class="tag tag--documented">Documented</span><span class="track__time">1:59</span></button>
-                <div class="track__notes" id="t-b8" hidden><p>git.wayne.edu has no runners today. Every product in the stack strongly recommends a git.wayne.edu instance runner. Like some people's pasts, it isn't printed on the sleeve.</p><p class="why">Why: a gate that nothing runs protects nobody.</p></div></li>
-            </ol>
-          </div>
-
-          <div class="legend" data-reveal>
-            <p class="legend__title">How each track is held, as of 2026-10-27</p>
-            <ul class="legend__list">
-              <li><span class="tag tag--enforced">Enforced</span> code makes it impossible, or a test fails CI</li>
-              <li><span class="tag tag--checked">Checked</span> PROCTOR or CI warns or fails</li>
-              <li><span class="tag tag--documented">Documented</span> written down only</li>
-              <li><span class="tag tag--notyet">Not yet</span> a gap, on the B-sides below</li>
-            </ul>
-            <p class="legend__more">Fifteen tracks on this pressing. The full box set has 54 practices, each with its reason and sources: <a href="https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md">BEST_PRACTICES.md</a>, and the rules chapter by chapter in the <a href="https://github.com/waynestate/creed/tree/main/handbook">handbook</a>.</p>
-          </div>
-        </div>
-
+        <span class="book__ribbon"></span>
       </div>
     </div>
   </section>
 
-  <!-- ======================================================= liner notes -->
-  <section class="liner" id="liner-notes" aria-labelledby="liner-title">
+  <!-- ========================================================= contents -->
+  <section class="sheet" id="contents" aria-labelledby="contents-title">
     <div class="wsu-container">
-      <header class="sec-head" data-reveal>
-        <p class="kicker kicker--ochre">Inner sleeve</p>
-        <h2 id="liner-title">Liner notes</h2>
+      <p class="folio-head" aria-hidden="true"><span>CREED 2026</span><span>Contents</span></p>
+      <header class="chap-head" data-reveal>
+        <p class="chap-head__kicker">Table of contents</p>
+        <h2 id="contents-title">Ten chapters, fifty-four practices</h2>
+        <p class="chap-head__lede">Each practice has a reason, sources and a stamp that says how the stack holds it today. Clause numbers follow the chapters: §2.1 is practice 11 in <a href="https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md">BEST_PRACTICES.md</a>. This page prints the clauses an inspector reaches for most; the book has all of them.</p>
       </header>
 
-      <div class="liner__grid">
-        <div class="liner__text" data-reveal>
-          <h3>One file</h3>
-          <p class="dropcap">Most standards live in a document nobody can test. CREED's live in <code>policy/policy.json</code>: support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, plus the rules every check runs against. A schema checks the file on every pipeline, and the handbook says the same rules in words, chapter by chapter.</p>
-          <p>No other code in the stack decides a version's state. PROCTOR, ADVISOR, BOOSTER and ROLLCALL ask; CREED's reader, <code>Waynestate\Creed\Policy</code>, answers. It is framework-free PHP with one dependency, and it never guesses.</p>
+      <ol class="toc" data-reveal>
+        <li><a href="#ch-1"><span class="toc__no">1</span><span class="toc__name">The version policy as data</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§1.1–§1.10</span></a><span class="toc__bar" role="img" aria-label="4 enforced, 3 documented, 3 not yet"><i class="e" style="--n:4"></i><i class="d" style="--n:3"></i><i class="n" style="--n:3"></i></span></li>
+        <li><a href="#ch-2"><span class="toc__no">2</span><span class="toc__name">PHP and framework versions</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§2.1–§2.7</span></a><span class="toc__bar" role="img" aria-label="2 checked, 1 documented, 4 not yet"><i class="c" style="--n:2"></i><i class="d" style="--n:1"></i><i class="n" style="--n:4"></i></span></li>
+        <li><a href="#ch-3"><span class="toc__no">3</span><span class="toc__name">Dependencies</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§3.1–§3.6</span></a><span class="toc__bar" role="img" aria-label="3 checked, 2 documented, 1 not yet"><i class="c" style="--n:3"></i><i class="d" style="--n:2"></i><i class="n" style="--n:1"></i></span></li>
+        <li><a href="#ch-4"><span class="toc__no">4</span><span class="toc__name">Secrets and configuration</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§4.1–§4.3</span></a><span class="toc__bar" role="img" aria-label="3 not yet"><i class="n" style="--n:3"></i></span></li>
+        <li><a href="#ch-5"><span class="toc__no">5</span><span class="toc__name">Overrides and rollout</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§5.1–§5.3</span></a><span class="toc__bar" role="img" aria-label="1 checked, 2 documented"><i class="c" style="--n:1"></i><i class="d" style="--n:2"></i></span></li>
+        <li><a href="#ch-6"><span class="toc__no">6</span><span class="toc__name">Writing the handbook</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§6.1–§6.7</span></a><span class="toc__bar" role="img" aria-label="1 checked, 5 documented, 1 not yet"><i class="c" style="--n:1"></i><i class="d" style="--n:5"></i><i class="n" style="--n:1"></i></span></li>
+        <li><a href="#ch-7"><span class="toc__no">7</span><span class="toc__name">Patching and the supply chain</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§7.1–§7.9</span></a><span class="toc__bar" role="img" aria-label="1 documented, 8 not yet"><i class="d" style="--n:1"></i><i class="n" style="--n:8"></i></span></li>
+        <li><a href="https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#8-platform-and-database-second-pass"><span class="toc__no">8</span><span class="toc__name">Platform and database</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§8.1–§8.3</span></a><span class="toc__bar" role="img" aria-label="3 not yet"><i class="n" style="--n:3"></i></span></li>
+        <li><a href="https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#9-policy-data-second-pass"><span class="toc__no">9</span><span class="toc__name">Policy data</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§9.1–§9.3</span></a><span class="toc__bar" role="img" aria-label="3 not yet"><i class="n" style="--n:3"></i></span></li>
+        <li><a href="https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#10-accessibility-and-the-legal-floor-second-pass"><span class="toc__no">10</span><span class="toc__name">Accessibility and the legal floor</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§10.1–§10.3</span></a><span class="toc__bar" role="img" aria-label="3 not yet"><i class="n" style="--n:3"></i></span></li>
+      </ol>
 
-          <h3>With Arms Wide Open</h3>
-          <p>The support window stays open until <code>security_until</code>. A version is still <em>Security</em> on that day, moves to <em>Eol</em> the day after, and stays there for <code>eol_grace_days</code> (90) more days before it is <em>EolGraceExpired</em>. The boundary is inclusive. Try it in the reader: pick the last day of PHP 8.2, then the day after.</p>
+      <div class="key" data-reveal>
+        <h3 class="key__title">Key to the stamps</h3>
+        <dl class="key__list">
+          <div><dt><span class="stamp stamp--enforced">Enforced</span></dt><dd>Code makes the violation impossible, or a test fails CI.</dd></div>
+          <div><dt><span class="stamp stamp--checked">Checked</span></dt><dd>PROCTOR or CI warns or fails. The check is named.</dd></div>
+          <div><dt><span class="stamp stamp--documented">Documented</span></dt><dd>Written down only.</dd></div>
+          <div><dt><span class="stamp stamp--notyet">Not yet</span></dt><dd>A gap. Printed anyway, because an honest gap beats a quiet one.</dd></div>
+        </dl>
+      </div>
 
-          <h3>Higher</h3>
-          <p>CREED itself requires PHP <code>^8.3</code>, like every stack package, and CI tests it on 8.3, 8.4 and 8.5. The floor for apps is a different number: <code>^8.2</code> until PHP 8.2 reaches end of life on 2026-12-31, then <code>^8.3</code>. Creed has always been one version ahead of everyone else, at least by his own account.</p>
-
-          <p class="liner__sign">Notes by the reader, which can account for every date it has ever had. Some quality assurance professionals cannot.</p>
-        </div>
-
-        <!-- A working copy of Policy::stateOf, run in the browser against the
-             dates in policy.json. The page ships its own copy of those dates
-             (assets/creed.js); policy/policy.json stays the source. -->
-        <div class="reader" role="region" aria-labelledby="reader-title" data-reader data-reveal>
-          <div class="reader__head">
-            <h3 id="reader-title">Bonus track: the reader</h3>
-            <p><code>$policy-&gt;stateOf($component, $version, $on)</code></p>
-          </div>
-
-          <div class="reader__tabs" role="tablist" aria-label="Component">
-            <button type="button" role="tab" id="rt-php" aria-selected="true" aria-controls="reader-panel" data-component="php">PHP</button>
-            <button type="button" role="tab" id="rt-laravel" aria-selected="false" aria-controls="reader-panel" tabindex="-1" data-component="laravel">Laravel</button>
-            <button type="button" role="tab" id="rt-node" aria-selected="false" aria-controls="reader-panel" tabindex="-1" data-component="node">Node</button>
-            <button type="button" role="tab" id="rt-mysql" aria-selected="false" aria-controls="reader-panel" tabindex="-1" data-component="mysql">MySQL</button>
-          </div>
-
-          <div class="reader__panel" id="reader-panel" role="tabpanel" aria-labelledby="rt-php">
-            <div class="reader__date">
-              <label for="reader-on">On</label>
-              <input type="date" id="reader-on" value="2026-10-28" min="2018-01-01" max="2035-12-31" data-reader-date>
-            </div>
-            <div class="reader__chips" role="group" aria-label="Boundary dates for PHP 8.2">
-              <button type="button" data-date="2026-12-31">Last day of 8.2</button>
-              <button type="button" data-date="2027-01-01">The day after</button>
-              <button type="button" data-date="2027-03-31">Last grace day</button>
-              <button type="button" data-date="2027-04-01">Grace expired</button>
-            </div>
-            <table class="reader__table">
-              <caption class="wsu-sr-only">State of each version on the chosen date</caption>
-              <thead><tr><th scope="col">Version</th><th scope="col">State</th><th scope="col">Until</th></tr></thead>
-              <tbody data-reader-rows>
-                <tr><th scope="row">php 8.1</th><td><span class="state state--eol_grace_expired">eol_grace_expired</span></td><td>2025-12-31</td></tr>
-                <tr><th scope="row">php 8.2</th><td><span class="state state--security">security</span></td><td>2026-12-31</td></tr>
-                <tr><th scope="row">php 8.3</th><td><span class="state state--security">security</span></td><td>2027-12-31</td></tr>
-                <tr><th scope="row">php 8.4</th><td><span class="state state--active">active</span></td><td>2028-12-31</td></tr>
-                <tr><th scope="row">php 8.5</th><td><span class="state state--active">active</span></td><td>2029-12-31</td></tr>
-              </tbody>
-            </table>
-            <p class="reader__floor" aria-live="polite" data-reader-floor>Oldest supported php on 2026-10-28: <strong>8.2</strong></p>
-          </div>
-        </div>
+      <div class="articles" data-reveal>
+        <article class="article">
+          <p class="article__no">Art. I</p>
+          <h3>The policy</h3>
+          <p><code>policy/policy.json</code> holds every support date as an ISO day, plus the rules: an audit threshold of <code>high</code>, banned constraints <code>dev-*</code> and <code>*</code>, and a grace of 90 days. A schema guards it.</p>
+        </article>
+        <article class="article">
+          <p class="article__no">Art. II</p>
+          <h3>The reader</h3>
+          <p><code>Waynestate\Creed\Policy</code>, framework-free PHP. <code>stateOf</code> returns <code>Active</code>, <code>Security</code>, <code>Eol</code> or <code>EolGraceExpired</code>. No other code in the stack decides a version's state.</p>
+        </article>
+        <article class="article">
+          <p class="article__no">Art. III</p>
+          <h3>The handbook</h3>
+          <p>The rules chapter by chapter in <a href="https://github.com/waynestate/creed/tree/main/handbook"><code>handbook/</code></a>, each citing the decision behind it. Where nothing is decided, the chapter says "To be decided" and states no rule.</p>
+        </article>
       </div>
     </div>
   </section>
 
-  <!-- ========================================================== b-sides -->
-  <section class="bsides" aria-labelledby="bsides-title">
+  <!-- ======================================================= inspection -->
+  <section class="sheet sheet--form" id="inspection" aria-labelledby="inspection-title">
     <div class="wsu-container">
-      <header class="sec-head" data-reveal>
-        <p class="kicker kicker--ochre">White-label test pressings</p>
-        <h2 id="bsides-title">Demos and B-sides</h2>
-        <p>Not on the record yet. The handbook marks these “To be decided”, and nobody presses them until they are.</p>
+      <p class="folio-head" aria-hidden="true"><span>CREED 2026</span><span>Form CR-1</span></p>
+      <header class="chap-head" data-reveal>
+        <p class="chap-head__kicker">Form CR-1 · Field inspection</p>
+        <h2 id="inspection-title">Inspect a version</h2>
+        <p class="chap-head__lede">Pick a runtime, a version and a day. The inspector reads the same dates as <code>Policy::stateOf</code>, by the same rules: the end day is inclusive, then 90 days of grace, then nothing. He stamps what he finds.</p>
       </header>
-      <ul class="pressings">
-        <li class="pressing" data-reveal style="--i:0"><span class="pressing__no">Demo 1</span><h3>The accessibility chapter</h3><p>Aim at WCAG 2.2 AA. First, confirm the legal floor and its dates.</p></li>
-        <li class="pressing" data-reveal style="--i:1"><span class="pressing__no">Demo 2</span><h3>Runtime and headers</h3><p>Waits on HELMET's header work. No rules until a decision lands.</p></li>
-        <li class="pressing" data-reveal style="--i:2"><span class="pressing__no">Demo 3</span><h3>The auth gateway</h3><p>Its position, how keys are handed out, and which SAML library.</p></li>
-        <li class="pressing" data-reveal style="--i:3"><span class="pressing__no">Demo 4</span><h3>Strict or tolerant schema</h3><p>Can an older reader still read a newer policy file? A test decides.</p></li>
-        <li class="pressing" data-reveal style="--i:4"><span class="pressing__no">Demo 5</span><h3>Node 27 and after</h3><p>No Maintenance phase on the new yearly schedule, so <code>active_until</code> needs a new rule.</p></li>
-        <li class="pressing" data-reveal style="--i:5"><span class="pressing__no">Demo 6</span><h3>Vue 3 and Inertia</h3><p>No published end dates, and the reader refuses to guess. The schema needs a way to say so.</p></li>
+
+      <div class="form-cr1" data-inspect>
+        <form class="form-cr1__fields" data-inspect-form>
+          <fieldset class="field-runtime">
+            <legend><span class="box-no">1</span> Runtime</legend>
+            <div class="runtime-pick" data-runtime-pick>
+              <label><input type="radio" name="component" value="php" checked><span>PHP</span></label>
+              <label><input type="radio" name="component" value="laravel"><span>Laravel</span></label>
+              <label><input type="radio" name="component" value="node"><span>Node</span></label>
+              <label><input type="radio" name="component" value="mysql"><span>MySQL</span></label>
+              <label><input type="radio" name="component" value="vue"><span>Vue</span></label>
+              <label><input type="radio" name="component" value="inertia"><span>Inertia</span></label>
+            </div>
+          </fieldset>
+
+          <div class="field">
+            <label for="cr1-version"><span class="box-no">2</span> Version</label>
+            <select id="cr1-version" data-inspect-version>
+              <option value="8.1">8.1</option>
+              <option value="8.2" selected>8.2</option>
+              <option value="8.3">8.3</option>
+              <option value="8.4">8.4</option>
+              <option value="8.5">8.5</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="cr1-date"><span class="box-no">3</span> On this day</label>
+            <input id="cr1-date" type="date" value="2026-10-28" data-inspect-date>
+            <div class="chips" role="group" aria-label="Days worth inspecting">
+              <button type="button" data-day="today">Today</button>
+              <button type="button" data-day="2026-12-31">2026-12-31</button>
+              <button type="button" data-day="2027-01-01">2027-01-01</button>
+              <button type="button" data-day="2027-03-31">2027-03-31</button>
+              <button type="button" data-day="2027-04-01">2027-04-01</button>
+            </div>
+          </div>
+
+          <button class="btn btn--ink btn--stamp" type="submit">Stamp it</button>
+        </form>
+
+        <div class="certificate" data-certificate>
+          <div class="certificate__head">
+            <p>Certificate of inspection</p>
+            <p class="certificate__serial" data-cert-serial>No. 0001</p>
+          </div>
+          <dl class="certificate__rows">
+            <div><dt>Runtime</dt><dd data-cert-what>PHP 8.2</dd></div>
+            <div><dt>Inspected on</dt><dd data-cert-day>2026-10-28</dd></div>
+            <div><dt>Reader call</dt><dd><code data-cert-call>$policy-&gt;stateOf('php', '8.2', new DateTimeImmutable('2026-10-28'))</code></dd></div>
+            <div><dt>Returns</dt><dd><code data-cert-returns>State::Security</code></dd></div>
+          </dl>
+          <p class="certificate__finding" data-cert-finding>Security fixes only, until 2026-12-31: 64 days left. Plan the move to PHP 8.4 now.</p>
+          <p class="certificate__clause">Applicable clause: <a href="#c-2-2" data-cert-clause>§2.2 Treat security-only as a countdown, not a resting place</a></p>
+          <p class="certificate__sign"><span>Inspector</span><span class="certificate__line">CREED reader, schema v1</span></p>
+
+          <!-- The stamp is decoration; the live line below carries the result. -->
+          <div class="inkstamp inkstamp--security" data-inkstamp aria-hidden="true">
+            <span class="inkstamp__top" data-ink-top>CREED · §2.2</span>
+            <span class="inkstamp__word" data-ink-word>Security only</span>
+            <span class="inkstamp__sub" data-ink-sub>PHP 8.2 · 2026-10-28</span>
+          </div>
+        </div>
+      </div>
+      <p class="wsu-sr-only" role="status" aria-live="polite" data-inspect-live></p>
+    </div>
+  </section>
+
+  <!-- ======================================================== chapter 1 -->
+  <section class="sheet chapter" id="ch-1" aria-labelledby="ch-1-title">
+    <div class="wsu-container">
+      <p class="folio-head" aria-hidden="true"><span>CREED 2026</span><span>Chapter 1 · The version policy as data</span></p>
+      <header class="chap-head chap-head--chapter" data-reveal>
+        <p class="chap-head__no" aria-hidden="true">1</p>
+        <div>
+          <p class="chap-head__kicker">Chapter 1</p>
+          <h2 id="ch-1-title">The version policy as data</h2>
+          <p class="chap-head__lede">Creed Bratton keeps his own records and nobody can audit them. CREED does the opposite: every date is in one file, with a source, where anyone can check it.</p>
+        </div>
+      </header>
+
+      <div class="clause" id="c-1-1" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§1.1</span> Keep one machine-readable policy, and let one reader decide state.</h3>
+          <p>Every tool reads <code>policy.json</code> through the CREED reader. No other code decides whether a version is active, security-only or EOL.</p>
+          <p class="xref"><span class="xref__label">Held by</span> <code>Waynestate\Creed\Policy</code>, the only implementation. <a class="tool" href="#ahj-proctor"><img src="assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> is meant to depend on it.</p>
+        </div>
+        <span class="stamp stamp--documented">Documented</span>
+        <aside class="margin-note"><b>Rationale.</b> Two tools with two copies of a date will eventually disagree, and a developer cannot tell which to believe.</aside>
+      </div>
+
+      <div class="clause" id="c-1-2" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§1.2</span> Validate the policy file against a schema in CI.</h3>
+          <p>A bad date, a wrong type or an unknown key fails the build.</p>
+          <p class="xref"><span class="xref__label">Held by</span> <code>PolicySchemaTest</code> and <code>composer validate-policy</code>, both in <a class="tool" href="#ahj-preflight"><img src="assets/marks/preflight.png" alt="" width="16" height="16">PREFLIGHT</a> <code>php-test</code>.</p>
+        </div>
+        <span class="stamp stamp--enforced">Enforced</span>
+        <aside class="margin-note"><b>Rationale.</b> A typo in a date silently changes what every tool reports.</aside>
+      </div>
+
+      <div class="clause" id="c-1-4" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§1.4</span> Make the reader refuse to guess.</h3>
+          <p>A version with no <code>security_until</code> is an error, not a silent pass. An unknown component or version is an error.</p>
+          <p class="xref"><span class="xref__label">Held by</span> <code>stateOf</code>, which throws for each case; tests cover all three.</p>
+        </div>
+        <span class="stamp stamp--enforced">Enforced</span>
+        <aside class="margin-note"><b>Rationale.</b> A tool that guesses turns missing data into a green check.</aside>
+      </div>
+
+      <div class="clause" id="c-1-5" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§1.5</span> Compute state from the date, with an inclusive end and a stated grace period.</h3>
+          <p>A version is still supported on its <code>security_until</code> day. It is EOL the next day. After <code>eol_grace_days</code> (90) it is past grace, and no override applies.</p>
+          <p class="xref"><span class="xref__label">Held by</span> <code>PolicyStateTest</code>, on the PHP 8.2 boundary days.</p>
+        </div>
+        <span class="stamp stamp--enforced">Enforced</span>
+        <aside class="margin-note"><b>Rationale.</b> Everyone must get the same answer on the same day, including on the boundary. <i>With arms wide open</i>: the window stays open through the last day.</aside>
+      </div>
+
+      <div class="clause" id="c-1-9" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§1.9</span> Model support honestly when a project publishes no dates.</h3>
+          <p>Vue 3 and Inertia publish no fixed end dates. Do not invent them. The policy lists only Vue 2 (EOL 2023-12-31) and an empty Inertia list.</p>
+          <p class="xref"><span class="xref__label">Open</span> See <a href="#errata">Erratum E-2</a>.</p>
+        </div>
+        <span class="stamp stamp--notyet">Not yet</span>
+        <aside class="margin-note"><b>Rationale.</b> A made-up date is worse than an honest "no date".</aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== chapter 2 -->
+  <section class="sheet chapter" id="ch-2" aria-labelledby="ch-2-title">
+    <div class="wsu-container">
+      <p class="folio-head" aria-hidden="true"><span>CREED 2026</span><span>Chapter 2 · PHP and framework versions</span></p>
+      <header class="chap-head chap-head--chapter" data-reveal>
+        <p class="chap-head__no" aria-hidden="true">2</p>
+        <div>
+          <p class="chap-head__kicker">Chapter 2</p>
+          <h2 id="ch-2-title">PHP and framework versions</h2>
+          <p class="chap-head__lede">EOL PHP is not supported by the stack, with no exceptions. The adopted editions are in Table 2-1.</p>
+        </div>
+      </header>
+
+      <div class="clause" id="c-2-1" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§2.1</span> Run non-EOL PHP only.</h3>
+          <p>Apps declare and run a PHP version that php.net lists as supported. On 2026-10-28 that means 8.2 (security only, to 2026-12-31), 8.3, 8.4 and 8.5.</p>
+          <p class="xref"><span class="xref__label">Held by</span> <a class="tool" href="#ahj-proctor"><img src="assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> <code>php-floor</code>, which fails when the lowest bound of <code>require.php</code> is EOL by policy.</p>
+        </div>
+        <span class="stamp stamp--checked">Checked</span>
+        <aside class="margin-note"><b>Rationale.</b> An EOL branch receives no security fixes.</aside>
+      </div>
+
+      <div class="clause" id="c-2-2" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§2.2</span> Treat security-only as a countdown, not a resting place.</h3>
+          <p>A version in security-only support warns now and fails on the day after <code>security_until</code>. Plan the move before then.</p>
+          <p class="xref"><span class="xref__label">Held by</span> <a class="tool" href="#ahj-proctor"><img src="assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> <code>php-floor</code> (a WARN). The runtime ribbon waits for <a class="tool" href="#ahj-helmet"><img src="assets/marks/helmet.png" alt="" width="16" height="16">HELMET</a>.</p>
+        </div>
+        <span class="stamp stamp--checked">Checked</span>
+        <aside class="margin-note"><b>Rationale.</b> Moving on a deadline day is how upgrades go wrong.</aside>
+      </div>
+
+      <div class="clause" id="c-2-3" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§2.3</span> Raise the floor on the day the old version ends.</h3>
+          <p>The PHP floor for apps moves from <code>^8.2</code> to <code>^8.3</code> on 2027-01-01. CREED itself already requires <code>^8.3</code>; Creed has always been one version ahead of everyone else, at least by his own account.</p>
+          <p class="xref"><span class="xref__label">Held by</span> <code>oldestSupported</code> computes it. No automation bumps a package's constraint.</p>
+        </div>
+        <span class="stamp stamp--documented">Documented</span>
+        <aside class="margin-note"><b>Rationale.</b> It is the only way a dependency floor can force an upgrade.</aside>
+      </div>
+
+      <figure class="code-table" data-reveal aria-labelledby="t21-cap">
+        <figcaption id="t21-cap"><span class="code-table__no">Table 2-1</span> Adopted editions, with the state on <span data-adopt-day>2026-10-28</span></figcaption>
+        <div class="code-table__scroll" tabindex="0" role="region" aria-labelledby="t21-cap">
+          <table data-adopt>
+            <thead>
+              <tr><th scope="col">Runtime</th><th scope="col">Active until</th><th scope="col">Security until</th><th scope="col">Latest patch</th><th scope="col">State</th></tr>
+            </thead>
+            <tbody>
+              <tr class="code-table__group"><th scope="rowgroup" colspan="5">PHP <span>floor <b data-floor="php">8.2</b></span></th></tr>
+              <tr data-c="php" data-v="8.5"><th scope="row">8.5</th><td>2027-12-31</td><td>2029-12-31</td><td>8.5.12</td><td><span class="st st--active">Active</span></td></tr>
+              <tr data-c="php" data-v="8.4"><th scope="row">8.4</th><td>2026-12-31</td><td>2028-12-31</td><td>8.4.27</td><td><span class="st st--active">Active</span></td></tr>
+              <tr data-c="php" data-v="8.3"><th scope="row">8.3</th><td>2025-12-31</td><td>2027-12-31</td><td>8.3.36</td><td><span class="st st--security">Security</span></td></tr>
+              <tr data-c="php" data-v="8.2"><th scope="row">8.2</th><td>2024-12-31</td><td>2026-12-31</td><td>8.2.35</td><td><span class="st st--security">Security</span></td></tr>
+              <tr data-c="php" data-v="8.1"><th scope="row">8.1</th><td>—</td><td>2025-12-31</td><td>—</td><td><span class="st st--eol_grace_expired">Grace expired</span></td></tr>
+              <tr class="code-table__group"><th scope="rowgroup" colspan="5">Laravel <span>floor <b data-floor="laravel">12</b></span></th></tr>
+              <tr data-c="laravel" data-v="13"><th scope="row">13</th><td>2027-09-17<sup><a href="#errata" aria-label="Erratum E-1">E-1</a></sup></td><td>2028-03-17</td><td>13.39.0</td><td><span class="st st--active">Active</span></td></tr>
+              <tr data-c="laravel" data-v="12"><th scope="row">12</th><td>2026-08-13</td><td>2027-02-24</td><td>12.70.2</td><td><span class="st st--security">Security</span></td></tr>
+              <tr data-c="laravel" data-v="11"><th scope="row">11</th><td>2025-09-03</td><td>2026-03-12</td><td>11.57.1</td><td><span class="st st--eol_grace_expired">Grace expired</span></td></tr>
+              <tr data-c="laravel" data-v="10"><th scope="row">10</th><td>2024-08-06</td><td>2025-02-04</td><td>10.50.4</td><td><span class="st st--eol_grace_expired">Grace expired</span></td></tr>
+              <tr class="code-table__group"><th scope="rowgroup" colspan="5">Node <span>floor <b data-floor="node">22</b></span></th></tr>
+              <tr data-c="node" data-v="26"><th scope="row">26</th><td>2027-10-20</td><td>2029-04-30</td><td>26.12.1</td><td><span class="st st--active">Active</span></td></tr>
+              <tr data-c="node" data-v="24"><th scope="row">24</th><td>2026-10-20</td><td>2028-04-30</td><td>24.22.1</td><td><span class="st st--security">Security</span></td></tr>
+              <tr data-c="node" data-v="22"><th scope="row">22</th><td>2025-10-21</td><td>2027-04-30</td><td>22.23.4</td><td><span class="st st--security">Security</span></td></tr>
+              <tr data-c="node" data-v="20"><th scope="row">20</th><td>2024-10-22</td><td>2026-04-30</td><td>20.20.2</td><td><span class="st st--eol_grace_expired">Grace expired</span></td></tr>
+              <tr class="code-table__group"><th scope="rowgroup" colspan="5">MySQL <span>floor <b data-floor="mysql">8.4</b></span></th></tr>
+              <tr data-c="mysql" data-v="9.7"><th scope="row">9.7</th><td>2031-04-30</td><td>2034-04-30</td><td>—</td><td><span class="st st--active">Active</span></td></tr>
+              <tr data-c="mysql" data-v="8.4"><th scope="row">8.4</th><td>2029-04-30</td><td>2032-04-30</td><td>—</td><td><span class="st st--active">Active</span></td></tr>
+              <tr data-c="mysql" data-v="8.0"><th scope="row">8.0</th><td>2025-04-30</td><td>2026-04-30</td><td>—</td><td><span class="st st--eol_grace_expired">Grace expired</span></td></tr>
+              <tr data-c="mysql" data-v="5.7"><th scope="row">5.7</th><td>2020-10-31</td><td>2023-10-31</td><td>—</td><td><span class="st st--eol_grace_expired">Grace expired</span></td></tr>
+              <tr data-c="mysql" data-v="5.6"><th scope="row">5.6</th><td>2018-02-28</td><td>2021-02-28</td><td>—</td><td><span class="st st--eol_grace_expired">Grace expired</span></td></tr>
+              <tr class="code-table__group"><th scope="rowgroup" colspan="5">Vue and Inertia</th></tr>
+              <tr data-c="vue" data-v="2"><th scope="row">Vue 2</th><td>2023-12-31</td><td>2023-12-31</td><td>—</td><td><span class="st st--eol_grace_expired">Grace expired</span></td></tr>
+              <tr><th scope="row">Vue 3, Inertia</th><td colspan="3">No published end dates. Not listed; see §1.9.</td><td><span class="st st--refused">Not listed</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="code-table__note">From <code>policy/policy.json</code>, schema version 1, patches checked 2026-10-28. For Node, "active" holds the maintenance start; for MySQL, the Premier end. That mapping is the policy's, not the vendors' wording.</p>
+      </figure>
+
+      <div class="clause" id="c-2-5" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§2.5</span> Run a Laravel release that still gets security fixes.</h3>
+          <p>Laravel gives bug fixes for 18 months and security fixes for two years. Laravel 11 and older are EOL. Laravel 12 gets security fixes until 2027-02-24; Laravel 13 until 2028-03-17.</p>
+          <p class="xref"><span class="xref__label">Gap</span> The reader can classify 10 to 13, but no PROCTOR v0.1 check reads <code>composer.lock</code> for the framework. The planned deploy gate will.</p>
+        </div>
+        <span class="stamp stamp--notyet">Not yet</span>
+        <aside class="margin-note"><b>Rationale.</b> An EOL framework is the largest unpatched surface in a typical app.</aside>
+      </div>
+
+      <div class="clause" id="c-2-6" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§2.6</span> Use a Node release that is in LTS or maintenance.</h3>
+          <p>Build front ends on a Node line that has not reached end of life: 22, 24 and 26. Node 20 reached end of life on 2026-04-30.</p>
+          <p class="xref"><span class="xref__label">Gap</span> The dates are in <code>policy.json</code>; no check reads an app's Node version yet.</p>
+        </div>
+        <span class="stamp stamp--notyet">Not yet</span>
+        <aside class="margin-note"><b>Rationale.</b> Build tools run with your credentials and your source.</aside>
+      </div>
+
+      <div class="clause" id="c-2-7" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§2.7</span> Choose a supported MySQL, and say when the platform lags.</h3>
+          <p>MySQL 8.4 LTS has Premier support to 2029-04-30 and Extended to 2032-04-30. MySQL 8.0 ended on 2026-04-30 and is past CREED's 90-day grace since 2026-07-29.</p>
+          <p class="xref"><span class="xref__label">Gap</span> Nothing checks it, and the platform's own MySQL timeline is still an open question.</p>
+        </div>
+        <span class="stamp stamp--notyet">Not yet</span>
+        <aside class="margin-note"><b>Rationale.</b> A database that no longer gets fixes holds everything above it back.</aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== chapter 3 -->
+  <section class="sheet chapter" id="ch-3" aria-labelledby="ch-3-title">
+    <div class="wsu-container">
+      <p class="folio-head" aria-hidden="true"><span>CREED 2026</span><span>Chapter 3 · Dependencies</span></p>
+      <header class="chap-head chap-head--chapter" data-reveal>
+        <p class="chap-head__no" aria-hidden="true">3</p>
+        <div>
+          <p class="chap-head__kicker">Chapter 3</p>
+          <h2 id="ch-3-title">Dependencies</h2>
+          <p class="chap-head__lede">What goes into an app, and how it is allowed in.</p>
+        </div>
+      </header>
+
+      <div class="clause" id="c-3-1" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§3.1</span> Commit the lock file.</h3>
+          <p><code>composer.lock</code> is in the repository for apps. Use <code>composer install</code> in CI and on deploy, not <code>composer update</code>.</p>
+          <p class="xref"><span class="xref__label">Held by</span> <a class="tool" href="#ahj-proctor"><img src="assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> <code>lock-committed</code>.</p>
+        </div>
+        <span class="stamp stamp--checked">Checked</span>
+        <aside class="margin-note"><b>Rationale.</b> Without a lock, a build next week is a different build.</aside>
+      </div>
+
+      <div class="clause" id="c-3-2" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§3.2</span> Ban open-ended constraints.</h3>
+          <p>No <code>dev-*</code> branches and no <code>*</code> on runtime dependencies. Use caret constraints such as <code>^2.4</code>.</p>
+          <p class="xref"><span class="xref__label">Held by</span> <a class="tool" href="#ahj-proctor"><img src="assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> <code>unbounded-constraints</code>, using <code>banned_constraints</code> from the policy.</p>
+        </div>
+        <span class="stamp stamp--checked">Checked</span>
+        <aside class="margin-note"><b>Rationale.</b> An open constraint lets an unreviewed change into production.</aside>
+      </div>
+
+      <div class="clause" id="c-3-3" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§3.3</span> Audit dependencies and fail at a stated severity.</h3>
+          <p>Run <code>composer audit --locked</code> in CI and fail at or above the policy threshold, <code>high</code>.</p>
+          <p class="xref"><span class="xref__label">Held by</span> <a class="tool" href="#ahj-preflight"><img src="assets/marks/preflight.png" alt="" width="16" height="16">PREFLIGHT</a> <code>composer-audit</code> and <a class="tool" href="#ahj-proctor"><img src="assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> <code>composer-audit</code>.</p>
+        </div>
+        <span class="stamp stamp--checked">Checked</span>
+        <aside class="margin-note"><b>Rationale.</b> Known advisories are the cheapest attacks to run.</aside>
+      </div>
+
+      <div class="clause" id="c-3-6" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§3.6</span> Pin CI components to a tag or SHA.</h3>
+          <p>Include shared CI components at a tag or a full commit SHA, never <code>~latest</code>. CREED's own pipeline pins both of its components to a SHA.</p>
+          <p class="xref"><span class="xref__label">Held by</span> <code>ci.md</code>; components from <a class="tool" href="#ahj-preflight"><img src="assets/marks/preflight.png" alt="" width="16" height="16">PREFLIGHT</a>. No check scans other repos.</p>
+        </div>
+        <span class="stamp stamp--documented">Documented</span>
+        <aside class="margin-note"><b>Rationale.</b> A moving reference lets an upstream change weaken your pipeline without a commit in your repo.</aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== chapter 4 -->
+  <section class="sheet chapter" id="ch-4" aria-labelledby="ch-4-title">
+    <div class="wsu-container">
+      <p class="folio-head" aria-hidden="true"><span>CREED 2026</span><span>Chapter 4 · Secrets and configuration</span></p>
+      <header class="chap-head chap-head--chapter" data-reveal>
+        <p class="chap-head__no" aria-hidden="true">4</p>
+        <div>
+          <p class="chap-head__kicker">Chapter 4</p>
+          <h2 id="ch-4-title">Secrets and configuration</h2>
+          <p class="chap-head__lede">Three practices, three gaps, all printed. The inspector would rather you knew.</p>
+        </div>
+      </header>
+
+      <div class="clause" id="c-4-1" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§4.1</span> Keep secrets out of source control.</h3>
+          <p>Do not commit <code>.env</code>, keys, tokens or passwords. Commit <code>.env.example</code> with placeholders. Rotate a secret that was ever exposed.</p>
+          <p class="xref"><span class="xref__label">Gap</span> No handbook chapter covers secrets, and no check scans for them yet.</p>
+        </div>
+        <span class="stamp stamp--notyet">Not yet</span>
+        <aside class="margin-note"><b>Rationale.</b> A repository is copied to many machines and outlives any one password.</aside>
+      </div>
+
+      <div class="clause" id="c-4-3" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§4.3</span> Never run production with debug on.</h3>
+          <p><code>APP_DEBUG</code> is <code>false</code> in production.</p>
+          <p class="xref"><span class="xref__label">Gap</span> The runtime and headers chapter says "To be decided"; <a class="tool" href="#ahj-helmet"><img src="assets/marks/helmet.png" alt="" width="16" height="16">HELMET</a>'s refusal rules are not built.</p>
+        </div>
+        <span class="stamp stamp--notyet">Not yet</span>
+        <aside class="margin-note"><b>Rationale.</b> Debug pages expose configuration values to users.</aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== chapter 5 -->
+  <section class="sheet chapter" id="ch-5" aria-labelledby="ch-5-title">
+    <div class="wsu-container">
+      <p class="folio-head" aria-hidden="true"><span>CREED 2026</span><span>Chapter 5 · Overrides and rollout</span></p>
+      <header class="chap-head chap-head--chapter" data-reveal>
+        <p class="chap-head__no" aria-hidden="true">5</p>
+        <div>
+          <p class="chap-head__kicker">Chapter 5</p>
+          <h2 id="ch-5-title">Overrides and rollout</h2>
+          <p class="chap-head__lede">Every code has variances. These are the rules for asking for one.</p>
+        </div>
+      </header>
+
+      <div class="clause" id="c-5-1" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§5.1</span> Make every exception named, dated and visible.</h3>
+          <p>An override sits in the app's <code>policy-overrides.json</code> with a reason and an expiry. Every run prints every override. An expired override fails.</p>
+          <p class="xref"><span class="xref__label">Held by</span> <a class="tool" href="#ahj-proctor"><img src="assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> <code>overrides</code>. <a class="tool" href="#ahj-rollcall"><img src="assets/marks/rollcall.png" alt="" width="16" height="16">ROLLCALL</a> is meant to list them across apps.</p>
+        </div>
+        <span class="stamp stamp--checked">Checked</span>
+        <aside class="margin-note"><b>Rationale.</b> An exception without an end date becomes the rule.</aside>
+      </div>
+
+      <div class="clause" id="c-5-2" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§5.2</span> Roll a new rule out in stages, with dates.</h3>
+          <p>Each rule moves <code>report</code>, then <code>warn</code>, then <code>block</code>. A deploy that does not make things worse always passes.</p>
+          <p class="xref"><span class="xref__label">Held by</span> the proposed deploy gate. The schema has no field for stage dates yet.</p>
+        </div>
+        <span class="stamp stamp--documented">Documented</span>
+        <aside class="margin-note"><b>Rationale.</b> Blocking every non-compliant app on day one blocks the fixes too.</aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== chapter 6 -->
+  <section class="sheet chapter" id="ch-6" aria-labelledby="ch-6-title">
+    <div class="wsu-container">
+      <p class="folio-head" aria-hidden="true"><span>CREED 2026</span><span>Chapter 6 · Writing the handbook</span></p>
+      <header class="chap-head chap-head--chapter" data-reveal>
+        <p class="chap-head__no" aria-hidden="true">6</p>
+        <div>
+          <p class="chap-head__kicker">Chapter 6</p>
+          <h2 id="ch-6-title">Writing the handbook</h2>
+          <p class="chap-head__lede">How the code itself is kept: decisions cited, questions owned, checks that give the same answer twice.</p>
+        </div>
+      </header>
+
+      <div class="clause" id="c-6-1" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§6.1</span> Cite the decision behind every rule.</h3>
+          <p>Each handbook rule links to the ADR that decided it. Where nothing is decided, the chapter says "To be decided" and states no rule.</p>
+        </div>
+        <span class="stamp stamp--documented">Documented</span>
+        <aside class="margin-note"><b>Rationale.</b> Readers can trust a rule, and can find who to ask about the rest.</aside>
+      </div>
+
+      <div class="clause" id="c-6-4" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§6.4</span> Judge with deterministic checks only.</h3>
+          <p>No gate depends on a language model's opinion. A model may explain a failure; it does not decide pass or fail.</p>
+        </div>
+        <span class="stamp stamp--documented">Documented</span>
+        <aside class="margin-note"><b>Rationale.</b> A gate must give the same answer twice.</aside>
+      </div>
+
+      <div class="clause" id="c-6-5" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§6.5</span> Keep every developer tool usable on Windows, macOS and Linux.</h3>
+          <p>Scripts ship as a <code>.ps1</code> and <code>.sh</code> pair, or as one PHP command. Every repo carries <code>.gitattributes</code> with <code>* text=auto eol=lf</code>.</p>
+        </div>
+        <span class="stamp stamp--documented">Documented</span>
+        <aside class="margin-note"><b>Rationale.</b> Developers work on all three, and the servers need LF.</aside>
+      </div>
+
+      <div class="clause" id="c-6-6" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§6.6</span> Run the test suite on every supported PHP version.</h3>
+          <p>CI runs CREED's unit tests on 8.3, 8.4 and 8.5, from its own floor up.</p>
+          <p class="xref"><span class="xref__label">Held by</span> <a class="tool" href="#ahj-preflight"><img src="assets/marks/preflight.png" alt="" width="16" height="16">PREFLIGHT</a> <code>php-test</code>, a matrix in CREED's pipeline.</p>
+        </div>
+        <span class="stamp stamp--checked">Checked</span>
+        <aside class="margin-note"><b>Rationale.</b> A library that works only on the newest PHP excludes half its users.</aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== chapter 7 -->
+  <section class="sheet chapter" id="ch-7" aria-labelledby="ch-7-title">
+    <div class="wsu-container">
+      <p class="folio-head" aria-hidden="true"><span>CREED 2026</span><span>Chapter 7 · Patching and the supply chain</span></p>
+      <header class="chap-head chap-head--chapter" data-reveal>
+        <p class="chap-head__no" aria-hidden="true">7</p>
+        <div>
+          <p class="chap-head__kicker">Chapter 7 · Added in the second pass</p>
+          <h2 id="ch-7-title">Patching and the supply chain</h2>
+          <p class="chap-head__lede">Nine practices, one held so far. Chapters 8 to 10 (platform and database, policy data, accessibility) are all "Not yet" and are in the book.</p>
+        </div>
+      </header>
+
+      <div class="clause" id="c-7-1" data-reveal>
+        <div class="clause__body">
+          <h3 class="clause__title"><span class="clause__sec">§7.1</span> Track the PHP patch release, not only the branch.</h3>
+          <p>A supported branch is not a patched one. On 2026-10-21 PHP released 8.5.12, 8.4.27, 8.3.36 and 8.2.35 to fix two critical advisories. <code>policy.json</code> now carries a <code>latest_patch</code> for each branch.</p>
+          <p class="xref"><span class="xref__label">Held by</span> <code>latestPatch()</code> in the reader; maintainers refresh it with <code>php bin/refresh-patches.php</code>.</p>
+        </div>
+        <span class="stamp stamp--documented">Documented</span>
+        <aside class="margin-note"><b>Rationale.</b> The branch tells you whether fixes still come; the patch tells you whether you took them.</aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================================================== errata -->
+  <section class="sheet" id="errata" aria-labelledby="errata-title">
+    <div class="wsu-container">
+      <p class="folio-head" aria-hidden="true"><span>CREED 2026</span><span>Errata</span></p>
+      <div class="errata" data-reveal>
+        <header class="errata__head">
+          <p class="errata__kicker">Inserted after printing</p>
+          <h2 id="errata-title">Errata and pending amendments</h2>
+          <p>Open questions in the 2026 edition. Each is written down with the clause it touches, and stays open until a decision or a source closes it.</p>
+        </header>
+        <div class="errata__scroll" tabindex="0" role="region" aria-labelledby="errata-title">
+          <table class="errata__table">
+            <thead><tr><th scope="col">No.</th><th scope="col">Clause</th><th scope="col">Erratum or amendment</th><th scope="col">Status</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">E-1</th><td>Table 2-1</td><td>Laravel 13 <code>active_until</code> is 2027-09-17, but Laravel's page gives only "Q3 2027". Find the source and record it, or remove the date (§1.3, §1.6).</td><td><span class="open">Open</span></td></tr>
+              <tr><th scope="row">E-2</th><td>§1.9</td><td>Vue 3 and Inertia publish no end dates, and the reader requires <code>security_until</code>. The schema needs a way to say "supported, latest minor only".</td><td><span class="open">Open</span></td></tr>
+              <tr><th scope="row">E-3</th><td>§1.2</td><td>The schema does not list <code>security_until</code> as required; only the reader refuses a version without it. Make the two agree, together with E-2.</td><td><span class="open">Open</span></td></tr>
+              <tr><th scope="row">E-4</th><td>§9.3</td><td>Strict or tolerant schema: can an older tool still read a newer policy that only added a field? A test with an old schema and reader decides.</td><td><span class="open">Open</span></td></tr>
+              <tr><th scope="row">E-5</th><td>§9.1</td><td>Node 27 and later have no Maintenance phase on the new yearly schedule, so how <code>active_until</code> is derived needs a new rule.</td><td><span class="open">Open</span></td></tr>
+              <tr><th scope="row">E-6</th><td>Ch. 10</td><td>The accessibility chapter: aim at WCAG 2.2 AA, after confirming which legal dates apply. To be decided.</td><td><span class="open">Open</span></td></tr>
+              <tr><th scope="row">E-7</th><td>Handbook</td><td>Runtime and headers: no rules until a decision lands with HELMET. The auth chapter still has the gateway's position, key distribution and SAML library to decide.</td><td><span class="open">Open</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="errata__foot">The full backlog, 37 items, is at the end of <a href="https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#gaps-for-the-backlog">BEST_PRACTICES.md</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================== authorities -->
+  <section class="sheet" id="authorities" aria-labelledby="ahj-title">
+    <div class="wsu-container">
+      <p class="folio-head" aria-hidden="true"><span>CREED 2026</span><span>Referenced tools</span></p>
+      <header class="chap-head" data-reveal>
+        <p class="chap-head__kicker">Referenced tools</p>
+        <h2 id="ahj-title">Authorities having jurisdiction</h2>
+        <p class="chap-head__lede">CREED writes the rules; the rest of WELD inspects, builds and runs to them. Every tool below reads <code>policy.json</code> through the reader, never through its own copy.</p>
+      </header>
+      <ul class="ahj">
+        <li class="ahj__row" id="ahj-wayneui" data-reveal><span class="ahj__mark ahj__mark--wayneui"><img src="assets/marks/wayneui.svg" width="40" height="40" alt="WayneUI mark: a rounded frame with a gold tab"></span><span class="ahj__name">WayneUI</span><span class="ahj__role">The interface layer, project 0 of the stack.</span><span class="ahj__cites">This page is built on it</span></li>
+        <li class="ahj__row ahj__row--this" id="ahj-creed" data-reveal><span class="ahj__mark"><img src="brand/creed-avatar-256.png" width="40" height="40" alt="CREED mark: a stone arch whose gold keystone holds the other stones in place"></span><span class="ahj__name">CREED</span><span class="ahj__role">The standards, the policy and the reader. This book.</span><span class="ahj__cites">Chapters 1–10</span></li>
+        <li class="ahj__row" id="ahj-proctor" data-reveal><span class="ahj__mark"><img src="assets/marks/proctor.png" width="40" height="40" alt="PROCTOR mark: a watchful eye with a gold square pupil"></span><span class="ahj__name">PROCTOR</span><span class="ahj__role">One command that checks an app against CREED.</span><span class="ahj__cites"><a href="#c-2-1">§2.1</a> <a href="#c-2-2">§2.2</a> <a href="#c-3-1">§3.1</a> <a href="#c-3-2">§3.2</a> <a href="#c-3-3">§3.3</a> <a href="#c-5-1">§5.1</a></span></li>
+        <li class="ahj__row" id="ahj-preflight" data-reveal><span class="ahj__mark"><img src="assets/marks/preflight.png" width="40" height="40" alt="PREFLIGHT mark: a runway with a gold centre line"></span><span class="ahj__name">PREFLIGHT</span><span class="ahj__role">Shared CI, from GitLab CI/CD components.</span><span class="ahj__cites"><a href="#c-1-2">§1.2</a> <a href="#c-3-3">§3.3</a> <a href="#c-3-6">§3.6</a> <a href="#c-6-6">§6.6</a></span></li>
+        <li class="ahj__row" id="ahj-helmet" data-reveal><span class="ahj__mark"><img src="assets/marks/helmet.png" width="40" height="40" alt="HELMET mark: a white football helmet with a gold facemask"></span><span class="ahj__name">HELMET</span><span class="ahj__role">Security headers and the runtime ribbon.</span><span class="ahj__cites"><a href="#c-2-2">§2.2</a> <a href="#c-4-3">§4.3</a></span></li>
+        <li class="ahj__row" id="ahj-rollcall" data-reveal><span class="ahj__mark"><img src="assets/marks/rollcall.png" width="40" height="40" alt="ROLLCALL mark: an open register with gold ticks"></span><span class="ahj__name">ROLLCALL <em class="new">new</em></span><span class="ahj__role">Every app answers with its PHP version.</span><span class="ahj__cites"><a href="#c-5-1">§5.1</a></span></li>
+        <li class="ahj__row" id="ahj-pinstripe" data-reveal><span class="ahj__mark"><img src="assets/marks/pinstripe.png" width="40" height="40" alt="Pinstripe mark: a striped necktie with a gold tie bar"></span><span class="ahj__name">Pinstripe</span><span class="ahj__role">The coding standard: Pint, PHPStan, ESLint, Prettier.</span><span class="ahj__cites">The handbook's code chapter</span></li>
+        <li class="ahj__row" data-reveal><span class="ahj__mark"><img src="assets/marks/sesame.png" width="40" height="40" alt="SESAME mark: an open door with a gold gap"></span><span class="ahj__name">SESAME</span><span class="ahj__role">Signs the user in.</span><span class="ahj__cites">The handbook's auth chapter</span></li>
+        <li class="ahj__row" data-reveal><span class="ahj__mark"><img src="assets/marks/sourdough.png" width="40" height="40" alt="Sourdough mark: a starter jar with a gold band"></span><span class="ahj__name">Sourdough</span><span class="ahj__role">Starters you feed, born compliant.</span><span class="ahj__cites">Starts on the floor in Table 2-1</span></li>
+        <li class="ahj__row" data-reveal><span class="ahj__mark"><img src="assets/marks/weld.png" width="40" height="40" alt="WELD mark: a welder's helmet"></span><span class="ahj__name">WELD</span><span class="ahj__role">The whole stack, joined in one app.</span><span class="ahj__cites">Adopts the whole code</span></li>
+        <li class="ahj__row" data-reveal><span class="ahj__mark"><img src="assets/marks/booster.png" width="40" height="40" alt="BOOSTER mark: a syringe that is also a rocket, gold flame below"></span><span class="ahj__name">BOOSTER <em class="new">new</em></span><span class="ahj__role">Upgrades you, one hop at a time.</span><span class="ahj__cites">Gets you off a Grace expired row</span></li>
+        <li class="ahj__row" data-reveal><span class="ahj__mark"><img src="assets/marks/advisor.png" width="40" height="40" alt="ADVISOR mark: a speech bubble holding a gold compass needle"></span><span class="ahj__name">ADVISOR <em class="new">new</em></span><span class="ahj__role">What applies to your app, and what to do next.</span><span class="ahj__cites">Explains; never gates (§6.4)</span></li>
+        <li class="ahj__row" data-reveal><span class="ahj__mark"><img src="assets/marks/squire.png" width="40" height="40" alt="SQUIRE mark: a satchel with a gold buckle"></span><span class="ahj__name">SQUIRE <em class="new">new</em></span><span class="ahj__role">Carries the release to Citadel.</span><span class="ahj__cites">The deploy gate, proposed</span></li>
+        <li class="ahj__row" data-reveal><span class="ahj__mark"><img src="assets/marks/drawbridge.png" width="40" height="40" alt="DRAWBRIDGE mark: a castle tower lowering its bridge on a gold chain"></span><span class="ahj__name">DRAWBRIDGE <em class="new">new</em></span><span class="ahj__role">The Citadel sign-in gateway.</span><span class="ahj__cites">Erratum E-7</span></li>
       </ul>
     </div>
   </section>
 
-  <!-- ========================================================== credits -->
-  <section class="credits" id="credits" aria-labelledby="credits-title">
+  <!-- ======================================================= appendix A -->
+  <section class="sheet sheet--appendix" id="appendix-a" aria-labelledby="appendix-title">
     <div class="wsu-container">
-      <header class="sec-head sec-head--light" data-reveal>
-        <p class="kicker">Gatefold, inside right</p>
-        <h2 id="credits-title">Credits</h2>
+      <p class="folio-head" aria-hidden="true"><span>CREED 2026</span><span>Appendix A</span></p>
+      <header class="chap-head chap-head--chapter" data-reveal>
+        <p class="chap-head__no" aria-hidden="true">A</p>
+        <div>
+          <p class="chap-head__kicker">Appendix A</p>
+          <h2 id="appendix-title">Adopting this code</h2>
+          <p class="chap-head__lede">Read the policy from your tool, or run CREED's own checks in a clone.</p>
+        </div>
       </header>
 
-      <dl class="credits__list" data-reveal>
-        <div><dt>Policy data</dt><dd><code>policy/policy.json</code>, schema version 1</dd></div>
-        <div><dt>Schema</dt><dd><code>policy/policy.schema.json</code></dd></div>
-        <div><dt>Reader</dt><dd><code>Waynestate\Creed\Policy</code>, framework-free PHP, one dependency (<code>composer/semver</code>)</dd></div>
-        <div><dt>States</dt><dd>Active, Security, Eol, EolGraceExpired</dd></div>
-        <div><dt>Mastered with</dt><dd><code>composer ci</code>: validate, PHPUnit, policy schema, Pint, PHPStan, audit. Same command on GitLab and GitHub.</dd></div>
-        <div><dt>Tested on</dt><dd>PHP 8.3, 8.4 and 8.5</dd></div>
-        <div><dt>Patch feeds</dt><dd>php.net, Packagist and nodejs.org, cross-checked against endoflife.date</dd></div>
-        <div><dt>Produced by</dt><dd>Wayne State University, Enterprise Applications</dd></div>
-        <div><dt>Quality assurance</dt><dd>Creed Bratton, allegedly. Nobody has seen the paperwork.</dd></div>
-        <div><dt>Photography</dt><dd><a href="https://giphy.com/gifs/creed-higher-BsQ4hGk3leUxGVCS5X">Arms out, on stage (GIF)</a> · <a href="https://giphy.com/gifs/creed-sg6OczNgfp7Jm">A wide, wild-eyed grin (GIF)</a></dd></div>
-        <div><dt>Licence</dt><dd>MIT</dd></div>
-      </dl>
-
-      <div class="label" aria-labelledby="label-title">
-        <h3 class="label__title" id="label-title" data-reveal>Also on the label</h3>
-        <p class="label__intro" data-reveal>The WELD stack, one sleeve per part. Every one of them reads the policy on this record.</p>
-        <ul class="catalog">
-          <li class="cat" style="--i:0" data-reveal><span class="cat__sleeve cat__sleeve--wayneui"><img src="assets/marks/wayneui.svg" width="46" height="46" alt="WayneUI mark: a rounded frame holding a solid form, with a gold tab on the lower edge"></span><span class="cat__no">WSU-000</span><span class="cat__name">WayneUI</span><span class="cat__role">The interface</span></li>
-          <li class="cat cat--this" style="--i:1" data-reveal><span class="cat__sleeve"><img src="brand/creed-avatar-256.png" width="256" height="256" alt="CREED mark: a stone arch whose gold keystone holds the other stones in place"></span><span class="cat__no">WSU-001</span><span class="cat__name">CREED</span><span class="cat__role">The standards. This record.</span></li>
-          <li class="cat" style="--i:2" data-reveal><span class="cat__sleeve"><img src="assets/marks/pinstripe.png" width="256" height="256" alt="Pinstripe mark: a striped necktie with a gold tie bar"></span><span class="cat__no">WSU-002</span><span class="cat__name">Pinstripe</span><span class="cat__role">The coding standard</span></li>
-          <li class="cat" style="--i:3" data-reveal><span class="cat__sleeve"><img src="assets/marks/proctor.png" width="256" height="256" alt="PROCTOR mark: a watchful eye with a gold square pupil"></span><span class="cat__no">WSU-003</span><span class="cat__name">PROCTOR</span><span class="cat__role">Checks an app against CREED</span></li>
-          <li class="cat" style="--i:4" data-reveal><span class="cat__sleeve"><img src="assets/marks/preflight.png" width="256" height="256" alt="PREFLIGHT mark: a runway with a gold centre line"></span><span class="cat__no">WSU-004</span><span class="cat__name">PREFLIGHT</span><span class="cat__role">Shared CI</span></li>
-          <li class="cat" style="--i:5" data-reveal><span class="cat__sleeve"><img src="assets/marks/sesame.png" width="256" height="256" alt="SESAME mark: an open door with a gold gap"></span><span class="cat__no">WSU-005</span><span class="cat__name">SESAME</span><span class="cat__role">Signs the user in</span></li>
-          <li class="cat" style="--i:6" data-reveal><span class="cat__sleeve"><img src="assets/marks/helmet.png" width="256" height="256" alt="HELMET mark: a white football helmet with a gold facemask"></span><span class="cat__no">WSU-006</span><span class="cat__name">HELMET</span><span class="cat__role">Security headers</span></li>
-          <li class="cat" style="--i:7" data-reveal><span class="cat__sleeve"><img src="assets/marks/sourdough.png" width="256" height="256" alt="Sourdough mark: a starter jar with a gold band"></span><span class="cat__no">WSU-007</span><span class="cat__name">Sourdough</span><span class="cat__role">Starters you feed</span></li>
-          <li class="cat" style="--i:8" data-reveal><span class="cat__sleeve"><img src="assets/marks/weld.png" width="256" height="256" alt="WELD mark: a welder's helmet"></span><span class="cat__no">WSU-008</span><span class="cat__name">WELD</span><span class="cat__role">The whole stack, joined</span></li>
-          <li class="cat" style="--i:9" data-reveal><span class="cat__sleeve"><img src="assets/marks/squire.png" width="256" height="256" alt="SQUIRE mark: a satchel with a gold buckle"></span><span class="cat__no">WSU-009 <span class="cat__new">new</span></span><span class="cat__name">SQUIRE</span><span class="cat__role">Carries the release to Citadel</span></li>
-          <li class="cat" style="--i:10" data-reveal><span class="cat__sleeve"><img src="assets/marks/rollcall.png" width="256" height="256" alt="ROLLCALL mark: an open register with gold ticks"></span><span class="cat__no">WSU-010 <span class="cat__new">new</span></span><span class="cat__name">ROLLCALL</span><span class="cat__role">Every app answers with its PHP version</span></li>
-          <li class="cat" style="--i:11" data-reveal><span class="cat__sleeve"><img src="assets/marks/advisor.png" width="256" height="256" alt="ADVISOR mark: a speech bubble holding a gold compass needle"></span><span class="cat__no">WSU-011 <span class="cat__new">new</span></span><span class="cat__name">ADVISOR</span><span class="cat__role">What applies to your app</span></li>
-          <li class="cat" style="--i:12" data-reveal><span class="cat__sleeve"><img src="assets/marks/drawbridge.png" width="256" height="256" alt="DRAWBRIDGE mark: a castle tower lowering its bridge on a gold chain"></span><span class="cat__no">WSU-012 <span class="cat__new">new</span></span><span class="cat__name">DRAWBRIDGE</span><span class="cat__role">The sign-in gateway</span></li>
-          <li class="cat" style="--i:13" data-reveal><span class="cat__sleeve"><img src="assets/marks/booster.png" width="256" height="256" alt="BOOSTER mark: a syringe that is also a rocket, gold flame below"></span><span class="cat__no">WSU-013 <span class="cat__new">new</span></span><span class="cat__name">BOOSTER</span><span class="cat__role">Upgrades you, one hop at a time</span></li>
-        </ul>
-      </div>
-    </div>
-  </section>
-
-  <!-- ========================================================= back cover -->
-  <section class="back" id="quick-start" aria-labelledby="back-title">
-    <div class="wsu-container">
-      <div class="back__sleeve" data-reveal>
-        <header class="back__head">
-          <div>
-            <p class="kicker kicker--ochre">Back cover</p>
-            <h2 id="back-title">Quick start</h2>
+      <div class="appendix">
+        <div class="appendix__part" data-reveal>
+          <h3><span class="clause__sec">A.1</span> Read the policy from PHP</h3>
+          <p>Any OS with PHP 8.3 or newer and Composer. <span class="soon">Once published on Packagist</span></p>
+          <div class="cmd">
+            <code class="cmd__code"><span class="cmd__dim">$</span> composer require waynestate/creed</code>
+            <button class="cmd__copy" type="button" data-copy="composer require waynestate/creed">Copy</button>
           </div>
-          <div class="barcode" aria-hidden="true"><span class="barcode__bars"></span><span class="barcode__no">0 54 1 CREED 001 8</span></div>
-        </header>
-
-        <div class="back__grid">
-          <div class="back__side">
-            <h3><span class="side__letter side__letter--small">A</span> Install the reader</h3>
-            <p>Any OS with PHP 8.3 or newer and Composer.</p>
-            <div class="cmd cmd--dark">
-              <code class="cmd__code"><span class="cmd__dim">$</span> composer require waynestate/creed</code>
-              <button class="cmd__copy" type="button" data-copy="composer require waynestate/creed">Copy</button>
-            </div>
-            <pre class="snippet" tabindex="0" aria-label="PHP example"><code><span class="c-k">use</span> Waynestate\Creed\Policy;
+          <pre class="snippet" tabindex="0" aria-label="PHP example"><code><span class="c-k">use</span> Waynestate\Creed\Policy;
+<span class="c-k">use</span> Waynestate\Creed\State;
 
 $policy = Policy::<span class="c-f">bundled</span>();
 
 <span class="c-c">// What state is PHP 8.2 in, on this date?</span>
-$policy-&gt;<span class="c-f">stateOf</span>(<span class="c-s">'php'</span>, <span class="c-s">'8.2'</span>, <span class="c-k">new</span> DateTimeImmutable(<span class="c-s">'2026-10-27'</span>));
+$state = $policy-&gt;<span class="c-f">stateOf</span>(<span class="c-s">'php'</span>, <span class="c-s">'8.2'</span>, <span class="c-k">new</span> DateTimeImmutable(<span class="c-s">'2026-10-27'</span>));
 <span class="c-c">// State::Security</span>
 
 <span class="c-c">// What is the oldest PHP an app may declare?</span>
-$policy-&gt;<span class="c-f">oldestSupported</span>(<span class="c-s">'php'</span>, <span class="c-k">new</span> DateTimeImmutable(<span class="c-s">'2026-10-27'</span>));
+$floor = $policy-&gt;<span class="c-f">oldestSupported</span>(<span class="c-s">'php'</span>, <span class="c-k">new</span> DateTimeImmutable(<span class="c-s">'2026-10-27'</span>));
 <span class="c-c">// '8.2'</span></code></pre>
-          </div>
-
-          <div class="back__side">
-            <h3><span class="side__letter side__letter--small">B</span> Run the checks</h3>
-            <p>In a clone of CREED. With PHP and Composer installed, one command runs the whole gate:</p>
-            <div class="cmd cmd--dark">
-              <code class="cmd__code"><span class="cmd__dim">$</span> composer ci</code>
-              <button class="cmd__copy" type="button" data-copy="composer ci">Copy</button>
-            </div>
-            <p>No PHP on the machine? Docker runs the suite and the schema check.</p>
-            <div class="os" data-os>
-              <div class="os__tabs" role="tablist" aria-label="Your operating system">
-                <button type="button" role="tab" id="os-win" aria-selected="true" aria-controls="os-panel-win" data-os-tab="win">Windows</button>
-                <button type="button" role="tab" id="os-mac" aria-selected="false" aria-controls="os-panel-mac" tabindex="-1" data-os-tab="mac">macOS</button>
-                <button type="button" role="tab" id="os-linux" aria-selected="false" aria-controls="os-panel-linux" tabindex="-1" data-os-tab="linux">Linux</button>
-              </div>
-              <div class="os__panel" id="os-panel-win" role="tabpanel" aria-labelledby="os-win">
-                <p class="os__note">PowerShell, with Docker Desktop.</p>
-                <pre class="term" tabindex="0"><code><span class="cmd__dim">PS&gt;</span> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer install --no-interaction
-<span class="cmd__dim">PS&gt;</span> docker run --rm -v "${PWD}:/app" -w /app php:8.4-cli vendor/bin/phpunit
-<span class="cmd__dim">PS&gt;</span> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy</code></pre>
-              </div>
-              <div class="os__panel" id="os-panel-mac" role="tabpanel" aria-labelledby="os-mac" hidden>
-                <p class="os__note">Terminal, with Docker Desktop.</p>
-                <pre class="term" tabindex="0"><code><span class="cmd__dim">$</span> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer install --no-interaction
-<span class="cmd__dim">$</span> docker run --rm -v "${PWD}:/app" -w /app php:8.4-cli vendor/bin/phpunit
-<span class="cmd__dim">$</span> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy</code></pre>
-              </div>
-              <div class="os__panel" id="os-panel-linux" role="tabpanel" aria-labelledby="os-linux" hidden>
-                <p class="os__note">Any shell, with Docker Engine.</p>
-                <pre class="term" tabindex="0"><code><span class="cmd__dim">$</span> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer install --no-interaction
-<span class="cmd__dim">$</span> docker run --rm -v "${PWD}:/app" -w /app php:8.4-cli vendor/bin/phpunit
-<span class="cmd__dim">$</span> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy</code></pre>
-              </div>
-            </div>
-            <p class="back__maint">Maintainers refresh the patch numbers from the upstream feeds with <code>php bin/refresh-patches.php --dry-run</code> (drop <code>--dry-run</code> to write).</p>
-          </div>
         </div>
 
-        <p class="back__fine">℗ 2026 Wayne State University, Enterprise Applications. MIT licence. Read the policy through the reader; don't copy it into your own tool. (This page keeps a copy for the bonus track, and confesses as much in its source.) Published from Wayne State's internal GitLab and mirrored at <a href="https://github.com/waynestate/creed">github.com/waynestate/creed</a>.</p>
+        <div class="appendix__part" data-reveal>
+          <h3><span class="clause__sec">A.2</span> Run CREED's checks</h3>
+          <p>In a clone, with PHP and Composer installed, one command runs the whole gate (validate, PHPUnit, policy schema, Pint, PHPStan, audit). The same command runs on GitLab and GitHub.</p>
+          <div class="cmd">
+            <code class="cmd__code"><span class="cmd__dim">$</span> composer ci</code>
+            <button class="cmd__copy" type="button" data-copy="composer ci">Copy</button>
+          </div>
+          <p>No PHP on the machine? Docker runs the suite and the schema check.</p>
+          <div class="os" data-os>
+            <div class="os__tabs" role="tablist" aria-label="Your operating system">
+              <button type="button" role="tab" id="os-win" aria-selected="true" aria-controls="os-panel-win">Windows</button>
+              <button type="button" role="tab" id="os-mac" aria-selected="false" aria-controls="os-panel-mac" tabindex="-1">macOS</button>
+              <button type="button" role="tab" id="os-linux" aria-selected="false" aria-controls="os-panel-linux" tabindex="-1">Linux</button>
+            </div>
+            <div class="os__panel" id="os-panel-win" role="tabpanel" aria-labelledby="os-win">
+              <p class="os__note">PowerShell, with Docker Desktop.</p>
+              <pre class="term" tabindex="0"><code><span class="cmd__dim">PS&gt;</span> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer install --no-interaction
+<span class="cmd__dim">PS&gt;</span> docker run --rm -v "${PWD}:/app" -w /app php:8.4-cli vendor/bin/phpunit
+<span class="cmd__dim">PS&gt;</span> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy</code></pre>
+            </div>
+            <div class="os__panel" id="os-panel-mac" role="tabpanel" aria-labelledby="os-mac" hidden>
+              <p class="os__note">Terminal, with Docker Desktop.</p>
+              <pre class="term" tabindex="0"><code><span class="cmd__dim">$</span> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer install --no-interaction
+<span class="cmd__dim">$</span> docker run --rm -v "${PWD}:/app" -w /app php:8.4-cli vendor/bin/phpunit
+<span class="cmd__dim">$</span> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy</code></pre>
+            </div>
+            <div class="os__panel" id="os-panel-linux" role="tabpanel" aria-labelledby="os-linux" hidden>
+              <p class="os__note">Any shell, with Docker Engine.</p>
+              <pre class="term" tabindex="0"><code><span class="cmd__dim">$</span> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer install --no-interaction
+<span class="cmd__dim">$</span> docker run --rm -v "${PWD}:/app" -w /app php:8.4-cli vendor/bin/phpunit
+<span class="cmd__dim">$</span> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy</code></pre>
+            </div>
+          </div>
+          <p class="appendix__maint">Maintainers refresh the patch numbers from the upstream feeds with <code>php bin/refresh-patches.php --dry-run</code> (drop <code>--dry-run</code> to write).</p>
+        </div>
+
+        <aside class="appendix__note" data-reveal>
+          <p><b>Strongly recommended:</b> a git.wayne.edu instance runner. CI is a gate only if something runs it (§6.7), and git.wayne.edu has no runners today.</p>
+        </aside>
       </div>
     </div>
   </section>
 
 </main>
 
-<footer class="foot">
-  <div class="wsu-container foot__inner">
-    <p>End of side B. Flip the page back over for side A.</p>
-    <p>Wayne State University · Enterprise Applications</p>
+<footer class="colophon">
+  <div class="wsu-container colophon__inner">
+    <div class="colophon__mark"><img src="brand/creed-avatar-256.png" width="48" height="48" alt=""></div>
+    <div>
+      <p class="colophon__title">Colophon</p>
+      <p>Set in Source Serif 4 and IBM Plex Mono, with Lato from WayneUI. Published by Wayne State University, Enterprise Applications, under the MIT licence. Published from Wayne State's internal GitLab and mirrored at <a href="https://github.com/waynestate/creed">github.com/waynestate/creed</a>.</p>
+      <p>Quality assurance by Creed Bratton, allegedly; his past is a mystery, ours is in <code>policy/policy.json</code>. Exhibits: <a href="https://giphy.com/gifs/creed-higher-BsQ4hGk3leUxGVCS5X">arms out, on stage (GIF)</a> and <a href="https://giphy.com/gifs/creed-sg6OczNgfp7Jm">a wide, wild-eyed grin (GIF)</a>.</p>
+      <p class="colophon__fine">This page carries a copy of the dates for the inspection form and confesses as much in its source. Your tool reads the policy through the reader.</p>
+    </div>
   </div>
 </footer>
 

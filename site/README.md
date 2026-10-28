@@ -3,28 +3,34 @@
 A static page: `index.html`, `assets/creed.css`, `assets/creed.js`. No build step. Serve the `site/` folder from
 anywhere (Citadel, any web server, or `python -m http.server` inside `site/` for a look).
 
-- type: **Archivo**, wide (font-stretch 112–125%, SIL OFL 1.1, self-hosted in `assets/fonts/`, licence in
-  `OFL-archivo.txt`) for display; Lato from WayneUI for body text; the system monospace for commands and running times.
-- base: WayneUI 2.0.8, copied from its static path into `assets/wayne-ui/`, then re-pressed on paper and vinyl.
-- world: an LP package. The front cover is the hero, each standard is a track with a running time and a tag that says
-  how the stack holds it, the inner sleeve carries the liner notes, the white-label test pressings are the open
-  questions, the gatefold has the credits and the label's catalogue (the WELD parts), and the back cover is the quick
-  start.
-- magic: drop the needle. The tonearm swings onto the record, the platter runs at 78, and the tracklist plays: each
-  standard lights up in turn with its reason, the arm walks inward groove by groove, and between sides the record
-  flips over and the label changes to side B. Pick any track and the arm finds it. A hidden track plays after a
-  short silence. The liner notes' bonus track is a working copy of `Policy::stateOf` that shows the inclusive
-  boundary and the 90-day grace on real dates.
-- data: the bonus track carries a copy of the dates in `policy/policy.json` (2026-10-28) in `assets/creed.js`. The
-  policy file stays the source; refresh the copy when the dates change.
+- type: **Source Serif 4** (400, 400 italic, 600, 700) for display and the book, **IBM Plex Mono** (400, 600) for
+  clause numbers, stamps and forms (both SIL OFL 1.1, self-hosted in `assets/fonts/`, licences in `OFL-*.txt`); Lato
+  from WayneUI for running text.
+- base: WayneUI 2.0.8, copied from its static path into `assets/wayne-ui/` (tokens, container, skip link, Lato), then
+  printed on cream stock and bound in green cloth.
+- world: a building code book, the kind an inspector carries. The hero is the title page beside the bound book (mark
+  set into the cover as a plate, foil title, printed chapter tabs on the fore-edge). §0.1 spells out the acronym.
+  Then the contents with a stamp tally per chapter, the key to the stamps (Enforced, Checked, Documented, Not yet,
+  the real tags from `BEST_PRACTICES.md`), Form CR-1, chapters 1 to 7 as numbered clauses with margin notes for the
+  rationale and cross-references to the tool that holds each one, Table 2-1 (the adopted editions from
+  `policy.json`), an errata slip for the open questions, the authorities having jurisdiction (the WELD parts), and
+  Appendix A, the quick start per OS. Clause §c.n maps to practice numbers: §2.1 is practice 11.
+- magic: the inspection stamp. Pick a runtime, a version and a day on Form CR-1, and the inspector's rubber stamp
+  thunks onto the certificate with the state `Policy::stateOf` would return (SUPPORTED, SECURITY ONLY, EOL in grace,
+  EOL grace expired, or REFUSED for a version the policy does not list, because the reader does not guess). The
+  certificate shows the real reader call and its return value, the clause that applies is highlighted in the book,
+  the row lights up in Table 2-1, and earlier stamps stay behind as faint impressions. The result is live-region
+  text. The first time the form comes into view, the stamp comes down on the filled-in certificate.
+- data: the form and Table 2-1 carry a copy of the dates in `policy/policy.json` (2026-10-28) in `assets/creed.js`.
+  The policy file stays the source; refresh the copy when the dates change.
 - marks: `brand/` is CREED's (generated with ChatGPT, never redrawn). `assets/marks/` holds the other stack parts'
   marks, copied from WELD's and BOOSTER's sites; WayneUI uses its own reversed mark on green.
-- reduced motion: the record is already out of its sleeve and not turning, every word present at first paint; the
-  deck and the reader still work, without movement.
-- jokes: Creed song titles as headings and Creed Bratton's record-keeping. GIFs are linked from the credits, never
-  committed. No lyrics, no quotes.
+- reduced motion: the book is already printed, every stamp already inked, every word present at first paint; the form
+  still stamps, without the thunk.
+- jokes: Creed Bratton's unauditable records, "with arms wide open" for the inclusive boundary, Creed being one version
+  ahead. GIFs are linked from the colophon, never committed. No lyrics, no quotes.
 
 Screenshots are in `screenshots/` (desktop, mobile, reduced motion, a motion preview, and mobile crops per section in
 `screenshots/sections/`).
 
-The needle never guesses either.
+The inspector never guesses either.

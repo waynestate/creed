@@ -1,12 +1,12 @@
 /* CREED front page. Small vanilla JS, no build step.
 
-   1. copy buttons       4. the reader (Policy::stateOf, in the browser)
-   2. scroll reveals     5. OS tabs
-   3. the deck: drop the needle and the tracklist plays
+   1. copy buttons        4. the policy reader (Policy::stateOf, in the browser)
+   2. scroll reveals      5. Form CR-1: the inspection stamp
+   3. thumb index         6. Table 2-1, re-read for today      7. OS tabs
 
-   Everything here is a nicety: with the script off, every word on the page is
-   still printed, the tracklist is still readable, and the reader table shows
-   the states as of 2026-10-28. Creed Bratton would call that a cover story.
+   Everything here is a nicety. With the script off, every clause, stamp,
+   table row and command is still printed, and the certificate shows PHP 8.2
+   on 2026-10-28. Creed Bratton would call that an alibi.
 */
 (function () {
   "use strict";
@@ -27,11 +27,8 @@
     clearTimeout(toastTimer);
     toastTimer = setTimeout(function () { toast.classList.remove("is-on"); }, 2200);
   }
-
   function copyText(text) {
-    if (navigator.clipboard && window.isSecureContext) {
-      return navigator.clipboard.writeText(text);
-    }
+    if (navigator.clipboard && window.isSecureContext) return navigator.clipboard.writeText(text);
     return new Promise(function (resolve, reject) {
       var ta = document.createElement("textarea");
       ta.value = text;
@@ -44,13 +41,12 @@
       document.body.removeChild(ta);
     });
   }
-
   $$("[data-copy]").forEach(function (btn) {
     btn.addEventListener("click", function () {
       copyText(btn.getAttribute("data-copy")).then(function () {
         btn.classList.add("is-copied");
         btn.textContent = "Copied";
-        say("Copied. Pressed to your clipboard at 33⅓.");
+        say("Copied. Entered into the record.");
         setTimeout(function () { btn.classList.remove("is-copied"); btn.textContent = "Copy"; }, 1800);
       }, function () { say("Copy didn't take. Select the command and copy it by hand."); });
     });
@@ -63,217 +59,53 @@
       entries.forEach(function (e) {
         if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); }
       });
-    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.08 });
+    }, { rootMargin: "0px 0px -6% 0px", threshold: 0.06 });
     reveals.forEach(function (el) { io.observe(el); });
   } else {
     reveals.forEach(function (el) { el.classList.add("is-in"); });
   }
 
-  /* --------------------------------------------------------- 3. the deck */
-  var deck = $("[data-deck]");
-  var tracks = $$("[data-track]");
-  if (deck && tracks.length) {
-    var arm = $(".tonearm__arm", deck);
-    var disc = $(".disc--deck", deck);
-    var sideText = $("[data-side-text]", deck);
-    var playBtn = $("[data-play]", deck);
-    var playLabel = $("[data-play-label]", deck);
-    var npTitle = $("[data-np-title]", deck);
-    var npWhy = $("[data-np-why]", deck);
-    var npBar = $("[data-np-bar]", deck);
-    var npTime = $("[data-np-time]", deck);
-    var npLive = $("[data-np-live]", deck);
-
-    var STEP = 2600;            // ms per track: 78 rpm, roughly
-    var REST = 0;               // arm angle off the record
-    var OUTER = 19, INNER = 36; // arm angles at the first and last groove
-    var sideOf = function (i) { return tracks[i].querySelector(".track__no").textContent.charAt(0); };
-    var sides = { A: [], B: [] };
-    tracks.forEach(function (t, i) { sides[sideOf(i)].push(i); });
-
-    var state = { playing: false, index: -1, side: "A", start: 0, raf: 0, timer: 0 };
-
-    function secondsOf(i) {
-      var p = (tracks[i].getAttribute("data-time") || "0:00").split(":");
-      return (+p[0]) * 60 + (+p[1]);
-    }
-    function fmt(s) { s = Math.floor(s); return Math.floor(s / 60) + ":" + ("0" + (s % 60)).slice(-2); }
-    function angleFor(i) {
-      var list = sides[sideOf(i)];
-      var j = list.indexOf(i);
-      return OUTER + (list.length > 1 ? j / (list.length - 1) : 0) * (INNER - OUTER);
-    }
-    function setArm(deg) { if (arm) arm.style.setProperty("--arm", deg + "deg"); }
-    function nameOf(i) { return tracks[i].querySelector(".track__no").textContent + " · " + tracks[i].querySelector(".track__name").textContent; }
-    function whyOf(i) {
-      var notes = document.getElementById(tracks[i].getAttribute("aria-controls"));
-      var why = notes && notes.querySelector(".why");
-      return why ? why.textContent : "";
-    }
-
-    function expand(i) {
-      tracks.forEach(function (t, k) {
-        var open = k === i;
-        t.setAttribute("aria-expanded", open ? "true" : "false");
-        t.classList.toggle("is-current", open && state.playing);
-        var notes = document.getElementById(t.getAttribute("aria-controls"));
-        if (notes) notes.hidden = !open;
+  /* ------------------------------------------------------- 3. thumb index */
+  var thumbs = $$("[data-thumb]");
+  if (thumbs.length && "IntersectionObserver" in window) {
+    var byId = {};
+    thumbs.forEach(function (t) { byId[t.getAttribute("data-thumb")] = t; });
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        thumbs.forEach(function (t) { t.classList.remove("is-here"); t.removeAttribute("aria-current"); });
+        var t = byId[e.target.id];
+        if (t) { t.classList.add("is-here"); t.setAttribute("aria-current", "true"); }
       });
-    }
-
-    // Flip the record between sides: edge-on, swap the label, back round.
-    function flipTo(side) {
-      state.side = side;
-      var text = side === "A" ? "SIDE A · THE POLICY · CREED · WSU-001 · 33⅓ ·" : "SIDE B · YOUR APP · CREED · WSU-001 · 33⅓ ·";
-      if (!motion || !disc.animate) { sideText.textContent = text; return Promise.resolve(); }
-      return disc.animate([{ transform: "rotateY(0deg)" }, { transform: "rotateY(90deg)" }], { duration: 320, easing: "ease-in" }).finished
-        .then(function () {
-          sideText.textContent = text;
-          return disc.animate([{ transform: "rotateY(-90deg)" }, { transform: "rotateY(0deg)" }], { duration: 380, easing: "ease-out" }).finished;
-        });
-    }
-
-    function tick() {
-      if (!state.playing) return;
-      var p = Math.min(1, (performance.now() - state.start) / STEP);
-      npBar.style.width = (p * 100) + "%";
-      npTime.textContent = fmt(p * secondsOf(state.index)) + " / " + tracks[state.index].getAttribute("data-time");
-      state.raf = requestAnimationFrame(tick);
-    }
-
-    function playTrack(i) {
-      clearTimeout(state.timer);
-      var go = function () {
-        if (!state.playing) return;
-        state.index = i;
-        setArm(angleFor(i));
-        expand(i);
-        npTitle.textContent = nameOf(i);
-        npWhy.textContent = whyOf(i);
-        state.start = performance.now();
-        cancelAnimationFrame(state.raf);
-        tick();
-        state.timer = setTimeout(function () {
-          var next = i + 1;
-          if (next >= tracks.length) { stop("That's the record. Flip it, or pick a track."); return; }
-          // A short silence before the hidden track, as is traditional.
-          var gap = tracks[next].classList.contains("track--hidden") ? 1400 : 0;
-          if (gap) {
-            npTitle.textContent = "…";
-            npWhy.textContent = "Keep listening.";
-            npBar.style.width = "0%";
-          }
-          state.timer = setTimeout(function () { playTrack(next); }, gap);
-        }, STEP);
-      };
-      var side = sideOf(i);
-      if (side !== state.side) {
-        // Lift, flip, and drop again on the outer groove of the new side.
-        setArm(REST);
-        state.timer = setTimeout(function () {
-          flipTo(side).then(function () { setArm(OUTER); state.timer = setTimeout(go, motion ? 700 : 0); });
-        }, motion ? 700 : 0);
-      } else {
-        go();
-      }
-    }
-
-    function start(i, announce) {
-      state.playing = true;
-      deck.classList.add("is-playing");
-      playBtn.setAttribute("aria-pressed", "true");
-      playLabel.textContent = "Lift the needle";
-      var first = i || 0;
-      if (announce) npLive.textContent = "Playing " + nameOf(first) + ".";
-      // The arm swings over before the first groove.
-      if (sideOf(first) === state.side) {
-        setArm(OUTER - 1);
-        state.timer = setTimeout(function () { playTrack(first); }, motion ? 650 : 0);
-      } else {
-        playTrack(first);
-      }
-    }
-
-    function stop(message) {
-      state.playing = false;
-      clearTimeout(state.timer);
-      cancelAnimationFrame(state.raf);
-      deck.classList.remove("is-playing");
-      playBtn.setAttribute("aria-pressed", "false");
-      playLabel.textContent = "Drop the needle";
-      setArm(REST);
-      tracks.forEach(function (t) { t.classList.remove("is-current"); });
-      if (message) { npTitle.textContent = message; npWhy.textContent = "The needle is up."; }
-      npLive.textContent = message || "Needle up.";
-    }
-
-    playBtn.addEventListener("click", function () {
-      if (state.playing) { stop("Needle up. Your place is kept."); return; }
-      var from = state.index >= 0 && state.index < tracks.length - 1 ? state.index : 0;
-      start(from, true);
-    });
-
-    tracks.forEach(function (t, i) {
-      t.addEventListener("click", function () {
-        if (state.playing && state.index === i) {
-          // A second click on the playing track just folds its notes.
-          var open = t.getAttribute("aria-expanded") === "true";
-          t.setAttribute("aria-expanded", open ? "false" : "true");
-          document.getElementById(t.getAttribute("aria-controls")).hidden = open;
-          return;
-        }
-        clearTimeout(state.timer);
-        if (!state.playing) { start(i, true); return; }
-        npLive.textContent = "Playing " + nameOf(i) + ".";
-        playTrack(i);
-      });
-    });
-
-    // The cover's "Drop the needle": go to the deck, then play from A1.
-    $$("[data-drop-needle]").forEach(function (a) {
-      a.addEventListener("click", function (e) {
-        e.preventDefault();
-        var target = $("#tracklist");
-        target.scrollIntoView({ behavior: motion ? "smooth" : "auto", block: "start" });
-        playBtn.focus({ preventScroll: true });
-        if (!state.playing) setTimeout(function () { start(0, true); }, motion ? 800 : 0);
-      });
-    });
-
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && state.playing) stop("Needle up.");
-    });
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    Object.keys(byId).forEach(function (id) { var s = document.getElementById(id); if (s) spy.observe(s); });
   }
 
-  /* ---------------------------------------- 4. the reader (Policy::stateOf) */
-  /* A copy of the dates in policy/policy.json (2026-10-28), for this demo
+  /* ------------------------------------ 4. the policy reader, in the browser */
+  /* A copy of the dates in policy/policy.json (2026-10-28), for this page
      only. The policy file is the source; real tools read it through
      Waynestate\Creed\Policy, never through a copy like this one. We know.
-     The rules below mirror src/Policy.php line for line. */
+     [active_until, security_until]. The rules mirror src/Policy.php. */
   var POLICY = {
     eol_grace_days: 90,
     components: {
       php: { "8.1": [null, "2025-12-31"], "8.2": ["2024-12-31", "2026-12-31"], "8.3": ["2025-12-31", "2027-12-31"], "8.4": ["2026-12-31", "2028-12-31"], "8.5": ["2027-12-31", "2029-12-31"] },
       laravel: { "10": ["2024-08-06", "2025-02-04"], "11": ["2025-09-03", "2026-03-12"], "12": ["2026-08-13", "2027-02-24"], "13": ["2027-09-17", "2028-03-17"] },
       node: { "20": ["2024-10-22", "2026-04-30"], "22": ["2025-10-21", "2027-04-30"], "24": ["2026-10-20", "2028-04-30"], "26": ["2027-10-20", "2029-04-30"] },
-      mysql: { "5.6": ["2018-02-28", "2021-02-28"], "5.7": ["2020-10-31", "2023-10-31"], "8.0": ["2025-04-30", "2026-04-30"], "8.4": ["2029-04-30", "2032-04-30"], "9.7": ["2031-04-30", "2034-04-30"] }
+      mysql: { "5.6": ["2018-02-28", "2021-02-28"], "5.7": ["2020-10-31", "2023-10-31"], "8.0": ["2025-04-30", "2026-04-30"], "8.4": ["2029-04-30", "2032-04-30"], "9.7": ["2031-04-30", "2034-04-30"] },
+      vue: { "2": ["2023-12-31", "2023-12-31"] },
+      inertia: {}
     }
   };
+  var NAMES = { php: "PHP", laravel: "Laravel", node: "Node", mysql: "MySQL", vue: "Vue", inertia: "Inertia" };
+  var ENUM = { active: "State::Active", security: "State::Security", eol: "State::Eol", eol_grace_expired: "State::EolGraceExpired" };
 
   function addDays(iso, n) {
     var d = new Date(iso + "T00:00:00Z");
     d.setUTCDate(d.getUTCDate() + n);
     return d.toISOString().slice(0, 10);
   }
-  // Same order as Policy::stateOf: inclusive ends, string compare on ISO days.
-  function stateOf(component, version, day) {
-    var entry = POLICY.components[component][version];
-    var activeUntil = entry[0], securityUntil = entry[1];
-    if (activeUntil !== null && day <= activeUntil) return "active";
-    if (day <= securityUntil) return "security";
-    if (day <= addDays(securityUntil, POLICY.eol_grace_days)) return "eol";
-    return "eol_grace_expired";
-  }
+  function daysBetween(a, b) { return Math.round((Date.parse(b + "T00:00:00Z") - Date.parse(a + "T00:00:00Z")) / 864e5); }
   function cmpVersion(a, b) {
     var x = a.split("."), y = b.split(".");
     for (var i = 0; i < Math.max(x.length, y.length); i++) {
@@ -282,85 +114,223 @@
     }
     return 0;
   }
+  function versionsOf(c) { return Object.keys(POLICY.components[c] || {}).sort(cmpVersion); }
+  function graceEnd(c, v) { return addDays(POLICY.components[c][v][1], POLICY.eol_grace_days); }
+
+  // Same order and same refusals as Policy::stateOf.
+  function stateOf(component, version, day) {
+    var versions = POLICY.components[component];
+    if (!versions) throw new Error("Unknown component: " + component);
+    if (!Object.prototype.hasOwnProperty.call(versions, version)) throw new Error("Unknown version of " + component + ": " + version);
+    var activeUntil = versions[version][0], securityUntil = versions[version][1];
+    if (!securityUntil) throw new Error("Version " + version + " of " + component + " has no security_until, and this reader does not guess.");
+    if (activeUntil !== null && day <= activeUntil) return "active";
+    if (day <= securityUntil) return "security";
+    if (day <= addDays(securityUntil, POLICY.eol_grace_days)) return "eol";
+    return "eol_grace_expired";
+  }
   function oldestSupported(component, day) {
-    var ok = Object.keys(POLICY.components[component]).filter(function (v) {
+    var ok = versionsOf(component).filter(function (v) {
       var s = stateOf(component, v, day);
       return s === "active" || s === "security";
-    }).sort(cmpVersion);
+    });
     return ok.length ? ok[0] : null;
   }
+  function todayIso() {
+    var d = new Date();
+    return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2);
+  }
+  function plural(n, word) { return n + " " + word + (n === 1 ? "" : "s"); }
 
-  var reader = $("[data-reader]");
-  if (reader) {
-    var rows = $("[data-reader-rows]", reader);
-    var floor = $("[data-reader-floor]", reader);
-    var dateIn = $("[data-reader-date]", reader);
-    var tabs = $$("[role=tab]", reader);
-    var panel = $("[role=tabpanel]", reader);
-    var chips = $$("[data-date]", reader);
-    var current = "php";
-    var previous = {};
+  /* ------------------------------------------- 5. Form CR-1: the stamp */
+  var form = $("[data-inspect-form]");
+  if (form) {
+    var verSel = $("[data-inspect-version]");
+    var dateIn = $("[data-inspect-date]");
+    var chips = $$("[data-day]");
+    var cert = $("[data-certificate]");
+    var stamp = $("[data-inkstamp]");
+    var live = $("[data-inspect-live]");
+    var out = {
+      what: $("[data-cert-what]"), day: $("[data-cert-day]"), call: $("[data-cert-call]"),
+      returns: $("[data-cert-returns]"), finding: $("[data-cert-finding]"), clause: $("[data-cert-clause]"),
+      serial: $("[data-cert-serial]"), top: $("[data-ink-top]"), word: $("[data-ink-word]"), sub: $("[data-ink-sub]")
+    };
+    var serial = 1;
+    var DEFAULTS = { php: "8.2", laravel: "12", node: "24", mysql: "8.0", vue: "2", inertia: "3" };
+    // Versions people will ask about that the policy does not list. The
+    // reader refuses them, and so does the inspector.
+    var UNLISTED = { vue: ["3"], inertia: ["2", "3"] };
 
-    function todayIso() {
-      var d = new Date();
-      return d.getFullYear() + "-" + ("0" + (d.getMonth() + 1)).slice(-2) + "-" + ("0" + d.getDate()).slice(-2);
-    }
+    function component() { return $("input[name=component]:checked", form).value; }
 
-    function render() {
-      var day = dateIn.value;
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) return; // the reader refuses to guess
-      var versions = Object.keys(POLICY.components[current]).sort(cmpVersion);
+    function fillVersions(c) {
+      var listed = versionsOf(c);
       var html = "";
-      versions.forEach(function (v) {
-        var s = stateOf(current, v, day);
-        var key = current + v;
-        var changed = previous[key] && previous[key] !== s;
-        previous[key] = s;
-        html += "<tr><th scope=\"row\">" + current + " " + v + "</th><td><span class=\"state state--" + s + (changed ? " is-changed" : "") + "\">" + s + "</span></td><td>" + POLICY.components[current][v][1] + "</td></tr>";
-      });
-      rows.innerHTML = html;
-      var o = oldestSupported(current, day);
-      floor.innerHTML = "Oldest supported " + current + " on " + day + ": <strong>" + (o || "none") + "</strong>";
-      chips.forEach(function (c) { c.setAttribute("aria-pressed", c.getAttribute("data-date") === day ? "true" : "false"); });
+      listed.forEach(function (v) { html += "<option value=\"" + v + "\">" + v + "</option>"; });
+      (UNLISTED[c] || []).forEach(function (v) { html += "<option value=\"" + v + "\">" + v + " (not in the policy)</option>"; });
+      verSel.innerHTML = html;
+      verSel.value = DEFAULTS[c];
     }
 
-    function select(tab, focus) {
-      tabs.forEach(function (t) {
-        var on = t === tab;
-        t.setAttribute("aria-selected", on ? "true" : "false");
-        t.tabIndex = on ? 0 : -1;
-      });
-      current = tab.getAttribute("data-component");
-      panel.setAttribute("aria-labelledby", tab.id);
-      if (focus) tab.focus();
-      render();
+    function clauseFor(c, state) {
+      if (state === "refused") return "c-1-4";
+      if (c === "vue") return "c-1-9";
+      if (state === "eol") return "c-5-1";
+      if (state === "eol_grace_expired") return "c-1-5";
+      return { php: state === "security" ? "c-2-2" : "c-2-1", laravel: "c-2-5", node: "c-2-6", mysql: "c-2-7" }[c];
     }
 
-    tabs.forEach(function (t, i) {
-      t.addEventListener("click", function () { select(t); });
-      t.addEventListener("keydown", function (e) {
-        var n = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
-        if (e.key === "Home") n = -i;
-        if (e.key === "End") n = tabs.length - 1 - i;
-        if (n === undefined) return;
-        e.preventDefault();
-        select(tabs[(i + n + tabs.length) % tabs.length], true);
+    function findingFor(c, v, day, state, err) {
+      var name = NAMES[c];
+      if (state === "refused") {
+        return (UNLISTED[c] ? name + " " + v + " publishes no end dates, so the policy does not list it. " : "") + "The reader refuses to guess, and so does the inspector.";
+      }
+      var e = POLICY.components[c][v];
+      var later = versionsOf(c).filter(function (x) { return cmpVersion(x, v) > 0 && stateOf(c, x, day) === "active"; });
+      var floor = oldestSupported(c, day);
+      if (state === "active") {
+        return "Active support until " + e[0] + ", then security fixes until " + e[1] + ". Passes.";
+      }
+      if (state === "security") {
+        var left = daysBetween(day, e[1]);
+        if (left === 0) return "The last day of security fixes. Still Security today, with arms wide open; EOL tomorrow.";
+        return "Security fixes only, until " + e[1] + ": " + plural(left, "day") + " left." + (later.length ? " Plan the move to " + name + " " + later[0] + " now." : " Plan the move now.");
+      }
+      if (state === "eol") {
+        var g = graceEnd(c, v);
+        return "End of life since " + addDays(e[1], 1) + ". In the 90-day grace until " + g + " (" + plural(daysBetween(day, g), "day") + " left); a named, dated override can carry an app that far.";
+      }
+      return "Past grace since " + addDays(graceEnd(c, v), 1) + ". No override applies." + (floor ? " The oldest " + name + " that passes on this day is " + floor + "." : "");
+    }
+
+    var WORDS = { active: "Supported", security: "Security only", eol: "EOL", eol_grace_expired: "EOL", refused: "Refused" };
+
+    function ghost() {
+      if (!stamp) return;
+      var g = stamp.cloneNode(true);
+      g.classList.remove("is-thunk");
+      g.classList.add("inkstamp--ghost");
+      g.removeAttribute("data-inkstamp");
+      $$("[data-ink-top],[data-ink-word],[data-ink-sub]", g).forEach(function (n) { n.removeAttribute("data-ink-top"); n.removeAttribute("data-ink-word"); n.removeAttribute("data-ink-sub"); });
+      var dx = Math.round(Math.random() * 60 - 50), dy = Math.round(Math.random() * 40 - 30);
+      g.style.translate = dx + "px " + dy + "px";
+      cert.insertBefore(g, stamp);
+      var ghosts = $$(".inkstamp--ghost", cert);
+      if (ghosts.length > 3) ghosts[0].remove();
+    }
+
+    function inspect(thunk) {
+      var c = component(), v = verSel.value, day = dateIn.value;
+      chips.forEach(function (ch) {
+        var d = ch.getAttribute("data-day") === "today" ? todayIso() : ch.getAttribute("data-day");
+        ch.setAttribute("aria-pressed", d === day ? "true" : "false");
+      });
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(day)) {
+        live.textContent = "Enter a day as year, month, day. The inspector does not guess.";
+        return;
+      }
+      var state, returns;
+      try {
+        state = stateOf(c, v, day);
+        returns = ENUM[state];
+      } catch (err) {
+        state = "refused";
+        returns = "InvalidArgumentException: " + err.message;
+      }
+      var clauseId = clauseFor(c, state);
+      var clauseEl = document.getElementById(clauseId);
+      var title = clauseEl ? $(".clause__title", clauseEl).textContent.trim().replace(/\.$/, "") : "";
+      var sec = title.split(" ")[0];
+      var finding = findingFor(c, v, day, state);
+
+      if (thunk) ghost();
+      serial += thunk ? 1 : 0;
+      out.serial.textContent = "No. " + ("000" + serial).slice(-4);
+      out.what.textContent = NAMES[c] + " " + v;
+      out.day.textContent = day;
+      out.call.textContent = "$policy->stateOf('" + c + "', '" + v + "', new DateTimeImmutable('" + day + "'))";
+      out.returns.textContent = returns;
+      out.finding.textContent = finding;
+      out.clause.textContent = title;
+      out.clause.setAttribute("href", "#" + clauseId);
+
+      stamp.className = "inkstamp inkstamp--" + state;
+      out.top.textContent = "CREED " + sec + " · " + day;
+      out.word.textContent = WORDS[state];
+      out.sub.textContent = state === "refused" ? "Will not guess"
+        : state === "eol" ? NAMES[c] + " " + v + " · in grace"
+        : state === "eol_grace_expired" ? NAMES[c] + " " + v + " · grace expired"
+        : NAMES[c] + " " + v;
+
+      $$(".clause.is-cited").forEach(function (el) { el.classList.remove("is-cited"); });
+      if (clauseEl) clauseEl.classList.add("is-cited");
+      $$("tr.is-inspected").forEach(function (el) { el.classList.remove("is-inspected"); });
+      var row = $("tr[data-c=\"" + c + "\"][data-v=\"" + v + "\"]");
+      if (row) row.classList.add("is-inspected");
+
+      if (thunk) {
+        live.textContent = "Stamped " + WORDS[state].toUpperCase() + (state === "eol_grace_expired" ? ", grace expired" : "") + ". " + NAMES[c] + " " + v + " on " + day + ". " + finding + " Applicable clause: " + title + ".";
+        if (motion) {
+          stamp.classList.remove("is-thunk"); cert.classList.remove("is-jolt");
+          void stamp.offsetWidth;
+          stamp.classList.add("is-thunk"); cert.classList.add("is-jolt");
+        }
+      }
+    }
+
+    form.addEventListener("submit", function (e) { e.preventDefault(); inspect(true); });
+    $$("input[name=component]", form).forEach(function (r) {
+      r.addEventListener("change", function () { fillVersions(component()); inspect(true); });
+    });
+    verSel.addEventListener("change", function () { inspect(true); });
+    dateIn.addEventListener("change", function () { inspect(true); });
+    chips.forEach(function (ch) {
+      ch.addEventListener("click", function () {
+        var d = ch.getAttribute("data-day");
+        dateIn.value = d === "today" ? todayIso() : d;
+        inspect(true);
       });
     });
-    chips.forEach(function (c) {
-      c.setAttribute("aria-pressed", "false");
-      c.addEventListener("click", function () { dateIn.value = c.getAttribute("data-date"); render(); });
-    });
-    dateIn.addEventListener("input", render);
+
+    fillVersions("php");
     dateIn.value = todayIso();
-    render();
+    inspect(false);
+
+    // The first time the form comes into view, the inspector brings the
+    // stamp down on the certificate that is already filled in.
+    if (motion && "IntersectionObserver" in window) {
+      var once = new IntersectionObserver(function (entries) {
+        if (!entries[0].isIntersecting) return;
+        once.disconnect();
+        setTimeout(function () {
+          stamp.classList.add("is-thunk"); cert.classList.add("is-jolt");
+        }, 250);
+      }, { threshold: 0.55 });
+      once.observe(cert);
+    }
   }
 
-  /* ------------------------------------------------------------ 5. OS tabs */
+  /* ------------------------------------------ 6. Table 2-1, read for today */
+  var adopt = $("[data-adopt]");
+  if (adopt) {
+    var today = todayIso();
+    var LABEL = { active: "Active", security: "Security", eol: "EOL, in grace", eol_grace_expired: "Grace expired" };
+    $$("tr[data-c]", adopt).forEach(function (tr) {
+      var s = stateOf(tr.getAttribute("data-c"), tr.getAttribute("data-v"), today);
+      var cell = tr.querySelector(".st");
+      cell.className = "st st--" + s;
+      cell.textContent = LABEL[s];
+    });
+    $$("[data-floor]", adopt).forEach(function (b) { b.textContent = oldestSupported(b.getAttribute("data-floor"), today) || "none"; });
+    $$("[data-adopt-day]").forEach(function (n) { n.textContent = today; });
+  }
+
+  /* ------------------------------------------------------------ 7. OS tabs */
   var os = $("[data-os]");
   if (os) {
     var osTabs = $$("[role=tab]", os);
-    function pick(tab, focus) {
+    var pick = function (tab, focus) {
       osTabs.forEach(function (t) {
         var on = t === tab;
         t.setAttribute("aria-selected", on ? "true" : "false");
@@ -368,11 +338,13 @@
         document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
       });
       if (focus) tab.focus();
-    }
+    };
     osTabs.forEach(function (t, i) {
       t.addEventListener("click", function () { pick(t); });
       t.addEventListener("keydown", function (e) {
         var n = { ArrowRight: 1, ArrowLeft: -1 }[e.key];
+        if (e.key === "Home") n = -i;
+        if (e.key === "End") n = osTabs.length - 1 - i;
         if (n === undefined) return;
         e.preventDefault();
         pick(osTabs[(i + n + osTabs.length) % osTabs.length], true);
