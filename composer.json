@@ -28,11 +28,22 @@
         }
     },
     "scripts": {
+        "ci": [
+            "@composer validate --strict",
+            "@test",
+            "@validate-policy",
+            "@lint",
+            "@analyse",
+            "@composer audit"
+        ],
         "test": "phpunit",
         "validate-policy": "php bin/validate-policy.php",
         "lint": "pint --test",
         "fix": "pint",
         "analyse": "phpstan analyse --memory-limit=1G"
+    },
+    "scripts-descriptions": {
+        "ci": "The full CI gate: validate, tests, policy schema, Pint, PHPStan, audit. Same command on GitLab and GitHub."
     },
     "config": {
         "sort-packages": true,
