@@ -19,8 +19,8 @@
   `reportIgnoresWithoutComments` (ADR-0013).
 - PHPStan's `phpVersion` follows the policy's PHP floor (ADR-0013).
 - Existing apps start at the highest level they pass, with a committed
-  baseline that may only shrink, then raise the level one step at a time.
-  The level only goes Higher (ADR-0013).
+  baseline that may only shrink, then raise the level one step at a time
+  (ADR-0013). Like the band says, the only way is Higher.
 - New packages have no baseline (ADR-0013).
 - Two reasons for level 8:
   - The starters begin clean, so new apps pass from day one (ADR-0013).
@@ -29,12 +29,15 @@
 
 ## Banned patterns
 
-The bans come from `phpstan-disallowed-calls` and Larastan (ADR-0013).
+Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowed-calls`
+for plain bans, and a custom rule only when neither fits.
 
 - `env()` only in `config/` files, from Larastan's
   `NoEnvCallsOutsideOfConfig` rule. Planned.
-- No disabled TLS verification. Planned.
-- No SQL built by joining strings. Planned.
+- No disabled TLS verification, such as `withoutVerifying()` or
+  `CURLOPT_SSL_VERIFYPEER` set to false (OWASP ASVS). Planned.
+- No SQL built by joining strings; use bindings (OWASP SQL Injection
+  Prevention Cheat Sheet). Planned.
 - No debug leftovers or dynamic code, from `phpstan-disallowed-calls`.
   Planned.
 
@@ -75,9 +78,9 @@ The bans come from `phpstan-disallowed-calls` and Larastan (ADR-0013).
 | Static analysis, level 8 | `phpstan/base.neon` | Planned |
 | Static analysis, raw apps | `phpstan/raw.neon` | Planned |
 | Static analysis, Laravel apps | `phpstan/laravel.neon` | Planned |
-| Banned patterns | `phpstan/base.neon`, `phpstan/laravel.neon` | Planned |
+| Banned patterns | to be decided (a Pinstripe PHPStan config) | Planned |
 | Vue and JavaScript | the ESLint package (name to be decided) | Planned |
-| Security analysis | `phpstan/base.neon`, `phpstan/laravel.neon` | Planned |
+| Security analysis | to be decided | Planned |
 
 ## Not adopted
 
