@@ -20,6 +20,9 @@ final class Policy
     /** @var array<string, array<string, array<string, string>>> */
     private array $components;
 
+    /** @var array<string, array<string, string>> */
+    private array $tools;
+
     /** @var array<string, mixed> */
     private array $rules;
 
@@ -32,6 +35,7 @@ final class Policy
             throw new InvalidArgumentException('Policy file is missing "schema_version".');
         }
         $this->components = $data['components'] ?? [];
+        $this->tools = $data['tools'] ?? [];
         $this->rules = $data['rules'] ?? [];
     }
 
@@ -154,5 +158,16 @@ final class Policy
     public function rules(): array
     {
         return $this->rules;
+    }
+
+    /**
+     * The minimum version of a developer tool, from the tools block.
+     *
+     * Null when the tool is not listed.
+     */
+    public function toolMinimum(string $tool): ?string
+    {
+        $minimum = $this->tools[$tool]['minimum'] ?? null;
+        return is_string($minimum) ? $minimum : null;
     }
 }
