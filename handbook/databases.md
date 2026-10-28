@@ -6,8 +6,10 @@ The policy lists the MySQL versions in `policy/policy.json`, under `mysql`:
 5.6, 5.7, 8.0, 8.4 and 9.7, each with its `active_until` and `security_until`
 dates. The shared server runs 5.6, which is past security support; its
 `security_until` is 2021-02-28. Laravel 13 documents MySQL 5.7 or later. The
-conventions below are how apps live with the shared server until it is
-upgraded. The stack accepts the server as it is, With Arms Wide Open.
+conventions below keep an app working on the shared server until it is
+upgraded. They are a bridge, not the fix: the fix is the upgrade. Code that
+follows them runs unchanged on 8.4, so the move can be made With Arms Wide
+Open.
 
 ## Conventions that keep 5.6 working
 
@@ -19,10 +21,12 @@ upgraded. The stack accepts the server as it is, With Arms Wide Open.
   5.6 server).
 - Store JSON as `text` or `longText`, with Eloquent `array` or `json` casts,
   and filter in PHP. 5.6 has no JSON column type.
-- Leave `use_upsert_alias` unset. The upsert alias is not available on 5.6.
+- Leave `use_upsert_alias` unset, so `upsert()` uses `VALUES()`. The row
+  alias that setting switches to needs MySQL 8.0.19.
 - Rename a column with raw `DB::statement('ALTER TABLE ... CHANGE ...')`.
   Avoid `renameColumn` and `renameIndex`, which emit 5.7 syntax.
-- Use `Schema::hasTable` only. Column introspection is not reliable on 5.6.
+- Use `Schema::hasTable` only. Column introspection is not reliable on 5.6
+  (not yet confirmed on a 5.6 server).
 - Skip `db:show` and `db:monitor`, and run one database-queue worker (or
   another driver if the platform offers one). 5.6 has no `SKIP LOCKED`, so a
   single worker avoids double-processing.
@@ -65,6 +69,11 @@ owners, not something an app sets (not yet confirmed on a 5.6 server). Passing
 `ROW_FORMAT=DYNAMIC` through the `engine` config is likewise not yet confirmed
 on a 5.6 server.
 
+Oracle moved 5.6 to Sustaining Support on 2021-02-01, so it gets no new fixes.
+Builds older than 5.6.46 also speak only TLS 1.0, which current hosts may
+refuse (not yet confirmed on a 5.6 server). Both are reasons to plan the move
+rather than wait for it.
+
 ## How the stack checks it
 
 PROCTOR will flag the patterns in the avoid list above. Not yet.
@@ -95,3 +104,8 @@ PROCTOR will flag the patterns in the avoid list above. Not yet.
 - MySQL 5.7 INFORMATION_SCHEMA COLUMNS:
   https://dev.mysql.com/doc/mysql-infoschema-excerpt/5.7/en/information-schema-columns-table.html
 - MySQL RENAME INDEX worklog: https://dev.mysql.com/worklog/task/?id=6555
+- MySQL INSERT ... ON DUPLICATE KEY UPDATE (row alias from 8.0.19):
+  https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html
+- Oracle MySQL end-of-life notices: https://www.mysql.com/support/eol-notice.html
+- MySQL 5.6 TLS protocols:
+  https://docs.oracle.com/cd/E17952_01/mysql-5.6-en/encrypted-connection-protocols-ciphers.html
