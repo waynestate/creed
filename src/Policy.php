@@ -17,7 +17,7 @@ use RuntimeException;
  */
 final class Policy
 {
-    /** @var array<string, array<string, array<string, string>>> */
+    /** @var array<string, array{versions: array<string, array<string, string>>}> */
     private array $components;
 
     /** @var array<string, array<string, string>> */
