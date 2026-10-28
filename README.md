@@ -1,5 +1,12 @@
 # CREED
 
+[![GitLab GitLab pipeline](https://gitlab.example/enterprise-apps/creed/badges/main/pipeline.svg)](https://gitlab.example/enterprise-apps/creed/-/pipelines)
+[![GitHub Actions](https://github.com/waynestate/creed/actions/workflows/ci.yml/badge.svg)](https://github.com/waynestate/creed/actions/workflows/ci.yml)
+
+Checks: `composer ci` (the same command runs on GitLab and GitHub).
+
+One command, two clouds, zero excuses — higher.
+
 ![Singer of the band Creed in a white tank top and black leather pants on a stage with a red backdrop, one arm stretched out over a cheering crowd](https://media.giphy.com/media/BsQ4hGk3leUxGVCS5X/giphy.gif)
 <sub>GIF via [Giphy](https://giphy.com/gifs/creed-higher-BsQ4hGk3leUxGVCS5X)</sub>
 
