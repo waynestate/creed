@@ -561,12 +561,8 @@ img { max-width: 100%; height: auto; }
 .colophon__inner { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 1.5rem; }
 .colophon__inner > div:last-child { max-width: 48rem; }
 .colophon__mark img { border-radius: 10px; box-shadow: 0 0 0 1px rgba(255, 204, 51, .6); }
-.colophon__title { font-family: var(--mono); font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); margin: 0 0 .5rem; }
 .colophon p { margin: 0 0 .6rem; }
-.colophon a { color: var(--gold); }
-.colophon code { background: rgba(255, 255, 255, .1); color: var(--paper-hi); }
 .colophon__fine { font-size: .9rem; color: #d4dfdb; }
-.colophon :focus-visible { outline-color: var(--gold); }
 
 /* -------------------------------------------------------- toast */
 .toast:empty { visibility: hidden; }
