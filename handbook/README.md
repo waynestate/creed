@@ -6,6 +6,7 @@ rest as "To be decided".
 
 - [Versions](versions.md)
 - [Dependencies](dependencies.md)
+- [Code](code.md)
 - [Auth](auth.md)
 - [Databases](databases.md)
 - [Runtime and headers](runtime-and-headers.md)
