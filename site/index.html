@@ -262,7 +262,7 @@
           <p>No other code in the stack decides a version's state. PROCTOR, ADVISOR, BOOSTER and ROLLCALL ask; CREED's reader, <code>Waynestate\Creed\Policy</code>, answers. It is framework-free PHP with one dependency, and it never guesses.</p>
 
           <h3>With Arms Wide Open</h3>
-          <p>The support window stays open until <code>security_until</code>. A version is still <em>Security</em> on that day, moves to <em>Eol</em> the day after, and stays there for <code>eol_grace_days</code> (90) more days before it is <em>EolGraceExpired</em>. The boundary is inclusive. Try it on the right: pick the last day of PHP 8.2, then the day after.</p>
+          <p>The support window stays open until <code>security_until</code>. A version is still <em>Security</em> on that day, moves to <em>Eol</em> the day after, and stays there for <code>eol_grace_days</code> (90) more days before it is <em>EolGraceExpired</em>. The boundary is inclusive. Try it in the reader: pick the last day of PHP 8.2, then the day after.</p>
 
           <h3>Higher</h3>
           <p>CREED itself requires PHP <code>^8.3</code>, like every stack package, and CI tests it on 8.3, 8.4 and 8.5. The floor for apps is a different number: <code>^8.2</code> until PHP 8.2 reaches end of life on 2026-12-31, then <code>^8.3</code>. Creed has always been one version ahead of everyone else, at least by his own account.</p>
@@ -273,7 +273,7 @@
         <!-- A working copy of Policy::stateOf, run in the browser against the
              dates in policy.json. The page ships its own copy of those dates
              (assets/creed.js); policy/policy.json stays the source. -->
-        <aside class="reader" aria-labelledby="reader-title" data-reader data-reveal>
+        <div class="reader" role="region" aria-labelledby="reader-title" data-reader data-reveal>
           <div class="reader__head">
             <h3 id="reader-title">Bonus track: the reader</h3>
             <p><code>$policy-&gt;stateOf($component, $version, $on)</code></p>
@@ -310,7 +310,7 @@
             </table>
             <p class="reader__floor" aria-live="polite" data-reader-floor>Oldest supported php on 2026-10-28: <strong>8.2</strong></p>
           </div>
-        </aside>
+        </div>
       </div>
     </div>
   </section>
@@ -426,21 +426,21 @@ $policy-&gt;<span class="c-f">oldestSupported</span>(<span class="c-s">'php'</sp
                 <button type="button" role="tab" id="os-mac" aria-selected="false" aria-controls="os-panel-mac" tabindex="-1" data-os-tab="mac">macOS</button>
                 <button type="button" role="tab" id="os-linux" aria-selected="false" aria-controls="os-panel-linux" tabindex="-1" data-os-tab="linux">Linux</button>
               </div>
-              <div class="os__panel" id="os-panel-win" role="tabpanel" aria-labelledby="os-win" tabindex="0">
+              <div class="os__panel" id="os-panel-win" role="tabpanel" aria-labelledby="os-win">
                 <p class="os__note">PowerShell, with Docker Desktop.</p>
-                <pre class="term"><code><span class="cmd__dim">PS&gt;</span> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer install --no-interaction
+                <pre class="term" tabindex="0"><code><span class="cmd__dim">PS&gt;</span> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer install --no-interaction
 <span class="cmd__dim">PS&gt;</span> docker run --rm -v "${PWD}:/app" -w /app php:8.4-cli vendor/bin/phpunit
 <span class="cmd__dim">PS&gt;</span> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy</code></pre>
               </div>
-              <div class="os__panel" id="os-panel-mac" role="tabpanel" aria-labelledby="os-mac" tabindex="0" hidden>
+              <div class="os__panel" id="os-panel-mac" role="tabpanel" aria-labelledby="os-mac" hidden>
                 <p class="os__note">Terminal, with Docker Desktop.</p>
-                <pre class="term"><code><span class="cmd__dim">$</span> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer install --no-interaction
+                <pre class="term" tabindex="0"><code><span class="cmd__dim">$</span> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer install --no-interaction
 <span class="cmd__dim">$</span> docker run --rm -v "${PWD}:/app" -w /app php:8.4-cli vendor/bin/phpunit
 <span class="cmd__dim">$</span> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy</code></pre>
               </div>
-              <div class="os__panel" id="os-panel-linux" role="tabpanel" aria-labelledby="os-linux" tabindex="0" hidden>
+              <div class="os__panel" id="os-panel-linux" role="tabpanel" aria-labelledby="os-linux" hidden>
                 <p class="os__note">Any shell, with Docker Engine.</p>
-                <pre class="term"><code><span class="cmd__dim">$</span> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer install --no-interaction
+                <pre class="term" tabindex="0"><code><span class="cmd__dim">$</span> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer install --no-interaction
 <span class="cmd__dim">$</span> docker run --rm -v "${PWD}:/app" -w /app php:8.4-cli vendor/bin/phpunit
 <span class="cmd__dim">$</span> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy</code></pre>
               </div>
