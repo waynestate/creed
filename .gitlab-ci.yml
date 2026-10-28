@@ -13,3 +13,16 @@ composer-ci:
   script:
     - composer install --no-interaction --no-progress --prefer-dist
     - composer ci
+
+# Runs only from a GitLab CI/CD schedule (CI/CD > Schedules). It re-reads the
+# upstream feeds and rewrites the latest_patch fields in policy/policy.json,
+# then fails the pipeline if the policy was stale. CI never pushes: a person
+# runs the tool and commits the result.
+refresh-patches:
+  image: composer:2.10.3
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+  script:
+    - composer install --no-interaction --no-progress --prefer-dist
+    - php bin/refresh-patches.php
+    - git diff --exit-code policy/policy.json
