@@ -48,6 +48,22 @@ $floor = $policy->oldestSupported('php', new DateTimeImmutable('2026-10-27'));
 // '8.2'
 ```
 
+### Reading the policy from PHP
+
+The reader's public members, one line each:
+
+- `Policy::bundled()`, `Policy::fromFile($path)`, `Policy::fromArray($data)` — load a policy; `origin()` says where it came from.
+- `stateOf($component, $version, $on)` — the state, or an exception; `tryStateOf()` is the same answer as `null` when it cannot be answered.
+- `oldestSupported($component, $on)` — the lowest version still Active or Security; `supported()` lists all of them, oldest first.
+- `latestPatch($component, $version)` — the current patch in that line; `latestPatchChecked()` says when it was last checked.
+- `line($component, $version)` — the raw line: `active_until`, `security_until`, `latest_patch`, `latest_patch_checked`, each a string or null.
+- `activeUntil()`, `securityUntil()` — those dates as `DateTimeImmutable`, or null.
+- `daysToEol($component, $version, $on)` — whole days until `security_until`, signed; `isPastGrace()` says whether the grace period is over.
+- `resolveVersion($component, $version)` — the policy line a full version like `8.3.12` belongs to.
+- `hasComponent()`, `components()`, `versions($component)`, `tools()`, `toolMinimum($tool)`, `rules()` — the shape of the policy itself.
+
+One last time: the reader answers, it does not guess.
+
 ### With Arms Wide Open
 
 The support window stays open until `security_until`. A version is still
