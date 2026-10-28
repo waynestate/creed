@@ -1,0 +1,42 @@
+[
+    {
+        "version": "v20.19.0",
+        "date": "2025-05-20",
+        "lts": "Iron"
+    },
+    {
+        "version": "v20.20.2",
+        "date": "2026-10-01",
+        "lts": "Iron"
+    },
+    {
+        "version": "v22.22.0",
+        "date": "2026-07-09",
+        "lts": "Jod"
+    },
+    {
+        "version": "v22.23.4",
+        "date": "2026-10-08",
+        "lts": "Jod"
+    },
+    {
+        "version": "v24.21.0",
+        "date": "2026-06-17",
+        "lts": false
+    },
+    {
+        "version": "v24.22.1",
+        "date": "2026-10-08",
+        "lts": false
+    },
+    {
+        "version": "v26.11.0",
+        "date": "2026-10-07",
+        "lts": false
+    },
+    {
+        "version": "v26.12.1",
+        "date": "2026-10-21",
+        "lts": false
+    }
+]

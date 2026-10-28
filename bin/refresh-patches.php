@@ -172,7 +172,9 @@ function parsePhpFeed(string $json): array
 /**
  * Parse the Packagist laravel/framework feed into major => latest stable.
  *
- * @return array<string, string>
+ * Major versions are numeric, so the keys are integers at runtime.
+ *
+ * @return array<int|string, string>
  *
  * @throws RuntimeException when the feed is not the expected shape
  */
@@ -192,7 +194,7 @@ function parseLaravelFeed(string $json): array
         throw new RuntimeException('Packagist feed: missing "laravel/framework" versions');
     }
 
-    /** @var array<string, list<string>> $byMajor */
+    /** @var array<int|string, list<string>> $byMajor */
     $byMajor = [];
     foreach ($versions as $entry) {
         if (!is_object($entry)) {
@@ -213,7 +215,7 @@ function parseLaravelFeed(string $json): array
         $byMajor[$major][] = $plain;
     }
 
-    /** @var array<string, string> $latest */
+    /** @var array<int|string, string> $latest */
     $latest = [];
     foreach ($byMajor as $major => $candidates) {
         $best = highestVersion($candidates);
@@ -232,7 +234,9 @@ function parseLaravelFeed(string $json): array
 /**
  * Parse the nodejs.org dist index into major => latest version.
  *
- * @return array<string, string>
+ * Major versions are numeric, so the keys are integers at runtime.
+ *
+ * @return array<int|string, string>
  *
  * @throws RuntimeException when the feed is not the expected shape
  */
@@ -243,7 +247,7 @@ function parseNodeFeed(string $json): array
         throw new RuntimeException('nodejs.org feed: expected a JSON array');
     }
 
-    /** @var array<string, list<string>> $byMajor */
+    /** @var array<int|string, list<string>> $byMajor */
     $byMajor = [];
     foreach ($data as $entry) {
         if (!is_object($entry)) {
@@ -264,7 +268,7 @@ function parseNodeFeed(string $json): array
         $byMajor[$major][] = $plain;
     }
 
-    /** @var array<string, string> $latest */
+    /** @var array<int|string, string> $latest */
     $latest = [];
     foreach ($byMajor as $major => $candidates) {
         $best = highestVersion($candidates);
