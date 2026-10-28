@@ -91,7 +91,7 @@ final class Policy
         $entry = $versions[$version];
         if (!isset($entry['security_until'])) {
             throw new InvalidArgumentException(
-                "Version {$version} of {$component} has no security_until, and this reader does not guess."
+                "Version {$version} of {$component} has no security_until, and this reader does not guess.",
             );
         }
 
@@ -146,7 +146,7 @@ final class Policy
         if ($supported === []) {
             return null;
         }
-        usort($supported, static fn (string $a, string $b): int => version_compare($a, $b));
+        usort($supported, static fn(string $a, string $b): int => version_compare($a, $b));
         return $supported[0];
     }
 
