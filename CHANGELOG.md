@@ -13,3 +13,16 @@
 - The bundled policy lists Vue 3 and Inertia 2 as current lines.
 - `bin/refresh-patches.php` reads the endoflife.date Vue feed and proposes new
   Vue lines (a current line, or EOL dates) alongside the patch refresh.
+- The README's reader example is now a test: `tests/ReadmeTest.php` runs every
+  ```php block that uses the reader against the bundled policy and asserts the
+  values printed beside it. A snippet that cannot run as-is is skipped with a
+  `<!-- readme-test: skip -->` comment.
+- The handbook is now linted for RFC 2119 capitalization. `src/HandbookLinter.php`
+  and `bin/lint-handbook.php` flag lowercase `must`, `must not`, `should`,
+  `should not` and `may` in any chapter that declares RFC 2119, ignoring code
+  spans and blocks; a same-line `<!-- lint: allow -->` excuses a deliberate
+  plain-English use. `composer ci` runs the lint as `lint-handbook`.
+- Every handbook chapter now declares RFC 2119 and uses capital keywords;
+  `handbook/databases.md` gains a "Grace period" section spelling out the 90-day
+  `eol_grace_days` window (`Security` on `security_until`, `Eol` for the window,
+  `EolGraceExpired` after, no override).

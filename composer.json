@@ -34,6 +34,7 @@
             "@test",
             "@validate-policy",
             "@lint",
+            "@lint-handbook",
             "@analyse",
             "@composer audit"
         ],
@@ -41,6 +42,7 @@
         "validate-policy": "php bin/validate-policy.php",
         "export": "php bin/export.php",
         "lint": "pint --test",
+        "lint-handbook": "php bin/lint-handbook.php",
         "fix": "pint",
         "analyse": "phpstan analyse --memory-limit=1G"
     },

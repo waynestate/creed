@@ -1,5 +1,7 @@
 # Versions
 
+The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to be interpreted as described in RFC 2119.
+
 The stack's version policy states:
 
 | State | Runtime (Baseline) | Check / CI | Platform |
@@ -17,7 +19,7 @@ The stack's version policy states:
 - Stack packages raise their own `php` floor in a new major when a PHP version
   reaches EOL, so security fixes require the upgrade (the stack's version policy).
 - `policy.json` is a contract, versioned like WayneUI's `/v2/`. Older Check
-  versions must still read newer policy files (the stack's version policy).
+  versions MUST still read newer policy files (the stack's version policy).
 
 ## Latest patches
 
