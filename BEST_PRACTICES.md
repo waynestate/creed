@@ -110,7 +110,7 @@ Sources: [PHP supported versions](https://www.php.net/supported-versions.php),
 [PHP EOL table](https://www.php.net/eol.php), [Laravel release notes](https://laravel.com/docs/13.x/releases),
 [Node.js release schedule](https://github.com/nodejs/Release), [endoflife.date MySQL](https://endoflife.date/mysql).
 
-How the stack holds it: `Documented`. `research/support-dates.md` lists the sources and the verification date. The
+How the stack holds it: `Documented`. The sources and the verification date are on record. The
 schema has no per-version `source` field, so the file itself does not carry the link.
 
 ### 7. Add each new release when it ships
@@ -466,7 +466,8 @@ Why: an open question with no owner stays open.
 
 Sources: [Architectural Decision Records](https://adr.github.io/).
 
-How the stack holds it: `Documented`. `design/DECISIONS.md` follows the format.
+How the stack holds it: `Documented`. The stack's open questions are recorded with an owner, and become ADRs when
+decided.
 
 ### 32. Link each rule to the command that measures it
 

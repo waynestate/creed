@@ -9,6 +9,10 @@ Vue and Inertia, plus the rules every check runs against. A small
 framework-free PHP reader, `Waynestate\Creed\Policy`, answers the one question
 every tool needs: what state is this version in, on this date?
 
+This repository is published from Wayne State University's internal GitLab
+and mirrored here. Changes land there first; Wayne State developers open
+issues and merge requests on the internal project.
+
 No other code in the stack decides a version's state. The rules live in one
 place, and every tool reads them from here.
 
@@ -71,10 +75,8 @@ docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy
 
 ## Strongly recommended: a git.wayne.edu instance runner
 
-git.wayne.edu has no runners today, so CI for this repo runs on GitLab. Every
-product in the stack strongly recommends a git.wayne.edu instance runner. The
-case for it is written up in `design/instance-runner-case.md` in the
-coordination repo (`the stack`).
+git.wayne.edu has no runners today. Every product in the stack strongly
+recommends a git.wayne.edu instance runner.
 
 ![Creed Bratton from The Office in a dark suit and blue shirt with a wide, wild-eyed grin](https://media.giphy.com/media/sg6OczNgfp7Jm/giphy.gif)
 <sub>GIF via [Giphy](https://giphy.com/gifs/creed-sg6OczNgfp7Jm)</sub>
