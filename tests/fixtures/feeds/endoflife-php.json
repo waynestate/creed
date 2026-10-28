@@ -1,0 +1,48 @@
+{
+    "schema_version": "1.2.1",
+    "result": {
+        "name": "php",
+        "releases": [
+            {
+                "name": "8.5",
+                "isEol": false,
+                "latest": {
+                    "name": "8.5.12",
+                    "date": "2026-10-21"
+                }
+            },
+            {
+                "name": "8.4",
+                "isEol": false,
+                "latest": {
+                    "name": "8.4.27",
+                    "date": "2026-10-21"
+                }
+            },
+            {
+                "name": "8.3",
+                "isEol": false,
+                "latest": {
+                    "name": "8.3.36",
+                    "date": "2026-10-21"
+                }
+            },
+            {
+                "name": "8.2",
+                "isEol": false,
+                "latest": {
+                    "name": "8.2.35",
+                    "date": "2026-10-21"
+                }
+            },
+            {
+                "name": "8.1",
+                "isEol": true,
+                "latest": {
+                    "name": "8.1.34",
+                    "date": "2025-12-18"
+                }
+            }
+        ]
+    }
+}

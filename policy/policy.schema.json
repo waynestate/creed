@@ -40,6 +40,13 @@
                                     "type": "string",
                                     "format": "date"
                                 },
+                                "latest_patch": {
+                                    "type": "string"
+                                },
+                                "latest_patch_checked": {
+                                    "type": "string",
+                                    "format": "date"
+                                },
                                 "images": {
                                     "type": "object",
                                     "additionalProperties": false,

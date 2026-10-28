@@ -1,0 +1,60 @@
+{
+    "schema_version": 1,
+    "components": {
+        "php": {
+            "versions": {
+                "8.1": {
+                    "security_until": "2025-12-31",
+                    "latest_patch": "8.1.34",
+                    "latest_patch_checked": "2025-12-18"
+                },
+                "8.2": {
+                    "security_until": "2026-12-31",
+                    "latest_patch": "8.2.30",
+                    "latest_patch_checked": "2026-01-01"
+                },
+                "8.3": {
+                    "security_until": "2027-12-31"
+                },
+                "8.4": {
+                    "security_until": "2028-12-31"
+                },
+                "8.5": {
+                    "security_until": "2029-12-31"
+                }
+            }
+        },
+        "laravel": {
+            "versions": {
+                "10": {
+                    "security_until": "2025-02-04"
+                },
+                "11": {
+                    "security_until": "2026-03-12"
+                },
+                "12": {
+                    "security_until": "2027-02-24"
+                },
+                "13": {
+                    "security_until": "2028-03-17"
+                }
+            }
+        },
+        "node": {
+            "versions": {
+                "20": {
+                    "security_until": "2026-04-30"
+                },
+                "22": {
+                    "security_until": "2027-04-30"
+                },
+                "24": {
+                    "security_until": "2028-04-30"
+                },
+                "26": {
+                    "security_until": "2029-04-30"
+                }
+            }
+        }
+    }
+}
