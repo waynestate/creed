@@ -350,7 +350,7 @@ core and never re-implement it.
 
 Why: one rule in one place reaches every permutation, and an app is never forced onto a framework.
 
-Sources: none outside the stack; this is the stack's core-plus-adapters design.
+Sources: none outside the stack. This is the stack's own core-plus-adapters rule.
 The [Composer versions article](https://getcomposer.org/doc/articles/versions.md)
 explains the `^` constraints that make a PSR-only floor workable.
 
