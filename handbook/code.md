@@ -22,7 +22,7 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
   `reportIgnoresWithoutComments` (the stack's coding standard).
 - PHPStan's `phpVersion` follows the policy's PHP floor (the stack's coding standard).
 - Existing apps start at the highest level they pass, with a committed
-  baseline that MAY only shrink, then raise the level one step at a time
+  baseline that MUST NOT grow, then raise the level one step at a time
   (the stack's coding standard). Like the band says, the only way is Higher.
 - New packages have no baseline (the stack's coding standard).
 - Two reasons for level 8:
