@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.1.1 (2026-10-29)
+
 - `bin/refresh-policy.php` keeps every support date, patch and new line in the
   policy tied to a canonical source (php.net, the Node.js release schedule,
   endoflife.date, Packagist, npm). Changes are classed tighten, neutral,
