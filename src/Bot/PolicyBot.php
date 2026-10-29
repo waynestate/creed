@@ -39,6 +39,14 @@ use stdClass;
  * With --dry-run the refresher writes nothing and always exits 0; the robot
  * then prints the decided outcome, the planned files, the merge request
  * title and body, and touches nothing.
+ *
+ * After a handled real run the robot also brings its alert issues in line
+ * with the report: one open GitLab issue per alert key (held, refused,
+ * disagreement, upcoming end of life), labelled auto-alert. A key that is
+ * still present gets a note on its existing issue; a key that is gone
+ * closes its issue. The client is injected by the tests or built from the
+ * CI_API_V4_URL, CI_PROJECT_ID and CREED_BOT_TOKEN environment variables;
+ * a dry run only prints what it would open and never calls the API.
  */
 final readonly class PolicyBot
 {
@@ -100,7 +108,21 @@ final readonly class PolicyBot
     ];
 
     /**
+     * The environment variables the alert channel builds its client from,
+     * in fixed order.
+     *
+     * @var list<string>
+     */
+    private const ALERT_ENVIRONMENT = [
+        'CI_API_V4_URL',
+        'CI_PROJECT_ID',
+        'CREED_BOT_TOKEN',
+    ];
+
+    /**
      * @param resource|null $errorStream stream for error lines; STDERR by default
+     * @param AlertIssues|null $alerts injected alert channel; built from the
+     *        alert environment when null
      */
     public function __construct(
         private string $repoRoot,
@@ -108,6 +130,7 @@ final readonly class PolicyBot
         private bool $dryRun = false,
         private ?string $today = null,
         private mixed $errorStream = null,
+        private ?AlertIssues $alerts = null,
     ) {}
 
     /**
@@ -115,7 +138,8 @@ final readonly class PolicyBot
      *
      * @param string|null $offlineDir feed directory for the refresher, or null to fetch
      *
-     * @return int 0 on every handled outcome, 1 on a hard failure
+     * @return int 0 on every handled outcome, 1 on a hard failure or when
+     *         the alert channel cannot be reached
      */
     public function run(?string $offlineDir = null): int
     {
@@ -134,24 +158,30 @@ final readonly class PolicyBot
             [$status, $report] = $first;
 
             if ($this->dryRun) {
-                return $this->dryRunOutcome($report);
+                $exit = $this->dryRunOutcome($report);
+                $this->printAlertPlan($report);
+
+                return $exit;
             }
 
             if ($status === 0) {
                 $age = $this->daysSinceLastRefresh();
-                if ($age < self::HEARTBEAT_DAYS) {
-                    return $this->nothingToDo();
+                if ($age >= self::HEARTBEAT_DAYS) {
+                    $this->say("the last refresh was {$age} days old; running the refresher with --touch\n");
+                    $second = $this->runRefresher($offlineDir, $reportPath, touch: true);
+                    if ($second === null) {
+                        return 1;
+                    }
+                    [$status, $report] = $second;
                 }
-
-                $this->say("the last refresh was {$age} days old; running the refresher with --touch\n");
-                $second = $this->runRefresher($offlineDir, $reportPath, touch: true);
-                if ($second === null) {
-                    return 1;
-                }
-                [$status, $report] = $second;
             }
 
-            return $this->decide($status, $report);
+            $exit = $this->decide($status, $report);
+            if ($exit !== 0) {
+                return $exit;
+            }
+
+            return $this->alertSync($report);
         } finally {
             if (is_file($reportPath)) {
                 @unlink($reportPath);
@@ -300,6 +330,116 @@ final readonly class PolicyBot
         $this->say("the refresher exited with an unknown code ({$exit}); treating it as a failure\n");
 
         return 1;
+    }
+
+    /**
+     * Bring the open auto-alert issues in line with the report after a
+     * handled run: print each action, or the missing alert environment when
+     * no client can be built. Returns the alert channel's exit code.
+     */
+    private function alertSync(object $report): int
+    {
+        $alerts = $this->alerts();
+        if ($alerts === null) {
+            $this->say('missing environment variables: ' . implode(', ', $this->missingAlertEnvironment()) . "\n");
+
+            return 1;
+        }
+
+        [$exit, $errors, $actions] = $alerts->sync($report);
+        foreach ($actions as $action) {
+            $this->say("{$action}\n");
+        }
+        if ($actions === []) {
+            $this->say("alert issues: nothing to do\n");
+        }
+        foreach ($errors as $error) {
+            $this->err("{$error}\n");
+        }
+
+        return $exit;
+    }
+
+    /**
+     * The alert channel to sync: the injected one, or one built from the
+     * alert environment, or null when that environment is incomplete.
+     */
+    private function alerts(): ?AlertIssues
+    {
+        if ($this->alerts !== null) {
+            return $this->alerts;
+        }
+        $apiUrl = getenv('CI_API_V4_URL');
+        $projectId = getenv('CI_PROJECT_ID');
+        $token = getenv('CREED_BOT_TOKEN');
+        if ($apiUrl === false || $apiUrl === ''
+            || $projectId === false || $projectId === ''
+            || $token === false || $token === '') {
+            return null;
+        }
+        $client = new GitLabClient(GitLabClient::streamTransport(), (string) $apiUrl, (string) $projectId, (string) $token);
+
+        return new AlertIssues($client, $this->policyPath(), $this->today);
+    }
+
+    /**
+     * The alert environment variable names that are missing or empty, in
+     * fixed order. Names only; values never leave this method.
+     *
+     * @return list<string>
+     */
+    private function missingAlertEnvironment(): array
+    {
+        $missing = [];
+        foreach (self::ALERT_ENVIRONMENT as $name) {
+            $value = getenv($name);
+            if ($value === false || $value === '') {
+                $missing[] = $name;
+            }
+        }
+
+        return $missing;
+    }
+
+    /**
+     * What a dry run would do to the alert issues, printed without any API
+     * call: one line per issue it would open.
+     */
+    private function printAlertPlan(object $report): void
+    {
+        $plan = $this->alertsForPlan()->plan($report);
+        if ($plan === []) {
+            $this->say("dry run: no alert issues\n");
+
+            return;
+        }
+        $this->say("dry run: would open these alert issues:\n");
+        foreach ($plan as $item) {
+            $this->say("  {$item['title']}\n");
+        }
+    }
+
+    /**
+     * An alert channel good enough for a dry-run plan: the injected one, or
+     * a clientless one that reads policy/policy.json but never calls the
+     * API.
+     */
+    private function alertsForPlan(): AlertIssues
+    {
+        if ($this->alerts !== null) {
+            return $this->alerts;
+        }
+
+        return new AlertIssues(null, $this->policyPath(), $this->today);
+    }
+
+    /**
+     * The policy document the alert channel reads for the disagreement and
+     * upcoming-eol keys.
+     */
+    private function policyPath(): string
+    {
+        return $this->repoRoot . '/policy/policy.json';
     }
 
     /**

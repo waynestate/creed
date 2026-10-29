@@ -10,19 +10,28 @@ declare(strict_types=1);
  * or a hard failure. A weekly heartbeat re-runs the refresher with
  * --touch when refreshed_on is 7 or more days old.
  *
+ * After a handled real run the robot also brings its alert issues in line
+ * with the report: one open GitLab issue per alert key (held, refused,
+ * disagreement, upcoming end of life), labelled auto-alert. A key that is
+ * still present gets a note; a key that is gone closes its issue. The
+ * client is built from CI_API_V4_URL, CI_PROJECT_ID and CREED_BOT_TOKEN.
+ *
  * Usage:
  *   php bin/policy-bot.php run [--dry-run] [--offline <dir>]
  *
  *   run  One scheduled refresh: run the refresher, then commit the data
  *        allowlist on auto/policy-refresh and push it with merge request
- *        options. --dry-run prints the decided outcome, the planned
- *        files, the merge request title and body, and changes nothing.
- *        --offline <dir> reads the feeds from <dir> instead of fetching
- *        them (tests/fixtures/feeds/ carries a full set).
+ *        options, then sync the alert issues. --dry-run prints the decided
+ *        outcome, the planned files, the merge request title and body, and
+ *        the alert issues it would open, and changes nothing. --offline
+ *        <dir> reads the feeds from <dir> instead of fetching them
+ *        (tests/fixtures/feeds/ carries a full set).
  *
  * Exit codes:
  *   run  0 on every handled outcome (nothing to do, commit plan, alert),
- *        1 when the refresher hard-fails or cannot start
+ *        1 when the refresher hard-fails or cannot start, or when the
+ *        alert environment (CI_API_V4_URL, CI_PROJECT_ID, CREED_BOT_TOKEN)
+ *        is incomplete
  */
 
 use Waynestate\Creed\Bot\CommandRunner;

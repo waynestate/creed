@@ -210,6 +210,7 @@ final class PolicyBotRunTest extends TestCase
             repoRoot: $this->repoRoot,
             runner: new CommandRunner($fake(...)),
             errorStream: $errorStream,
+            alerts: $this->makeAlerts(new FakeTransport()),
         );
 
         [$exit, $out] = $this->capture($bot, static fn(PolicyBot $b): int => $b->run());
@@ -340,6 +341,7 @@ final class PolicyBotRunTest extends TestCase
                 'stdout' => "hello from the refresher\n",
                 'stderr' => '',
             ]),
+            alerts: $this->makeAlerts(new FakeTransport()),
         );
 
         [$exit, $out] = $this->capture($bot, static fn(PolicyBot $b): int => $b->run());

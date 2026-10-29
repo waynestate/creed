@@ -6,7 +6,9 @@ namespace Waynestate\Creed\Tests\Bot;
 
 use PHPUnit\Framework\TestCase as PHPUnitTestCase;
 use stdClass;
+use Waynestate\Creed\Bot\AlertIssues;
 use Waynestate\Creed\Bot\CommandRunner;
+use Waynestate\Creed\Bot\GitLabClient;
 use Waynestate\Creed\Bot\PolicyBot;
 
 /**
@@ -29,6 +31,8 @@ abstract class TestCase extends PHPUnitTestCase
         'CI_SERVER_PORT',
         'CI_PROJECT_PATH',
         'CI_DEFAULT_BRANCH',
+        'CI_API_V4_URL',
+        'CI_PROJECT_ID',
         'CREED_BOT_TOKEN',
     ];
 
@@ -70,6 +74,8 @@ abstract class TestCase extends PHPUnitTestCase
                 'CI_SERVER_PORT' => '443',
                 'CI_PROJECT_PATH' => 'waynestate/creed',
                 'CI_DEFAULT_BRANCH' => 'main',
+                'CI_API_V4_URL' => 'https://git.example.com/api/v4',
+                'CI_PROJECT_ID' => '42',
                 'CREED_BOT_TOKEN' => 'test-token-123',
             ],
             $overrides,
@@ -80,17 +86,21 @@ abstract class TestCase extends PHPUnitTestCase
     }
 
     /**
-     * Assemble the robot around a fake runner.
+     * Assemble the robot around a fake runner and a fake transport. The
+     * alert channel is always injected, so a run never reaches for the real
+     * environment or the network; tests that script the API use the returned
+     * transport.
      *
      * @param list<int> $exits exit code for the nth refresher call
      * @param list<object|null> $reports report document for the nth refresher call, or null for none
      * @param string|null $today YYYY-MM-DD for the heartbeat, the real today by default
      *
-     * @return array{0: PolicyBot, 1: FakeRunner}
+     * @return array{0: PolicyBot, 1: FakeRunner, 2: FakeTransport}
      */
     protected function makeBot(array $exits, array $reports = [], bool $dryRun = false, ?string $today = null): array
     {
         $fake = new FakeRunner($exits, $reports);
+        $transport = new FakeTransport();
 
         return [
             new PolicyBot(
@@ -98,9 +108,25 @@ abstract class TestCase extends PHPUnitTestCase
                 runner: new CommandRunner($fake(...)),
                 dryRun: $dryRun,
                 today: $today,
+                alerts: $this->makeAlerts($transport, $today),
             ),
             $fake,
+            $transport,
         ];
+    }
+
+    /**
+     * An alert channel over a fake transport, pointed at the fixture policy
+     * document. A null transport gives a clientless channel good only for
+     * plan() and currentKeys().
+     */
+    protected function makeAlerts(?FakeTransport $transport = null, ?string $today = null): AlertIssues
+    {
+        $client = $transport === null
+            ? null
+            : new GitLabClient($transport, 'https://git.example.com/api/v4', '42', 'test-token-123');
+
+        return new AlertIssues($client, $this->repoRoot . '/policy/policy.json', $today);
     }
 
     /**
