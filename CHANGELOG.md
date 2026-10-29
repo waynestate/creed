@@ -45,3 +45,7 @@
   `handbook/databases.md` gains a "Grace period" section spelling out the 90-day
   `eol_grace_days` window (`Security` on `security_until`, `Eol` for the window,
   `EolGraceExpired` after, no override).
+
+## 0.1.0 (2026-10-27)
+
+- First tagged release.
