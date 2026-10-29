@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- `handbook/dependencies.md` gains a "Private packages" section: internal-only
+  packages install from one GitLab registry per ecosystem, credentials stay
+  out of repository URLs and lock files, builds use read-only deploy tokens,
+  the private Composer entry is canonical, released versions never move, and
+  public code goes to Packagist or npm. PROCTOR checks and the PREFLIGHT
+  publish job enforce the rules. One standard, no cover versions.
 - Policy lines may be marked `"current": true`: Active on every date, with no
   `security_until`. The schema rejects a current line that also carries a
   `security_until`, and a line that carries neither.
