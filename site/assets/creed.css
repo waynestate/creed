@@ -696,3 +696,9 @@ li.ahj__row:has(.part-link:hover) img { transform: translateY(-2px); }
   .ar-prompt__actions, .ar-cmd, .ar-prompt__more, .imprint { display: none; }
   .ar-prompt.is-collapsed .ar-prompt__text { max-height: none; -webkit-mask-image: none; mask-image: none; }
 }
+
+/* Where this piece sits in the stack: a margin note under the lede, set like a
+   code book's editorial note. Fine print, so no motion and no box. */
+.stack-note { max-width: 38rem; margin: -.75rem 0 1.75rem; padding-left: .85rem; border-left: 2px solid var(--rule); font-size: .95rem; color: var(--ink-2); }
+.stack-note::before { content: "Note"; display: block; margin-bottom: .1rem; font-family: var(--mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--stamp-doc); }
+.stack-note strong { font-weight: 600; color: var(--ink); }
