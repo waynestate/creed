@@ -17,6 +17,7 @@ inspector who stamps what he finds.
 Checks: `composer ci` (the same command runs on GitLab and GitHub).
 
 Front page: [`site/index.html`](site/index.html), a static page you can open in a browser or serve from `site/`.
+On Citadel it is served by the raw-PHP deploy layer in [`deploy/`](deploy/): a SQUIRE kit whose front controller serves `site/` behind HELMET's security headers. For local development, keep serving `site/` directly.
 
 One command, two clouds, zero excuses. Higher.
 
