@@ -5,8 +5,8 @@
     "type": "project",
     "require": {
         "php": "^8.3",
-        "waynestate/helmet": "^0.1",
-        "waynestate/proctor": "^0.1",
+        "waynestate/helmet": "dev-main",
+        "waynestate/proctor": "dev-main",
         "waynestate/creed": "^0.1"
     },
     "config": {
@@ -14,5 +14,7 @@
         "platform": {
             "php": "8.3.0"
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
