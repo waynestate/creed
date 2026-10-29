@@ -35,12 +35,13 @@
 
 <header class="runhead">
   <div class="wsu-container runhead__inner">
-    <a class="runhead__brand" href="#main">
+    <a class="runhead__brand" href="#main" aria-label="CREED, top of the page">
       <img src="brand/creed-avatar-256.png" width="28" height="28" alt="">
       <span>CREED</span>
     </a>
     <span class="runhead__edition" aria-hidden="true">Wayne State App Stack Code · 2026 Edition</span>
-    <nav class="runhead__nav" aria-label="On this page">
+    <nav class="runhead__nav" aria-label="Site">
+      <a href="handbook/">Handbook</a>
       <a href="#contents">Contents</a>
       <a href="#inspection">Inspect</a>
       <a href="#errata">Errata</a>
@@ -96,7 +97,7 @@
 
         <div class="title-page__actions">
           <a class="btn btn--ink" href="#inspection">Inspect a version</a>
-          <a class="btn btn--rule" href="#contents">Read the code</a>
+          <a class="btn btn--rule" href="handbook/">Read the handbook</a>
         </div>
 
         <dl class="tally" aria-label="How the 54 practices are held today">
@@ -139,7 +140,7 @@
       <header class="chap-head" data-reveal>
         <p class="chap-head__kicker">Table of contents</p>
         <h2 id="contents-title">Ten chapters, 54 practices</h2>
-        <p class="chap-head__lede">Each practice has a reason, sources and a stamp that says how the stack holds it today. Clause numbers follow the chapters: §2.1 is practice 11 in <a href="https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md">BEST_PRACTICES.md</a>. This page prints the clauses an inspector reaches for most; the book has all of them.</p>
+        <p class="chap-head__lede">Each practice has a reason, sources and a stamp that says how the stack holds it today. Clause numbers follow the chapters: §2.1 is practice 11 in <a href="https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md">BEST_PRACTICES.md</a>. This page prints the clauses an inspector reaches for most; the book has all of them, and the rules themselves are in <a href="handbook/">the handbook</a>, chapter by chapter.</p>
       </header>
 
       <ol class="toc" data-reveal>
@@ -179,7 +180,7 @@
         <article class="article">
           <p class="article__no">Art. III</p>
           <h3>The handbook</h3>
-          <p>The rules chapter by chapter in <a href="https://github.com/waynestate/creed/tree/main/handbook"><code>handbook/</code></a>, each citing the decision behind it. Where nothing is decided, the chapter says "To be decided" and states no rule.</p>
+          <p>The rules chapter by chapter in <a href="handbook/">the handbook</a>, each citing the decision behind it. Where nothing is decided, the chapter says "To be decided" and states no rule.</p>
         </article>
       </div>
     </div>
@@ -654,7 +655,7 @@
           <h2 id="errata-title">Errata and pending amendments</h2>
           <p>Open questions in the 2026 edition. Each is written down with the clause it touches, and stays open until a decision or a source closes it.</p>
         </header>
-        <div class="errata__scroll" tabindex="0" role="region" aria-labelledby="errata-title">
+        <div class="errata__scroll" tabindex="0" role="region" aria-label="Errata table">
           <table class="errata__table">
             <thead><tr><th scope="col">No.</th><th scope="col">Clause</th><th scope="col">Erratum or amendment</th><th scope="col">Status</th></tr></thead>
             <tbody>

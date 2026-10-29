@@ -15,6 +15,7 @@
 /tests            export-ignore
 /handbook         export-ignore
 /bin              export-ignore
+/tools            export-ignore
 /composer.lock    export-ignore
 /phpunit.xml.dist export-ignore
 /.gitattributes   export-ignore
