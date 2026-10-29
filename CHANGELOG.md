@@ -2,6 +2,16 @@
 
 ## Unreleased
 
+- `bin/policy-bot.php run`: a real (non dry-run) run now commits the data
+  allowlist on `auto/policy-refresh` and force-pushes it with GitLab merge
+  request push options (create, target, remove source branch, label
+  `auto-data`, title; `merge_request.auto_merge` on exit 3 only). The push
+  URL comes from the CI_SERVER_* variables and CREED_BOT_TOKEN; missing
+  variables stop the run with exit 1 naming them, and every printed line
+  masks the token as `[masked]`. After an exit 0, a refresh whose
+  `refreshed_on` is 7 or more days old runs the refresher again with
+  `--touch` and treats that result like a normal run.
+
 ## 0.1.2 (2026-10-29)
 
 - `bin/refresh-policy.php`: a released version that loosens a constraint now exits 3 (changes written) with an alert in the report, instead of exit 4.
