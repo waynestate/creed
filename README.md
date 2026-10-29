@@ -72,6 +72,7 @@ The reader's public members, one line each:
 - `daysToEol($component, $version, $on)`: whole days until `security_until`, signed; `isPastGrace()` says whether the grace period is over.
 - `resolveVersion($component, $version)`: the policy line a full version like `8.3.12` belongs to.
 - `isAheadOfPolicy($component, $version)`: whether a version sorts above every line the policy lists.
+- `belowOldestLineReason($component, $version)`: the reason a version is `Eol` for sorting below every listed line, or null.
 - `hasComponent()`, `components()`, `versions($component)`, `tools()`, `toolMinimum($tool)`, `rules()`: the shape of the policy itself.
 
 One last time: the reader answers, it does not guess.
@@ -94,10 +95,14 @@ is inclusive, and the reader never guesses.
 
 ### Versions CREED hasn't heard of
 
-The reader refuses what it does not know, except the newest thing. A version
-that sorts above every line the policy lists is `Active`, and
-`isAheadOfPolicy()` says so. A version that falls between listed lines is
-still unknown, and still throws. Current versions are never refused.
+The reader refuses what it does not know, except the newest thing and the
+oldest. A version that sorts above every line the policy lists is `Active`,
+and `isAheadOfPolicy()` says so. A version that parses and sorts below every
+listed line is `Eol`: it is older than the oldest listed line, and that is
+end of life by definition. `belowOldestLineReason()` gives the reason,
+`older than the oldest listed line (8.1)`. A version that falls between
+listed lines, or that does not parse, is still unknown, and still throws.
+Current versions are never refused.
 
 A line marked `"current": true` is `Active` on every date and carries no
 `security_until`: the policy says the line is current, and the reader does not

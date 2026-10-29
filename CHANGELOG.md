@@ -2,6 +2,14 @@
 
 ## Unreleased
 
+- Fixed: a version of a known component that is older than the oldest listed
+  line (PHP 5.x to 8.0, Laravel 5 to 8, Inertia 0.x) is now `Eol`, with the
+  reason `older than the oldest listed line (8.1)` from the new
+  `belowOldestLineReason($component, $version)`, instead of being refused as
+  an unknown version. Unlisted components and version strings that do not
+  parse are still refused, and a version above every listed line is still
+  `Active`.
+
 ## 0.1.1 (2026-10-29)
 
 - `bin/refresh-policy.php` keeps every support date, patch and new line in the
