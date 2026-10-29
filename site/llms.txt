@@ -1,0 +1,61 @@
+# CREED
+
+> CREED is the Wayne State app stack's code book: a handbook of numbered practices, plus policy.json, one file of support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader every other tool asks: what state is this version in, on this date?
+
+**The standard everything rests on.** The Wayne State App Stack Code: one policy file, one reader, and an
+inspector who stamps what he finds.
+
+Checks: `composer ci` (the same command runs on GitLab and GitHub).
+
+Front page: [`site/index.html`](https://github.com/waynestate/creed/blob/HEAD/site/index.html), a static page you can open in a browser or serve from `site/`.
+On Citadel it is served by the raw-PHP deploy layer in [`deploy/`](https://github.com/waynestate/creed/blob/HEAD/deploy/): a SQUIRE kit whose front controller serves `site/` behind HELMET's security headers. For local development, keep serving `site/` directly.
+
+One command, two clouds, zero excuses. Higher.
+
+CREED is the Wayne State app stack's version policy, as data. One file,
+`policy/policy.json`, lists the support dates for PHP, Laravel, Node, MySQL,
+Vue and Inertia, plus the rules every check runs against. A small
+framework-free PHP reader, `Waynestate\Creed\Policy`, answers the one question
+every tool needs: what state is this version in, on this date?
+
+This repository is published from Wayne State University's internal GitLab
+and mirrored here. Changes land there first; Wayne State developers open
+issues and merge requests on the internal project.
+
+No other code in the stack decides a version's state. The rules live in one
+place, and every tool reads them from here.
+
+Every page below is Markdown. The HTML pages send the same Markdown to a client that asks for `text/markdown`. Written by SQUIRE's agent-ready kit from the README and the pages; do not edit.
+
+## Pages
+
+- [CREED: The standard everything rests on.](https://creed.apps.wayne.edu/index.md): CREED is the Wayne State app stack's code book: a handbook of numbered practices, plus policy.json, one file of support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader every other tool asks: what state is this version in, on this date?
+- [CREED Handbook: 9 Accessibility](https://creed.apps.wayne.edu/handbook/accessibility.md): Chapter 9 of the CREED handbook, the written rules for the Wayne State app stack: Accessibility.
+- [CREED Handbook: 4 Auth](https://creed.apps.wayne.edu/handbook/auth.md): Chapter 4 of the CREED handbook, the written rules for the Wayne State app stack: Auth.
+- [CREED Handbook: 8 CI](https://creed.apps.wayne.edu/handbook/ci.md): Chapter 8 of the CREED handbook, the written rules for the Wayne State app stack: CI.
+- [CREED Handbook: 3 Code](https://creed.apps.wayne.edu/handbook/code.md): Chapter 3 of the CREED handbook, the written rules for the Wayne State app stack: Code.
+- [CREED Handbook: 5 Databases](https://creed.apps.wayne.edu/handbook/databases.md): Chapter 5 of the CREED handbook, the written rules for the Wayne State app stack: Databases.
+- [CREED Handbook: 2 Dependencies](https://creed.apps.wayne.edu/handbook/dependencies.md): Chapter 2 of the CREED handbook, the written rules for the Wayne State app stack: Dependencies.
+- [CREED Handbook: 7 Deploy gate](https://creed.apps.wayne.edu/handbook/deploy-gate.md): Chapter 7 of the CREED handbook, the written rules for the Wayne State app stack: Deploy gate.
+- [CREED Handbook: 10 Every OS](https://creed.apps.wayne.edu/handbook/every-os.md): Chapter 10 of the CREED handbook, the written rules for the Wayne State app stack: Every OS.
+- [CREED Handbook: the rules, chapter by chapter](https://creed.apps.wayne.edu/handbook/index.md): The CREED handbook: the written rules for the Wayne State app stack, chapter by chapter, each citing the decision behind it.
+- [CREED Handbook: 11 Overrides](https://creed.apps.wayne.edu/handbook/overrides.md): Chapter 11 of the CREED handbook, the written rules for the Wayne State app stack: Overrides.
+- [CREED Handbook: 6 Runtime and headers](https://creed.apps.wayne.edu/handbook/runtime-and-headers.md): Chapter 6 of the CREED handbook, the written rules for the Wayne State app stack: Runtime and headers.
+- [CREED Handbook: 1 Versions](https://creed.apps.wayne.edu/handbook/versions.md): Chapter 1 of the CREED handbook, the written rules for the Wayne State app stack: Versions.
+
+## Prompts
+
+- [Get started with CREED](https://creed.apps.wayne.edu/#prompt-get-started): What CREED says about every version your app runs, today, and the smallest change that brings it back up to code. The prompt itself is in https://creed.apps.wayne.edu/index.md.
+- [CREED in a raw PHP app](https://creed.apps.wayne.edu/#prompt-raw-php): Every rule that applies to an app with no framework, checked with the file and line as evidence. The prompt itself is in https://creed.apps.wayne.edu/index.md.
+- [CREED in a Laravel app with Blade](https://creed.apps.wayne.edu/#prompt-laravel-blade): The same inspection, the Laravel way: config, middleware and the framework line from the policy. The prompt itself is in https://creed.apps.wayne.edu/index.md.
+- [CREED in a Laravel app with Inertia and Vue](https://creed.apps.wayne.edu/#prompt-laravel-inertia): Both halves inspected: the Composer side and the npm side, Node, Vue and Inertia included. The prompt itself is in https://creed.apps.wayne.edu/index.md.
+
+## Source
+
+- [README](https://github.com/waynestate/creed/blob/HEAD/README.md): the project's README, with install, commands and checks
+- [Everything in one file](https://creed.apps.wayne.edu/llms-full.txt): the README and every page above, as one Markdown file
+
+## Optional
+
+- [ADVISOR](https://advisor.apps.wayne.edu/llms.txt): the stack's MCP server: read-only tools that answer from CREED's policy and the parts' docs instead of from memory
+- [WELD](https://weld.apps.wayne.edu/llms.txt): the Wayne State application stack: every part, and the reference app
