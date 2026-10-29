@@ -1,6 +1,6 @@
 ---
 title: "CREED: The standard everything rests on."
-description: "CREED is the Wayne State app stack's code book: a handbook of numbered practices, plus policy.json, one file of support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader every other tool asks: what state is this version in, on this date?"
+description: "CREED is the Wayne State app stack's written standard: 54 numbered practices, policy.json with the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader that tells a tool what state a version is in on a given day."
 url: https://creed.apps.wayne.edu/
 llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
@@ -18,9 +18,9 @@ C&IT Rules for Every Enterprise Developer
 
 and may be cited as *the standard everything rests on*.
 
-The written development standards for Wayne State's app stack: a handbook of numbered practices, plus `policy.json`, one file of support dates for PHP, Laravel, Node, MySQL, Vue and Inertia. A small PHP reader answers the one question every other tool asks: *what state is this version in, on this date?*
+These are the stack's written standards. The handbook has the practices, and `policy.json` has the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia. A small PHP reader takes a version and a day and tells you its state, so PROCTOR, Rollcall and the rest don't each keep their own list of dates.
 
-**Already included in [WELD](https://weld.apps.wayne.edu/).** Use CREED on its own when an app or tool that isn't WELD needs the stack's rules, or the support dates in `policy.json`.
+**Already included in [WELD](https://weld.apps.wayne.edu/).** Install CREED by itself when an app or tool that isn't WELD needs the stack's rules or the dates in `policy.json`.
 
 [Inspect a version](https://creed.apps.wayne.edu/#inspection) [Read the handbook](https://creed.apps.wayne.edu/handbook/)
 
@@ -33,7 +33,7 @@ Table of contents
 
 ## Ten chapters, 54 practices
 
-Each practice has a reason, sources and a stamp that says how the stack holds it today. Clause numbers follow the chapters: §2.1 is practice 11 in [BEST_PRACTICES.md](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md). This page prints the clauses an inspector reaches for most; the book has all of them, and the rules themselves are in [the handbook](https://creed.apps.wayne.edu/handbook/), chapter by chapter.
+Each practice has a reason, its sources and a stamp for how the stack holds it today. Clause numbers follow the chapters, so §2.1 is practice 11 in [BEST_PRACTICES.md](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md). This page prints the clauses people ask about most. All 54 are in that file, and the rules themselves are in [the handbook](https://creed.apps.wayne.edu/handbook/).
 
 1. [1 The version policy as data §1.1 to §1.10](https://creed.apps.wayne.edu/#ch-1)
 2. [2 PHP and framework versions §2.1 to §2.7](https://creed.apps.wayne.edu/#ch-2)
@@ -51,7 +51,7 @@ Each practice has a reason, sources and a stamp that says how the stack holds it
 - **Enforced**: Code makes the violation impossible, or a test fails CI.
 - **Checked**: PROCTOR or CI warns or fails. The check is named.
 - **Documented**: Written down only.
-- **Not yet**: A gap. Printed anyway, because an honest gap beats a quiet one.
+- **Not yet**: A gap. We print it anyway so you know it's there.
 
 Art. I
 
@@ -63,19 +63,19 @@ Art. II
 
 ### The reader
 
-`Waynestate\Creed\Policy`, framework-free PHP. `stateOf` returns `Active`, `Security`, `Eol` or `EolGraceExpired`. No other code in the stack decides a version's state.
+`Waynestate\Creed\Policy` is plain PHP with no framework. `stateOf` returns `Active`, `Security`, `Eol` or `EolGraceExpired`. No other code in the stack decides a version's state.
 
 Art. III
 
 ### The handbook
 
-The rules chapter by chapter in [the handbook](https://creed.apps.wayne.edu/handbook/), each citing the decision behind it. Where nothing is decided, the chapter says "To be decided" and states no rule.
+[The handbook](https://creed.apps.wayne.edu/handbook/) has the rules, one chapter per topic, and each rule links the decision behind it. Where we haven't decided yet, the chapter says "To be decided" and gives no rule.
 
 Form CR-1 · Field inspection
 
 ## Inspect a version
 
-Pick a runtime, a version and a day. The inspector reads the same dates as `Policy::stateOf`, by the same rules: the end day is inclusive, then 90 days of grace, then nothing. He stamps what he finds.
+Pick a runtime, a version and a day. The form uses the same dates and rules as `Policy::stateOf`: a version is still supported on its last day, then it gets 90 days of grace. After that, no override helps. The inspector stamps what he finds.
 
 Certificate of inspection
 
@@ -102,7 +102,7 @@ Creed Bratton keeps his own records and nobody can audit them. CREED does the op
 
 Every tool reads `policy.json` through the CREED reader. No other code decides whether a version is active, security-only or EOL.
 
-Held by `Waynestate\Creed\Policy`, the only implementation. [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) is meant to depend on it.
+Held by `Waynestate\Creed\Policy`, the only implementation. [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor), Booster and Rollcall each carry a generated copy, and `bin/export.php --check` fails when a copy drifts.
 
 Documented
 
@@ -298,7 +298,7 @@ Chapter 4
 
 ## Secrets and configuration
 
-Three practices, three gaps, all printed. The inspector would rather you knew.
+None of the three practices in this chapter is held yet. Two of them are printed below, gaps and all.
 
 ### §4.1 Keep secrets out of source control.
 
@@ -350,7 +350,7 @@ Chapter 6
 
 ## Writing the handbook
 
-How the code itself is kept: decisions cited, questions owned, checks that give the same answer twice.
+The rules for writing CREED itself. Mostly: link the decision, and don't let a gate depend on anyone's opinion.
 
 ### §6.1 Cite the decision behind every rule.
 
@@ -406,7 +406,7 @@ Inserted after printing
 
 ## Errata and pending amendments
 
-Open questions in the 2026 edition. Each is written down with the clause it touches, and stays open until a decision or a source closes it.
+The questions the 2026 edition hasn't answered. Each one names the clause it affects. It stays open until we make a decision or find a source.
 
 | No. | Clause | Erratum or amendment | Status |
 | --- | --- | --- | --- |
@@ -421,28 +421,28 @@ Referenced tools
 
 ## Authorities having jurisdiction
 
-CREED writes the rules; the rest of WELD inspects, builds and runs to them. Every tool below reads `policy.json` through the reader, never through its own copy.
+CREED writes the rules down. These are the other projects in the stack, and the clauses each one holds. PROCTOR, Booster and Rollcall read `policy.json` through a generated copy of the reader, and ADVISOR carries the policy and the handbook as data.
 
-- ![WayneUI mark: a rounded frame with a gold tab](https://creed.apps.wayne.edu/assets/marks/wayneui.svg)[WayneUI](https://wayneui.apps.wayne.edu/)The interface layer, project 0 of the stack.This page is built on it
-- ![CREED mark: a stone arch whose gold keystone holds the other stones in place](https://creed.apps.wayne.edu/brand/creed-avatar-256.png)CREEDThe standards, the policy and the reader. This book.Chapters 1 to 10
-- ![PROCTOR mark: a watchful eye with a gold square pupil](https://creed.apps.wayne.edu/assets/marks/proctor.png)[PROCTOR](https://proctor.apps.wayne.edu/)One command that checks an app against CREED.[§2.1](https://creed.apps.wayne.edu/#c-2-1) [§2.2](https://creed.apps.wayne.edu/#c-2-2) [§3.1](https://creed.apps.wayne.edu/#c-3-1) [§3.2](https://creed.apps.wayne.edu/#c-3-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§5.1](https://creed.apps.wayne.edu/#c-5-1)
-- ![Preflight mark: a runway with a gold centre line](https://creed.apps.wayne.edu/assets/marks/preflight.png)[Preflight](https://preflight.apps.wayne.edu/)Shared CI, from GitLab CI/CD components.[§1.2](https://creed.apps.wayne.edu/#c-1-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§3.6](https://creed.apps.wayne.edu/#c-3-6) [§6.6](https://creed.apps.wayne.edu/#c-6-6)
-- ![HELMET mark: a white football helmet with a gold facemask](https://creed.apps.wayne.edu/assets/marks/helmet.png)[HELMET](https://helmet.apps.wayne.edu/)Security headers and the runtime ribbon.[§2.2](https://creed.apps.wayne.edu/#c-2-2) [§4.3](https://creed.apps.wayne.edu/#c-4-3)
-- ![Rollcall mark: an open register with gold ticks](https://creed.apps.wayne.edu/assets/marks/rollcall.png)[Rollcall](https://rollcall.apps.wayne.edu/) *new*Every app answers with its PHP version.[§5.1](https://creed.apps.wayne.edu/#c-5-1)
-- ![Pinstripe mark: a striped necktie with a gold tie bar](https://creed.apps.wayne.edu/assets/marks/pinstripe.png)[Pinstripe](https://pinstripe.apps.wayne.edu/)The coding standard: Pint, PHPStan, ESLint, Prettier.The handbook's code chapter
-- ![SESAME mark: an open door with a gold gap](https://creed.apps.wayne.edu/assets/marks/sesame.png)[SESAME](https://sesame.apps.wayne.edu/)Signs the user in.The handbook's auth chapter
-- ![Sourdough mark: a starter jar with a gold band](https://creed.apps.wayne.edu/assets/marks/sourdough.png)[Sourdough](https://sourdough.apps.wayne.edu/)Starters you feed, born compliant.Starts on the floor in Table 2-1
-- ![WELD mark: a welder's helmet](https://creed.apps.wayne.edu/assets/marks/weld.png)[WELD](https://weld.apps.wayne.edu/)The whole stack, joined in one app.Adopts the whole code
-- ![Booster mark: a syringe that is also a rocket, gold flame below](https://creed.apps.wayne.edu/assets/marks/booster.png)[Booster](https://booster.apps.wayne.edu/) *new*Upgrades you, one hop at a time.Gets you off a Grace expired row
-- ![ADVISOR mark: a speech bubble holding a gold compass needle](https://creed.apps.wayne.edu/assets/marks/advisor.png)[ADVISOR](https://advisor.apps.wayne.edu/) *new*What applies to your app, and what to do next.Explains; never gates (§6.4)
-- ![Squire mark: a satchel with a gold buckle](https://creed.apps.wayne.edu/assets/marks/squire.png)[Squire](https://squire.apps.wayne.edu/) *new*Carries the release to Citadel.The deploy gate, proposed
-- ![Drawbridge mark: a castle tower lowering its bridge on a gold chain](https://creed.apps.wayne.edu/assets/marks/drawbridge.png)[Drawbridge](https://drawbridge.apps.wayne.edu/) *new*The Citadel sign-in gateway.Erratum E-7
+- ![WayneUI logo: a rounded frame with a gold tab](https://creed.apps.wayne.edu/assets/marks/wayneui.svg)[WayneUI](https://wayneui.apps.wayne.edu/)Wayne State's design system, project 0 of the stack.This page is built on it
+- ![CREED logo: a stone arch with a gold keystone](https://creed.apps.wayne.edu/brand/creed-avatar-256.png)CREEDThe standards, with the policy file and its reader. This book.Chapters 1 to 10
+- ![PROCTOR logo: an eye with a gold square pupil](https://creed.apps.wayne.edu/assets/marks/proctor.png)[PROCTOR](https://proctor.apps.wayne.edu/)Reads your `composer.json` and lock file and checks them against CREED.[§2.1](https://creed.apps.wayne.edu/#c-2-1) [§2.2](https://creed.apps.wayne.edu/#c-2-2) [§3.1](https://creed.apps.wayne.edu/#c-3-1) [§3.2](https://creed.apps.wayne.edu/#c-3-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§5.1](https://creed.apps.wayne.edu/#c-5-1)
+- ![Preflight logo: a runway with a gold centre line](https://creed.apps.wayne.edu/assets/marks/preflight.png)[Preflight](https://preflight.apps.wayne.edu/)GitLab CI/CD components that run the checks on every push.[§1.2](https://creed.apps.wayne.edu/#c-1-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§3.6](https://creed.apps.wayne.edu/#c-3-6) [§6.6](https://creed.apps.wayne.edu/#c-6-6)
+- ![HELMET logo: a white football helmet with a gold facemask](https://creed.apps.wayne.edu/assets/marks/helmet.png)[HELMET](https://helmet.apps.wayne.edu/)Security headers and the runtime ribbon.[§2.2](https://creed.apps.wayne.edu/#c-2-2) [§4.3](https://creed.apps.wayne.edu/#c-4-3)
+- ![Rollcall logo: an open register with gold ticks](https://creed.apps.wayne.edu/assets/marks/rollcall.png)[Rollcall](https://rollcall.apps.wayne.edu/) *new*Scans the apps and reports which PHP, Laravel and sign-in package each one runs.[§5.1](https://creed.apps.wayne.edu/#c-5-1)
+- ![Pinstripe logo: a striped necktie with a gold tie bar](https://creed.apps.wayne.edu/assets/marks/pinstripe.png)[Pinstripe](https://pinstripe.apps.wayne.edu/)Code style presets for Pint, PHPStan, Rector, ESLint and Prettier.The handbook's code chapter
+- ![SESAME logo: an open door with a gold gap](https://creed.apps.wayne.edu/assets/marks/sesame.png)[SESAME](https://sesame.apps.wayne.edu/)Sign-in through CAS, Entra ID or Drawbridge.The handbook's auth chapter
+- ![Sourdough logo: a starter jar with a gold band](https://creed.apps.wayne.edu/assets/marks/sourdough.png)[Sourdough](https://sourdough.apps.wayne.edu/)Makes a new app with the stack already in it. Raw PHP only, for now.Starts on the floor in Table 2-1
+- ![WELD logo: a welder's helmet](https://creed.apps.wayne.edu/assets/marks/weld.png)[WELD](https://weld.apps.wayne.edu/)A Laravel app with Inertia and Vue that has the whole stack installed.Adopts the whole code
+- ![Booster logo: a syringe with rocket fins and a gold flame](https://creed.apps.wayne.edu/assets/marks/booster.png)[Booster](https://booster.apps.wayne.edu/) *new*Upgrades PHP and Laravel one version at a time.Gets you off a Grace expired row
+- ![ADVISOR logo: a speech bubble with a gold compass needle](https://creed.apps.wayne.edu/assets/marks/advisor.png)[ADVISOR](https://advisor.apps.wayne.edu/) *new*An MCP server your agent can ask about the rules and dates.Explains; never gates (§6.4)
+- ![Squire logo: a satchel with a gold buckle](https://creed.apps.wayne.edu/assets/marks/squire.png)[Squire](https://squire.apps.wayne.edu/) *new*Carries the release to Citadel. This page deploys with it.The deploy gate, proposed
+- ![Drawbridge logo: a castle tower with its bridge down on a gold chain](https://creed.apps.wayne.edu/assets/marks/drawbridge.png)[Drawbridge](https://drawbridge.apps.wayne.edu/) *new*The Citadel sign-in gateway.Erratum E-7
 
 Appendix A
 
 ## Adopting this code
 
-Read the policy from your tool, or run CREED's own checks in a clone.
+Two ways in: read the policy from your own PHP tool, or clone CREED and run its checks.
 
 ### A.1 Read the policy from PHP
 
@@ -467,11 +467,11 @@ $floor = $policy->oldestSupported('php', new DateTimeImmutable('2026-10-27'));
 
 ### A.2 Run CREED's checks
 
-In a clone, with PHP and Composer installed, one command runs the whole gate (validate, PHPUnit, policy schema, Pint, PHPStan, audit). The same command runs on GitLab and GitHub.
+In a clone with PHP and Composer, this runs every check: `composer validate`, PHPUnit, the policy schema, Pint, the handbook lint, the site staleness checks, PHPStan and `composer audit`. GitLab and GitHub run the same command.
 
 `$ composer ci`
 
-No PHP on the machine? Docker runs the suite and the schema check.
+No PHP on your machine? Docker can run the tests and the schema check.
 
 **Windows**
 
@@ -503,7 +503,7 @@ $ docker run --rm -v "${PWD}:/app" -w /app php:8.4-cli vendor/bin/phpunit
 $ docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy
 ```
 
-Maintainers refresh the patch numbers from the upstream feeds with `php bin/refresh-patches.php --dry-run` (drop `--dry-run` to write).
+Maintainers: to pull new patch numbers from the upstream feeds, run `php bin/refresh-patches.php --dry-run` (drop `--dry-run` to write).
 
 **Strongly recommended:** a git.wayne.edu instance runner. CI is a gate only if something runs it (§6.7), and git.wayne.edu has no runners today.
 
@@ -511,11 +511,11 @@ Appendix B
 
 ## Hand it to your agent
 
-Four forms, ready to file with the coding agent you already use. Copy one, or run it straight in OpenCode, Claude Code, Codex or ChatGPT. Each one tells the agent where the code lives, what it may not assume, and to ask before it guesses.
+Four prompts for whatever coding agent you use. Copy one, or open it in OpenCode, Claude Code, Codex or ChatGPT. Each tells the agent where CREED's pages are and what it must not assume, and all four tell it to ask you before it guesses.
 
 ### Get started with CREED
 
-What CREED says about every version your app runs, today, and the smallest change that brings it back up to code.
+Lists every version your app runs with its state today, then proposes the smallest change that fixes anything past end of life. It won't make the change until you say so.
 
 A prompt for your coding agent. Copy it as it stands:
 
@@ -546,7 +546,7 @@ Output: a table (component, version, state, until, clause), then the change as n
 
 ### CREED in a raw PHP app
 
-Every rule that applies to an app with no framework, checked with the file and line as evidence.
+Checks an app with no framework against the rules that apply to it, and cites a file and line for each result.
 
 A prompt for your coding agent. Copy it as it stands:
 
@@ -574,7 +574,7 @@ Output: a findings table (rule, chapter, result, evidence), then the three fixes
 
 ### CREED in a Laravel app with Blade
 
-The same inspection, the Laravel way: config, middleware and the framework line from the policy.
+The same review for Laravel with Blade. It looks at config, middleware and the Laravel line.
 
 A prompt for your coding agent. Copy it as it stands:
 
@@ -602,7 +602,7 @@ Output: a findings table (rule, chapter, result, evidence), then the three fixes
 
 ### CREED in a Laravel app with Inertia and Vue
 
-Both halves inspected: the Composer side and the npm side, Node, Vue and Inertia included.
+Reviews the Composer side and the npm side, including Node, Vue and Inertia. A missing npm lock file counts as a finding.
 
 A prompt for your coding agent. Copy it as it stands:
 
@@ -628,4 +628,4 @@ Constraints:
 Output: a findings table (rule, chapter, result, evidence, half), then the three fixes, then your questions.
 ```
 
-The agent reads the same pages you do: [llms.txt](https://creed.apps.wayne.edu/llms.txt) lists them, [llms-full.txt](https://creed.apps.wayne.edu/llms-full.txt) holds them all in one file, and every page has a Markdown twin. Nothing here phones home; the buttons only copy text or open the tool you picked. The inspector never guesses, and neither should the agent.
+The agent reads the same pages you do: [llms.txt](https://creed.apps.wayne.edu/llms.txt) lists them, [llms-full.txt](https://creed.apps.wayne.edu/llms-full.txt) holds them all in one file, and every page has a Markdown twin. Nothing here phones home. The buttons only copy text or open the tool you picked.

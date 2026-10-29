@@ -8,7 +8,7 @@
 <meta name="stack-env" content="auto">
 <script src="assets/stack-env.js" defer></script>
 <title>CREED: The standard everything rests on.</title>
-<meta name="description" content="CREED is the Wayne State app stack's code book: a handbook of numbered practices, plus policy.json, one file of support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader every other tool asks: what state is this version in, on this date?">
+<meta name="description" content="CREED is the Wayne State app stack's written standard: 54 numbered practices, policy.json with the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader that tells a tool what state a version is in on a given day.">
 <meta name="theme-color" content="#0c5449">
 <link rel="canonical" href="https://creed.apps.wayne.edu/">
 <!-- For agents (ADR-0019): this page as Markdown, and the site's index. Both are written by
@@ -100,9 +100,9 @@
           <p class="short-title__tail">and may be cited as <em>the standard everything rests on</em>.</p>
         </div>
 
-        <p class="lede">The written development standards for Wayne State's app stack: a handbook of numbered practices, plus <code>policy.json</code>, one file of support dates for PHP, Laravel, Node, MySQL, Vue and Inertia. A small PHP reader answers the one question every other tool asks: <em>what state is this version in, on this date?</em></p>
+        <p class="lede">These are the stack's written standards. The handbook has the practices, and <code>policy.json</code> has the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia. A small PHP reader takes a version and a day and tells you its state, so PROCTOR, Rollcall and the rest don't each keep their own list of dates.</p>
 
-        <p class="stack-note"><strong>Already included in <a href="https://weld.apps.wayne.edu/">WELD</a>.</strong> Use CREED on its own when an app or tool that isn't WELD needs the stack's rules, or the support dates in <code>policy.json</code>.</p>
+        <p class="stack-note"><strong>Already included in <a href="https://weld.apps.wayne.edu/">WELD</a>.</strong> Install CREED by itself when an app or tool that isn't WELD needs the stack's rules or the dates in <code>policy.json</code>.</p>
 
         <div class="title-page__actions">
           <a class="btn btn--ink" href="#inspection">Inspect a version</a>
@@ -160,7 +160,7 @@
       <header class="chap-head" data-reveal>
         <p class="chap-head__kicker">Table of contents</p>
         <h2 id="contents-title">Ten chapters, 54 practices</h2>
-        <p class="chap-head__lede">Each practice has a reason, sources and a stamp that says how the stack holds it today. Clause numbers follow the chapters: §2.1 is practice 11 in <a href="https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md">BEST_PRACTICES.md</a>. This page prints the clauses an inspector reaches for most; the book has all of them, and the rules themselves are in <a href="handbook/">the handbook</a>, chapter by chapter.</p>
+        <p class="chap-head__lede">Each practice has a reason, its sources and a stamp for how the stack holds it today. Clause numbers follow the chapters, so §2.1 is practice 11 in <a href="https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md">BEST_PRACTICES.md</a>. This page prints the clauses people ask about most. All 54 are in that file, and the rules themselves are in <a href="handbook/">the handbook</a>.</p>
       </header>
 
       <ol class="toc" data-reveal>
@@ -182,7 +182,7 @@
           <div><dt><span class="stamp stamp--enforced">Enforced</span></dt><dd>Code makes the violation impossible, or a test fails CI.</dd></div>
           <div><dt><span class="stamp stamp--checked">Checked</span></dt><dd>PROCTOR or CI warns or fails. The check is named.</dd></div>
           <div><dt><span class="stamp stamp--documented">Documented</span></dt><dd>Written down only.</dd></div>
-          <div><dt><span class="stamp stamp--notyet">Not yet</span></dt><dd>A gap. Printed anyway, because an honest gap beats a quiet one.</dd></div>
+          <div><dt><span class="stamp stamp--notyet">Not yet</span></dt><dd>A gap. We print it anyway so you know it's there.</dd></div>
         </dl>
       </div>
 
@@ -195,12 +195,12 @@
         <article class="article">
           <p class="article__no">Art. II</p>
           <h3>The reader</h3>
-          <p><code>Waynestate\Creed\Policy</code>, framework-free PHP. <code>stateOf</code> returns <code>Active</code>, <code>Security</code>, <code>Eol</code> or <code>EolGraceExpired</code>. No other code in the stack decides a version's state.</p>
+          <p><code>Waynestate\Creed\Policy</code> is plain PHP with no framework. <code>stateOf</code> returns <code>Active</code>, <code>Security</code>, <code>Eol</code> or <code>EolGraceExpired</code>. No other code in the stack decides a version's state.</p>
         </article>
         <article class="article">
           <p class="article__no">Art. III</p>
           <h3>The handbook</h3>
-          <p>The rules chapter by chapter in <a href="handbook/">the handbook</a>, each citing the decision behind it. Where nothing is decided, the chapter says "To be decided" and states no rule.</p>
+          <p><a href="handbook/">The handbook</a> has the rules, one chapter per topic, and each rule links the decision behind it. Where we haven't decided yet, the chapter says "To be decided" and gives no rule.</p>
         </article>
       </div>
     </div>
@@ -213,7 +213,7 @@
       <header class="chap-head" data-reveal>
         <p class="chap-head__kicker">Form CR-1 · Field inspection</p>
         <h2 id="inspection-title">Inspect a version</h2>
-        <p class="chap-head__lede">Pick a runtime, a version and a day. The inspector reads the same dates as <code>Policy::stateOf</code>, by the same rules: the end day is inclusive, then 90 days of grace, then nothing. He stamps what he finds.</p>
+        <p class="chap-head__lede">Pick a runtime, a version and a day. The form uses the same dates and rules as <code>Policy::stateOf</code>: a version is still supported on its last day, then it gets 90 days of grace. After that, no override helps. The inspector stamps what he finds.</p>
       </header>
 
       <div class="form-cr1" data-inspect>
@@ -300,7 +300,7 @@
         <div class="clause__body">
           <h3 class="clause__title"><span class="clause__sec">§1.1</span> Keep one machine-readable policy, and let one reader decide state.</h3>
           <p>Every tool reads <code>policy.json</code> through the CREED reader. No other code decides whether a version is active, security-only or EOL.</p>
-          <p class="xref"><span class="xref__label">Held by</span> <code>Waynestate\Creed\Policy</code>, the only implementation. <a class="tool" href="#ahj-proctor"><img src="assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> is meant to depend on it.</p>
+          <p class="xref"><span class="xref__label">Held by</span> <code>Waynestate\Creed\Policy</code>, the only implementation. <a class="tool" href="#ahj-proctor"><img src="assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a>, Booster and Rollcall each carry a generated copy, and <code>bin/export.php --check</code> fails when a copy drifts.</p>
         </div>
         <span class="stamp stamp--documented">Documented</span>
         <aside class="margin-note"><b>Rationale.</b> Two tools with two copies of a date will eventually disagree, and a developer cannot tell which to believe.</aside>
@@ -528,7 +528,7 @@
         <div>
           <p class="chap-head__kicker">Chapter 4</p>
           <h2 id="ch-4-title">Secrets and configuration</h2>
-          <p class="chap-head__lede">Three practices, three gaps, all printed. The inspector would rather you knew.</p>
+          <p class="chap-head__lede">None of the three practices in this chapter is held yet. Two of them are printed below, gaps and all.</p>
         </div>
       </header>
 
@@ -598,7 +598,7 @@
         <div>
           <p class="chap-head__kicker">Chapter 6</p>
           <h2 id="ch-6-title">Writing the handbook</h2>
-          <p class="chap-head__lede">How the code itself is kept: decisions cited, questions owned, checks that give the same answer twice.</p>
+          <p class="chap-head__lede">The rules for writing CREED itself. Mostly: link the decision, and don't let a gate depend on anyone's opinion.</p>
         </div>
       </header>
 
@@ -674,7 +674,7 @@
         <header class="errata__head">
           <p class="errata__kicker">Inserted after printing</p>
           <h2 id="errata-title">Errata and pending amendments</h2>
-          <p>Open questions in the 2026 edition. Each is written down with the clause it touches, and stays open until a decision or a source closes it.</p>
+          <p>The questions the 2026 edition hasn't answered. Each one names the clause it affects. It stays open until we make a decision or find a source.</p>
         </header>
         <div class="errata__scroll" tabindex="0" role="region" aria-label="Errata table">
           <table class="errata__table">
@@ -699,23 +699,23 @@
       <header class="chap-head" data-reveal>
         <p class="chap-head__kicker">Referenced tools</p>
         <h2 id="ahj-title">Authorities having jurisdiction</h2>
-        <p class="chap-head__lede">CREED writes the rules; the rest of WELD inspects, builds and runs to them. Every tool below reads <code>policy.json</code> through the reader, never through its own copy.</p>
+        <p class="chap-head__lede">CREED writes the rules down. These are the other projects in the stack, and the clauses each one holds. PROCTOR, Booster and Rollcall read <code>policy.json</code> through a generated copy of the reader, and ADVISOR carries the policy and the handbook as data.</p>
       </header>
       <ul class="ahj">
-        <li class="ahj__row" id="ahj-wayneui" data-reveal><span class="ahj__mark ahj__mark--wayneui"><img src="assets/marks/wayneui.svg" width="40" height="40" alt="WayneUI mark: a rounded frame with a gold tab"></span><span class="ahj__name"><a class="part-link" href="https://wayneui.apps.wayne.edu/">WayneUI</a></span><span class="ahj__role">The interface layer, project 0 of the stack.</span><span class="ahj__cites">This page is built on it</span></li>
-        <li class="ahj__row ahj__row--this" id="ahj-creed" data-reveal><span class="ahj__mark"><img src="brand/creed-avatar-256.png" width="40" height="40" alt="CREED mark: a stone arch whose gold keystone holds the other stones in place"></span><span class="ahj__name">CREED</span><span class="ahj__role">The standards, the policy and the reader. This book.</span><span class="ahj__cites">Chapters 1 to 10</span></li>
-        <li class="ahj__row" id="ahj-proctor" data-reveal><span class="ahj__mark"><img src="assets/marks/proctor.png" width="40" height="40" alt="PROCTOR mark: a watchful eye with a gold square pupil"></span><span class="ahj__name"><a class="part-link" href="https://proctor.apps.wayne.edu/">PROCTOR</a></span><span class="ahj__role">One command that checks an app against CREED.</span><span class="ahj__cites"><a href="#c-2-1">§2.1</a> <a href="#c-2-2">§2.2</a> <a href="#c-3-1">§3.1</a> <a href="#c-3-2">§3.2</a> <a href="#c-3-3">§3.3</a> <a href="#c-5-1">§5.1</a></span></li>
-        <li class="ahj__row" id="ahj-preflight" data-reveal><span class="ahj__mark"><img src="assets/marks/preflight.png" width="40" height="40" alt="Preflight mark: a runway with a gold centre line"></span><span class="ahj__name"><a class="part-link" href="https://preflight.apps.wayne.edu/">Preflight</a></span><span class="ahj__role">Shared CI, from GitLab CI/CD components.</span><span class="ahj__cites"><a href="#c-1-2">§1.2</a> <a href="#c-3-3">§3.3</a> <a href="#c-3-6">§3.6</a> <a href="#c-6-6">§6.6</a></span></li>
-        <li class="ahj__row" id="ahj-helmet" data-reveal><span class="ahj__mark"><img src="assets/marks/helmet.png" width="40" height="40" alt="HELMET mark: a white football helmet with a gold facemask"></span><span class="ahj__name"><a class="part-link" href="https://helmet.apps.wayne.edu/">HELMET</a></span><span class="ahj__role">Security headers and the runtime ribbon.</span><span class="ahj__cites"><a href="#c-2-2">§2.2</a> <a href="#c-4-3">§4.3</a></span></li>
-        <li class="ahj__row" id="ahj-rollcall" data-reveal><span class="ahj__mark"><img src="assets/marks/rollcall.png" width="40" height="40" alt="Rollcall mark: an open register with gold ticks"></span><span class="ahj__name"><a class="part-link" href="https://rollcall.apps.wayne.edu/">Rollcall</a> <em class="new">new</em></span><span class="ahj__role">Every app answers with its PHP version.</span><span class="ahj__cites"><a href="#c-5-1">§5.1</a></span></li>
-        <li class="ahj__row" id="ahj-pinstripe" data-reveal><span class="ahj__mark"><img src="assets/marks/pinstripe.png" width="40" height="40" alt="Pinstripe mark: a striped necktie with a gold tie bar"></span><span class="ahj__name"><a class="part-link" href="https://pinstripe.apps.wayne.edu/">Pinstripe</a></span><span class="ahj__role">The coding standard: Pint, PHPStan, ESLint, Prettier.</span><span class="ahj__cites">The handbook's code chapter</span></li>
-        <li class="ahj__row" data-reveal><span class="ahj__mark"><img src="assets/marks/sesame.png" width="40" height="40" alt="SESAME mark: an open door with a gold gap"></span><span class="ahj__name"><a class="part-link" href="https://sesame.apps.wayne.edu/">SESAME</a></span><span class="ahj__role">Signs the user in.</span><span class="ahj__cites">The handbook's auth chapter</span></li>
-        <li class="ahj__row" data-reveal><span class="ahj__mark"><img src="assets/marks/sourdough.png" width="40" height="40" alt="Sourdough mark: a starter jar with a gold band"></span><span class="ahj__name"><a class="part-link" href="https://sourdough.apps.wayne.edu/">Sourdough</a></span><span class="ahj__role">Starters you feed, born compliant.</span><span class="ahj__cites">Starts on the floor in Table 2-1</span></li>
-        <li class="ahj__row" data-reveal><span class="ahj__mark"><img src="assets/marks/weld.png" width="40" height="40" alt="WELD mark: a welder's helmet"></span><span class="ahj__name"><a class="part-link" href="https://weld.apps.wayne.edu/">WELD</a></span><span class="ahj__role">The whole stack, joined in one app.</span><span class="ahj__cites">Adopts the whole code</span></li>
-        <li class="ahj__row" data-reveal><span class="ahj__mark"><img src="assets/marks/booster.png" width="40" height="40" alt="Booster mark: a syringe that is also a rocket, gold flame below"></span><span class="ahj__name"><a class="part-link" href="https://booster.apps.wayne.edu/">Booster</a> <em class="new">new</em></span><span class="ahj__role">Upgrades you, one hop at a time.</span><span class="ahj__cites">Gets you off a Grace expired row</span></li>
-        <li class="ahj__row" data-reveal><span class="ahj__mark"><img src="assets/marks/advisor.png" width="40" height="40" alt="ADVISOR mark: a speech bubble holding a gold compass needle"></span><span class="ahj__name"><a class="part-link" href="https://advisor.apps.wayne.edu/">ADVISOR</a> <em class="new">new</em></span><span class="ahj__role">What applies to your app, and what to do next.</span><span class="ahj__cites">Explains; never gates (§6.4)</span></li>
-        <li class="ahj__row" data-reveal><span class="ahj__mark"><img src="assets/marks/squire.png" width="40" height="40" alt="Squire mark: a satchel with a gold buckle"></span><span class="ahj__name"><a class="part-link" href="https://squire.apps.wayne.edu/">Squire</a> <em class="new">new</em></span><span class="ahj__role">Carries the release to Citadel.</span><span class="ahj__cites">The deploy gate, proposed</span></li>
-        <li class="ahj__row" data-reveal><span class="ahj__mark"><img src="assets/marks/drawbridge.png" width="40" height="40" alt="Drawbridge mark: a castle tower lowering its bridge on a gold chain"></span><span class="ahj__name"><a class="part-link" href="https://drawbridge.apps.wayne.edu/">Drawbridge</a> <em class="new">new</em></span><span class="ahj__role">The Citadel sign-in gateway.</span><span class="ahj__cites">Erratum E-7</span></li>
+        <li class="ahj__row" id="ahj-wayneui" data-reveal><span class="ahj__mark ahj__mark--wayneui"><img src="assets/marks/wayneui.svg" width="40" height="40" alt="WayneUI logo: a rounded frame with a gold tab"></span><span class="ahj__name"><a class="part-link" href="https://wayneui.apps.wayne.edu/">WayneUI</a></span><span class="ahj__role">Wayne State's design system, project 0 of the stack.</span><span class="ahj__cites">This page is built on it</span></li>
+        <li class="ahj__row ahj__row--this" id="ahj-creed" data-reveal><span class="ahj__mark"><img src="brand/creed-avatar-256.png" width="40" height="40" alt="CREED logo: a stone arch with a gold keystone"></span><span class="ahj__name">CREED</span><span class="ahj__role">The standards, with the policy file and its reader. This book.</span><span class="ahj__cites">Chapters 1 to 10</span></li>
+        <li class="ahj__row" id="ahj-proctor" data-reveal><span class="ahj__mark"><img src="assets/marks/proctor.png" width="40" height="40" alt="PROCTOR logo: an eye with a gold square pupil"></span><span class="ahj__name"><a class="part-link" href="https://proctor.apps.wayne.edu/">PROCTOR</a></span><span class="ahj__role">Reads your <code>composer.json</code> and lock file and checks them against CREED.</span><span class="ahj__cites"><a href="#c-2-1">§2.1</a> <a href="#c-2-2">§2.2</a> <a href="#c-3-1">§3.1</a> <a href="#c-3-2">§3.2</a> <a href="#c-3-3">§3.3</a> <a href="#c-5-1">§5.1</a></span></li>
+        <li class="ahj__row" id="ahj-preflight" data-reveal><span class="ahj__mark"><img src="assets/marks/preflight.png" width="40" height="40" alt="Preflight logo: a runway with a gold centre line"></span><span class="ahj__name"><a class="part-link" href="https://preflight.apps.wayne.edu/">Preflight</a></span><span class="ahj__role">GitLab CI/CD components that run the checks on every push.</span><span class="ahj__cites"><a href="#c-1-2">§1.2</a> <a href="#c-3-3">§3.3</a> <a href="#c-3-6">§3.6</a> <a href="#c-6-6">§6.6</a></span></li>
+        <li class="ahj__row" id="ahj-helmet" data-reveal><span class="ahj__mark"><img src="assets/marks/helmet.png" width="40" height="40" alt="HELMET logo: a white football helmet with a gold facemask"></span><span class="ahj__name"><a class="part-link" href="https://helmet.apps.wayne.edu/">HELMET</a></span><span class="ahj__role">Security headers and the runtime ribbon.</span><span class="ahj__cites"><a href="#c-2-2">§2.2</a> <a href="#c-4-3">§4.3</a></span></li>
+        <li class="ahj__row" id="ahj-rollcall" data-reveal><span class="ahj__mark"><img src="assets/marks/rollcall.png" width="40" height="40" alt="Rollcall logo: an open register with gold ticks"></span><span class="ahj__name"><a class="part-link" href="https://rollcall.apps.wayne.edu/">Rollcall</a> <em class="new">new</em></span><span class="ahj__role">Scans the apps and reports which PHP, Laravel and sign-in package each one runs.</span><span class="ahj__cites"><a href="#c-5-1">§5.1</a></span></li>
+        <li class="ahj__row" id="ahj-pinstripe" data-reveal><span class="ahj__mark"><img src="assets/marks/pinstripe.png" width="40" height="40" alt="Pinstripe logo: a striped necktie with a gold tie bar"></span><span class="ahj__name"><a class="part-link" href="https://pinstripe.apps.wayne.edu/">Pinstripe</a></span><span class="ahj__role">Code style presets for Pint, PHPStan, Rector, ESLint and Prettier.</span><span class="ahj__cites">The handbook's code chapter</span></li>
+        <li class="ahj__row" data-reveal><span class="ahj__mark"><img src="assets/marks/sesame.png" width="40" height="40" alt="SESAME logo: an open door with a gold gap"></span><span class="ahj__name"><a class="part-link" href="https://sesame.apps.wayne.edu/">SESAME</a></span><span class="ahj__role">Sign-in through CAS, Entra ID or Drawbridge.</span><span class="ahj__cites">The handbook's auth chapter</span></li>
+        <li class="ahj__row" data-reveal><span class="ahj__mark"><img src="assets/marks/sourdough.png" width="40" height="40" alt="Sourdough logo: a starter jar with a gold band"></span><span class="ahj__name"><a class="part-link" href="https://sourdough.apps.wayne.edu/">Sourdough</a></span><span class="ahj__role">Makes a new app with the stack already in it. Raw PHP only, for now.</span><span class="ahj__cites">Starts on the floor in Table 2-1</span></li>
+        <li class="ahj__row" data-reveal><span class="ahj__mark"><img src="assets/marks/weld.png" width="40" height="40" alt="WELD logo: a welder's helmet"></span><span class="ahj__name"><a class="part-link" href="https://weld.apps.wayne.edu/">WELD</a></span><span class="ahj__role">A Laravel app with Inertia and Vue that has the whole stack installed.</span><span class="ahj__cites">Adopts the whole code</span></li>
+        <li class="ahj__row" data-reveal><span class="ahj__mark"><img src="assets/marks/booster.png" width="40" height="40" alt="Booster logo: a syringe with rocket fins and a gold flame"></span><span class="ahj__name"><a class="part-link" href="https://booster.apps.wayne.edu/">Booster</a> <em class="new">new</em></span><span class="ahj__role">Upgrades PHP and Laravel one version at a time.</span><span class="ahj__cites">Gets you off a Grace expired row</span></li>
+        <li class="ahj__row" data-reveal><span class="ahj__mark"><img src="assets/marks/advisor.png" width="40" height="40" alt="ADVISOR logo: a speech bubble with a gold compass needle"></span><span class="ahj__name"><a class="part-link" href="https://advisor.apps.wayne.edu/">ADVISOR</a> <em class="new">new</em></span><span class="ahj__role">An MCP server your agent can ask about the rules and dates.</span><span class="ahj__cites">Explains; never gates (§6.4)</span></li>
+        <li class="ahj__row" data-reveal><span class="ahj__mark"><img src="assets/marks/squire.png" width="40" height="40" alt="Squire logo: a satchel with a gold buckle"></span><span class="ahj__name"><a class="part-link" href="https://squire.apps.wayne.edu/">Squire</a> <em class="new">new</em></span><span class="ahj__role">Carries the release to Citadel. This page deploys with it.</span><span class="ahj__cites">The deploy gate, proposed</span></li>
+        <li class="ahj__row" data-reveal><span class="ahj__mark"><img src="assets/marks/drawbridge.png" width="40" height="40" alt="Drawbridge logo: a castle tower with its bridge down on a gold chain"></span><span class="ahj__name"><a class="part-link" href="https://drawbridge.apps.wayne.edu/">Drawbridge</a> <em class="new">new</em></span><span class="ahj__role">The Citadel sign-in gateway.</span><span class="ahj__cites">Erratum E-7</span></li>
       </ul>
     </div>
   </section>
@@ -729,7 +729,7 @@
         <div>
           <p class="chap-head__kicker">Appendix A</p>
           <h2 id="appendix-title">Adopting this code</h2>
-          <p class="chap-head__lede">Read the policy from your tool, or run CREED's own checks in a clone.</p>
+          <p class="chap-head__lede">Two ways in: read the policy from your own PHP tool, or clone CREED and run its checks.</p>
         </div>
       </header>
 
@@ -757,12 +757,12 @@ $floor = $policy-&gt;<span class="c-f">oldestSupported</span>(<span class="c-s">
 
         <div class="appendix__part" data-reveal>
           <h3><span class="clause__sec">A.2</span> Run CREED's checks</h3>
-          <p>In a clone, with PHP and Composer installed, one command runs the whole gate (validate, PHPUnit, policy schema, Pint, PHPStan, audit). The same command runs on GitLab and GitHub.</p>
+          <p>In a clone with PHP and Composer, this runs every check: <code>composer validate</code>, PHPUnit, the policy schema, Pint, the handbook lint, the site staleness checks, PHPStan and <code>composer audit</code>. GitLab and GitHub run the same command.</p>
           <div class="cmd">
             <code class="cmd__code"><span class="cmd__dim">$</span> composer ci</code>
             <button class="cmd__copy" type="button" data-copy="composer ci">Copy</button>
           </div>
-          <p>No PHP on the machine? Docker runs the suite and the schema check.</p>
+          <p>No PHP on your machine? Docker can run the tests and the schema check.</p>
           <div class="os" data-os>
             <div class="os__tabs" role="tablist" aria-label="Your operating system">
               <button type="button" role="tab" id="os-win" aria-selected="true" aria-controls="os-panel-win">Windows</button>
@@ -788,7 +788,7 @@ $floor = $policy-&gt;<span class="c-f">oldestSupported</span>(<span class="c-s">
 <span class="cmd__dim">$</span> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy</code></pre>
             </div>
           </div>
-          <p class="appendix__maint">Maintainers refresh the patch numbers from the upstream feeds with <code>php bin/refresh-patches.php --dry-run</code> (drop <code>--dry-run</code> to write).</p>
+          <p class="appendix__maint">Maintainers: to pull new patch numbers from the upstream feeds, run <code>php bin/refresh-patches.php --dry-run</code> (drop <code>--dry-run</code> to write).</p>
         </div>
 
         <aside class="appendix__note" data-reveal>
@@ -812,7 +812,7 @@ $floor = $policy-&gt;<span class="c-f">oldestSupported</span>(<span class="c-s">
         <div>
           <p class="chap-head__kicker">Appendix B</p>
           <h2 id="agents-title">Hand it to your agent</h2>
-          <p class="chap-head__lede">Four forms, ready to file with the coding agent you already use. Copy one, or run it straight in OpenCode, Claude Code, Codex or ChatGPT. Each one tells the agent where the code lives, what it may not assume, and to ask before it guesses.</p>
+          <p class="chap-head__lede">Four prompts for whatever coding agent you use. Copy one, or open it in OpenCode, Claude Code, Codex or ChatGPT. Each tells the agent where CREED's pages are and what it must not assume, and all four tell it to ask you before it guesses.</p>
         </div>
       </header>
 
@@ -823,7 +823,7 @@ $floor = $policy-&gt;<span class="c-f">oldestSupported</span>(<span class="c-s">
             <div>
               <p class="ar-prompt__kicker">Form AG-1 · Any stack app</p>
               <h3 class="ar-prompt__title" id="prompt-get-started-title">Get started with CREED</h3>
-              <p class="ar-prompt__desc">What CREED says about every version your app runs, today, and the smallest change that brings it back up to code.</p>
+              <p class="ar-prompt__desc">Lists every version your app runs with its state today, then proposes the smallest change that fixes anything past end of life. It won't make the change until you say so.</p>
             </div>
           </header>
           <pre class="ar-prompt__text"><code>You are a coding agent helping a Wayne State University developer bring the app in this folder up to CREED, the written standard of WELD, the Wayne State application stack. CREED is two things: policy.json, the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a handbook of numbered practices.
@@ -856,7 +856,7 @@ Output: a table (component, version, state, until, clause), then the change as n
             <div>
               <p class="ar-prompt__kicker">Form AG-2 · Raw PHP</p>
               <h3 class="ar-prompt__title" id="prompt-raw-php-title">CREED in a raw PHP app</h3>
-              <p class="ar-prompt__desc">Every rule that applies to an app with no framework, checked with the file and line as evidence.</p>
+              <p class="ar-prompt__desc">Checks an app with no framework against the rules that apply to it, and cites a file and line for each result.</p>
             </div>
           </header>
           <pre class="ar-prompt__text"><code>You are a coding agent reviewing a raw PHP app (no framework) at Wayne State University against CREED, the written standard of WELD, the Wayne State application stack.
@@ -885,7 +885,7 @@ Output: a findings table (rule, chapter, result, evidence), then the three fixes
             <div>
               <p class="ar-prompt__kicker">Form AG-3 · Laravel and Blade</p>
               <h3 class="ar-prompt__title" id="prompt-laravel-blade-title">CREED in a Laravel app with Blade</h3>
-              <p class="ar-prompt__desc">The same inspection, the Laravel way: config, middleware and the framework line from the policy.</p>
+              <p class="ar-prompt__desc">The same review for Laravel with Blade. It looks at config, middleware and the Laravel line.</p>
             </div>
           </header>
           <pre class="ar-prompt__text"><code>You are a coding agent reviewing a Laravel app that renders its pages with Blade, at Wayne State University, against CREED, the written standard of WELD, the Wayne State application stack.
@@ -914,7 +914,7 @@ Output: a findings table (rule, chapter, result, evidence), then the three fixes
             <div>
               <p class="ar-prompt__kicker">Form AG-4 · Laravel, Inertia and Vue</p>
               <h3 class="ar-prompt__title" id="prompt-laravel-inertia-title">CREED in a Laravel app with Inertia and Vue</h3>
-              <p class="ar-prompt__desc">Both halves inspected: the Composer side and the npm side, Node, Vue and Inertia included.</p>
+              <p class="ar-prompt__desc">Reviews the Composer side and the npm side, including Node, Vue and Inertia. A missing npm lock file counts as a finding.</p>
             </div>
           </header>
           <pre class="ar-prompt__text"><code>You are a coding agent reviewing a Laravel app with Inertia and Vue, at Wayne State University, against CREED, the written standard of WELD, the Wayne State application stack. It has two halves, and CREED covers both.
@@ -939,7 +939,7 @@ Output: a findings table (rule, chapter, result, evidence, half), then the three
         </section>
         </div>
 
-        <p class="agents__fine">The agent reads the same pages you do: <a href="llms.txt">llms.txt</a> lists them, <a href="llms-full.txt">llms-full.txt</a> holds them all in one file, and every page has a Markdown twin. Nothing here phones home; the buttons only copy text or open the tool you picked. The inspector never guesses, and neither should the agent.</p>
+        <p class="agents__fine">The agent reads the same pages you do: <a href="llms.txt">llms.txt</a> lists them, <a href="llms-full.txt">llms-full.txt</a> holds them all in one file, and every page has a Markdown twin. Nothing here phones home. The buttons only copy text or open the tool you picked.</p>
       </div>
     </div>
   </section>
@@ -950,7 +950,7 @@ Output: a findings table (rule, chapter, result, evidence, half), then the three
   <div class="wsu-container colophon__inner">
     <div class="colophon__mark"><img src="brand/creed-avatar-256.png" width="48" height="48" alt=""></div>
     <div>
-      <p class="colophon__fine">This page carries a copy of the dates for the inspection form and confesses as much in its source. Your tool reads the policy through the reader.</p>
+      <p class="colophon__fine">Yes, this page keeps its own copy of the dates for the inspection form. It says so in the source. Your tool should use the reader.</p>
     </div>
   </div>
 </footer>

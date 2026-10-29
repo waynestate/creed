@@ -1,6 +1,6 @@
 # CREED
 
-> CREED is the Wayne State app stack's code book: a handbook of numbered practices, plus policy.json, one file of support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader every other tool asks: what state is this version in, on this date?
+> CREED is the Wayne State app stack's written standard: 54 numbered practices, policy.json with the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader that tells a tool what state a version is in on a given day.
 
 **The standard everything rests on.** The Wayne State App Stack Code: one policy file, one reader, and an
 inspector who stamps what he finds.
@@ -31,7 +31,7 @@ Every page below is Markdown. The HTML pages send the same Markdown to a client 
 
 ## Pages
 
-- [CREED: The standard everything rests on.](https://creed.apps.wayne.edu/index.md): CREED is the Wayne State app stack's code book: a handbook of numbered practices, plus policy.json, one file of support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader every other tool asks: what state is this version in, on this date?
+- [CREED: The standard everything rests on.](https://creed.apps.wayne.edu/index.md): CREED is the Wayne State app stack's written standard: 54 numbered practices, policy.json with the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader that tells a tool what state a version is in on a given day.
 - [CREED Handbook: 9 Accessibility](https://creed.apps.wayne.edu/handbook/accessibility.md): Chapter 9 of the CREED handbook, the written rules for the Wayne State app stack: Accessibility.
 - [CREED Handbook: 4 Auth](https://creed.apps.wayne.edu/handbook/auth.md): Chapter 4 of the CREED handbook, the written rules for the Wayne State app stack: Auth.
 - [CREED Handbook: 8 CI](https://creed.apps.wayne.edu/handbook/ci.md): Chapter 8 of the CREED handbook, the written rules for the Wayne State app stack: CI.
@@ -47,10 +47,10 @@ Every page below is Markdown. The HTML pages send the same Markdown to a client 
 
 ## Prompts
 
-- [Get started with CREED](https://creed.apps.wayne.edu/#prompt-get-started): What CREED says about every version your app runs, today, and the smallest change that brings it back up to code. The prompt itself is in https://creed.apps.wayne.edu/index.md.
-- [CREED in a raw PHP app](https://creed.apps.wayne.edu/#prompt-raw-php): Every rule that applies to an app with no framework, checked with the file and line as evidence. The prompt itself is in https://creed.apps.wayne.edu/index.md.
-- [CREED in a Laravel app with Blade](https://creed.apps.wayne.edu/#prompt-laravel-blade): The same inspection, the Laravel way: config, middleware and the framework line from the policy. The prompt itself is in https://creed.apps.wayne.edu/index.md.
-- [CREED in a Laravel app with Inertia and Vue](https://creed.apps.wayne.edu/#prompt-laravel-inertia): Both halves inspected: the Composer side and the npm side, Node, Vue and Inertia included. The prompt itself is in https://creed.apps.wayne.edu/index.md.
+- [Get started with CREED](https://creed.apps.wayne.edu/#prompt-get-started): Lists every version your app runs with its state today, then proposes the smallest change that fixes anything past end of life. It won't make the change until you say so. The prompt itself is in https://creed.apps.wayne.edu/index.md.
+- [CREED in a raw PHP app](https://creed.apps.wayne.edu/#prompt-raw-php): Checks an app with no framework against the rules that apply to it, and cites a file and line for each result. The prompt itself is in https://creed.apps.wayne.edu/index.md.
+- [CREED in a Laravel app with Blade](https://creed.apps.wayne.edu/#prompt-laravel-blade): The same review for Laravel with Blade. It looks at config, middleware and the Laravel line. The prompt itself is in https://creed.apps.wayne.edu/index.md.
+- [CREED in a Laravel app with Inertia and Vue](https://creed.apps.wayne.edu/#prompt-laravel-inertia): Reviews the Composer side and the npm side, including Node, Vue and Inertia. A missing npm lock file counts as a finding. The prompt itself is in https://creed.apps.wayne.edu/index.md.
 
 ## Source
 
