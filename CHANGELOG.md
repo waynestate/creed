@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Changed: the proof page moves to a private site that needs a Wayne State sign-in.
 - Changed: project names written as words except acronyms.
 
 - `bin/policy-bot.php run`: a real (non dry-run) run now commits the data
