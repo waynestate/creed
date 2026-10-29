@@ -188,6 +188,28 @@ final class PolicyBotRunTest extends TestCase
     }
 
     #[Test]
+    public function aRealRunWithoutTheAlertTokenFailsBeforeAnyGit(): void
+    {
+        // The alert environment is incomplete (no token) and no channel is
+        // injected, so the robot stops before the refresher, the commit and
+        // the push, printing only the missing variable name.
+        $this->ciEnvironment(['CREED_BOT_TOKEN' => '']);
+        $fake = new FakeRunner([3], [$this->report(changes: [$this->changeItem()])]);
+        $bot = new PolicyBot(
+            repoRoot: $this->repoRoot,
+            runner: new CommandRunner($fake(...)),
+        );
+
+        [$exit, $out] = $this->capture($bot, static fn(PolicyBot $b): int => $b->run());
+
+        self::assertSame(1, $exit, $out);
+        self::assertSame("missing environment variables: CREED_BOT_TOKEN\n", $out);
+        self::assertCount(0, $fake->calls);
+        self::assertArrayNotHasKey('commit', $this->gitCalls($fake));
+        self::assertArrayNotHasKey('push', $this->gitCalls($fake));
+    }
+
+    #[Test]
     public function thePushTokenIsMaskedInEveryLine(): void
     {
         // A fake runner that echoes the push URL back in an error; the
@@ -239,6 +261,9 @@ final class PolicyBotRunTest extends TestCase
     #[Test]
     public function aRunnerStartupFailureStopsTheRobot(): void
     {
+        // A real run needs the alert environment; set it so this test reaches
+        // the refresher startup failure it exists to exercise.
+        $this->ciEnvironment();
         $bot = new PolicyBot(
             repoRoot: $this->repoRoot,
             runner: new CommandRunner(static function (array $argv): array {

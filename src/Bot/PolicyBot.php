@@ -143,6 +143,18 @@ final readonly class PolicyBot
      */
     public function run(?string $offlineDir = null): int
     {
+        // A real run owns its alert issues, so it needs the alert
+        // environment before it refreshes, commits or pushes. An injected
+        // channel (tests) carries its own transport and skips this check.
+        if (!$this->dryRun && $this->alerts === null) {
+            $missing = $this->missingAlertEnvironment();
+            if ($missing !== []) {
+                $this->say('missing environment variables: ' . implode(', ', $missing) . "\n");
+
+                return 1;
+            }
+        }
+
         $reportPath = tempnam(sys_get_temp_dir(), 'creed-policy-report-');
         if ($reportPath === false) {
             $this->say("the policy robot could not create a report file\n");
