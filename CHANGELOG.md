@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Changed: the deploy layer's Squire kit is refreshed to 0.3.3 (release options can now live in ./.env.squire).
+
 ## 0.1.3 (2026-10-29)
 
 - Changed: the proof page moves to a private site that needs a Wayne State sign-in.
