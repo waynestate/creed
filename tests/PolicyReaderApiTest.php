@@ -12,7 +12,7 @@ use Waynestate\Creed\Policy;
 use Waynestate\Creed\State;
 
 /**
- * The reader API the four consumers (PROCTOR, BOOSTER, ROLLCALL, ADVISOR)
+ * The reader API the four consumers (PROCTOR, Booster, Rollcall, ADVISOR)
  * call. Each member gets its own test, including the null cases, because the
  * reader does not guess.
  */

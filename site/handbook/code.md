@@ -62,7 +62,7 @@ Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowe
 
 ## [§3.6](https://creed.apps.wayne.edu/handbook/code.html#how-it-is-enforced) How it is enforced
 
-- Pint, PHPStan, Rector dry-runs and ESLint run in CI through [PREFLIGHT](https://preflight.apps.wayne.edu/) components, not in the deploy gate (the stack's coding standard). The PREFLIGHT components are Planned.
+- Pint, PHPStan, Rector dry-runs and ESLint run in CI through [Preflight](https://preflight.apps.wayne.edu/) components, not in the deploy gate (the stack's coding standard). The Preflight components are Planned.
 - New rules arrive as warnings and become errors on a stated date, the same staging as PHP versions (the stack's enforcement design).
 - [PROCTOR](https://proctor.apps.wayne.edu/) reports whether an app uses the presets (the stack's coding standard). The PROCTOR report is Planned.
 
@@ -115,4 +115,4 @@ Table 3-1
 - GitLab Code Quality: [https://docs.gitlab.com/ci/testing/code_quality/](https://docs.gitlab.com/ci/testing/code_quality/)
 - OWASP ASVS: [https://asvs.owasp.org/](https://asvs.owasp.org/)
 
-Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `9730468`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `8d461ee`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

@@ -24,7 +24,7 @@ anywhere (Citadel, any web server, or `python -m http.server` inside `site/` for
 - data: the form and Table 2-1 carry a copy of the dates in `policy/policy.json` (2026-10-28) in `assets/creed.js`.
   The policy file stays the source; refresh the copy when the dates change.
 - marks: `brand/` is CREED's (generated with ChatGPT, never redrawn). `assets/marks/` holds the other stack parts'
-  marks, copied from WELD's and BOOSTER's sites; WayneUI uses its own reversed mark on green.
+  marks, copied from WELD's and Booster's sites; WayneUI uses its own reversed mark on green.
 - reduced motion: the book is already printed, every stamp already inked, every word present at first paint; the form
   still stamps, without the thunk.
 - jokes: Creed Bratton's unauditable records, "with arms wide open" for the inclusive boundary, Creed being one version

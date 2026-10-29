@@ -110,7 +110,7 @@ Documented
 
 A bad date, a wrong type or an unknown key fails the build.
 
-Held by `PolicySchemaTest` and `composer validate-policy`, both in [PREFLIGHT](https://creed.apps.wayne.edu/#ahj-preflight) `php-test`.
+Held by `PolicySchemaTest` and `composer validate-policy`, both in [Preflight](https://creed.apps.wayne.edu/#ahj-preflight) `php-test`.
 
 Enforced
 
@@ -275,7 +275,7 @@ Checked
 
 Run `composer audit --locked` in CI and fail at or above the policy threshold, `high`.
 
-Held by [PREFLIGHT](https://creed.apps.wayne.edu/#ahj-preflight) `composer-audit` and [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `composer-audit`.
+Held by [Preflight](https://creed.apps.wayne.edu/#ahj-preflight) `composer-audit` and [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `composer-audit`.
 
 Checked
 
@@ -285,7 +285,7 @@ Checked
 
 Include shared CI components at a tag or a full commit SHA, never `~latest`. CREED's own pipeline pins both of its components to a SHA.
 
-Held by `ci.md`; components from [PREFLIGHT](https://creed.apps.wayne.edu/#ahj-preflight). No check scans other repos.
+Held by `ci.md`; components from [Preflight](https://creed.apps.wayne.edu/#ahj-preflight). No check scans other repos.
 
 Documented
 
@@ -327,7 +327,7 @@ Every code has variances. These are the rules for asking for one.
 
 An override sits in the app's `policy-overrides.json` with a reason and an expiry. Every run prints every override. An expired override fails.
 
-Held by [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `overrides`. [ROLLCALL](https://creed.apps.wayne.edu/#ahj-rollcall) is meant to list them across apps.
+Held by [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `overrides`. [Rollcall](https://creed.apps.wayne.edu/#ahj-rollcall) is meant to list them across apps.
 
 Checked
 
@@ -377,7 +377,7 @@ Documented
 
 CI runs CREED's unit tests on 8.3, 8.4 and 8.5, from its own floor up.
 
-Held by [PREFLIGHT](https://creed.apps.wayne.edu/#ahj-preflight) `php-test`, a matrix in CREED's pipeline.
+Held by [Preflight](https://creed.apps.wayne.edu/#ahj-preflight) `php-test`, a matrix in CREED's pipeline.
 
 Checked
 
@@ -424,17 +424,17 @@ CREED writes the rules; the rest of WELD inspects, builds and runs to them. Ever
 - ![WayneUI mark: a rounded frame with a gold tab](https://creed.apps.wayne.edu/assets/marks/wayneui.svg)[WayneUI](https://wayneui.apps.wayne.edu/)The interface layer, project 0 of the stack.This page is built on it
 - ![CREED mark: a stone arch whose gold keystone holds the other stones in place](https://creed.apps.wayne.edu/brand/creed-avatar-256.png)CREEDThe standards, the policy and the reader. This book.Chapters 1 to 10
 - ![PROCTOR mark: a watchful eye with a gold square pupil](https://creed.apps.wayne.edu/assets/marks/proctor.png)[PROCTOR](https://proctor.apps.wayne.edu/)One command that checks an app against CREED.[§2.1](https://creed.apps.wayne.edu/#c-2-1) [§2.2](https://creed.apps.wayne.edu/#c-2-2) [§3.1](https://creed.apps.wayne.edu/#c-3-1) [§3.2](https://creed.apps.wayne.edu/#c-3-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§5.1](https://creed.apps.wayne.edu/#c-5-1)
-- ![PREFLIGHT mark: a runway with a gold centre line](https://creed.apps.wayne.edu/assets/marks/preflight.png)[PREFLIGHT](https://preflight.apps.wayne.edu/)Shared CI, from GitLab CI/CD components.[§1.2](https://creed.apps.wayne.edu/#c-1-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§3.6](https://creed.apps.wayne.edu/#c-3-6) [§6.6](https://creed.apps.wayne.edu/#c-6-6)
+- ![Preflight mark: a runway with a gold centre line](https://creed.apps.wayne.edu/assets/marks/preflight.png)[Preflight](https://preflight.apps.wayne.edu/)Shared CI, from GitLab CI/CD components.[§1.2](https://creed.apps.wayne.edu/#c-1-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§3.6](https://creed.apps.wayne.edu/#c-3-6) [§6.6](https://creed.apps.wayne.edu/#c-6-6)
 - ![HELMET mark: a white football helmet with a gold facemask](https://creed.apps.wayne.edu/assets/marks/helmet.png)[HELMET](https://helmet.apps.wayne.edu/)Security headers and the runtime ribbon.[§2.2](https://creed.apps.wayne.edu/#c-2-2) [§4.3](https://creed.apps.wayne.edu/#c-4-3)
-- ![ROLLCALL mark: an open register with gold ticks](https://creed.apps.wayne.edu/assets/marks/rollcall.png)[ROLLCALL](https://rollcall.apps.wayne.edu/) *new*Every app answers with its PHP version.[§5.1](https://creed.apps.wayne.edu/#c-5-1)
+- ![Rollcall mark: an open register with gold ticks](https://creed.apps.wayne.edu/assets/marks/rollcall.png)[Rollcall](https://rollcall.apps.wayne.edu/) *new*Every app answers with its PHP version.[§5.1](https://creed.apps.wayne.edu/#c-5-1)
 - ![Pinstripe mark: a striped necktie with a gold tie bar](https://creed.apps.wayne.edu/assets/marks/pinstripe.png)[Pinstripe](https://pinstripe.apps.wayne.edu/)The coding standard: Pint, PHPStan, ESLint, Prettier.The handbook's code chapter
 - ![SESAME mark: an open door with a gold gap](https://creed.apps.wayne.edu/assets/marks/sesame.png)[SESAME](https://sesame.apps.wayne.edu/)Signs the user in.The handbook's auth chapter
 - ![Sourdough mark: a starter jar with a gold band](https://creed.apps.wayne.edu/assets/marks/sourdough.png)[Sourdough](https://sourdough.apps.wayne.edu/)Starters you feed, born compliant.Starts on the floor in Table 2-1
 - ![WELD mark: a welder's helmet](https://creed.apps.wayne.edu/assets/marks/weld.png)[WELD](https://weld.apps.wayne.edu/)The whole stack, joined in one app.Adopts the whole code
-- ![BOOSTER mark: a syringe that is also a rocket, gold flame below](https://creed.apps.wayne.edu/assets/marks/booster.png)[BOOSTER](https://booster.apps.wayne.edu/) *new*Upgrades you, one hop at a time.Gets you off a Grace expired row
+- ![Booster mark: a syringe that is also a rocket, gold flame below](https://creed.apps.wayne.edu/assets/marks/booster.png)[Booster](https://booster.apps.wayne.edu/) *new*Upgrades you, one hop at a time.Gets you off a Grace expired row
 - ![ADVISOR mark: a speech bubble holding a gold compass needle](https://creed.apps.wayne.edu/assets/marks/advisor.png)[ADVISOR](https://advisor.apps.wayne.edu/) *new*What applies to your app, and what to do next.Explains; never gates (§6.4)
-- ![SQUIRE mark: a satchel with a gold buckle](https://creed.apps.wayne.edu/assets/marks/squire.png)[SQUIRE](https://squire.apps.wayne.edu/) *new*Carries the release to Citadel.The deploy gate, proposed
-- ![DRAWBRIDGE mark: a castle tower lowering its bridge on a gold chain](https://creed.apps.wayne.edu/assets/marks/drawbridge.png)[DRAWBRIDGE](https://drawbridge.apps.wayne.edu/) *new*The Citadel sign-in gateway.Erratum E-7
+- ![Squire mark: a satchel with a gold buckle](https://creed.apps.wayne.edu/assets/marks/squire.png)[Squire](https://squire.apps.wayne.edu/) *new*Carries the release to Citadel.The deploy gate, proposed
+- ![Drawbridge mark: a castle tower lowering its bridge on a gold chain](https://creed.apps.wayne.edu/assets/marks/drawbridge.png)[Drawbridge](https://drawbridge.apps.wayne.edu/) *new*The Citadel sign-in gateway.Erratum E-7
 
 Appendix A
 

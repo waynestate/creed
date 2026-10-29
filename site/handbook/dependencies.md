@@ -33,6 +33,6 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - Public code **MUST NOT** go through the private registry; it is published to Packagist or npm (the stack's private-packages decision).
 - Apps **SHOULD NOT** proxy or mirror public registries in v1 (the stack's private-packages decision).
 
-[PROCTOR](https://proctor.apps.wayne.edu/)'s `repo-url-credentials`, `package-sources` and `internal-vendor-shadowing` checks enforce rules 1, 2 and 4 (warning first), and [PREFLIGHT](https://preflight.apps.wayne.edu/)'s publish job enforces rule 5.
+[PROCTOR](https://proctor.apps.wayne.edu/)'s `repo-url-credentials`, `package-sources` and `internal-vendor-shadowing` checks enforce rules 1, 2 and 4 (warning first), and [Preflight](https://preflight.apps.wayne.edu/)'s publish job enforces rule 5.
 
-Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `4f50a60`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `40008d6`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

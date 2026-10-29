@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * bin/export.php: the namespace-prefixed copy CREED generates for its
- * consumers (PROCTOR, BOOSTER, ROLLCALL, ADVISOR) to carry under their own
+ * consumers (PROCTOR, Booster, Rollcall, ADVISOR) to carry under their own
  * namespace, so two tools in one app never fight over a class name.
  */
 final class ExportTest extends TestCase

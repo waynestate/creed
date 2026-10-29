@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Changed: project names written as words except acronyms.
+
 - `bin/policy-bot.php run`: a real (non dry-run) run now commits the data
   allowlist on `auto/policy-refresh` and force-pushes it with GitLab merge
   request push options (create, target, remove source branch, label
