@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 /**
  * Exports a namespace-prefixed copy of the CREED reader for a consumer
- * package (PROCTOR, BOOSTER, ROLLCALL, ADVISOR) to carry under its own
+ * package (PROCTOR, Booster, Rollcall, ADVISOR) to carry under its own
  * namespace, so two tools in one app never fight over a class name.
  *
  * Usage:

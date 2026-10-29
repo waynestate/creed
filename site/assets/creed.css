@@ -625,7 +625,7 @@ li.ahj__row:has(.part-link:hover) img { transform: translateY(-2px); }
 }
 
 /* -------------------------------------------------------- agent-ready kit */
-/* SQUIRE's agent-ready.css lays out the prompt blocks and the page menu; this
+/* Squire's agent-ready.css lays out the prompt blocks and the page menu; this
    maps its tokens onto the book. The prompts are forms filed with the
    inspector: ruled stock, a green rule across the top, and a typed entry. */
 :root {
