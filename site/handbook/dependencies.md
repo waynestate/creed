@@ -3,7 +3,7 @@ title: "CREED Handbook: 2 Dependencies"
 description: "Chapter 2 of the CREED handbook, the written rules for the Wayne State app stack: Dependencies."
 url: https://creed.apps.wayne.edu/handbook/dependencies.html
 llms: https://creed.apps.wayne.edu/llms.txt
-generator: SQUIRE agent-ready
+generator: Squire agent-ready
 ---
 
 Chapter 2

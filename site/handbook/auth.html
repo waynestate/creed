@@ -96,8 +96,8 @@ verified identity and leaves the session to the app <span class="hb-cite">(the s
 <li>The <code>gateway</code> driver accepts only a signed assertion, never a bare header:
 user, attributes, issued-at, audience, an expiry of 60 seconds or less, and
 a signature the gateway and app share <span class="hb-cite">(the stack's auth design)</span>.</li>
-<li>Drivers: <code>cas</code> (the default today), <code>gateway</code>, <code>saml</code>, <code>oauth2</code>, and <code>fake</code>
-for local development and tests <span class="hb-cite">(the stack's auth design)</span>.</li>
+<li>Drivers: <code>cas</code> (the default today), <code>gateway</code>, <code>oidc</code>, <code>oauth2</code>, <code>saml</code> (not
+built yet), and <code>fake</code> for local development and tests <span class="hb-cite">(the stack's auth design)</span>.</li>
 <li>Non-EOL PHP only, with no exceptions <span class="hb-cite">(the stack's auth design)</span>.</li>
 <li class="hb-tbd">To be decided: the gateway's key distribution and rotation, and the SAML
 library choice if a <code>saml</code> driver is built <span class="hb-cite">(the stack's auth design)</span>.</li>
@@ -107,7 +107,7 @@ library choice if a <code>saml</code> driver is built <span class="hb-cite">(the
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="code.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 3</span><span class="hb-pager__name">Code</span></a><a class="hb-pager__link hb-pager__link--next" href="databases.html" rel="next"><span class="hb-pager__dir">Next · Chapter 5</span><span class="hb-pager__name">Databases</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/auth.md"><code>handbook/auth.md</code> on GitHub</a>, impression <code>8d311e9</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/auth.md"><code>handbook/auth.md</code> on GitHub</a>, impression <code>bf348fb</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

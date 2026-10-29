@@ -432,8 +432,8 @@ verified identity and leaves the session to the app <span class="hb-cite">(the s
 <li>The <code>gateway</code> driver accepts only a signed assertion, never a bare header:
 user, attributes, issued-at, audience, an expiry of 60 seconds or less, and
 a signature the gateway and app share <span class="hb-cite">(the stack's auth design)</span>.</li>
-<li>Drivers: <code>cas</code> (the default today), <code>gateway</code>, <code>saml</code>, <code>oauth2</code>, and <code>fake</code>
-for local development and tests <span class="hb-cite">(the stack's auth design)</span>.</li>
+<li>Drivers: <code>cas</code> (the default today), <code>gateway</code>, <code>oidc</code>, <code>oauth2</code>, <code>saml</code> (not
+built yet), and <code>fake</code> for local development and tests <span class="hb-cite">(the stack's auth design)</span>.</li>
 <li>Non-EOL PHP only, with no exceptions <span class="hb-cite">(the stack's auth design)</span>.</li>
 <li class="hb-tbd">To be decided: the gateway's key distribution and rotation, and the SAML
 library choice if a <code>saml</code> driver is built <span class="hb-cite">(the stack's auth design)</span>.</li>
@@ -732,7 +732,7 @@ override <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>21a8a70</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>30e4c8e</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

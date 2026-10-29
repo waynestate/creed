@@ -3,7 +3,7 @@ title: "CREED Handbook: 3 Code"
 description: "Chapter 3 of the CREED handbook, the written rules for the Wayne State app stack: Code."
 url: https://creed.apps.wayne.edu/handbook/code.html
 llms: https://creed.apps.wayne.edu/llms.txt
-generator: SQUIRE agent-ready
+generator: Squire agent-ready
 ---
 
 Chapter 3

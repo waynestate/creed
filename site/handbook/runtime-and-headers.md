@@ -3,7 +3,7 @@ title: "CREED Handbook: 6 Runtime and headers"
 description: "Chapter 6 of the CREED handbook, the written rules for the Wayne State app stack: Runtime and headers."
 url: https://creed.apps.wayne.edu/handbook/runtime-and-headers.html
 llms: https://creed.apps.wayne.edu/llms.txt
-generator: SQUIRE agent-ready
+generator: Squire agent-ready
 ---
 
 Chapter 6

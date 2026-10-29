@@ -3,7 +3,7 @@ title: "CREED: The standard everything rests on."
 description: "CREED is the Wayne State app stack's code book: a handbook of numbered practices, plus policy.json, one file of support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader every other tool asks: what state is this version in, on this date?"
 url: https://creed.apps.wayne.edu/
 llms: https://creed.apps.wayne.edu/llms.txt
-generator: SQUIRE agent-ready
+generator: Squire agent-ready
 ---
 
 Wayne State App Stack 2026 Edition Adopted 2026-10-29

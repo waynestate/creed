@@ -40,11 +40,14 @@ final class AgentReadyError extends RuntimeException {}
  */
 final class AgentReadyKit
 {
-    public const GENERATOR = 'SQUIRE agent-ready';
+    public const GENERATOR = 'Squire agent-ready';
+
+    /** The label older releases wrote into files they generated; detection must accept it too. */
+    public const LEGACY_GENERATOR = 'SQUIRE agent-ready';
 
     public const FILES = [
-        'assets/agent-ready.css' => 'c3d48a6a66e0e5639a8d5a40ae68622b5f85ed118cba3f624772d92691ccf442',
-        'assets/agent-ready.js' => '55ec189e8eee55477c029037e1e5564f283d30cc16ea0b2324a5f5c8bbee7fad',
+        'assets/agent-ready.css' => 'a666ce64d82859bb658f51c33af145d374fcccaca615e699f51dc683ad7b1fc5',
+        'assets/agent-ready.js' => '581f22b237e10ded1fe6dad30d3c01b04cac31f5106faec31a64dde6a870d506',
     ];
 
     /** The stack's agent entry points, listed in every llms.txt except their own. */
@@ -702,7 +705,9 @@ final class AgentReady
                 continue;
             }
             $head = (string) file_get_contents($this->site . '/' . $relative, false, null, 0, 600);
-            if (str_contains($head, 'generator: ' . AgentReadyKit::GENERATOR)) {
+            if (str_contains($head, 'generator: ' . AgentReadyKit::GENERATOR)
+                || str_contains($head, 'generator: ' . AgentReadyKit::LEGACY_GENERATOR)
+            ) {
                 $out[] = $relative;
             }
         }
@@ -719,7 +724,10 @@ final class AgentReady
         }
         $content = (string) file_get_contents($path);
 
-        return !str_contains($content, AgentReadyKit::GENERATOR) && !str_contains($content, "SQUIRE's agent-ready kit");
+        return !str_contains($content, AgentReadyKit::GENERATOR)
+            && !str_contains($content, AgentReadyKit::LEGACY_GENERATOR)
+            && !str_contains($content, "Squire's agent-ready kit")
+            && !str_contains($content, "SQUIRE's agent-ready kit");
     }
 
     /** @return list<AgentReadyPage> */
@@ -930,7 +938,7 @@ final class AgentReady
             $out .= $readme['intro'] . "\n\n";
         }
         $out .= 'Every page below is Markdown. The HTML pages send the same Markdown to a client that asks for '
-            . "`text/markdown`. Written by SQUIRE's agent-ready kit from the README and the pages; do not edit.\n\n";
+            . "`text/markdown`. Written by Squire's agent-ready kit from the README and the pages; do not edit.\n\n";
 
         $out .= "## Pages\n\n";
         foreach ($pages as $page) {
@@ -995,7 +1003,7 @@ final class AgentReady
             $out .= '> ' . $pages[0]->description . "\n\n";
         }
         $out .= 'The README and the Markdown twin of every page, joined. The index is ' . $this->base . 'llms.txt. '
-            . "Written by SQUIRE's agent-ready kit; do not edit.\n";
+            . "Written by Squire's agent-ready kit; do not edit.\n";
         $out .= "\n---\n\n## README\n\n";
         if ($this->source !== '') {
             $out .= 'Source: ' . $this->source . '/blob/HEAD/' . basename($this->readme) . "\n\n";
@@ -1012,7 +1020,7 @@ final class AgentReady
 
     private function robots(): string
     {
-        return '# robots.txt for ' . $this->base . ", written by SQUIRE's agent-ready kit (ADR-0019); do not edit.\n"
+        return '# robots.txt for ' . $this->base . ", written by Squire's agent-ready kit (ADR-0019); do not edit.\n"
             . "# Content Signals (contentsignals.org): find it and answer from it, yes; train on it, no.\n"
             . "User-agent: *\n"
             . "Content-Signal: search=yes, ai-input=yes, ai-train=no\n"
@@ -1025,7 +1033,7 @@ final class AgentReady
     private function sitemap(array $pages): string
     {
         $out = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n"
-            . "<!-- Written by SQUIRE's agent-ready kit from the pages in the site folder; do not edit. -->\n"
+            . "<!-- Written by Squire's agent-ready kit from the pages in the site folder; do not edit. -->\n"
             . "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n";
         foreach ($pages as $page) {
             $out .= '  <url><loc>' . htmlspecialchars($page->url, ENT_XML1) . "</loc></url>\n";

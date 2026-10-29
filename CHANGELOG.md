@@ -5,6 +5,8 @@
 - Changed: the proof page moves to a private site that needs a Wayne State sign-in.
 - Changed: project names written as words except acronyms.
 - Changed: README images show the current site and policy.
+- Changed: README names which tools carry the reader copy; the auth chapter lists the `oidc` driver.
+- Changed: the agent-ready kit is Squire 0.3.0's, so generated labels read "Squire's agent-ready kit".
 
 - `bin/policy-bot.php run`: a real (non dry-run) run now commits the data
   allowlist on `auto/policy-refresh` and force-pushes it with GitLab merge

@@ -25,7 +25,7 @@ issues and merge requests on the internal project.
 No other code in the stack decides a version's state. The rules live in one
 place, and every tool reads them from here.
 
-Every page below is Markdown. The HTML pages send the same Markdown to a client that asks for `text/markdown`. Written by SQUIRE's agent-ready kit from the README and the pages; do not edit.
+Every page below is Markdown. The HTML pages send the same Markdown to a client that asks for `text/markdown`. Written by Squire's agent-ready kit from the README and the pages; do not edit.
 
 ## Pages
 

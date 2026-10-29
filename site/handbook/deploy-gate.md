@@ -3,7 +3,7 @@ title: "CREED Handbook: 7 Deploy gate"
 description: "Chapter 7 of the CREED handbook, the written rules for the Wayne State app stack: Deploy gate."
 url: https://creed.apps.wayne.edu/handbook/deploy-gate.html
 llms: https://creed.apps.wayne.edu/llms.txt
-generator: SQUIRE agent-ready
+generator: Squire agent-ready
 ---
 
 Chapter 7
