@@ -24,3 +24,6 @@
 # README art: the images and the kit that makes them.
 /docs/readme        export-ignore
 /scripts/readme-art export-ignore
+
+/bin/agent-ready.php export-ignore
+/site export-ignore
