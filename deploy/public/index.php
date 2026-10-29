@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-
 /*
  * index.php: the front controller for the static front page (ADR-0017).
  *
