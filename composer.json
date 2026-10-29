@@ -43,6 +43,7 @@
             "@lint",
             "@lint-handbook",
             "@site:handbook-check",
+            "@site:agent-ready-check",
             "@analyse",
             "@composer audit"
         ],
@@ -53,13 +54,17 @@
         "lint-handbook": "php bin/lint-handbook.php",
         "site:handbook": "php bin/build-handbook-site.php",
         "site:handbook-check": "php bin/build-handbook-site.php --check",
+        "site:agent-ready": "php bin/agent-ready.php",
+        "site:agent-ready-check": "php bin/agent-ready.php --check",
         "fix": "pint",
         "analyse": "phpstan analyse --memory-limit=1G"
     },
     "scripts-descriptions": {
-        "ci": "The full CI gate: validate, tests, policy schema, Pint, handbook lint, handbook site freshness, PHPStan, audit. Same command on GitLab and GitHub.",
+        "ci": "The full CI gate: validate, tests, policy schema, Pint, handbook lint, handbook site freshness, agent-ready files, PHPStan, audit. Same command on GitLab and GitHub.",
         "site:handbook": "Rebuild site/handbook/ from handbook/*.md.",
-        "site:handbook-check": "Fail when site/handbook/ is stale against handbook/*.md."
+        "site:handbook-check": "Fail when site/handbook/ is stale against handbook/*.md.",
+        "site:agent-ready": "Rewrite the Markdown twins, llms.txt, llms-full.txt, robots.txt and sitemap.xml in site/ (SQUIRE's agent-ready kit).",
+        "site:agent-ready-check": "Fail when the agent-ready files are stale, a page lacks its Markdown link, a prompt drifts from the docs, or the kit was edited here."
     },
     "config": {
         "sort-packages": true,

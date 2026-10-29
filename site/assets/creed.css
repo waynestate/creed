@@ -623,3 +623,76 @@ li.ahj__row:has(.part-link:hover) img { filter: brightness(1.12) saturate(1.1); 
 li.ahj__row img { transition: transform 160ms ease, filter 160ms ease; }
 li.ahj__row:has(.part-link:hover) img { transform: translateY(-2px); }
 }
+
+/* -------------------------------------------------------- agent-ready kit */
+/* SQUIRE's agent-ready.css lays out the prompt blocks and the page menu; this
+   maps its tokens onto the book. The prompts are forms filed with the
+   inspector: ruled stock, a green rule across the top, and a typed entry. */
+:root {
+  --ar-bg: var(--paper-hi);
+  --ar-ink: var(--ink);
+  --ar-muted: var(--ink-2);
+  --ar-rule: var(--rule);
+  --ar-accent: var(--green);
+  --ar-on-accent: var(--paper-hi);
+  --ar-focus: var(--green);
+  --ar-code-bg: var(--paper);
+  --ar-code-ink: var(--ink);
+  --ar-term-bg: var(--ink);
+  --ar-term-ink: var(--paper-hi);
+  --ar-display: var(--serif);
+  --ar-body: var(--sans);
+  --ar-mono: var(--mono);
+  --ar-radius: 4px;
+  --ar-shadow: 0 1px 0 rgba(27, 36, 32, .05), 0 18px 32px -26px rgba(27, 36, 32, .5);
+}
+
+.ar-prompt { border-top: 5px solid var(--green); }
+.ar-prompt__kicker { color: var(--ochre); }
+.ar-prompt__glyph { color: var(--green); background: var(--paper); border-color: var(--rule); }
+/* Ruled stock: one rule under every typed line, scrolling with the text. */
+.ar-prompt__text {
+  padding: 1.1em 1.25em;
+  background-color: var(--paper);
+  background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(1.6em - 1px), rgba(200, 192, 174, .55) calc(1.6em - 1px), rgba(200, 192, 174, .55) 1.6em);
+  background-position: 0 1.1em;
+  background-attachment: local;
+  border-left: 3px solid var(--rule);
+}
+.ar-prompt.is-collapsed .ar-prompt__text { max-height: calc(var(--ar-preview-lines, 10) * 1.6em + 1.1em); }
+.ar-btn--primary { box-shadow: 0 3px 0 var(--green-deep); }
+.ar-btn--primary:hover { background: #0f6557; box-shadow: 0 3px 0 var(--green-deep); }
+.ar-chip[aria-expanded="true"] { box-shadow: inset 0 -3px 0 var(--gold); border-color: var(--ink); }
+.ar-run__label, .ar-cmd__title b { font-family: var(--mono); }
+.ar-cmd { border-radius: 3px; }
+.ar-cmd .ar-btn { border-color: var(--gold); color: var(--gold); }
+.ar-cmd .ar-seg__btn[aria-pressed="true"] { background: var(--gold); color: var(--ink); }
+.ar-cmd .ar-seg { border-color: rgba(244, 241, 234, .55); }
+.ar-cmd :focus-visible { outline-color: var(--gold); }
+@media (prefers-reduced-motion: no-preference) {
+  .motion .ar-btn--primary:active { transform: translateY(3px); box-shadow: 0 0 0 var(--green-deep); }
+}
+
+/* The imprint line on the title page: fine print, the way a code book
+   names its printer. */
+.imprint { margin-top: 1.4rem; padding-top: .7rem; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; align-items: center; gap: .1rem 1.1rem; font-size: .9rem; }
+.imprint .ar-page__label { margin: 0; color: var(--ochre); }
+.imprint .ar-page__list { gap: 0 1.1rem; }
+.imprint .ar-page__link, .imprint .ar-page__btn { color: var(--green); font-family: var(--sans); }
+.imprint .ar-status { flex-basis: 100%; font-family: var(--mono); font-size: .8rem; color: var(--ink-2); }
+
+/* Appendix B. */
+.sheet--agents { background: linear-gradient(180deg, rgba(235, 230, 218, .55), transparent 18rem); }
+.agents { display: grid; gap: 1.5rem; }
+.agents__paths-title { margin: 1.25rem 0 0; font-family: var(--mono); font-weight: 600; font-size: .78rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-2); }
+.agents__paths { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.25rem; }
+/* The path forms are filed full width, like the first: typed prose reads badly in
+   narrow columns. A shorter preview keeps the stack of four from towering. */
+.agents__paths .ar-prompt { --ar-preview-lines: 6; }
+.agents__paths .ar-prompt__title { font-size: 1.15rem; }
+.agents__fine { margin: .5rem 0 0; max-width: 46rem; font-size: .95rem; color: var(--ink-2); }
+
+@media print {
+  .ar-prompt__actions, .ar-cmd, .ar-prompt__more, .imprint { display: none; }
+  .ar-prompt.is-collapsed .ar-prompt__text { max-height: none; -webkit-mask-image: none; mask-image: none; }
+}

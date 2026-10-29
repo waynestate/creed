@@ -10,6 +10,11 @@
 <title>CREED: The standard everything rests on.</title>
 <meta name="description" content="CREED is the Wayne State app stack's code book: a handbook of numbered practices, plus policy.json, one file of support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader every other tool asks: what state is this version in, on this date?">
 <meta name="theme-color" content="#0c5449">
+<link rel="canonical" href="https://creed.apps.wayne.edu/">
+<!-- For agents (ADR-0019): this page as Markdown, and the site's index. Both are written by
+     bin/agent-ready.php, from SQUIRE's kit; the front controller also sends the twin to any
+     client that asks for text/markdown. -->
+<link rel="alternate" type="text/markdown" href="index.md">
 <link rel="icon" href="brand/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="brand/favicon-32.png">
 <!--
@@ -19,6 +24,7 @@
   book (paper, chapters, clauses, stamps) is CREED's own, in creed.css.
 -->
 <link rel="stylesheet" href="assets/wayne-ui/wayne-ui.css">
+<link rel="stylesheet" href="assets/agent-ready.css">
 <link rel="stylesheet" href="assets/creed.css">
 <script>
   /* Only people who are happy with motion get the press and the thunk.
@@ -64,6 +70,7 @@
   <a href="#ch-7" data-thumb="ch-7"><span>7</span><em>Patching</em></a>
   <a href="#errata" data-thumb="errata"><span>E</span><em>Errata</em></a>
   <a href="#appendix-a" data-thumb="appendix-a"><span>A</span><em>Adopt</em></a>
+  <a href="#agents" data-thumb="agents"><span>B</span><em>Agents</em></a>
 </nav>
 
 <main id="main">
@@ -99,6 +106,17 @@
           <a class="btn btn--ink" href="#inspection">Inspect a version</a>
           <a class="btn btn--rule" href="handbook/">Read the handbook</a>
         </div>
+
+        <!-- The imprint line: where an agent reads this book. The script adds Copy page as
+             Markdown and Open in ChatGPT; without it, the plain links still work. -->
+        <nav class="ar-page imprint" aria-labelledby="imprint-label" data-ar-page>
+          <p class="ar-page__label" id="imprint-label">For your agent</p>
+          <ul class="ar-page__list">
+            <li><a class="ar-page__link" href="#agents">Get started with an agent</a></li>
+            <li><a class="ar-page__link" href="index.md" type="text/markdown">This page as Markdown</a></li>
+            <li><a class="ar-page__link" href="llms.txt">llms.txt</a></li>
+          </ul>
+        </nav>
 
         <dl class="tally" aria-label="How the 54 practices are held today">
           <div class="tally__item tally__item--enforced"><dt>Enforced</dt><dd>5</dd></div>
@@ -778,6 +796,152 @@ $floor = $policy-&gt;<span class="c-f">oldestSupported</span>(<span class="c-s">
     </div>
   </section>
 
+  <!-- ======================================================= appendix b -->
+  <!-- Appendix B: the prompts. Each is a form the reader files with their own agent: role, task,
+       the code's constraints, the output wanted, and a standing order to ask before guessing.
+       The text is plain HTML, so an agent reading this page (or index.md) gets it without the
+       script; agent-ready.js only adds the buttons. Keep the commands in step with the README:
+       bin/agent-ready.php --check fails a prompt that runs a command the docs do not. -->
+  <section class="sheet sheet--agents" id="agents" aria-labelledby="agents-title">
+    <div class="wsu-container">
+      <p class="folio-head" aria-hidden="true"><span>CREED 2026</span><span>Appendix B</span></p>
+      <header class="chap-head chap-head--chapter" data-reveal>
+        <p class="chap-head__no" aria-hidden="true">B</p>
+        <div>
+          <p class="chap-head__kicker">Appendix B</p>
+          <h2 id="agents-title">Hand it to your agent</h2>
+          <p class="chap-head__lede">Four forms, ready to file with the coding agent you already use. Copy one, or run it straight in OpenCode, Claude Code, Codex or ChatGPT. Each one tells the agent where the code lives, what it may not assume, and to ask before it guesses.</p>
+        </div>
+      </header>
+
+      <div class="agents" data-reveal>
+        <section class="ar-prompt ar-prompt--lead" id="prompt-get-started" aria-labelledby="prompt-get-started-title" data-ar-prompt>
+          <header class="ar-prompt__head">
+            <span class="ar-prompt__glyph" aria-hidden="true">&gt;_</span>
+            <div>
+              <p class="ar-prompt__kicker">Form AG-1 · Any stack app</p>
+              <h3 class="ar-prompt__title" id="prompt-get-started-title">Get started with CREED</h3>
+              <p class="ar-prompt__desc">What CREED says about every version your app runs, today, and the smallest change that brings it back up to code.</p>
+            </div>
+          </header>
+          <pre class="ar-prompt__text"><code>You are a coding agent helping a Wayne State University developer bring the app in this folder up to CREED, the written standard of WELD, the Wayne State application stack. CREED is two things: policy.json, the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a handbook of numbered practices.
+
+Read first:
+- https://creed.apps.wayne.edu/llms.txt, the index of CREED's pages, each one as Markdown. Fetch the pages you need; do not work from memory.
+- This app's composer.json and composer.lock, and package.json with its lock file if there is one.
+- ADVISOR, the stack's MCP server, if it is connected: its policy_lookup and list_stack_rules tools answer from CREED, with the date and the source. If it is not connected, say so and work from the pages. How to add it: https://advisor.apps.wayne.edu/llms.txt
+
+Task:
+1. Say which kind of app this is: raw PHP, raw PHP with Vue, Laravel with Blade, Laravel with Blade and Vue, or Laravel with Inertia and Vue.
+2. List every version it declares or locks: the PHP floor, Laravel, Node, Vue, Inertia, and MySQL if you can tell.
+3. For each one, give the state CREED assigns it today (Active, Security, Eol or EolGraceExpired), the date that state ends, and the clause that applies.
+4. Propose the smallest change that moves anything past end of life onto a supported line. Do not make it yet.
+
+Constraints:
+- CREED decides a version's state. Never guess a date: read it from the policy or from ADVISOR, and say which.
+- An app that reads the policy itself installs the reader with `composer require waynestate/creed`. Never copy policy.json into the app.
+- Give separate commands for Windows (PowerShell), macOS and Linux wherever they differ.
+- Ask me before you guess: a version you cannot read, an app kind you cannot tell, or anything that touches a deploy.
+
+Output: a table (component, version, state, until, clause), then the change as numbered steps, then your questions.</code></pre>
+        </section>
+
+        <h3 class="agents__paths-title">Or start from your consumer path</h3>
+        <div class="agents__paths">
+        <section class="ar-prompt" id="prompt-raw-php" aria-labelledby="prompt-raw-php-title" data-ar-prompt>
+          <header class="ar-prompt__head">
+            <span class="ar-prompt__glyph" aria-hidden="true">&gt;_</span>
+            <div>
+              <p class="ar-prompt__kicker">Form AG-2 · Raw PHP</p>
+              <h3 class="ar-prompt__title" id="prompt-raw-php-title">CREED in a raw PHP app</h3>
+              <p class="ar-prompt__desc">Every rule that applies to an app with no framework, checked with the file and line as evidence.</p>
+            </div>
+          </header>
+          <pre class="ar-prompt__text"><code>You are a coding agent reviewing a raw PHP app (no framework) at Wayne State University against CREED, the written standard of WELD, the Wayne State application stack.
+
+Read first:
+- https://creed.apps.wayne.edu/llms.txt, then the handbook chapters it lists. Every rule there cites the decision behind it.
+- ADVISOR, the stack's MCP server, if it is connected: call list_stack_rules with permutation raw-php (raw-php-vue if the app builds Vue), and policy_lookup for each runtime. If it is not connected, say so and work from the handbook pages.
+- composer.json, composer.lock, the entry scripts or front controller, and any CI file.
+
+Task:
+1. Check the app against the rules that apply to raw PHP: versions, dependencies, secrets and configuration, runtime and headers, auth, and CI.
+2. For each rule, record Pass, Fail or Cannot tell, with the file and line that shows it.
+3. Change nothing yet. Propose the three fixes that buy the most, smallest first.
+
+Constraints:
+- Cite the chapter and rule for every finding: the handbook file and line from ADVISOR, or the page URL.
+- A raw PHP app has no framework to lean on. Say what the app itself must do, and never suggest adding Laravel just to meet a rule.
+- The PHP floor comes from the policy, not from memory.
+- Ask me before you guess, and before you touch anything that deploys.
+
+Output: a findings table (rule, chapter, result, evidence), then the three fixes, then your questions.</code></pre>
+        </section>
+        <section class="ar-prompt" id="prompt-laravel-blade" aria-labelledby="prompt-laravel-blade-title" data-ar-prompt>
+          <header class="ar-prompt__head">
+            <span class="ar-prompt__glyph" aria-hidden="true">&gt;_</span>
+            <div>
+              <p class="ar-prompt__kicker">Form AG-3 · Laravel and Blade</p>
+              <h3 class="ar-prompt__title" id="prompt-laravel-blade-title">CREED in a Laravel app with Blade</h3>
+              <p class="ar-prompt__desc">The same inspection, the Laravel way: config, middleware and the framework line from the policy.</p>
+            </div>
+          </header>
+          <pre class="ar-prompt__text"><code>You are a coding agent reviewing a Laravel app that renders its pages with Blade, at Wayne State University, against CREED, the written standard of WELD, the Wayne State application stack.
+
+Read first:
+- https://creed.apps.wayne.edu/llms.txt, then the handbook chapters it lists. Every rule there cites the decision behind it.
+- ADVISOR, the stack's MCP server, if it is connected: call list_stack_rules with permutation laravel-blade (laravel-blade-vue if Blade pages mount Vue components), and policy_lookup for PHP and Laravel. If it is not connected, say so and work from the handbook pages.
+- composer.json, composer.lock, config/, bootstrap/app.php, .env.example, and any CI file.
+
+Task:
+1. Check the app against the rules that apply to Laravel with Blade: the PHP floor and the Laravel line, dependencies, secrets and .env, runtime and headers, auth, and CI.
+2. For each rule, record Pass, Fail or Cannot tell, with the file and line that shows it.
+3. Change nothing yet. Propose the three fixes that buy the most, smallest first.
+
+Constraints:
+- Cite the chapter and rule for every finding: the handbook file and line from ADVISOR, or the page URL.
+- Meet a rule the Laravel way (config, middleware, a service provider) before writing code of your own.
+- Laravel's support dates come from CREED's policy, not from memory or from laravel.com.
+- Ask me before you guess, and before you touch migrations or anything that deploys.
+
+Output: a findings table (rule, chapter, result, evidence), then the three fixes, then your questions.</code></pre>
+        </section>
+        <section class="ar-prompt" id="prompt-laravel-inertia" aria-labelledby="prompt-laravel-inertia-title" data-ar-prompt>
+          <header class="ar-prompt__head">
+            <span class="ar-prompt__glyph" aria-hidden="true">&gt;_</span>
+            <div>
+              <p class="ar-prompt__kicker">Form AG-4 · Laravel, Inertia and Vue</p>
+              <h3 class="ar-prompt__title" id="prompt-laravel-inertia-title">CREED in a Laravel app with Inertia and Vue</h3>
+              <p class="ar-prompt__desc">Both halves inspected: the Composer side and the npm side, Node, Vue and Inertia included.</p>
+            </div>
+          </header>
+          <pre class="ar-prompt__text"><code>You are a coding agent reviewing a Laravel app with Inertia and Vue, at Wayne State University, against CREED, the written standard of WELD, the Wayne State application stack. It has two halves, and CREED covers both.
+
+Read first:
+- https://creed.apps.wayne.edu/llms.txt, then the handbook chapters it lists. Every rule there cites the decision behind it.
+- ADVISOR, the stack's MCP server, if it is connected: call list_stack_rules with permutation laravel-inertia-vue, and policy_lookup for PHP, Laravel, Node, Vue and Inertia. If it is not connected, say so and work from the handbook pages.
+- The PHP half: composer.json, composer.lock, config/, .env.example. The frontend half: package.json, its lock file, .npmrc, the Vite config. And any CI file.
+
+Task:
+1. Check the app against the rules that apply to Laravel with Inertia and Vue: the PHP, Laravel, Node, Vue and Inertia lines, dependencies on both sides, secrets and .env, runtime and headers, auth, and CI.
+2. For each rule, record Pass, Fail or Cannot tell, with the file and line that shows it.
+3. Change nothing yet. Propose the three fixes that buy the most, smallest first.
+
+Constraints:
+- Cite the chapter and rule for every finding: the handbook file and line from ADVISOR, or the page URL.
+- The npm side counts as much as the Composer side: a missing or uncommitted lock file is a finding.
+- Every support date comes from CREED's policy, never from memory.
+- Ask me before you guess, and before you touch migrations, the build, or anything that deploys.
+
+Output: a findings table (rule, chapter, result, evidence, half), then the three fixes, then your questions.</code></pre>
+        </section>
+        </div>
+
+        <p class="agents__fine">The agent reads the same pages you do: <a href="llms.txt">llms.txt</a> lists them, <a href="llms-full.txt">llms-full.txt</a> holds them all in one file, and every page has a Markdown twin. Nothing here phones home; the buttons only copy text or open the tool you picked. The inspector never guesses, and neither should the agent.</p>
+      </div>
+    </div>
+  </section>
+
 </main>
 
 <footer class="colophon">
@@ -791,6 +955,7 @@ $floor = $policy-&gt;<span class="c-f">oldestSupported</span>(<span class="c-s">
 
 <div class="toast" role="status" aria-live="polite" data-toast></div>
 
+<script src="assets/agent-ready.js" defer></script>
 <script src="assets/creed.js" defer></script>
 </body>
 </html>

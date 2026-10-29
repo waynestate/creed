@@ -206,6 +206,7 @@ final class SiteBuilder
             source: 'handbook/README.md',
             hash: substr(hash('sha256', $this->read($this->root . '/handbook/README.md')), 0, 7),
             pageClass: 'hb-page--door',
+            twin: 'index.md',
         );
     }
 
@@ -263,6 +264,7 @@ final class SiteBuilder
             source: 'handbook/' . $c->file,
             hash: $c->hash,
             pageClass: 'hb-page--chapter',
+            twin: $c->slug . '.md',
         );
     }
 
@@ -362,8 +364,12 @@ final class SiteBuilder
         string $source,
         string $hash,
         string $pageClass,
+        ?string $twin = null,
     ): string {
         $nav = $this->sidebar($current);
+        // The page's Markdown twin, written beside it by bin/agent-ready.php (ADR-0019). The print
+        // edition has none: it repeats the chapters, and agents get those one by one.
+        $twinLink = $twin === null ? '' : "\n" . '<link rel="alternate" type="text/markdown" href="' . self::e($twin) . '">';
         $crumbHtml = '';
         foreach ($crumbs as [$href, $label]) {
             $crumbHtml .= $href === null
@@ -387,7 +393,7 @@ final class SiteBuilder
             <script src="../assets/stack-env.js" defer></script>
             <title>{$e($title)}</title>
             <meta name="description" content="{$e($description)}">
-            <meta name="theme-color" content="#0c5449">
+            <meta name="theme-color" content="#0c5449">{$twinLink}
             <link rel="icon" href="../brand/favicon.ico" sizes="any">
             <link rel="icon" type="image/png" sizes="32x32" href="../brand/favicon-32.png">
             <link rel="stylesheet" href="../assets/wayne-ui/wayne-ui.css">

@@ -1,0 +1,8 @@
+{
+    "site": "site",
+    "readme": "README.md",
+    "exclude": [
+        "handbook/print.html",
+        "proof.html"
+    ]
+}

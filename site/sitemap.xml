@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Written by SQUIRE's agent-ready kit from the pages in the site folder; do not edit. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://creed.apps.wayne.edu/</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/handbook/accessibility.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/handbook/auth.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/handbook/ci.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/handbook/code.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/handbook/databases.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/handbook/dependencies.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/handbook/deploy-gate.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/handbook/every-os.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/handbook/</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/handbook/overrides.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/handbook/runtime-and-headers.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/handbook/versions.html</loc></url>
+</urlset>
