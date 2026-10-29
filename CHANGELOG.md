@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.1.2 (2026-10-29)
+
+- `bin/refresh-policy.php`: a released version that loosens a constraint now exits 3 (changes written) with an alert in the report, instead of exit 4.
+
 - Fixed: a version of a known component that is older than the oldest listed
   line (PHP 5.x to 8.0, Laravel 5 to 8, Inertia 0.x) is now `Eol`, with the
   reason `older than the oldest listed line (8.1)` from the new
