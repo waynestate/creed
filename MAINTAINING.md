@@ -58,8 +58,11 @@ This is CREED's real maintenance job.
 - **Patch levels are watched automatically.** `bin/refresh-patches.php` reads php.net (PHP), Packagist (Laravel),
   nodejs.org (Node) and endoflife.date (a PHP cross-check and Vue lines). It updates `latest_patch` and
   `latest_patch_checked`, and proposes new Vue lines. In CI it is check-only: it exits 3 when the policy changed and
-  the job fails on the diff. CI never pushes. The GitLab schedule lives in the project's CI/CD settings, not in this
-  repo.
+  the job fails on the diff. The scheduled job runs the policy robot (`bin/policy-bot.php run`), which commits the
+  data allowlist on `auto/policy-refresh` and pushes it as a merge request labelled `auto-data`, auto-merged for a
+  data-only run; missing CI variables stop the run before any push. It never tags or releases, and support dates
+  stay hand-edited: a person reviews each support-date edit. The GitLab schedule lives in the project's CI/CD
+  settings, not in this repo.
 - **Support dates are edited by hand.** `active_until` and `security_until` for existing lines change only when a
   person edits them, with the upstream source in the commit message. End days are inclusive.
 - **A red scheduled run is a to-do, not an outage:** run `php bin/refresh-patches.php`, read the diff, `composer ci`,

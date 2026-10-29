@@ -130,9 +130,12 @@ The rules, chapter by chapter, live in [`handbook/`](handbook/README.md).
 
 `bin/refresh-patches.php` re-reads the upstream feeds, rewrites the
 `latest_patch` fields in `policy/policy.json`, and proposes new Vue lines from
-endoflife.date. A scheduled CI job runs it every
-Monday and fails the pipeline when the policy is stale; a person then runs the
-tool and commits the result. CI never pushes. It only raises its hand.
+endoflife.date. A scheduled CI job runs the refresh every Monday. When the
+policy changed, the policy robot (`bin/policy-bot.php run`) commits the data
+allowlist on `auto/policy-refresh` and pushes it as a merge request labelled
+`auto-data`; a data-only run is auto-merged, and missing CI variables stop the
+run before any push. The robot never tags or releases, and support dates stay
+hand-edited: a person reviews each support-date edit.
 
 The schedule is a GitLab project setting, not a file in this repo: someone
 creates it under CI/CD > Schedules (weekly, Monday). The GitHub mirror runs the
