@@ -52,12 +52,12 @@ declare(strict_types=1);
  * Exit codes:
  *   0  nothing worth committing was written (and always 0 with --dry-run)
  *   1  a hard failure (unreadable policy, unwritable file, bad option)
- *   3  something was written and every written change is tighten, neutral
- *      or loosen-warning (a first sighting in policy/sources.json, or a
- *      --touch heartbeat, counts as something written)
- *   4  a change was held or refused, or a written change was a loosen-fail
- *      confirmed by a second source or by 14 stable days. Written changes
- *      are still written.
+ *   3  something was written: tighten, neutral or loosen-warning changes,
+ *      a loosen-fail released on proof (written, and still reported as an
+ *      alert by the policy robot), a first sighting in policy/sources.json,
+ *      or a --touch heartbeat
+ *   4  a change was held or refused. Nothing is committed for this run;
+ *      the policy robot raises an issue instead
  */
 
 use Waynestate\Creed\Refresh\EndOfLifeParser;
@@ -317,7 +317,11 @@ if ($reportPath !== null) {
 if ($dryRun) {
     exit(0);
 }
-if ($result->held !== [] || $result->refused !== [] || $result->hasLoosenFailChanges()) {
+// A released loosen-fail is a written change (a second source or the ledger
+// agreed), so it exits 3 like any other written change; the policy robot
+// raises the alert from the report. Held and refused changes still exit 4:
+// nothing is committed for that run.
+if ($result->held !== [] || $result->refused !== []) {
     exit(4);
 }
 exit($policyWritten || $ledgerNews ? 3 : 0);

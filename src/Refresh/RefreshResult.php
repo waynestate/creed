@@ -47,7 +47,9 @@ final class RefreshResult
 
     /**
      * Whether any written change loosens support past what upstream says.
-     * Such a run must end with a non-zero exit code even though it wrote.
+     * A released loosen-fail is real (a second source or the ledger agreed),
+     * so the run exits 3 like any other written change; the policy robot
+     * raises the alert from the report instead of holding the commit.
      */
     public function hasLoosenFailChanges(): bool
     {

@@ -78,6 +78,34 @@ final class RefreshPolicyCommandTest extends TestCase
     }
 
     #[Test]
+    public function aReleasedLoosenFailExitsThreeAndKeepsTheAlertInTheReport(): void
+    {
+        // Roll php 8.4's security date back one year: php.net/states and
+        // endoflife.date/php then agree on the later date, which releases
+        // the loosen-fail instead of holding it.
+        $policy = json_decode((string) file_get_contents($this->tmp . '/policy.json'), false);
+        self::assertIsObject($policy);
+        $policy->components->php->versions->{'8.4'}->security_until = '2027-12-31';
+        file_put_contents($this->tmp . '/policy.json', json_encode($policy, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n");
+
+        [$exit, $out] = $this->exec('--today', '2026-10-29', '--report', $this->tmp . '/report.json');
+
+        self::assertSame(3, $exit, $out);
+        $written = json_decode((string) file_get_contents($this->tmp . '/policy.json'), true);
+        self::assertSame('2028-12-31', $written['components']['php']['versions']['8.4']['security_until']);
+        $report = json_decode((string) file_get_contents($this->tmp . '/report.json'), true);
+        self::assertSame([], $report['held']);
+        self::assertSame([], $report['refused']);
+        self::assertCount(1, $report['changes']);
+        self::assertSame('loosen-fail', $report['changes'][0]['class']);
+        self::assertSame('php', $report['changes'][0]['component']);
+        self::assertSame('8.4', $report['changes'][0]['line']);
+        self::assertSame('security_until', $report['changes'][0]['field']);
+        self::assertSame('2028-12-31', $report['changes'][0]['new']);
+        self::assertSame(['php.net/states', 'endoflife.date/php'], $report['changes'][0]['sources']);
+    }
+
+    #[Test]
     public function dryRunWritesNothingAndAlwaysExitsZero(): void
     {
         $before = (string) file_get_contents($this->tmp . '/policy.json');
