@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+- PHPStan now includes Pinstripe's raw preset
+  (`vendor/waynestate/pinstripe/phpstan/raw.neon`) instead of carrying a hand
+  copy; `phpstan.neon` keeps only this repo's own paths and phpVersion.
+  `waynestate/pinstripe` joins require-dev (dev-main until 0.1.0 is tagged)
+  and `phpstan/extension-installer` is allowed so the preset's deprecation
+  rules load. The suit is off the rack now.
 - `handbook/dependencies.md` gains a "Private packages" section: internal-only
   packages install from one GitLab registry per ecosystem, credentials stay
   out of repository URLs and lock files, builds use read-only deploy tokens,
