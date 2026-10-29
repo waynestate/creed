@@ -280,6 +280,7 @@ final class Refresher
         // every listed major.
         if ($sources->nodeSchedule !== null) {
             foreach ($sources->nodeSchedule as $major => $dates) {
+                $major = (string) $major;
                 if (preg_match('/^\d+$/', (string) $major) !== 1) {
                     continue;
                 }

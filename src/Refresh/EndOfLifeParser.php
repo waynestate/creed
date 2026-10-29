@@ -65,7 +65,7 @@ final class EndOfLifeParser
      *
      * @param list<Release> $releases
      *
-     * @return array<string, Release>
+     * @return array<int|string, Release>
      */
     public static function byName(array $releases): array
     {
@@ -82,7 +82,7 @@ final class EndOfLifeParser
      *
      * @param list<Release> $releases
      *
-     * @return array<string, string>
+     * @return array<int|string, string>
      */
     public static function latestByLine(array $releases): array
     {

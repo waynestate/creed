@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- `bin/refresh-policy.php` keeps every support date, patch and new line in the
+  policy tied to a canonical source (php.net, the Node.js release schedule,
+  endoflife.date, Packagist, npm). Changes are classed tighten, neutral,
+  loosen-warning or loosen-fail; a later security date is held until two
+  sources agree or 14 days pass; nothing is ever removed. Provenance lives in
+  the new `policy/sources.json` (schema and validation included), and the policy
+  gains an optional `refreshed_on` date. `refresh-patches.php` keeps working.
 - PHPStan now includes Pinstripe's raw preset
   (`vendor/waynestate/pinstripe/phpstan/raw.neon`) instead of carrying a hand
   copy; `phpstan.neon` keeps only this repo's own paths and phpVersion.

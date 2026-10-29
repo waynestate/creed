@@ -19,7 +19,7 @@ use RuntimeException;
 final class NodeScheduleParser
 {
     /**
-     * @return array<string, array{maintenance: ?string, end: ?string}>
+     * @return array<int|string, array{maintenance: ?string, end: ?string}>
      *         keyed by major without the "v", for example "20"
      *
      * @throws RuntimeException when the feed is not the expected shape

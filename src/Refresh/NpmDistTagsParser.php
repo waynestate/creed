@@ -17,7 +17,7 @@ use RuntimeException;
 final class NpmDistTagsParser
 {
     /**
-     * @return array<string, string>
+     * @return array<int|string, string>
      *
      * @throws RuntimeException when the feed is not the expected shape or
      *                          carries no "latest" tag

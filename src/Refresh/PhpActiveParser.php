@@ -15,7 +15,7 @@ use RuntimeException;
 final class PhpActiveParser
 {
     /**
-     * @return array<string, string> keyed by branch, for example "8.2"
+     * @return array<int|string, string> keyed by branch, for example "8.2"
      *
      * @throws RuntimeException when the feed is not the expected shape
      */

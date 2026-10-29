@@ -17,7 +17,7 @@ use RuntimeException;
 final class PackagistP2Parser
 {
     /**
-     * @return array<string, string> keyed by major, for example "13"
+     * @return array<int|string, string> keyed by major, for example "13"
      *
      * @throws RuntimeException when the feed is not the expected shape
      */

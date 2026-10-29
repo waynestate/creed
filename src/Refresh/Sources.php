@@ -16,16 +16,16 @@ final class Sources
 {
     /**
      * @param array<string, array{state: ?string, active_until: ?string, security_until: ?string}>|null $phpStates
-     * @param array<string, string>|null $phpActive
-     * @param array<string, array{maintenance: ?string, end: ?string}>|null $nodeSchedule
-     * @param array<string, string>|null $nodeDist
+     * @param array<int|string, string>|null $phpActive
+     * @param array<int|string, array{maintenance: ?string, end: ?string}>|null $nodeSchedule
+     * @param array<int|string, string>|null $nodeDist
      * @param list<Release>|null $endoflifePhp
      * @param list<Release>|null $endoflifeNodejs
      * @param list<Release>|null $endoflifeLaravel
-     * @param array<string, string>|null $packagistLaravel
+     * @param array<int|string, string>|null $packagistLaravel
      * @param list<Release>|null $endoflifeMysql
      * @param list<Release>|null $endoflifeVue
-     * @param array<string, string>|null $npmInertia
+     * @param array<int|string, string>|null $npmInertia
      * @param list<Release>|null $endoflifeComposer
      * @param list<string> $errors
      */

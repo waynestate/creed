@@ -28,7 +28,6 @@ function creedFetchUrl(string $url): string
     $body = curl_exec($ch);
     $status = (int) curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
     $error = curl_error($ch);
-    curl_close($ch);
 
     if ($body === false) {
         throw new RuntimeException("Could not fetch {$url}: {$error}");

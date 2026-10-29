@@ -15,7 +15,7 @@ use RuntimeException;
 final class NodeDistParser
 {
     /**
-     * @return array<string, string> keyed by major, for example "26"
+     * @return array<int|string, string> keyed by major, for example "26"
      *
      * @throws RuntimeException when the feed is not the expected shape
      */
