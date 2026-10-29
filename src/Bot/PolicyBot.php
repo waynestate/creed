@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Waynestate\Creed\Bot;
 
+use DateTimeImmutable;
 use stdClass;
 
 /**
@@ -16,19 +17,28 @@ use stdClass;
  *   2. Read the run report the refresher wrote with --report.
  *   3. Decide the outcome from the refresher's exit code and the report:
  *
- *        exit 0  nothing worth committing was written: the robot does nothing
- *        exit 3  changes were written: the robot plans the commit (the data
- *                allowlist files) and builds the merge request title and body
- *        exit 4  a change was held or refused: nothing is committed, and the
- *                report items are the record of why
+ *        exit 0  nothing worth committing was written: the robot checks the
+ *                weekly heartbeat (below) and otherwise does nothing
+ *        exit 3  changes were written: the robot commits the data allowlist
+ *                on the refresh branch and pushes it with merge request
+ *                options, including auto-merge
+ *        exit 4  a change was held or refused: the robot commits whatever
+ *                was written (often nothing) and pushes without auto-merge
  *        exit 1  a hard failure: the robot stops with exit 1
+ *
+ * The weekly heartbeat: after an exit 0, if refreshed_on in
+ * policy/policy.json is 7 or more days before today, the robot runs the
+ * refresher again with --touch and treats that result like a normal run.
+ *
+ * The push goes to a token URL built from the CI_SERVER_* environment
+ * variables, with the token from CREED_BOT_TOKEN. Every line the robot
+ * prints, including runner errors and command echoes, passes through one
+ * mask function that replaces the token value with [masked], so a runner
+ * error that echoes the URL back never leaks it.
  *
  * With --dry-run the refresher writes nothing and always exits 0; the robot
  * then prints the decided outcome, the planned files, the merge request
  * title and body, and touches nothing.
- *
- * Committing, pushing and opening the GitLab merge request are later steps;
- * this core only decides and reports.
  */
 final readonly class PolicyBot
 {
@@ -48,10 +58,56 @@ final readonly class PolicyBot
         'policy/sources.json',
     ];
 
+    /**
+     * The branch the refresh commit lands on, pushed with merge request
+     * options.
+     */
+    public const BRANCH = 'auto/policy-refresh';
+
+    /**
+     * The push option that auto-merges the merge request; exit 3 only.
+     */
+    public const AUTO_MERGE_OPTION = 'merge_request.auto_merge';
+
+    /**
+     * The committer identity for the refresh commit, passed with -c flags
+     * so the repository config is never touched.
+     */
+    public const COMMITTER_NAME = 'CREED policy bot';
+
+    /**
+     * @see self::COMMITTER_NAME
+     */
+    public const COMMITTER_EMAIL = 'policy-bot@noreply.invalid';
+
+    /**
+     * A refresh older than this many days triggers the --touch heartbeat.
+     */
+    public const HEARTBEAT_DAYS = 7;
+
+    /**
+     * The environment variables a push needs, in fixed order.
+     *
+     * @var list<string>
+     */
+    private const ENVIRONMENT = [
+        'CI_SERVER_PROTOCOL',
+        'CI_SERVER_HOST',
+        'CI_SERVER_PORT',
+        'CI_PROJECT_PATH',
+        'CI_DEFAULT_BRANCH',
+        'CREED_BOT_TOKEN',
+    ];
+
+    /**
+     * @param resource|null $errorStream stream for error lines; STDERR by default
+     */
     public function __construct(
         private string $repoRoot,
         private CommandRunner $runner,
         private bool $dryRun = false,
+        private ?string $today = null,
+        private mixed $errorStream = null,
     ) {}
 
     /**
@@ -65,45 +121,37 @@ final readonly class PolicyBot
     {
         $reportPath = tempnam(sys_get_temp_dir(), 'creed-policy-report-');
         if ($reportPath === false) {
-            echo "the policy robot could not create a report file\n";
+            $this->say("the policy robot could not create a report file\n");
 
             return 1;
         }
 
         try {
-            $argv = [PHP_BINARY, $this->repoRoot . '/bin/refresh-policy.php', '--report', $reportPath];
-            if ($offlineDir !== null) {
-                $argv[] = '--offline';
-                $argv[] = $offlineDir;
+            $first = $this->runRefresher($offlineDir, $reportPath);
+            if ($first === null) {
+                return 1;
             }
+            [$status, $report] = $first;
+
             if ($this->dryRun) {
-                $argv[] = '--dry-run';
+                return $this->dryRunOutcome($report);
             }
 
-            try {
-                $result = $this->runner->run($argv);
-            } catch (CommandException $e) {
-                echo 'the refresher could not start: ' . $e->getMessage() . "\n";
+            if ($status === 0) {
+                $age = $this->daysSinceLastRefresh();
+                if ($age < self::HEARTBEAT_DAYS) {
+                    return $this->nothingToDo();
+                }
 
-                return 1;
+                $this->say("the last refresh was {$age} days old; running the refresher with --touch\n");
+                $second = $this->runRefresher($offlineDir, $reportPath, touch: true);
+                if ($second === null) {
+                    return 1;
+                }
+                [$status, $report] = $second;
             }
 
-            if ($result['stdout'] !== '') {
-                echo $result['stdout'];
-            }
-            if ($result['stderr'] !== '') {
-                fwrite(STDERR, $result['stderr']);
-            }
-
-            if ($result['status'] === 1) {
-                echo "the refresher failed (exit 1); the robot stops here\n";
-
-                return 1;
-            }
-
-            $report = $this->readReport($reportPath);
-
-            return $this->dryRun ? $this->dryRunOutcome($report) : $this->decide($result['status'], $report);
+            return $this->decide($status, $report);
         } finally {
             if (is_file($reportPath)) {
                 @unlink($reportPath);
@@ -183,58 +231,339 @@ final readonly class PolicyBot
     }
 
     /**
+     * Run the refresher once and replay its streams (masked). Returns
+     * [exit, report], or null when the subprocess could not start or
+     * hard-failed, both already reported.
+     *
+     * @return array{0: int, 1: object}|null
+     */
+    private function runRefresher(?string $offlineDir, string $reportPath, bool $touch = false): ?array
+    {
+        $argv = [PHP_BINARY, $this->repoRoot . '/bin/refresh-policy.php', '--report', $reportPath];
+        if ($offlineDir !== null) {
+            $argv[] = '--offline';
+            $argv[] = $offlineDir;
+        }
+        if ($touch) {
+            $argv[] = '--touch';
+        }
+        if ($this->dryRun) {
+            $argv[] = '--dry-run';
+        }
+
+        try {
+            $result = $this->runner->run($argv);
+        } catch (CommandException $e) {
+            $this->say('the refresher could not start: ' . $e->getMessage() . "\n");
+
+            return null;
+        }
+
+        if ($result['stdout'] !== '') {
+            $this->say($result['stdout']);
+        }
+        if ($result['stderr'] !== '') {
+            $this->err($result['stderr']);
+        }
+
+        if ($result['status'] === 1) {
+            $this->say("the refresher failed (exit 1); the robot stops here\n");
+
+            return null;
+        }
+
+        return [$result['status'], $this->readReport($reportPath)];
+    }
+
+    /**
      * The decided outcome for a real (non dry-run) run.
      */
     private function decide(int $exit, object $report): int
     {
         return match ($exit) {
             0 => $this->nothingToDo(),
-            3 => $this->commitPlan($report),
-            4 => $this->heldOrRefused($report),
+            3 => $this->commitAndPush($report, autoMerge: true),
+            4 => $this->commitAndPush($report, autoMerge: false),
             default => $this->unexpectedExit($exit),
         };
     }
 
     private function nothingToDo(): int
     {
-        echo "nothing to do\n";
-
-        return 0;
-    }
-
-    /**
-     * Changes were written: the commit list and the merge request.
-     */
-    private function commitPlan(object $report): int
-    {
-        echo "changes written; the commit plan:\n";
-        foreach ($this->plannedFiles() as $file) {
-            echo "  {$file}\n";
-        }
-
-        $this->printRecords($report);
-        $this->printMergeRequest($report);
-
-        return 0;
-    }
-
-    /**
-     * A change was held or refused: nothing is committed, and the report
-     * items are the record of why.
-     */
-    private function heldOrRefused(object $report): int
-    {
-        echo "the refresher held or refused changes; nothing is committed\n";
-        $this->printRecords($report);
+        $this->say("nothing to do\n");
 
         return 0;
     }
 
     private function unexpectedExit(int $exit): int
     {
-        echo "the refresher exited with an unknown code ({$exit}); treating it as a failure\n";
+        $this->say("the refresher exited with an unknown code ({$exit}); treating it as a failure\n");
 
         return 1;
+    }
+
+    /**
+     * Changes were written (exit 3) or partly written (exit 4): commit the
+     * data allowlist on the refresh branch and push it with merge request
+     * options. Exit 3 auto-merges; exit 4 does not.
+     */
+    private function commitAndPush(object $report, bool $autoMerge): int
+    {
+        if ($autoMerge) {
+            $this->say("changes written; the commit plan:\n");
+        } else {
+            $this->say("the refresher held or refused some changes; committing what was written\n");
+        }
+        foreach ($this->plannedFiles() as $file) {
+            $this->say("  {$file}\n");
+        }
+
+        $this->printRecords($report);
+
+        $missing = $this->missingEnvironment();
+        if ($missing !== []) {
+            $this->say('missing environment variables: ' . implode(', ', $missing) . "\n");
+
+            return 1;
+        }
+
+        $result = $this->runGit(['checkout', '-B', self::BRANCH]);
+        if ($result['status'] !== 0) {
+            $this->say("git checkout failed (exit {$result['status']}); the robot stops here\n");
+
+            return 1;
+        }
+
+        $result = $this->runGit(['add', ...self::DATA_ALLOWLIST]);
+        if ($result['status'] !== 0) {
+            $this->say("git add failed (exit {$result['status']}); the robot stops here\n");
+
+            return 1;
+        }
+
+        $result = $this->runGit(['diff', '--cached', '--name-only']);
+        if ($result['status'] !== 0) {
+            $this->say("git diff failed (exit {$result['status']}); the robot stops here\n");
+
+            return 1;
+        }
+        if (trim($result['stdout']) === '') {
+            $this->say('nothing staged; skipping the commit and push\n');
+
+            return 0;
+        }
+
+        $result = $this->runGit([
+            '-c',
+            'user.name=' . self::COMMITTER_NAME,
+            '-c',
+            'user.email=' . self::COMMITTER_EMAIL,
+            'commit',
+            '-m',
+            self::MR_TITLE,
+        ]);
+        if ($result['status'] !== 0) {
+            $this->say("git commit failed (exit {$result['status']}); the robot stops here\n");
+
+            return 1;
+        }
+
+        $args = ['push', '--force'];
+        foreach ($this->pushOptions($autoMerge) as $option) {
+            $args[] = '-o';
+            $args[] = $option;
+        }
+        $args[] = $this->pushUrl();
+        $args[] = 'HEAD:refs/heads/' . self::BRANCH;
+
+        $result = $this->runGit($args);
+        if ($result['status'] !== 0) {
+            $this->say("git push failed (exit {$result['status']}); the robot stops here\n");
+
+            return 1;
+        }
+
+        $this->printMergeRequest($report);
+
+        return 0;
+    }
+
+    /**
+     * Run one git command through the runner. The command line is echoed
+     * first (masked) and its streams are replayed (masked), so a push URL
+     * never reaches the terminal raw.
+     *
+     * @param list<string> $args the git arguments, without the leading "git"
+     *
+     * @return array{status: int, stdout: string, stderr: string}
+     */
+    private function runGit(array $args): array
+    {
+        $argv = ['git', ...$args];
+        $this->say('$ ' . implode(' ', $argv) . "\n");
+
+        try {
+            $result = $this->runner->run($argv);
+        } catch (CommandException $e) {
+            $this->err('git could not start: ' . $e->getMessage() . "\n");
+
+            return ['status' => 1, 'stdout' => '', 'stderr' => ''];
+        }
+
+        if ($result['stdout'] !== '') {
+            $this->say($result['stdout']);
+        }
+        if ($result['stderr'] !== '') {
+            $this->err($result['stderr']);
+        }
+
+        return $result;
+    }
+
+    /**
+     * The token push URL, built from the CI environment. Only called after
+     * missingEnvironment() came back empty.
+     */
+    private function pushUrl(): string
+    {
+        return sprintf(
+            '%s://oauth2:%s@%s:%s/%s.git',
+            (string) getenv('CI_SERVER_PROTOCOL'),
+            $this->token(),
+            (string) getenv('CI_SERVER_HOST'),
+            (string) getenv('CI_SERVER_PORT'),
+            (string) getenv('CI_PROJECT_PATH'),
+        );
+    }
+
+    /**
+     * The push options, one per -o flag. Auto-merge is an exit 3 thing.
+     *
+     * @return list<string>
+     */
+    private function pushOptions(bool $autoMerge): array
+    {
+        $options = [
+            'merge_request.create',
+            'merge_request.target=' . (string) getenv('CI_DEFAULT_BRANCH'),
+            'merge_request.remove_source_branch',
+            'merge_request.label=auto-data',
+            'merge_request.title=' . self::MR_TITLE,
+        ];
+        if ($autoMerge) {
+            $options[] = self::AUTO_MERGE_OPTION;
+        }
+
+        return $options;
+    }
+
+    /**
+     * The required environment variable names that are missing or empty,
+     * in fixed order. Names only; values never leave this method.
+     *
+     * @return list<string>
+     */
+    private function missingEnvironment(): array
+    {
+        $missing = [];
+        foreach (self::ENVIRONMENT as $name) {
+            $value = getenv($name);
+            if ($value === false || $value === '') {
+                $missing[] = $name;
+            }
+        }
+
+        return $missing;
+    }
+
+    /**
+     * The push token from CREED_BOT_TOKEN, or '' when unset.
+     */
+    private function token(): string
+    {
+        $token = getenv('CREED_BOT_TOKEN');
+
+        return $token === false ? '' : (string) $token;
+    }
+
+    /**
+     * The one mask every printed line passes through: the token value
+     * becomes [masked]. An empty token masks nothing.
+     */
+    private function mask(string $line): string
+    {
+        $token = $this->token();
+
+        return $token === '' ? $line : str_replace($token, '[masked]', $line);
+    }
+
+    /**
+     * Print one line (or chunk) to stdout, masked.
+     */
+    private function say(string $line): void
+    {
+        echo $this->mask($line);
+    }
+
+    /**
+     * Print one line (or chunk) to the error stream (STDERR by default),
+     * masked.
+     */
+    private function err(string $line): void
+    {
+        if (is_resource($this->errorStream)) {
+            fwrite($this->errorStream, $this->mask($line));
+
+            return;
+        }
+
+        fwrite(STDERR, $this->mask($line));
+    }
+
+    /**
+     * Whole days between refreshed_on in policy/policy.json and today. A
+     * missing file, field or unparseable date counts as fully stale, so
+     * the heartbeat stamps the file.
+     */
+    private function daysSinceLastRefresh(): int
+    {
+        $today = $this->todayDate();
+        if ($today === null) {
+            return self::HEARTBEAT_DAYS;
+        }
+
+        $raw = @file_get_contents($this->repoRoot . '/policy/policy.json');
+        if ($raw === false) {
+            return self::HEARTBEAT_DAYS;
+        }
+        $decoded = json_decode($raw);
+        if (!is_object($decoded)) {
+            return self::HEARTBEAT_DAYS;
+        }
+        $stamp = $decoded->refreshed_on ?? null;
+        if (!is_string($stamp) || $stamp === '') {
+            return self::HEARTBEAT_DAYS;
+        }
+        $then = DateTimeImmutable::createFromFormat('!Y-m-d', $stamp);
+        if ($then === false) {
+            return self::HEARTBEAT_DAYS;
+        }
+
+        return $then->diff($today)->days;
+    }
+
+    /**
+     * The injected today (tests) or the real today, at midnight.
+     */
+    private function todayDate(): ?DateTimeImmutable
+    {
+        if ($this->today !== null) {
+            $parsed = DateTimeImmutable::createFromFormat('!Y-m-d', $this->today);
+
+            return $parsed === false ? null : $parsed;
+        }
+
+        return new DateTimeImmutable('today');
     }
 
     /**
@@ -250,18 +579,18 @@ final readonly class PolicyBot
         $errors = $this->strings($report, 'source_errors');
 
         if ($changes === [] && $held === [] && $refused === [] && $disagreements === [] && $errors === []) {
-            echo "dry run: nothing to do\n";
+            $this->say("dry run: nothing to do\n");
 
             return 0;
         }
 
         if ($changes !== []) {
-            echo "dry run: would commit these files:\n";
+            $this->say("dry run: would commit these files:\n");
             foreach ($this->plannedFiles() as $file) {
-                echo "  {$file}\n";
+                $this->say("  {$file}\n");
             }
         } else {
-            echo 'dry run: nothing to commit (' . $this->countPhrases($held, $refused, $disagreements, $errors) . ")\n";
+            $this->say('dry run: nothing to commit (' . $this->countPhrases($held, $refused, $disagreements, $errors) . ")\n");
         }
 
         $this->printRecords($report);
@@ -277,10 +606,10 @@ final readonly class PolicyBot
     private function printRecords(object $report): void
     {
         foreach ($this->items($report, 'held') as $item) {
-            echo self::recordLine('held', $item) . "\n";
+            $this->say(self::recordLine('held', $item) . "\n");
         }
         foreach ($this->items($report, 'refused') as $item) {
-            echo self::recordLine('refused', $item) . "\n";
+            $this->say(self::recordLine('refused', $item) . "\n");
         }
     }
 
@@ -289,9 +618,9 @@ final readonly class PolicyBot
      */
     private function printMergeRequest(object $report): void
     {
-        echo 'merge request title: ' . $this->mrTitle() . "\n";
-        echo "merge request body:\n";
-        echo $this->mrBody($report) . "\n";
+        $this->say('merge request title: ' . $this->mrTitle() . "\n");
+        $this->say("merge request body:\n");
+        $this->say($this->mrBody($report) . "\n");
     }
 
     /**

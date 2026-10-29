@@ -4,17 +4,19 @@ declare(strict_types=1);
 
 /**
  * The CREED policy robot: it keeps policy/policy.json current with no
- * human in the loop. This step ships the decision core: it runs
- * bin/refresh-policy.php as a subprocess, reads the run report, and
- * decides the outcome (nothing to do, a commit plan with the merge
- * request title and body, or an alert with nothing committed).
+ * human in the loop. It runs bin/refresh-policy.php as a subprocess,
+ * reads the run report, and decides the outcome: nothing to do, a commit
+ * of the data allowlist pushed as a merge request (auto-merged on exit 3),
+ * or a hard failure. A weekly heartbeat re-runs the refresher with
+ * --touch when refreshed_on is 7 or more days old.
  *
  * Usage:
  *   php bin/policy-bot.php run [--dry-run] [--offline <dir>]
  *
- *   run  One scheduled refresh: run the refresher and decide the outcome.
- *        --dry-run prints the decided outcome, the planned files, the
- *        merge request title and body, and changes nothing.
+ *   run  One scheduled refresh: run the refresher, then commit the data
+ *        allowlist on auto/policy-refresh and push it with merge request
+ *        options. --dry-run prints the decided outcome, the planned
+ *        files, the merge request title and body, and changes nothing.
  *        --offline <dir> reads the feeds from <dir> instead of fetching
  *        them (tests/fixtures/feeds/ carries a full set).
  *
