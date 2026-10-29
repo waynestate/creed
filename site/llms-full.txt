@@ -227,6 +227,8 @@ and may be cited as *the standard everything rests on*.
 
 The written development standards for Wayne State's app stack: a handbook of numbered practices, plus `policy.json`, one file of support dates for PHP, Laravel, Node, MySQL, Vue and Inertia. A small PHP reader answers the one question every other tool asks: *what state is this version in, on this date?*
 
+**Already included in [WELD](https://weld.apps.wayne.edu/).** Use CREED on its own when an app or tool that isn't WELD needs the stack's rules, or the support dates in `policy.json`.
+
 [Inspect a version](https://creed.apps.wayne.edu/#inspection) [Read the handbook](https://creed.apps.wayne.edu/handbook/)
 
 - **Enforced**: 5
