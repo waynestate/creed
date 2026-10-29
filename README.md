@@ -20,7 +20,7 @@ Front page: [`site/index.html`](site/index.html), a static page you can open in 
 
 One command, two clouds, zero excuses. Higher.
 
-![Singer of the band Creed in a white tank top and black leather pants on a stage with a red backdrop, one arm stretched out over a cheering crowd](https://media.giphy.com/media/BsQ4hGk3leUxGVCS5X/giphy.gif)
+![Singer of the band Creed in a white tank top and black leather pants on a stage with a red backdrop, one arm stretched out over a cheering crowd](docs/readme/creed-band.gif)
 <sub>GIF via [Giphy](https://giphy.com/gifs/creed-higher-BsQ4hGk3leUxGVCS5X)</sub>
 
 CREED is the Wayne State app stack's version policy, as data. One file,
@@ -163,7 +163,7 @@ docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy
 git.wayne.edu has no runners today. Every product in the stack strongly
 recommends a git.wayne.edu instance runner.
 
-![Creed Bratton from The Office in a dark suit and blue shirt with a wide, wild-eyed grin](https://media.giphy.com/media/sg6OczNgfp7Jm/giphy.gif)
+![Creed Bratton from The Office in a dark suit and blue shirt with a wide, wild-eyed grin](docs/readme/creed-bratton.gif)
 <sub>GIF via [Giphy](https://giphy.com/gifs/creed-sg6OczNgfp7Jm)</sub>
 
 Creed Bratton, whose quality assurance work we all admire. His past is a
