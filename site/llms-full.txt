@@ -158,9 +158,10 @@ when nothing else changed (the weekly heartbeat). `policy/sources.json` records,
 per value, which source said it, and the first and last day it was seen.
 
 Exit codes: `0` nothing worth committing (always `0` with `--dry-run`); `1` hard
-failure; `3` something was written and every written change was `tighten`,
-`neutral` or `loosen-warning`; `4` something was held or refused, or a
-`loosen-fail` was written on proof. Written changes are always written.
+failure; `3` something was written to `policy/policy.json` or `policy/sources.json`,
+including a released `loosen-fail` (the policy robot raises the alert from the
+report); `4` something was held or refused; nothing is committed for that run.
+Written changes are always written.
 `bin/refresh-patches.php` still works as before.
 
 ### Carrying CREED in another package
@@ -168,7 +169,7 @@ failure; `3` something was written and every written change was `tighten`,
 PROCTOR, Booster, Rollcall and ADVISOR each carry a generated copy of the
 reader under their own namespace, so two tools in one app never fight over a
 class name (the generator below keeps the copies in step). The copies began
-because CREED was not on Packagist. It is now (`waynestate/creed` 0.1.0), so
+because CREED was not on Packagist. It is now (`waynestate/creed` 0.1.2), so
 each copy can become a real `require`, one consumer at a time; until a
 consumer switches, its copy stays. CREED owns the generator and the check:
 
@@ -211,7 +212,7 @@ mystery. Ours is in `policy/policy.json`, where it belongs.
 
 Source: https://creed.apps.wayne.edu/
 
-Wayne State App Stack 2026 Edition Adopted 2026-10-28
+Wayne State App Stack 2026 Edition Adopted 2026-10-29
 
 ## CREED The Wayne State App Stack Code
 
@@ -285,11 +286,11 @@ Certificate of inspection
 No. 0001
 
 - **Runtime**: PHP 8.2
-- **Inspected on**: 2026-10-28
-- **Reader call**: `$policy->stateOf('php', '8.2', new DateTimeImmutable('2026-10-28'))`
+- **Inspected on**: 2026-10-29
+- **Reader call**: `$policy->stateOf('php', '8.2', new DateTimeImmutable('2026-10-29'))`
 - **Returns**: `State::Security`
 
-Security fixes only, until 2026-12-31: 64 days left. Plan the move to PHP 8.4 now.
+Security fixes only, until 2026-12-31: 63 days left. Plan the move to PHP 8.4 now.
 
 Applicable clause: [§2.2 Treat security-only as a countdown, not a resting place](https://creed.apps.wayne.edu/#c-2-2)
 
@@ -323,9 +324,9 @@ Enforced
 
 #### §1.4 Make the reader refuse to guess.
 
-A version with no `security_until` is an error, not a silent pass, unless its line is marked current. An unknown component, or a version older than or between the listed lines, is an error. A version newer than every listed line is Active: current versions are never refused.
+A version with no `security_until` is an error, not a silent pass, unless its line is marked current. An unknown component, or a version between the listed lines, is an error. A version older than the oldest listed line is EOL. A version newer than every listed line is Active: current versions are never refused.
 
-Held by `stateOf`, which throws for each case, and `isAheadOfPolicy`; tests cover every one.
+Held by `stateOf`, which throws for each error case, and `isAheadOfPolicy`; tests cover every one.
 
 Enforced
 
@@ -343,7 +344,7 @@ Enforced
 
 #### §1.9 Model support honestly when a project publishes no dates.
 
-Vue 3 and Inertia publish no fixed end dates. Do not invent them. The policy marks Vue 3 and Inertia 2 `"current": true`: Active on every date, with no `security_until`. Vue 2 keeps its real end, 2023-12-31.
+Vue 3 and Inertia publish no fixed end dates. Do not invent them. The policy marks Vue 3, Inertia 2 and Inertia 3 `"current": true`: Active on every date, with no `security_until`. Vue 2 keeps its real end, 2023-12-31.
 
 Held by the schema, which refuses a current line that carries `security_until` and a dated line without it; `PolicySchemaTest` covers both.
 
@@ -359,7 +360,7 @@ EOL PHP is not supported by the stack, with no exceptions. The adopted editions 
 
 #### §2.1 Run non-EOL PHP only.
 
-Apps declare and run a PHP version that php.net lists as supported. On 2026-10-28 that means 8.2 (security only, to 2026-12-31), 8.3, 8.4 and 8.5.
+Apps declare and run a PHP version that php.net lists as supported. On 2026-10-29 that means 8.2 (security only, to 2026-12-31), 8.3, 8.4 and 8.5.
 
 Held by [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `php-floor`, which fails when the lowest bound of `require.php` is EOL by policy.
 
@@ -371,7 +372,7 @@ Checked
 
 A version in security-only support warns now and fails on the day after `security_until`. Plan the move before then.
 
-Held by [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `php-floor` (a WARN). The runtime ribbon waits for [HELMET](https://creed.apps.wayne.edu/#ahj-helmet).
+Held by [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `php-floor` (a WARN). [HELMET](https://creed.apps.wayne.edu/#ahj-helmet) ships the runtime ribbon.
 
 Checked
 
@@ -387,7 +388,7 @@ Documented
 
 **Rationale.** It is the only way a dependency floor can force an upgrade.
 
-Table 2-1 Adopted editions, with the state on 2026-10-28
+Table 2-1 Adopted editions, with the state on 2026-10-29
 
 | Runtime | Active until | Security until | Latest patch | State |
 | --- | --- | --- | --- | --- |
@@ -396,15 +397,15 @@ Table 2-1 Adopted editions, with the state on 2026-10-28
 | 8.4 | 2026-12-31 | 2028-12-31 | 8.4.27 | Active |
 | 8.3 | 2025-12-31 | 2027-12-31 | 8.3.36 | Security |
 | 8.2 | 2024-12-31 | 2026-12-31 | 8.2.35 | Security |
-| 8.1 | n/a | 2025-12-31 | n/a | Grace expired |
+| 8.1 | 2023-11-25 | 2025-12-31 | n/a | Grace expired |
 | Laravel floor **12** |  |  |  |  |
-| 13 | 2027-09-17[E-1](https://creed.apps.wayne.edu/#errata) | 2028-03-17 | 13.39.0 | Active |
+| 13 | 2027-09-30 | 2028-03-17 | 13.39.0 | Active |
 | 12 | 2026-08-13 | 2027-02-24 | 12.70.2 | Security |
 | 11 | 2025-09-03 | 2026-03-12 | 11.57.1 | Grace expired |
 | 10 | 2024-08-06 | 2025-02-04 | 10.50.4 | Grace expired |
 | Node floor **22** |  |  |  |  |
-| 26 | 2027-10-20 | 2029-04-30 | 26.12.1 | Active |
-| 24 | 2026-10-20 | 2028-04-30 | 24.22.1 | Security |
+| 26 | 2027-10-20 | 2029-04-30 | 26.13.0 | Active |
+| 24 | 2026-10-20 | 2028-04-30 | 24.22.2 | Security |
 | 22 | 2025-10-21 | 2027-04-30 | 22.23.4 | Security |
 | 20 | 2024-10-22 | 2026-04-30 | 20.20.2 | Grace expired |
 | MySQL floor **8.4** |  |  |  |  |
@@ -417,14 +418,15 @@ Table 2-1 Adopted editions, with the state on 2026-10-28
 | Vue 2 | 2023-12-31 | 2023-12-31 | n/a | Grace expired |
 | Vue 3 | Current line: no published end dates, none invented; see §1.9. | Active |  |  |
 | Inertia 2 | Current line: no published end dates, none invented; see §1.9. | Active |  |  |
+| Inertia 3 | Current line: no published end dates, none invented; see §1.9. | Active |  |  |
 
-From `policy/policy.json`, schema version 1, patches checked 2026-10-28. For Node, "active" holds the maintenance start; for MySQL, the Premier end. That mapping is the policy's, not the vendors' wording.
+From `policy/policy.json`, schema version 1, patches checked 2026-10-28 and 2026-10-29. For Node, "active" holds the maintenance start; for MySQL, the Premier end. That mapping is the policy's, not the vendors' wording.
 
 #### §2.5 Run a Laravel release that still gets security fixes.
 
 Laravel gives bug fixes for 18 months and security fixes for two years. Laravel 11 and older are EOL. Laravel 12 gets security fixes until 2027-02-24; Laravel 13 until 2028-03-17.
 
-Gap The reader can classify 10 to 13, but no PROCTOR v0.1 check reads `composer.lock` for the framework. The planned deploy gate will.
+Gap The reader can classify 10 to 13. PROCTOR `unpatched` reads `laravel/framework` from `composer.lock` and warns when the locked patch trails the policy's `latest_patch`, but no check fails an app whose framework line is EOL; the planned deploy gate will.
 
 Not yet
 
@@ -532,7 +534,7 @@ Every code has variances. These are the rules for asking for one.
 
 An override sits in the app's `policy-overrides.json` with a reason and an expiry. Every run prints every override. An expired override fails.
 
-Held by [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `overrides`. [Rollcall](https://creed.apps.wayne.edu/#ahj-rollcall) is meant to list them across apps.
+Held by [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `overrides`. [Rollcall](https://creed.apps.wayne.edu/#ahj-rollcall) counts expired overrides across apps in its fleet report.
 
 Checked
 
@@ -612,7 +614,6 @@ Open questions in the 2026 edition. Each is written down with the clause it touc
 
 | No. | Clause | Erratum or amendment | Status |
 | --- | --- | --- | --- |
-| E-1 | Table 2-1 | Laravel 13 `active_until` is 2027-09-17, but Laravel's page gives only "Q3 2027". Find the source and record it, or remove the date (§1.3, §1.6). | Open |
 | E-4 | §9.3 | Strict or tolerant schema: can an older tool still read a newer policy that only added a field? A test with an old schema and reader decides. | Open |
 | E-5 | §9.1 | Node 27 and later have no Maintenance phase on the new yearly schedule, so how `active_until` is derived needs a new rule. | Open |
 | E-6 | Ch. 10 | The accessibility chapter: aim at WCAG 2.2 AA, after confirming which legal dates apply. To be decided. | Open |

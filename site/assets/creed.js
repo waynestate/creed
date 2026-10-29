@@ -6,7 +6,7 @@
 
    Everything here is a nicety. With the script off, every clause, stamp,
    table row and command is still printed, and the certificate shows PHP 8.2
-   on 2026-10-28. Creed Bratton would call that an alibi.
+    on 2026-10-29. Creed Bratton would call that an alibi.
 */
 (function () {
   "use strict";
@@ -82,7 +82,7 @@
   }
 
   /* ------------------------------------ 4. the policy reader, in the browser */
-  /* A copy of the dates in policy/policy.json (2026-10-28), for this page
+  /* A copy of the dates in policy/policy.json (2026-10-29), for this page
      only. The policy file is the source; real tools read it through
      Waynestate\Creed\Policy, never through a copy like this one. We know.
      [active_until, security_until], or "current" for a line the policy
@@ -90,12 +90,12 @@
   var POLICY = {
     eol_grace_days: 90,
     components: {
-      php: { "8.1": [null, "2025-12-31"], "8.2": ["2024-12-31", "2026-12-31"], "8.3": ["2025-12-31", "2027-12-31"], "8.4": ["2026-12-31", "2028-12-31"], "8.5": ["2027-12-31", "2029-12-31"] },
-      laravel: { "10": ["2024-08-06", "2025-02-04"], "11": ["2025-09-03", "2026-03-12"], "12": ["2026-08-13", "2027-02-24"], "13": ["2027-09-17", "2028-03-17"] },
+      php: { "8.1": ["2023-11-25", "2025-12-31"], "8.2": ["2024-12-31", "2026-12-31"], "8.3": ["2025-12-31", "2027-12-31"], "8.4": ["2026-12-31", "2028-12-31"], "8.5": ["2027-12-31", "2029-12-31"] },
+      laravel: { "10": ["2024-08-06", "2025-02-04"], "11": ["2025-09-03", "2026-03-12"], "12": ["2026-08-13", "2027-02-24"], "13": ["2027-09-30", "2028-03-17"] },
       node: { "20": ["2024-10-22", "2026-04-30"], "22": ["2025-10-21", "2027-04-30"], "24": ["2026-10-20", "2028-04-30"], "26": ["2027-10-20", "2029-04-30"] },
       mysql: { "5.6": ["2018-02-28", "2021-02-28"], "5.7": ["2020-10-31", "2023-10-31"], "8.0": ["2025-04-30", "2026-04-30"], "8.4": ["2029-04-30", "2032-04-30"], "9.7": ["2031-04-30", "2034-04-30"] },
       vue: { "2": ["2023-12-31", "2023-12-31"], "3": "current" },
-      inertia: { "2": "current" }
+      inertia: { "2": "current", "3": "current" }
     }
   };
   var NAMES = { php: "PHP", laravel: "Laravel", node: "Node", mysql: "MySQL", vue: "Vue", inertia: "Inertia" };
@@ -137,15 +137,31 @@
       return cmpVersion(prefix, l) > 0;
     });
   }
+  // The reason a version is Eol without a policy line of its own. Mirrors
+  // Policy::belowOldestLineReason: a version that parses and sorts below
+  // every listed line is end of life by definition. Null otherwise.
+  function belowOldestLine(component, version) {
+    var versions = POLICY.components[component];
+    if (!versions) throw new Error("Unknown component: " + component);
+    if (!/^\d+(\.\d+)*$/.test(version)) return null;
+    if (resolveVersion(component, version) !== null) return null;
+    var list = versionsOf(component);
+    if (!list.length) return null;
+    var oldest = list[0];
+    if (cmpVersion(version, oldest) >= 0) return null;
+    return "older than the oldest listed line (" + oldest + ")";
+  }
 
-  // Same order and same refusals as Policy::stateOf. Current versions are
-  // never refused: a current line, or a version newer than every line, is Active.
+  // Same order and same refusals as Policy::stateOf. A current line, or a
+  // version newer than every line, is Active, and a version older than the
+  // oldest listed line is Eol: current versions are never refused.
   function stateOf(component, version, day) {
     var versions = POLICY.components[component];
     if (!versions) throw new Error("Unknown component: " + component);
     var line = resolveVersion(component, version);
     if (line === null) {
       if (isAheadOfPolicy(component, version)) return "active";
+      if (belowOldestLine(component, version) !== null) return "eol";
       throw new Error("Unknown version of " + component + ": " + version);
     }
     if (versions[line] === "current") return "active";
@@ -186,9 +202,10 @@
     var serial = 1;
     var DEFAULTS = { php: "8.2", laravel: "12", node: "24", mysql: "8.0", vue: "3", inertia: "2" };
     // Versions people will ask about that the policy does not list. One older
-    // than every line, which the reader refuses, and some newer than every
-    // line, which it calls Active: current versions are never refused.
-    var UNLISTED = { php: [["8.0", "not in the policy"]], vue: [["4", "newer than the policy"]], inertia: [["3", "newer than the policy"]] };
+    // than every line, which the reader calls EOL by definition, and one
+    // newer than every line, which it calls Active: current versions are
+    // never refused.
+    var UNLISTED = { php: [["8.0", "not in the policy"]], vue: [["4", "newer than the policy"]] };
 
     function component() { return $("input[name=component]:checked", form).value; }
 
@@ -217,7 +234,10 @@
       }
       var line = resolveVersion(c, v);
       if (line === null) {
-        return name + " " + v + " is newer than every line the policy lists, so it is Active. Current versions are never refused. Passes.";
+        if (state === "active") {
+          return name + " " + v + " is newer than every line the policy lists, so it is Active. Current versions are never refused. Passes.";
+        }
+        return name + " " + v + " is " + belowOldestLine(c, v) + ", so it is EOL by definition: the policy knows the component, and nothing this old is still supported.";
       }
       var e = POLICY.components[c][line];
       if (e === "current") {
@@ -295,6 +315,7 @@
       out.top.textContent = "CREED " + sec + " · " + day;
       out.word.textContent = WORDS[state];
       out.sub.textContent = state === "refused" ? "Will not guess"
+        : state === "eol" && resolveVersion(c, v) === null ? NAMES[c] + " " + v + " · EOL by definition"
         : state === "eol" ? NAMES[c] + " " + v + " · in grace"
         : state === "eol_grace_expired" ? NAMES[c] + " " + v + " · grace expired"
         : NAMES[c] + " " + v;
