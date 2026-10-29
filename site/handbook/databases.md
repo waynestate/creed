@@ -3,7 +3,7 @@ title: "CREED Handbook: 5 Databases"
 description: "Chapter 5 of the CREED handbook, the written rules for the Wayne State app stack: Databases."
 url: https://creed.apps.wayne.edu/handbook/databases.html
 llms: https://creed.apps.wayne.edu/llms.txt
-generator: SQUIRE agent-ready
+generator: Squire agent-ready
 ---
 
 Chapter 5

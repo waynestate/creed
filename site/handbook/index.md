@@ -3,7 +3,7 @@ title: "CREED Handbook: the rules, chapter by chapter"
 description: "The CREED handbook: the written rules for the Wayne State app stack, chapter by chapter, each citing the decision behind it."
 url: https://creed.apps.wayne.edu/handbook/
 llms: https://creed.apps.wayne.edu/llms.txt
-generator: SQUIRE agent-ready
+generator: Squire agent-ready
 ---
 
 The handbook · 2026 Edition

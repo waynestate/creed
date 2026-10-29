@@ -3,7 +3,7 @@ title: "CREED Handbook: 9 Accessibility"
 description: "Chapter 9 of the CREED handbook, the written rules for the Wayne State app stack: Accessibility."
 url: https://creed.apps.wayne.edu/handbook/accessibility.html
 llms: https://creed.apps.wayne.edu/llms.txt
-generator: SQUIRE agent-ready
+generator: Squire agent-ready
 ---
 
 Chapter 9
