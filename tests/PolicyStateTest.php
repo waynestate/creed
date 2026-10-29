@@ -70,11 +70,61 @@ final class PolicyStateTest extends TestCase
         Policy::bundled()->stateOf('cobol', '8.2', new DateTimeImmutable('2026-10-27'));
     }
 
+    /**
+     * Versions older than the oldest listed line: Eol by definition, with a
+     * reason that names the oldest line.
+     *
+     * @return array<string, array{0: string, 1: string, 2: string}>
+     */
+    public static function belowOldestLineProvider(): array
+    {
+        return [
+            'php 5.6' => ['php', '5.6', 'older than the oldest listed line (8.1)'],
+            'php 7.4' => ['php', '7.4', 'older than the oldest listed line (8.1)'],
+            'php 8.0' => ['php', '8.0', 'older than the oldest listed line (8.1)'],
+            'laravel 5.8' => ['laravel', '5.8', 'older than the oldest listed line (10)'],
+            'inertia 0.11' => ['inertia', '0.11', 'older than the oldest listed line (2)'],
+        ];
+    }
+
     #[Test]
-    public function unknownVersionThrows(): void
+    #[DataProvider('belowOldestLineProvider')]
+    public function versionBelowOldestLineIsEolWithAReason(string $component, string $version, string $reason): void
+    {
+        $policy = Policy::bundled();
+        $on = new DateTimeImmutable('2026-10-27');
+        self::assertSame(State::Eol, $policy->stateOf($component, $version, $on));
+        self::assertSame(State::Eol, $policy->tryStateOf($component, $version, $on));
+        self::assertSame($reason, $policy->belowOldestLineReason($component, $version));
+    }
+
+    #[Test]
+    public function unparseableVersionStillThrows(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        Policy::bundled()->stateOf('php', '7.4', new DateTimeImmutable('2026-10-27'));
+        Policy::bundled()->stateOf('php', 'banana', new DateTimeImmutable('2026-10-27'));
+    }
+
+    #[Test]
+    public function belowOldestLineReasonIsNullForListedGapAheadAndUnparseableVersions(): void
+    {
+        $policy = Policy::bundled();
+        self::assertNull($policy->belowOldestLineReason('php', '8.2'));
+        self::assertNull($policy->belowOldestLineReason('php', '9.0'));
+        self::assertNull($policy->belowOldestLineReason('php', 'banana'));
+        $gaps = Policy::fromArray([
+            'schema_version' => 1,
+            'components' => [
+                'php' => [
+                    'versions' => [
+                        '8.1' => ['security_until' => '2025-12-31'],
+                        '8.9' => ['security_until' => '2030-12-31'],
+                    ],
+                ],
+            ],
+            'rules' => ['eol_grace_days' => 90],
+        ]);
+        self::assertNull($gaps->belowOldestLineReason('php', '8.5'));
     }
 
     #[Test]

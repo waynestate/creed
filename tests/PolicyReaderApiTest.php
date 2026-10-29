@@ -131,8 +131,18 @@ final class PolicyReaderApiTest extends TestCase
     #[Test]
     public function tryStateOfIsNullForAnUnknownVersion(): void
     {
+        // 11 falls between the listed Laravel lines 10 and 13, and banana
+        // does not parse: both are still unknown.
         $policy = $this->testPolicy();
-        self::assertNull($policy->tryStateOf('php', '7.4', new DateTimeImmutable('2026-10-27')));
+        self::assertNull($policy->tryStateOf('laravel', '11', new DateTimeImmutable('2026-10-27')));
+        self::assertNull($policy->tryStateOf('php', 'banana', new DateTimeImmutable('2026-10-27')));
+    }
+
+    #[Test]
+    public function tryStateOfIsEolForAVersionBelowTheOldestLine(): void
+    {
+        $policy = $this->testPolicy();
+        self::assertSame(State::Eol, $policy->tryStateOf('php', '7.4', new DateTimeImmutable('2026-10-27')));
     }
 
     #[Test]
@@ -354,7 +364,7 @@ final class PolicyReaderApiTest extends TestCase
     public function daysToEolIsNullForAnUnknownVersion(): void
     {
         $policy = $this->testPolicy();
-        self::assertNull($policy->daysToEol('php', '7.4', new DateTimeImmutable('2026-10-27')));
+        self::assertNull($policy->daysToEol('laravel', '11', new DateTimeImmutable('2026-10-27')));
     }
 
     #[Test]
@@ -372,7 +382,7 @@ final class PolicyReaderApiTest extends TestCase
     public function isPastGraceIsFalseForAnUnknownVersion(): void
     {
         $policy = $this->testPolicy();
-        self::assertFalse($policy->isPastGrace('php', '7.4', new DateTimeImmutable('2026-10-27')));
+        self::assertFalse($policy->isPastGrace('laravel', '11', new DateTimeImmutable('2026-10-27')));
     }
 
     // --- resolveVersion ---
