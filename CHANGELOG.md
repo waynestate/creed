@@ -12,6 +12,24 @@
   `refreshed_on` is 7 or more days old runs the refresher again with
   `--touch` and treats that result like a normal run.
 
+- `bin/policy-bot.php run`: after a handled real run the robot now keeps its
+  GitLab alert issues in line with the report, one open issue per alert key
+  (`held:<component>:<line>:<field>`, `refused:<component>:<line>:<field>`,
+  `disagreement:<component>:<line>:<field>` while policy sides with neither
+  source, and `upcoming-eol:<component>:<line>` within 60 days of
+  `security_until`), each labelled `auto-alert` and titled `[auto-alert]
+  <key>`. A key that is still present gets a note on its existing issue; a
+  key that is gone is closed with a "Cleared on <date>." note. The client is
+  built from CI_API_V4_URL, CI_PROJECT_ID and CREED_BOT_TOKEN; an incomplete
+  environment stops the run with exit 1 naming the missing variables. A dry
+  run prints the issues it would open and never calls the API.
+- New `src/Bot/GitLabClient.php`: a small GitLab API client (list open
+  issues, create an issue, add a note, close an issue) over an injectable
+  `HttpTransport`, shipped with a dependency-free PHP streams transport
+  (`GitLabClient::streamTransport`). The token rides only in the
+  `PRIVATE-TOKEN` header, never in a URL, and every error it throws is
+  masked, so a failed call can never print the token.
+
 ## 0.1.2 (2026-10-29)
 
 - `bin/refresh-policy.php`: a released version that loosens a constraint now exits 3 (changes written) with an alert in the report, instead of exit 4.
