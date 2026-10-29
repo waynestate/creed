@@ -84,7 +84,7 @@ The support window stays open until `security_until`. A version is still
 `eol_grace_days` (90) more days before it is `EolGraceExpired`. The boundary
 is inclusive, and the reader never guesses.
 
-<div align="center"><img src="docs/readme/form-cr1.svg" width="100%" alt="Form CR-1 from the front page, filled in four times from policy.json and stamped: PHP 8.2 on 2026-10-28 is Security only, 64 days left; PHP 8.2 on 2027-01-01 is EOL, in grace until 2027-03-31; PHP 8.1 on 2026-10-28 is past grace; Laravel 13 on 2026-10-28 is Supported."></div>
+<div align="center"><img src="docs/readme/form-cr1.svg" width="100%" alt="Form CR-1 from the front page, filled in four times from policy.json and stamped: PHP 8.2 on 2026-10-29 is Security only, 63 days left; PHP 8.2 on 2027-01-01 is EOL, in grace until 2027-03-31; PHP 8.1 on 2026-10-29 is past grace; Laravel 13 on 2026-10-29 is Supported."></div>
 <div align="center"><sub>Form CR-1, as the front page fills it in: four real rows of <code>policy/policy.json</code>, the same answers <code>Policy::stateOf</code> gives, stamped.</sub></div>
 
 <details>
