@@ -83,9 +83,9 @@ final class RefreshPolicyCommandTest extends TestCase
         // Roll php 8.4's security date back one year: php.net/states and
         // endoflife.date/php then agree on the later date, which releases
         // the loosen-fail instead of holding it.
-        $policy = json_decode((string) file_get_contents($this->tmp . '/policy.json'), false);
-        self::assertIsObject($policy);
-        $policy->components->php->versions->{'8.4'}->security_until = '2027-12-31';
+        $policy = json_decode((string) file_get_contents($this->tmp . '/policy.json'), true);
+        self::assertIsArray($policy);
+        $policy['components']['php']['versions']['8.4']['security_until'] = '2027-12-31';
         file_put_contents($this->tmp . '/policy.json', json_encode($policy, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n");
 
         [$exit, $out] = $this->exec('--today', '2026-10-29', '--report', $this->tmp . '/report.json');
