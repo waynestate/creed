@@ -68,12 +68,12 @@
                 },
                 "24": {
                     "security_until": "2028-04-30",
-                    "latest_patch": "24.22.1",
+                    "latest_patch": "24.22.2",
                     "latest_patch_checked": "2026-10-21"
                 },
                 "26": {
                     "security_until": "2029-04-30",
-                    "latest_patch": "26.12.1",
+                    "latest_patch": "26.13.0",
                     "latest_patch_checked": "2026-10-21"
                 }
             }

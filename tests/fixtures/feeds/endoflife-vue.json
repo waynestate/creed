@@ -5,21 +5,89 @@
         "releases": [
             {
                 "name": "3.5",
-                "isEol": false,
-                "eolFrom": null,
-                "eoasFrom": null
+                "isEol": false
             },
             {
                 "name": "3.4",
                 "isEol": true,
-                "eolFrom": "2024-09-03",
-                "eoasFrom": "2024-09-03"
+                "eoasFrom": "2024-09-03",
+                "eolFrom": "2024-09-03"
+            },
+            {
+                "name": "3.3",
+                "isEol": true,
+                "eoasFrom": "2023-12-29",
+                "eolFrom": "2023-12-29"
             },
             {
                 "name": "2.7",
                 "isEol": true,
-                "eolFrom": "2023-12-31",
-                "eoasFrom": "2023-12-31"
+                "eoasFrom": "2023-12-31",
+                "eolFrom": "2023-12-31"
+            },
+            {
+                "name": "3.2",
+                "isEol": true,
+                "eoasFrom": "2023-05-11",
+                "eolFrom": "2023-05-11"
+            },
+            {
+                "name": "3.1",
+                "isEol": true,
+                "eoasFrom": "2021-08-09",
+                "eolFrom": "2021-08-09"
+            },
+            {
+                "name": "3.0",
+                "isEol": true,
+                "eoasFrom": "2021-06-07",
+                "eolFrom": "2021-06-07"
+            },
+            {
+                "name": "2.6",
+                "isEol": true,
+                "eoasFrom": "2022-07-01",
+                "eolFrom": "2022-07-01"
+            },
+            {
+                "name": "2.5",
+                "isEol": true,
+                "eoasFrom": "2019-02-04",
+                "eolFrom": "2019-02-04"
+            },
+            {
+                "name": "2.4",
+                "isEol": true,
+                "eoasFrom": "2017-10-13",
+                "eolFrom": "2017-10-13"
+            },
+            {
+                "name": "2.3",
+                "isEol": true,
+                "eoasFrom": "2017-07-13",
+                "eolFrom": "2017-07-13"
+            },
+            {
+                "name": "2.2",
+                "isEol": true,
+                "eoasFrom": "2017-04-27",
+                "eolFrom": "2017-04-27"
+            },
+            {
+                "name": "2.1",
+                "isEol": true,
+                "eoasFrom": "2017-02-26",
+                "eolFrom": "2017-02-26"
+            },
+            {
+                "name": "2.0",
+                "isEol": true,
+                "eoasFrom": "2016-11-22",
+                "eolFrom": "2016-11-22"
+            },
+            {
+                "name": "1",
+                "isEol": true
             }
         ]
     }

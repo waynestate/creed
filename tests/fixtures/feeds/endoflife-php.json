@@ -6,41 +6,163 @@
             {
                 "name": "8.5",
                 "isEol": false,
+                "eoasFrom": "2027-12-31",
+                "eolFrom": "2029-12-31",
                 "latest": {
-                    "name": "8.5.12",
-                    "date": "2026-10-21"
+                    "name": "8.5.12"
                 }
             },
             {
                 "name": "8.4",
                 "isEol": false,
+                "eoasFrom": "2026-12-31",
+                "eolFrom": "2028-12-31",
                 "latest": {
-                    "name": "8.4.27",
-                    "date": "2026-10-21"
+                    "name": "8.4.27"
                 }
             },
             {
                 "name": "8.3",
                 "isEol": false,
+                "eoasFrom": "2025-12-31",
+                "eolFrom": "2027-12-31",
                 "latest": {
-                    "name": "8.3.36",
-                    "date": "2026-10-21"
+                    "name": "8.3.36"
                 }
             },
             {
                 "name": "8.2",
                 "isEol": false,
+                "eoasFrom": "2024-12-31",
+                "eolFrom": "2026-12-31",
                 "latest": {
-                    "name": "8.2.35",
-                    "date": "2026-10-21"
+                    "name": "8.2.35"
                 }
             },
             {
                 "name": "8.1",
                 "isEol": true,
+                "eoasFrom": "2023-11-25",
+                "eolFrom": "2025-12-31",
                 "latest": {
-                    "name": "8.1.34",
-                    "date": "2025-12-18"
+                    "name": "8.1.34"
+                }
+            },
+            {
+                "name": "8.0",
+                "isEol": true,
+                "eoasFrom": "2022-11-26",
+                "eolFrom": "2023-11-26",
+                "latest": {
+                    "name": "8.0.30"
+                }
+            },
+            {
+                "name": "7.4",
+                "isEol": true,
+                "eoasFrom": "2021-11-28",
+                "eolFrom": "2022-11-28",
+                "latest": {
+                    "name": "7.4.33"
+                }
+            },
+            {
+                "name": "7.3",
+                "isEol": true,
+                "eoasFrom": "2020-12-06",
+                "eolFrom": "2021-12-06",
+                "latest": {
+                    "name": "7.3.33"
+                }
+            },
+            {
+                "name": "7.2",
+                "isEol": true,
+                "eoasFrom": "2019-11-30",
+                "eolFrom": "2020-11-30",
+                "latest": {
+                    "name": "7.2.34"
+                }
+            },
+            {
+                "name": "7.1",
+                "isEol": true,
+                "eoasFrom": "2018-12-01",
+                "eolFrom": "2019-12-01",
+                "latest": {
+                    "name": "7.1.33"
+                }
+            },
+            {
+                "name": "7.0",
+                "isEol": true,
+                "eoasFrom": "2018-01-04",
+                "eolFrom": "2019-01-10",
+                "latest": {
+                    "name": "7.0.33"
+                }
+            },
+            {
+                "name": "5.6",
+                "isEol": true,
+                "eoasFrom": "2017-01-19",
+                "eolFrom": "2018-12-31",
+                "latest": {
+                    "name": "5.6.40"
+                }
+            },
+            {
+                "name": "5.5",
+                "isEol": true,
+                "eoasFrom": "2015-07-10",
+                "eolFrom": "2016-07-21",
+                "latest": {
+                    "name": "5.5.38"
+                }
+            },
+            {
+                "name": "5.4",
+                "isEol": true,
+                "eoasFrom": "2014-09-14",
+                "eolFrom": "2015-09-14",
+                "latest": {
+                    "name": "5.4.45"
+                }
+            },
+            {
+                "name": "5.3",
+                "isEol": true,
+                "eoasFrom": "2011-06-30",
+                "eolFrom": "2014-08-14",
+                "latest": {
+                    "name": "5.3.29"
+                }
+            },
+            {
+                "name": "5.2",
+                "isEol": true,
+                "eoasFrom": "2008-11-02",
+                "eolFrom": "2011-01-06",
+                "latest": {
+                    "name": "5.2.17"
+                }
+            },
+            {
+                "name": "5.1",
+                "isEol": true,
+                "eoasFrom": "2006-08-24",
+                "eolFrom": "2006-08-24",
+                "latest": {
+                    "name": "5.1.6"
+                }
+            },
+            {
+                "name": "5.0",
+                "isEol": true,
+                "eoasFrom": "2005-09-05",
+                "eolFrom": "2005-09-05",
+                "latest": {
+                    "name": "5.0.5"
                 }
             }
         ]

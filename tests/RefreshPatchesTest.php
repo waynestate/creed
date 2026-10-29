@@ -148,8 +148,8 @@ final class RefreshPatchesTest extends TestCase
         self::assertSame('13.39.0', $this->versionField($policy, 'laravel', '13', 'latest_patch'));
         self::assertSame('20.20.2', $this->versionField($policy, 'node', '20', 'latest_patch'));
         self::assertSame('22.23.4', $this->versionField($policy, 'node', '22', 'latest_patch'));
-        self::assertSame('24.22.1', $this->versionField($policy, 'node', '24', 'latest_patch'));
-        self::assertSame('26.12.1', $this->versionField($policy, 'node', '26', 'latest_patch'));
+        self::assertSame('24.22.2', $this->versionField($policy, 'node', '24', 'latest_patch'));
+        self::assertSame('26.13.0', $this->versionField($policy, 'node', '26', 'latest_patch'));
     }
 
     #[Test]

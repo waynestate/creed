@@ -151,6 +151,43 @@ The schedule is a GitLab project setting, not a file in this repo: someone
 creates it under CI/CD > Schedules (weekly, Monday). The GitHub mirror runs the
 same check on a cron and on demand.
 
+## Refreshing the policy
+
+`bin/refresh-policy.php` keeps every support date, patch and new line in
+`policy/policy.json` tied to a canonical source, so nobody types a date by
+hand. PHP dates come from php.net, Node dates from the Node.js release
+schedule, and Laravel, MySQL, Vue and Composer from endoflife.date; patches
+come from php.net, nodejs.org, Packagist and npm. Each run sorts every change:
+
+| Class | What it is | What happens |
+|---|---|---|
+| `tighten` | a date moves earlier, or a `current` line gets its first end date | written |
+| `neutral` | a new `latest_patch`, or a new line above every listed line | written |
+| `loosen-warning` | `active_until` moves later (a warning tier, never a failure) | written |
+| `loosen-fail` | `security_until` moves later, or an EOL line would be supported again | held, unless two independent sources agree (php.net and endoflife.date for PHP, schedule.json and endoflife.date for Node) or `policy/sources.json` shows the same value from the same source for 14 days |
+| `refused` | removing a line or a date, or any change to `tools` or `rules` | never automatic; reported (a Composer minimum on an EOL line shows up here) |
+
+A source that is down, slow or returns something unreadable changes nothing:
+its fields keep their last good value. A line missing from a feed is never
+removed. Where a first-party source and endoflife.date disagree, the first
+party wins and the disagreement is reported.
+
+```
+php bin/refresh-policy.php [--dry-run] [--offline <dir>] [--policy <path>]
+    [--sources <path>] [--report <file>] [--today YYYY-MM-DD] [--touch]
+```
+
+`--report` writes JSON with `changes`, `held`, `refused`,
+`disagreements` and `source_errors`. `--touch` sets `refreshed_on` to today even
+when nothing else changed (the weekly heartbeat). `policy/sources.json` records,
+per value, which source said it, and the first and last day it was seen.
+
+Exit codes: `0` nothing worth committing (always `0` with `--dry-run`); `1` hard
+failure; `3` something was written and every written change was `tighten`,
+`neutral` or `loosen-warning`; `4` something was held or refused, or a
+`loosen-fail` was written on proof. Written changes are always written.
+`bin/refresh-patches.php` still works as before.
+
 ## Carrying CREED in another package
 
 PROCTOR, BOOSTER, ROLLCALL and ADVISOR each carry a generated copy of the

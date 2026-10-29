@@ -1,0 +1,386 @@
+{
+    "schema_version": 1,
+    "updated_on": "2026-10-29",
+    "observations": {
+        "laravel": {
+            "10": {
+                "active_until": {
+                    "endoflife.date/laravel": {
+                        "value": "2024-08-06",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "latest_patch": {
+                    "packagist/laravel-framework": {
+                        "value": "10.50.4",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "security_until": {
+                    "endoflife.date/laravel": {
+                        "value": "2025-02-04",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                }
+            },
+            "11": {
+                "active_until": {
+                    "endoflife.date/laravel": {
+                        "value": "2025-09-03",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "latest_patch": {
+                    "packagist/laravel-framework": {
+                        "value": "11.57.1",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "security_until": {
+                    "endoflife.date/laravel": {
+                        "value": "2026-03-12",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                }
+            },
+            "12": {
+                "active_until": {
+                    "endoflife.date/laravel": {
+                        "value": "2026-08-13",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "latest_patch": {
+                    "packagist/laravel-framework": {
+                        "value": "12.70.2",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "security_until": {
+                    "endoflife.date/laravel": {
+                        "value": "2027-02-24",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                }
+            },
+            "13": {
+                "active_until": {
+                    "endoflife.date/laravel": {
+                        "value": "2027-09-30",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "latest_patch": {
+                    "packagist/laravel-framework": {
+                        "value": "13.39.0",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "security_until": {
+                    "endoflife.date/laravel": {
+                        "value": "2028-03-17",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                }
+            }
+        },
+        "mysql": {
+            "5.6": {
+                "active_until": {
+                    "endoflife.date/mysql": {
+                        "value": "2018-02-28",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "security_until": {
+                    "endoflife.date/mysql": {
+                        "value": "2021-02-28",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                }
+            },
+            "5.7": {
+                "active_until": {
+                    "endoflife.date/mysql": {
+                        "value": "2020-10-31",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "security_until": {
+                    "endoflife.date/mysql": {
+                        "value": "2023-10-31",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                }
+            },
+            "8.0": {
+                "active_until": {
+                    "endoflife.date/mysql": {
+                        "value": "2025-04-30",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "security_until": {
+                    "endoflife.date/mysql": {
+                        "value": "2026-04-30",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                }
+            },
+            "8.4": {
+                "active_until": {
+                    "endoflife.date/mysql": {
+                        "value": "2029-04-30",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "security_until": {
+                    "endoflife.date/mysql": {
+                        "value": "2032-04-30",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                }
+            },
+            "9.7": {
+                "active_until": {
+                    "endoflife.date/mysql": {
+                        "value": "2031-04-30",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "security_until": {
+                    "endoflife.date/mysql": {
+                        "value": "2034-04-30",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                }
+            }
+        },
+        "node": {
+            "20": {
+                "active_until": {
+                    "nodejs/schedule": {
+                        "value": "2024-10-22",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "latest_patch": {
+                    "nodejs.org/dist": {
+                        "value": "20.20.2",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "security_until": {
+                    "nodejs/schedule": {
+                        "value": "2026-04-30",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                }
+            },
+            "22": {
+                "active_until": {
+                    "nodejs/schedule": {
+                        "value": "2025-10-21",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "latest_patch": {
+                    "nodejs.org/dist": {
+                        "value": "22.23.4",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "security_until": {
+                    "nodejs/schedule": {
+                        "value": "2027-04-30",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                }
+            },
+            "24": {
+                "active_until": {
+                    "nodejs/schedule": {
+                        "value": "2026-10-20",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "latest_patch": {
+                    "nodejs.org/dist": {
+                        "value": "24.22.2",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "security_until": {
+                    "nodejs/schedule": {
+                        "value": "2028-04-30",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                }
+            },
+            "26": {
+                "active_until": {
+                    "nodejs/schedule": {
+                        "value": "2027-10-20",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "latest_patch": {
+                    "nodejs.org/dist": {
+                        "value": "26.13.0",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "security_until": {
+                    "nodejs/schedule": {
+                        "value": "2029-04-30",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                }
+            }
+        },
+        "php": {
+            "8.1": {
+                "active_until": {
+                    "php.net/states": {
+                        "value": "2023-11-25",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "security_until": {
+                    "php.net/states": {
+                        "value": "2025-12-31",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                }
+            },
+            "8.2": {
+                "active_until": {
+                    "php.net/states": {
+                        "value": "2024-12-31",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "latest_patch": {
+                    "php.net/active": {
+                        "value": "8.2.35",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "security_until": {
+                    "php.net/states": {
+                        "value": "2026-12-31",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                }
+            },
+            "8.3": {
+                "active_until": {
+                    "php.net/states": {
+                        "value": "2025-12-31",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "latest_patch": {
+                    "php.net/active": {
+                        "value": "8.3.36",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "security_until": {
+                    "php.net/states": {
+                        "value": "2027-12-31",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                }
+            },
+            "8.4": {
+                "active_until": {
+                    "php.net/states": {
+                        "value": "2026-12-31",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "latest_patch": {
+                    "php.net/active": {
+                        "value": "8.4.27",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "security_until": {
+                    "php.net/states": {
+                        "value": "2028-12-31",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                }
+            },
+            "8.5": {
+                "active_until": {
+                    "php.net/states": {
+                        "value": "2027-12-31",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "latest_patch": {
+                    "php.net/active": {
+                        "value": "8.5.12",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                },
+                "security_until": {
+                    "php.net/states": {
+                        "value": "2029-12-31",
+                        "first_seen": "2026-10-29",
+                        "last_seen": "2026-10-29"
+                    }
+                }
+            }
+        }
+    }
+}
