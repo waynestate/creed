@@ -1,0 +1,67 @@
+{
+    "schema_version": "1.2.1",
+    "result": {
+        "name": "composer",
+        "releases": [
+            {
+                "name": "2.10",
+                "isEol": false
+            },
+            {
+                "name": "2.9",
+                "isEol": true,
+                "eolFrom": "2026-05-28"
+            },
+            {
+                "name": "2.8",
+                "isEol": true,
+                "eolFrom": "2025-11-13"
+            },
+            {
+                "name": "2.7",
+                "isEol": true,
+                "eolFrom": "2024-10-02"
+            },
+            {
+                "name": "2.6",
+                "isEol": true,
+                "eolFrom": "2024-02-08"
+            },
+            {
+                "name": "2.5",
+                "isEol": true,
+                "eolFrom": "2023-09-01"
+            },
+            {
+                "name": "2.4",
+                "isEol": true,
+                "eolFrom": "2022-12-20"
+            },
+            {
+                "name": "2.3",
+                "isEol": true,
+                "eolFrom": "2022-08-16"
+            },
+            {
+                "name": "2.2",
+                "isEol": false,
+                "eolFrom": "2026-12-31"
+            },
+            {
+                "name": "2.1",
+                "isEol": true,
+                "eolFrom": "2021-12-22"
+            },
+            {
+                "name": "2.0",
+                "isEol": true,
+                "eolFrom": "2021-06-03"
+            },
+            {
+                "name": "1",
+                "isEol": true,
+                "eolFrom": "2026-05-30"
+            }
+        ]
+    }
+}

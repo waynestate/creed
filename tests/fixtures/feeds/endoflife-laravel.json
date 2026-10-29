@@ -1,0 +1,98 @@
+{
+    "schema_version": "1.2.1",
+    "result": {
+        "name": "laravel",
+        "releases": [
+            {
+                "name": "13",
+                "isEol": false,
+                "eoasFrom": "2027-09-30",
+                "eolFrom": "2028-03-17",
+                "latest": {
+                    "name": "13.39.0"
+                }
+            },
+            {
+                "name": "12",
+                "isEol": false,
+                "eoasFrom": "2026-08-13",
+                "eolFrom": "2027-02-24",
+                "latest": {
+                    "name": "12.70.2"
+                }
+            },
+            {
+                "name": "11",
+                "isEol": true,
+                "eoasFrom": "2025-09-03",
+                "eolFrom": "2026-03-12",
+                "latest": {
+                    "name": "11.57.1"
+                }
+            },
+            {
+                "name": "10",
+                "isEol": true,
+                "eoasFrom": "2024-08-06",
+                "eolFrom": "2025-02-04",
+                "latest": {
+                    "name": "10.50.4"
+                }
+            },
+            {
+                "name": "9",
+                "isEol": true,
+                "eoasFrom": "2023-08-08",
+                "eolFrom": "2024-02-06",
+                "latest": {
+                    "name": "9.52.22"
+                }
+            },
+            {
+                "name": "8",
+                "isEol": true,
+                "eoasFrom": "2022-07-26",
+                "eolFrom": "2023-01-24",
+                "latest": {
+                    "name": "8.83.29"
+                }
+            },
+            {
+                "name": "7",
+                "isEol": true,
+                "eoasFrom": "2020-10-06",
+                "eolFrom": "2021-03-03",
+                "latest": {
+                    "name": "7.30.7"
+                }
+            },
+            {
+                "name": "6",
+                "isEol": true,
+                "eoasFrom": "2022-01-25",
+                "eolFrom": "2022-09-06",
+                "latest": {
+                    "name": "6.20.45"
+                }
+            },
+            {
+                "name": "5.8",
+                "isEol": true,
+                "eoasFrom": "2019-08-26",
+                "eolFrom": "2020-02-26",
+                "latest": {
+                    "name": "5.8.38"
+                }
+            },
+            {
+                "name": "5.5",
+                "isEol": true,
+                "eoasFrom": "2019-08-30",
+                "eolFrom": "2020-08-30",
+                "latest": {
+                    "name": "5.5.50"
+                }
+            }
+        ]
+    }
+}

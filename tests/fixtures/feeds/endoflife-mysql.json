@@ -1,0 +1,132 @@
+{
+    "schema_version": "1.2.1",
+    "result": {
+        "name": "mysql",
+        "releases": [
+            {
+                "name": "26.10",
+                "isEol": false,
+                "isLts": false
+            },
+            {
+                "name": "26.7",
+                "isEol": true,
+                "eoasFrom": "2026-10-20",
+                "eolFrom": "2026-10-20",
+                "isLts": false
+            },
+            {
+                "name": "9.7",
+                "isEol": false,
+                "eoasFrom": "2031-04-30",
+                "eolFrom": "2034-04-30",
+                "isLts": true
+            },
+            {
+                "name": "9.6",
+                "isEol": true,
+                "eoasFrom": "2026-04-21",
+                "eolFrom": "2026-04-21",
+                "isLts": false
+            },
+            {
+                "name": "9.5",
+                "isEol": true,
+                "eoasFrom": "2026-01-20",
+                "eolFrom": "2026-01-20",
+                "isLts": false
+            },
+            {
+                "name": "9.4",
+                "isEol": true,
+                "eoasFrom": "2025-10-21",
+                "eolFrom": "2025-10-21",
+                "isLts": false
+            },
+            {
+                "name": "9.3",
+                "isEol": true,
+                "eoasFrom": "2025-07-22",
+                "eolFrom": "2025-07-22",
+                "isLts": false
+            },
+            {
+                "name": "9.2",
+                "isEol": true,
+                "eoasFrom": "2025-04-15",
+                "eolFrom": "2025-04-15",
+                "isLts": false
+            },
+            {
+                "name": "9.1",
+                "isEol": true,
+                "eoasFrom": "2025-01-21",
+                "eolFrom": "2025-01-21",
+                "isLts": false
+            },
+            {
+                "name": "9.0",
+                "isEol": true,
+                "eoasFrom": "2024-10-15",
+                "eolFrom": "2024-10-15",
+                "isLts": false
+            },
+            {
+                "name": "8.4",
+                "isEol": false,
+                "eoasFrom": "2029-04-30",
+                "eolFrom": "2032-04-30",
+                "isLts": true
+            },
+            {
+                "name": "8.3",
+                "isEol": true,
+                "eoasFrom": "2024-04-30",
+                "eolFrom": "2024-04-30",
+                "isLts": false
+            },
+            {
+                "name": "8.2",
+                "isEol": true,
+                "eoasFrom": "2024-01-16",
+                "eolFrom": "2024-01-16",
+                "isLts": false
+            },
+            {
+                "name": "8.1",
+                "isEol": true,
+                "eoasFrom": "2023-10-25",
+                "eolFrom": "2023-10-25",
+                "isLts": false
+            },
+            {
+                "name": "8.0",
+                "isEol": true,
+                "eoasFrom": "2025-04-30",
+                "eolFrom": "2026-04-30",
+                "isLts": true
+            },
+            {
+                "name": "5.7",
+                "isEol": true,
+                "eoasFrom": "2020-10-31",
+                "eolFrom": "2023-10-31",
+                "isLts": false
+            },
+            {
+                "name": "5.6",
+                "isEol": true,
+                "eoasFrom": "2018-02-28",
+                "eolFrom": "2021-02-28",
+                "isLts": false
+            },
+            {
+                "name": "5.5",
+                "isEol": true,
+                "eoasFrom": "2015-12-31",
+                "eolFrom": "2018-12-31",
+                "isLts": false
+            }
+        ]
+    }
+}
