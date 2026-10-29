@@ -12,10 +12,9 @@ require __DIR__ . '/../vendor/autoload.php';
 
 use function Waynestate\Helmet\helmet_boot;
 
-// HELMET 0.1.0 takes the trusted-proxy list directly; this is the value of
-// its "citadel" platform preset (the Docker bridge gateway to HA-Proxy).
+// HELMET's citadel preset names the platform's front proxy.
 $helmet = helmet_boot([
-    'trusted_proxies' => ['172.18.0.1'],
+    'preset' => 'citadel',
 ]);
 
 $notFound = static function (): never {
