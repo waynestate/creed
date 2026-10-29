@@ -30,7 +30,7 @@ The deploy gate runs [PROCTOR](https://proctor.apps.wayne.edu/) against the comm
 
 ## [§7.2](https://creed.apps.wayne.edu/handbook/deploy-gate.html#elsewhere) Elsewhere
 
-- The same gate runs as a CI job through [PREFLIGHT](https://preflight.apps.wayne.edu/)'s `proctor` component, wherever the pipeline runs (first-repos).
-- [SQUIRE](https://squire.apps.wayne.edu/)'s `docker` target will run the gate before it ships an image, and so will its later `openshift` and `coolify` targets (the stack's rule that packages run on any container platform).
+- The same gate runs as a CI job through [Preflight](https://preflight.apps.wayne.edu/)'s `proctor` component, wherever the pipeline runs (first-repos).
+- [Squire](https://squire.apps.wayne.edu/)'s `docker` target will run the gate before it ships an image, and so will its later `openshift` and `coolify` targets (the stack's rule that packages run on any container platform).
 
-Set from [`handbook/deploy-gate.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/deploy-gate.md), impression `7023c88`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/deploy-gate.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/deploy-gate.md), impression `a557384`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

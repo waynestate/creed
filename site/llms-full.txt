@@ -18,7 +18,7 @@ inspector who stamps what he finds.
 Checks: `composer ci` (the same command runs on GitLab and GitHub).
 
 Front page: [`site/index.html`](https://github.com/waynestate/creed/blob/HEAD/site/index.html), a static page you can open in a browser or serve from `site/`.
-On Citadel it is served by the raw-PHP deploy layer in [`deploy/`](https://github.com/waynestate/creed/blob/HEAD/deploy/): a SQUIRE kit whose front controller serves `site/` behind HELMET's security headers. For local development, keep serving `site/` directly.
+On Citadel it is served by the raw-PHP deploy layer in [`deploy/`](https://github.com/waynestate/creed/blob/HEAD/deploy/): a Squire kit whose front controller serves `site/` behind HELMET's security headers. For local development, keep serving `site/` directly.
 
 One command, two clouds, zero excuses. Higher.
 
@@ -185,7 +185,7 @@ failure; `3` something was written and every written change was `tighten`,
 
 ### Carrying CREED in another package
 
-PROCTOR, BOOSTER, ROLLCALL and ADVISOR each carry a generated copy of the
+PROCTOR, Booster, Rollcall and ADVISOR each carry a generated copy of the
 reader under their own namespace, so two tools in one app never fight over a
 class name (the generator below keeps the copies in step). The copies began
 because CREED was not on Packagist. It is now (`waynestate/creed` 0.1.0), so
@@ -335,7 +335,7 @@ Documented
 
 A bad date, a wrong type or an unknown key fails the build.
 
-Held by `PolicySchemaTest` and `composer validate-policy`, both in [PREFLIGHT](https://creed.apps.wayne.edu/#ahj-preflight) `php-test`.
+Held by `PolicySchemaTest` and `composer validate-policy`, both in [Preflight](https://creed.apps.wayne.edu/#ahj-preflight) `php-test`.
 
 Enforced
 
@@ -500,7 +500,7 @@ Checked
 
 Run `composer audit --locked` in CI and fail at or above the policy threshold, `high`.
 
-Held by [PREFLIGHT](https://creed.apps.wayne.edu/#ahj-preflight) `composer-audit` and [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `composer-audit`.
+Held by [Preflight](https://creed.apps.wayne.edu/#ahj-preflight) `composer-audit` and [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `composer-audit`.
 
 Checked
 
@@ -510,7 +510,7 @@ Checked
 
 Include shared CI components at a tag or a full commit SHA, never `~latest`. CREED's own pipeline pins both of its components to a SHA.
 
-Held by `ci.md`; components from [PREFLIGHT](https://creed.apps.wayne.edu/#ahj-preflight). No check scans other repos.
+Held by `ci.md`; components from [Preflight](https://creed.apps.wayne.edu/#ahj-preflight). No check scans other repos.
 
 Documented
 
@@ -552,7 +552,7 @@ Every code has variances. These are the rules for asking for one.
 
 An override sits in the app's `policy-overrides.json` with a reason and an expiry. Every run prints every override. An expired override fails.
 
-Held by [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `overrides`. [ROLLCALL](https://creed.apps.wayne.edu/#ahj-rollcall) is meant to list them across apps.
+Held by [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `overrides`. [Rollcall](https://creed.apps.wayne.edu/#ahj-rollcall) is meant to list them across apps.
 
 Checked
 
@@ -602,7 +602,7 @@ Documented
 
 CI runs CREED's unit tests on 8.3, 8.4 and 8.5, from its own floor up.
 
-Held by [PREFLIGHT](https://creed.apps.wayne.edu/#ahj-preflight) `php-test`, a matrix in CREED's pipeline.
+Held by [Preflight](https://creed.apps.wayne.edu/#ahj-preflight) `php-test`, a matrix in CREED's pipeline.
 
 Checked
 
@@ -649,17 +649,17 @@ CREED writes the rules; the rest of WELD inspects, builds and runs to them. Ever
 - ![WayneUI mark: a rounded frame with a gold tab](https://creed.apps.wayne.edu/assets/marks/wayneui.svg)[WayneUI](https://wayneui.apps.wayne.edu/)The interface layer, project 0 of the stack.This page is built on it
 - ![CREED mark: a stone arch whose gold keystone holds the other stones in place](https://creed.apps.wayne.edu/brand/creed-avatar-256.png)CREEDThe standards, the policy and the reader. This book.Chapters 1 to 10
 - ![PROCTOR mark: a watchful eye with a gold square pupil](https://creed.apps.wayne.edu/assets/marks/proctor.png)[PROCTOR](https://proctor.apps.wayne.edu/)One command that checks an app against CREED.[§2.1](https://creed.apps.wayne.edu/#c-2-1) [§2.2](https://creed.apps.wayne.edu/#c-2-2) [§3.1](https://creed.apps.wayne.edu/#c-3-1) [§3.2](https://creed.apps.wayne.edu/#c-3-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§5.1](https://creed.apps.wayne.edu/#c-5-1)
-- ![PREFLIGHT mark: a runway with a gold centre line](https://creed.apps.wayne.edu/assets/marks/preflight.png)[PREFLIGHT](https://preflight.apps.wayne.edu/)Shared CI, from GitLab CI/CD components.[§1.2](https://creed.apps.wayne.edu/#c-1-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§3.6](https://creed.apps.wayne.edu/#c-3-6) [§6.6](https://creed.apps.wayne.edu/#c-6-6)
+- ![Preflight mark: a runway with a gold centre line](https://creed.apps.wayne.edu/assets/marks/preflight.png)[Preflight](https://preflight.apps.wayne.edu/)Shared CI, from GitLab CI/CD components.[§1.2](https://creed.apps.wayne.edu/#c-1-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§3.6](https://creed.apps.wayne.edu/#c-3-6) [§6.6](https://creed.apps.wayne.edu/#c-6-6)
 - ![HELMET mark: a white football helmet with a gold facemask](https://creed.apps.wayne.edu/assets/marks/helmet.png)[HELMET](https://helmet.apps.wayne.edu/)Security headers and the runtime ribbon.[§2.2](https://creed.apps.wayne.edu/#c-2-2) [§4.3](https://creed.apps.wayne.edu/#c-4-3)
-- ![ROLLCALL mark: an open register with gold ticks](https://creed.apps.wayne.edu/assets/marks/rollcall.png)[ROLLCALL](https://rollcall.apps.wayne.edu/) *new*Every app answers with its PHP version.[§5.1](https://creed.apps.wayne.edu/#c-5-1)
+- ![Rollcall mark: an open register with gold ticks](https://creed.apps.wayne.edu/assets/marks/rollcall.png)[Rollcall](https://rollcall.apps.wayne.edu/) *new*Every app answers with its PHP version.[§5.1](https://creed.apps.wayne.edu/#c-5-1)
 - ![Pinstripe mark: a striped necktie with a gold tie bar](https://creed.apps.wayne.edu/assets/marks/pinstripe.png)[Pinstripe](https://pinstripe.apps.wayne.edu/)The coding standard: Pint, PHPStan, ESLint, Prettier.The handbook's code chapter
 - ![SESAME mark: an open door with a gold gap](https://creed.apps.wayne.edu/assets/marks/sesame.png)[SESAME](https://sesame.apps.wayne.edu/)Signs the user in.The handbook's auth chapter
 - ![Sourdough mark: a starter jar with a gold band](https://creed.apps.wayne.edu/assets/marks/sourdough.png)[Sourdough](https://sourdough.apps.wayne.edu/)Starters you feed, born compliant.Starts on the floor in Table 2-1
 - ![WELD mark: a welder's helmet](https://creed.apps.wayne.edu/assets/marks/weld.png)[WELD](https://weld.apps.wayne.edu/)The whole stack, joined in one app.Adopts the whole code
-- ![BOOSTER mark: a syringe that is also a rocket, gold flame below](https://creed.apps.wayne.edu/assets/marks/booster.png)[BOOSTER](https://booster.apps.wayne.edu/) *new*Upgrades you, one hop at a time.Gets you off a Grace expired row
+- ![Booster mark: a syringe that is also a rocket, gold flame below](https://creed.apps.wayne.edu/assets/marks/booster.png)[Booster](https://booster.apps.wayne.edu/) *new*Upgrades you, one hop at a time.Gets you off a Grace expired row
 - ![ADVISOR mark: a speech bubble holding a gold compass needle](https://creed.apps.wayne.edu/assets/marks/advisor.png)[ADVISOR](https://advisor.apps.wayne.edu/) *new*What applies to your app, and what to do next.Explains; never gates (§6.4)
-- ![SQUIRE mark: a satchel with a gold buckle](https://creed.apps.wayne.edu/assets/marks/squire.png)[SQUIRE](https://squire.apps.wayne.edu/) *new*Carries the release to Citadel.The deploy gate, proposed
-- ![DRAWBRIDGE mark: a castle tower lowering its bridge on a gold chain](https://creed.apps.wayne.edu/assets/marks/drawbridge.png)[DRAWBRIDGE](https://drawbridge.apps.wayne.edu/) *new*The Citadel sign-in gateway.Erratum E-7
+- ![Squire mark: a satchel with a gold buckle](https://creed.apps.wayne.edu/assets/marks/squire.png)[Squire](https://squire.apps.wayne.edu/) *new*Carries the release to Citadel.The deploy gate, proposed
+- ![Drawbridge mark: a castle tower lowering its bridge on a gold chain](https://creed.apps.wayne.edu/assets/marks/drawbridge.png)[Drawbridge](https://drawbridge.apps.wayne.edu/) *new*The Citadel sign-in gateway.Erratum E-7
 
 Appendix A
 
@@ -915,12 +915,12 @@ Decided
 Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and **MAY** in this chapter are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
 - CI is enforcement point (c): a red pipeline before merge (the stack's enforcement design).
-- The CI components are [PREFLIGHT](https://preflight.apps.wayne.edu/)'s: `proctor`, `php-test` and `composer-audit`, included with `include: component:` (first-repos).
+- The CI components are [Preflight](https://preflight.apps.wayne.edu/)'s: `proctor`, `php-test` and `composer-audit`, included with `include: component:` (first-repos).
 - CI judges with deterministic commands, never with a model. No gate depends on a model's opinion (the stack's rule on language models).
 - Components are pinned at a tag or SHA, never `~latest` (first-repos).
 - git.wayne.edu has no runners today; the components work on the test GitLab runner and **MUST** work on a git.wayne.edu runner when one exists (first-repos). Every product strongly recommends the instance runner.
 
-Set from [`handbook/ci.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/ci.md), impression `8543c96`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/ci.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/ci.md), impression `c7f3b98`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -982,7 +982,7 @@ Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowe
 
 ### [§3.6](https://creed.apps.wayne.edu/handbook/code.html#how-it-is-enforced) How it is enforced
 
-- Pint, PHPStan, Rector dry-runs and ESLint run in CI through [PREFLIGHT](https://preflight.apps.wayne.edu/) components, not in the deploy gate (the stack's coding standard). The PREFLIGHT components are Planned.
+- Pint, PHPStan, Rector dry-runs and ESLint run in CI through [Preflight](https://preflight.apps.wayne.edu/) components, not in the deploy gate (the stack's coding standard). The Preflight components are Planned.
 - New rules arrive as warnings and become errors on a stated date, the same staging as PHP versions (the stack's enforcement design).
 - [PROCTOR](https://proctor.apps.wayne.edu/) reports whether an app uses the presets (the stack's coding standard). The PROCTOR report is Planned.
 
@@ -1035,7 +1035,7 @@ Table 3-1
 - GitLab Code Quality: [https://docs.gitlab.com/ci/testing/code_quality/](https://docs.gitlab.com/ci/testing/code_quality/)
 - OWASP ASVS: [https://asvs.owasp.org/](https://asvs.owasp.org/)
 
-Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `9730468`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `8d461ee`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -1165,9 +1165,9 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - Public code **MUST NOT** go through the private registry; it is published to Packagist or npm (the stack's private-packages decision).
 - Apps **SHOULD NOT** proxy or mirror public registries in v1 (the stack's private-packages decision).
 
-[PROCTOR](https://proctor.apps.wayne.edu/)'s `repo-url-credentials`, `package-sources` and `internal-vendor-shadowing` checks enforce rules 1, 2 and 4 (warning first), and [PREFLIGHT](https://preflight.apps.wayne.edu/)'s publish job enforces rule 5.
+[PROCTOR](https://proctor.apps.wayne.edu/)'s `repo-url-credentials`, `package-sources` and `internal-vendor-shadowing` checks enforce rules 1, 2 and 4 (warning first), and [Preflight](https://preflight.apps.wayne.edu/)'s publish job enforces rule 5.
 
-Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `4f50a60`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `40008d6`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -1197,10 +1197,10 @@ The deploy gate runs [PROCTOR](https://proctor.apps.wayne.edu/) against the comm
 
 ### [§7.2](https://creed.apps.wayne.edu/handbook/deploy-gate.html#elsewhere) Elsewhere
 
-- The same gate runs as a CI job through [PREFLIGHT](https://preflight.apps.wayne.edu/)'s `proctor` component, wherever the pipeline runs (first-repos).
-- [SQUIRE](https://squire.apps.wayne.edu/)'s `docker` target will run the gate before it ships an image, and so will its later `openshift` and `coolify` targets (the stack's rule that packages run on any container platform).
+- The same gate runs as a CI job through [Preflight](https://preflight.apps.wayne.edu/)'s `proctor` component, wherever the pipeline runs (first-repos).
+- [Squire](https://squire.apps.wayne.edu/)'s `docker` target will run the gate before it ships an image, and so will its later `openshift` and `coolify` targets (the stack's rule that packages run on any container platform).
 
-Set from [`handbook/deploy-gate.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/deploy-gate.md), impression `7023c88`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/deploy-gate.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/deploy-gate.md), impression `a557384`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 

@@ -229,7 +229,7 @@ private-packages decision).</li>
 </ul>
 <p><a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a>'s <code>repo-url-credentials</code>, <code>package-sources</code> and
 <code>internal-vendor-shadowing</code> checks enforce rules 1, 2 and 4 (warning first),
-and <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">PREFLIGHT</a>'s publish job enforces rule 5.</p>
+and <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s publish job enforces rule 5.</p>
           </div>
       </article>
       <article class="hb-chapter hb-chapter--book" id="code" aria-labelledby="code-title">
@@ -308,8 +308,8 @@ and a Psalm taint-analysis pilot on one app <span class="hb-cite">(the stack's c
 </ul>
 <h3 id="code--how-it-is-enforced"><a class="hb-sec" href="#code--how-it-is-enforced">§3.6</a> How it is enforced</h3>
 <ul>
-<li>Pint, PHPStan, Rector dry-runs and ESLint run in CI through <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">PREFLIGHT</a>
-components, not in the deploy gate <span class="hb-cite">(the stack's coding standard)</span>. The PREFLIGHT components
+<li>Pint, PHPStan, Rector dry-runs and ESLint run in CI through <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>
+components, not in the deploy gate <span class="hb-cite">(the stack's coding standard)</span>. The Preflight components
 are Planned.</li>
 <li>New rules arrive as warnings and become errors on a stated date, the same
 staging as PHP versions <span class="hb-cite">(the stack's enforcement design)</span>.</li>
@@ -623,9 +623,9 @@ stack's deploy-gate decision).</li>
 </ul>
 <h3 id="deploy-gate--elsewhere"><a class="hb-sec" href="#deploy-gate--elsewhere">§7.2</a> Elsewhere</h3>
 <ul>
-<li>The same gate runs as a CI job through <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">PREFLIGHT</a>'s <code>proctor</code> component,
+<li>The same gate runs as a CI job through <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s <code>proctor</code> component,
 wherever the pipeline runs <span class="hb-cite">(first-repos)</span>.</li>
-<li><a class="tool" href="https://squire.apps.wayne.edu/"><img src="../assets/marks/squire.png" alt="" width="16" height="16">SQUIRE</a>'s <code>docker</code> target will run the gate before it ships an image, and so
+<li><a class="tool" href="https://squire.apps.wayne.edu/"><img src="../assets/marks/squire.png" alt="" width="16" height="16">Squire</a>'s <code>docker</code> target will run the gate before it ships an image, and so
 will its later <code>openshift</code> and <code>coolify</code> targets <span class="hb-cite">(the stack's rule that
 packages run on any container platform)</span>.</li>
 </ul>
@@ -646,7 +646,7 @@ packages run on any container platform)</span>.</li>
 <ul>
 <li>CI is enforcement point (c): a red pipeline before merge (the stack's
 enforcement design).</li>
-<li>The CI components are <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">PREFLIGHT</a>'s: <code>proctor</code>, <code>php-test</code> and
+<li>The CI components are <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s: <code>proctor</code>, <code>php-test</code> and
 <code>composer-audit</code>, included with <code>include: component:</code> <span class="hb-cite">(first-repos)</span>.</li>
 <li>CI judges with deterministic commands, never with a model. No gate depends
 on a model's opinion <span class="hb-cite">(the stack's rule on language models)</span>.</li>
@@ -732,7 +732,7 @@ override <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>eb25875</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>21a8a70</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 
