@@ -59,17 +59,19 @@ final class GitLabClient
                 }
 
                 $raw = @file_get_contents($url, false, stream_context_create($http));
+                if ($raw === false) {
+                    return ['status' => 0, 'body' => null];
+                }
                 // The response headers land in this magic variable next to
-                // the call that made them; the ?? keeps the linter quiet.
-                $responseHeaders = $http_response_header ?? [];
+                // the call that made them; a failed request never reaches here.
                 $status = 0;
-                foreach ($responseHeaders as $line) {
+                foreach ($http_response_header as $line) {
                     if (preg_match('#^HTTP/\S+\s+(\d{3})#', (string) $line, $matches) === 1) {
                         $status = (int) $matches[1];
                     }
                 }
-                $body = $raw === false ? null : json_decode((string) $raw);
-                if ($body === null && $raw !== false && trim((string) $raw) !== '') {
+                $body = json_decode((string) $raw);
+                if ($body === null && trim((string) $raw) !== '') {
                     $body = (string) $raw;
                 }
 
@@ -152,7 +154,7 @@ final class GitLabClient
             'PRIVATE-TOKEN' => $this->token,
             'Accept' => 'application/json',
         ], $form);
-        $status = (int) ($result['status'] ?? 0);
+        $status = (int) $result['status'];
         if ($status < 200 || $status > 299) {
             throw new RuntimeException($this->mask(sprintf(
                 'GitLab API error %d on %s %s: %s',
