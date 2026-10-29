@@ -146,6 +146,8 @@ Creed Bratton would have a form for this.
 
 ## Tests
 
+Maintainers: how to build, test and release this project, and where its data comes from, is in [MAINTAINING.md](MAINTAINING.md).
+
 No PHP on the machine? Fine. Docker runs the suite:
 
 ```
