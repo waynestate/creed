@@ -110,6 +110,31 @@ CREED itself requires PHP `^8.3`, like every stack package, and CI tests it on
 until PHP 8.2 reaches end of life on 2026-12-31, then `^8.3`. Creed has always
 been one version ahead of everyone else, at least by his own account.
 
+## Proof
+
+**82 Wayne State applications read against CREED on 2026-10-28: 14 passed, 43 flagged, 0 tool errors.** The other
+25 declare no version CREED can read (no `require.php`, no lock, no known image).
+
+Every version an app declares or locks (its PHP floor, Laravel, Vue, Inertia and the PHP image it runs on) went
+through `Policy::stateOf` with CREED 0.1.0 (commit `2d982ae`), inside `php:8.4-cli` with no network, against a
+throwaway copy of each repository: 109 facts, 109 answers.
+
+| Component | Active | Security | Past grace | Older than the policy lists | Facts |
+|---|---:|---:|---:|---:|---:|
+| PHP | 12 | 14 | 13 | 44 | 83 |
+| Laravel | 2 | 2 | 5 | 8 | 17 |
+| Vue | 5 | 0 | 0 | 0 | 5 |
+| Inertia | 0 | 0 | 0 | 4 | 4 |
+
+The apps are counted, never named. The full record, the command and what the run does not prove are on the proof
+page: [`site/proof.html`](site/proof.html). Run it on your own app:
+
+```
+php -r 'require "vendor/autoload.php"; $p = Waynestate\Creed\Policy::bundled(); echo $p->stateOf("php", $p->resolveVersion("php", "8.2.29"), new DateTimeImmutable("2026-10-28"))->name, PHP_EOL;'
+```
+
+Creed Bratton has never once been audited. These 82 apps have.
+
 ## The handbook
 
 The rules, chapter by chapter, live in [`handbook/`](handbook/README.md).
