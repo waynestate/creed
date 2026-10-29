@@ -32,6 +32,7 @@
   (`GitLabClient::streamTransport`). The token rides only in the
   `PRIVATE-TOKEN` header, never in a URL, and every error it throws is
   masked, so a failed call can never print the token.
+- Fixed: stale capability claims in the site and docs.
 
 ## 0.1.2 (2026-10-29)
 

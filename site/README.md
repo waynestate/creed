@@ -16,12 +16,12 @@ anywhere (Citadel, any web server, or `python -m http.server` inside `site/` for
   `policy.json`), an errata slip for the open questions, the authorities having jurisdiction (the WELD parts), and
   Appendix A, the quick start per OS. Clause §c.n maps to practice numbers: §2.1 is practice 11.
 - magic: the inspection stamp. Pick a runtime, a version and a day on Form CR-1, and the inspector's rubber stamp
-  thunks onto the certificate with the state `Policy::stateOf` would return (SUPPORTED, SECURITY ONLY, EOL in grace,
-  EOL grace expired, or REFUSED for an unlisted version that is not newer than every line, because the reader does not guess; current versions are never refused). The
+   thunks onto the certificate with the state `Policy::stateOf` would return (SUPPORTED, SECURITY ONLY, EOL in grace,
+   EOL grace expired, or REFUSED for an unlisted version between the listed lines, because the reader does not guess; an unlisted version older than the oldest line is EOL by definition, and current versions are never refused). The
   certificate shows the real reader call and its return value, the clause that applies is highlighted in the book,
   the row lights up in Table 2-1, and earlier stamps stay behind as faint impressions. The result is live-region
   text. The first time the form comes into view, the stamp comes down on the filled-in certificate.
-- data: the form and Table 2-1 carry a copy of the dates in `policy/policy.json` (2026-10-28) in `assets/creed.js`.
+- data: the form and Table 2-1 carry a copy of the dates in `policy/policy.json` (2026-10-29) in `assets/creed.js`.
   The policy file stays the source; refresh the copy when the dates change.
 - marks: `brand/` is CREED's (generated with ChatGPT, never redrawn). `assets/marks/` holds the other stack parts'
   marks, copied from WELD's and Booster's sites; WayneUI uses its own reversed mark on green.
