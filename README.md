@@ -21,6 +21,7 @@ Front page: [`site/index.html`](site/index.html), a static page you can open in 
 One command, two clouds, zero excuses. Higher.
 
 ![Singer of the band Creed in a white tank top and black leather pants on a stage with a red backdrop, one arm stretched out over a cheering crowd](docs/readme/creed-band.gif)
+
 CREED is the Wayne State app stack's version policy, as data. One file,
 `policy/policy.json`, lists the support dates for PHP, Laravel, Node, MySQL,
 Vue and Inertia, plus the rules every check runs against. A small
@@ -162,6 +163,7 @@ git.wayne.edu has no runners today. Every product in the stack strongly
 recommends a git.wayne.edu instance runner.
 
 ![Creed Bratton from The Office in a dark suit and blue shirt with a wide, wild-eyed grin](docs/readme/creed-bratton.gif)
+
 Creed Bratton, whose quality assurance work we all admire. His past is a
 mystery. Ours is in `policy/policy.json`, where it belongs.
 
