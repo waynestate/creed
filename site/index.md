@@ -444,7 +444,7 @@ Read the policy from your tool, or run CREED's own checks in a clone.
 
 ### A.1 Read the policy from PHP
 
-Any OS with PHP 8.3 or newer and Composer. On Packagist, 0.1.2
+Any OS with PHP 8.3 or newer and Composer. On Packagist, 0.1.3
 
 `$ composer require waynestate/creed`
 
