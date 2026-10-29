@@ -656,7 +656,7 @@ async function buildCertificate(page, policy) {
 // stock: the contents, Table 2-1 and the errata slip.
 async function buildGallery(page) {
   console.log("gallery:");
-  const crops = ["mobile-03-contents-a.png", "mobile-06-ch-2-b.png", "mobile-12-errata-a.png"];
+  const crops = ["mobile-03-contents-a.png", "mobile-06-ch-2-b.png", "mobile-12-errata.png"];
   for (const c of crops) {
     if (!existsSync(path.join(siteDir, "screenshots", "sections", c))) fail(`missing crop ${c}`);
   }

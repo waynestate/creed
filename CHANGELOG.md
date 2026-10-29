@@ -4,6 +4,7 @@
 
 - Changed: the proof page moves to a private site that needs a Wayne State sign-in.
 - Changed: project names written as words except acronyms.
+- Changed: README images show the current site and policy.
 
 - `bin/policy-bot.php run`: a real (non dry-run) run now commits the data
   allowlist on `auto/policy-refresh` and force-pushes it with GitLab merge
