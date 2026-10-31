@@ -58,17 +58,20 @@ final class GitLabClient
                     $http['content'] = http_build_query($form);
                 }
 
-                $raw = @file_get_contents($url, false, stream_context_create(['http' => $http]));
+                $stream = @fopen($url, 'r', false, stream_context_create(['http' => $http]));
+                if ($stream === false) {
+                    return ['status' => 0, 'body' => null];
+                }
+                $raw = stream_get_contents($stream);
+                $meta = stream_get_meta_data($stream);
+                fclose($stream);
                 if ($raw === false) {
                     return ['status' => 0, 'body' => null];
                 }
-                // The response headers are available via the magic variable $http_response_header,
-                // but PHP 8.5 deprecates it. Use http_get_last_response_headers() when available.
+                // The response headers come from the stream's metadata (wrapper_data),
+                // which PHP fills in for the http wrapper once the request has been made.
                 $status = 0;
-                $responseHeaders = function_exists('http_get_last_response_headers')
-                    ? (http_get_last_response_headers() ?? [])
-                    : $http_response_header;
-                foreach ($responseHeaders as $line) {
+                foreach ((array) ($meta['wrapper_data'] ?? []) as $line) {
                     if (preg_match('#^HTTP/\S+\s+(\d{3})#', (string) $line, $matches) === 1) {
                         $status = (int) $matches[1];
                     }
