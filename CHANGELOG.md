@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+## 0.1.4 (2026-10-30)
+
+- Fixed: the bot's GitLab HTTP client failed on every API call (`stream_context_create` options were not under the `http` wrapper, a ValueError on current PHP). It now works, and reads response headers from the stream's metadata, so PHP 8.5 shows no deprecation. Found by Booster's hop-data robot, which uses this client.
 - Changed: the deploy layer's Squire kit is refreshed to 0.3.3 (release options can now live in ./.env.squire).
 - Changed: the deploy layer's Squire kit is refreshed to 0.3.4 (the local .env.squire file is now git-ignored).
 
