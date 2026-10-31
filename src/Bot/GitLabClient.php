@@ -58,14 +58,17 @@ final class GitLabClient
                     $http['content'] = http_build_query($form);
                 }
 
-                $raw = @file_get_contents($url, false, stream_context_create($http));
+                $raw = @file_get_contents($url, false, stream_context_create(['http' => $http]));
                 if ($raw === false) {
                     return ['status' => 0, 'body' => null];
                 }
-                // The response headers land in this magic variable next to
-                // the call that made them; a failed request never reaches here.
+                // The response headers are available via the magic variable $http_response_header,
+                // but PHP 8.5 deprecates it. Use http_get_last_response_headers() when available.
                 $status = 0;
-                foreach ($http_response_header as $line) {
+                $responseHeaders = function_exists('http_get_last_response_headers')
+                    ? (http_get_last_response_headers() ?? [])
+                    : $http_response_header;
+                foreach ($responseHeaders as $line) {
                     if (preg_match('#^HTTP/\S+\s+(\d{3})#', (string) $line, $matches) === 1) {
                         $status = (int) $matches[1];
                     }

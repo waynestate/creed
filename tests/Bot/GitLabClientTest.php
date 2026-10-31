@@ -148,4 +148,12 @@ final class GitLabClientTest extends PHPUnitTestCase
     {
         self::assertInstanceOf(HttpTransport::class, GitLabClient::streamTransport());
     }
+
+    #[Test]
+    public function streamTransportHandlesClosedPortGracefully(): void
+    {
+        $transport = GitLabClient::streamTransport();
+        $result = $transport->request('GET', 'http://127.0.0.1:9/', [], null);
+        self::assertSame(['status' => 0, 'body' => null], $result);
+    }
 }
