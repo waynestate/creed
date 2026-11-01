@@ -76,5 +76,10 @@
         }
     },
     "minimum-stability": "stable",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "extra": {
+        "proctor": {
+            "wayneui.copies": "fail"
+        }
+    }
 }
