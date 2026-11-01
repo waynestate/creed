@@ -19,10 +19,10 @@ jobs:
       php-versions: '["8.3","8.4","8.5"]'
       ci-command: composer ci
 
-  # Runs on the weekly schedule and on demand. It re-reads the upstream feeds
-  # and rewrites the latest_patch fields in policy/policy.json, then fails the
-  # run if the policy was stale. CI never pushes: a person runs the tool and
-  # commits the result.
+  # The scheduled job re-reads the upstream feeds, rewrites the latest_patch
+  # fields in policy/policy.json, and fails the run when the policy was stale.
+  # It is check-only and never commits. bin/policy-bot.php run is the
+  # committing path, and no job in this workflow runs it yet.
   refresh-patches:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
