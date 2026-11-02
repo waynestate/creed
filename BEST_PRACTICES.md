@@ -865,6 +865,7 @@ These are places where a source disagrees with the repository or with an earlier
   2028-03-17 (the page shows bug fixes as "Q3 2027"; the policy holds 2027-09-30, recorded from endoflife.date on
   2026-10-29; see the resolved note below). Node 26: LTS from 2026-10-28, maintenance from 2027-10-20, end of life 2029-04-30.
   endoflife.date shows 2027-10-27 for the same field ([endoflife.date Node API](https://endoflife.date/api/v1/products/nodejs/)).
+  Settled 2026-11-02: the primary source, `schedule.json` in nodejs/Release, lists `"maintenance": "2027-10-20"` for v26, so the policy value is right and the aggregator differs.
   MySQL 9.7: Premier to 2031-04-30 and Extended to 2034-04-30 on endoflife.date. The stack's version policy says
 "Q1 2028" for Laravel 13;
   the page gives the day.
