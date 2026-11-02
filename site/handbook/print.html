@@ -147,7 +147,7 @@
 from the date, through the CREED reader. No other code decides state
 <span class="hb-cite">(the stack's version policy)</span>.</li>
 <li>The PHP floor is <code>^8.2</code>, the oldest non-EOL version today <span class="hb-cite">(the stack's version policy)</span>. It
-moves to <code>^8.3</code> on 2027-01-01.</li>
+moves to <code>^8.3</code> on 2027-01-01. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>php-floor</code>.</li>
 <li>Stack packages raise their own <code>php</code> floor in a new major when a PHP version
 reaches EOL, so security fixes require the upgrade <span class="hb-cite">(the stack's version policy)</span>.</li>
 <li><code>policy.json</code> is a contract, versioned like <a class="tool" href="https://wayneui.apps.wayne.edu/">WayneUI</a>'s <code>/v2/</code>. Older Check
@@ -172,9 +172,9 @@ tool name, each value a <code>minimum</code> version. Today it holds Composer at
 <p>Composer 2.8.0 is the first release with the explicit <code>composer audit --abandoned</code> flag, so a tool can pick its own abandoned-package behavior
 instead of inheriting the <code>fail</code> default (changelog:
 <a href="https://getcomposer.org/changelog/2.8.0">https://getcomposer.org/changelog/2.8.0</a>).</p>
-<p><a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> will check a developer's Composer against this minimum and fail fast
-below it. The minimum is a floor, not a ceiling: we do not go lower, no matter
-how the crowd sings for more.</p>
+<p>PROCTOR will check a developer's Composer against this minimum and fail fast
+below it. PROCTOR check: <code>composer-version</code>. The minimum is a floor, not a
+ceiling: we do not go lower, no matter how the crowd sings for more.</p>
 <div class="hb-policy" role="note"><p class="hb-policy__title">In <a href="https://github.com/waynestate/creed/blob/main/policy/policy.json"><code>policy.json</code></a></p><dl><div><dt><code>components.*.versions.*.latest_patch</code></dt><dd>set per version</dd></div><div><dt><code>components.*.versions.*.latest_patch_checked</code></dt><dd>set per version</dd></div></dl></div>
           </div>
       </article>
@@ -192,12 +192,13 @@ how the crowd sings for more.</p>
 <div class="hb-rfc" role="note"><p><span class="hb-rfc__label">Key words</span> The key words <strong class="kw kw--must">MUST</strong>, <strong class="kw kw--must-not">MUST NOT</strong>, <strong class="kw kw--should">SHOULD</strong>, <strong class="kw kw--should-not">SHOULD NOT</strong> and <strong class="kw kw--may">MAY</strong> in this chapter are to be interpreted as described in <a href="https://www.rfc-editor.org/rfc/rfc2119">RFC 2119</a>.</p></div>
 <ul>
 <li>No <code>dev-master</code>, <code>dev-*</code> or <code>*</code> constraints on runtime dependencies
-<span class="hb-cite">(the stack's version policy)</span>.</li>
-<li>A lock file is required and <strong class="kw kw--must">MUST</strong> be committed <span class="hb-cite">(the stack's version policy)</span>.</li>
+<span class="hb-cite">(the stack's version policy)</span>. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>unbounded-constraints</code>.</li>
+<li>A lock file is required and <strong class="kw kw--must">MUST</strong> be committed <span class="hb-cite">(the stack's version
+policy)</span>. PROCTOR check: <code>lock-committed</code>.</li>
 <li><code>composer audit</code> <strong class="kw kw--must">MUST</strong> report no advisories at or above the policy's severity
-threshold <span class="hb-cite">(the stack's version policy)</span>.</li>
+threshold <span class="hb-cite">(the stack's version policy)</span>. PROCTOR check: <code>composer-audit</code>.</li>
 <li><code>composer.json</code> <code>require.php</code> <strong class="kw kw--must-not">MUST NOT</strong> allow an EOL version as its lowest
-bound <span class="hb-cite">(the stack's version policy)</span>.</li>
+bound <span class="hb-cite">(the stack's version policy)</span>. PROCTOR check: <code>php-floor</code>.</li>
 <li>Every project is a framework-free core plus thin adapters. <code>composer.json</code>
 requires only <code>php</code> and PSR packages; Laravel, Inertia and Vue are
 <code>suggest</code> <span class="hb-cite">(the stack's core-plus-adapters design)</span>.</li>
@@ -211,7 +212,8 @@ repository entry per package <span class="hb-cite">(the stack's private-packages
 <li>Credentials <strong class="kw kw--must-not">MUST NOT</strong> appear in any repository URL in <code>composer.json</code> or
 <code>composer.lock</code>, or as a literal value in a committed <code>.npmrc</code>. Tokens live
 in a gitignored <code>auth.json</code>, the npm user config, or a CI or build-time
-secret <span class="hb-cite">(the stack's private-packages decision)</span>.</li>
+secret <span class="hb-cite">(the stack's private-packages decision)</span>. PROCTOR check:
+<code>repo-url-credentials</code>.</li>
 <li>Builds <strong class="kw kw--must">MUST</strong> use a read-only deploy token (<code>read_package_registry</code> only);
 personal access tokens <strong class="kw kw--must-not">MUST NOT</strong> be used in builds (the stack's
 private-packages decision).</li>
@@ -227,7 +229,7 @@ Packagist or npm <span class="hb-cite">(the stack's private-packages decision)</
 <li>Apps <strong class="kw kw--should-not">SHOULD NOT</strong> proxy or mirror public registries in v1 (the stack's
 private-packages decision).</li>
 </ul>
-<p><a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a>'s <code>repo-url-credentials</code>, <code>package-sources</code> and
+<p>PROCTOR's <code>repo-url-credentials</code>, <code>package-sources</code> and
 <code>internal-vendor-shadowing</code> checks enforce rules 1, 2 and 4 (warning first),
 and <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s publish job enforces rule 5.</p>
           </div>
@@ -434,7 +436,8 @@ user, attributes, issued-at, audience, an expiry of 60 seconds or less, and
 a signature the gateway and app share <span class="hb-cite">(the stack's auth design)</span>.</li>
 <li>Drivers: <code>cas</code> (the default today), <code>gateway</code>, <code>oidc</code>, <code>oauth2</code>, <code>saml</code> (not
 built yet), and <code>fake</code> for local development and tests <span class="hb-cite">(the stack's auth design)</span>.</li>
-<li>Non-EOL PHP only, with no exceptions <span class="hb-cite">(the stack's auth design)</span>.</li>
+<li>Non-EOL PHP only, with no exceptions <span class="hb-cite">(the stack's auth design)</span>.
+<a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>php-floor</code>.</li>
 <li class="hb-tbd">To be decided: the gateway's key distribution and rotation, and the SAML
 library choice if a <code>saml</code> driver is built <span class="hb-cite">(the stack's auth design)</span>.</li>
 </ul>
@@ -478,16 +481,17 @@ still the upgrade.</p>
 <ul>
 <li>Set <code>Schema::defaultStringLength(191)</code> in <code>AppServiceProvider::boot()</code>,
 before any migration runs. 5.6 caps an indexed <code>utf8mb4</code> column at 767
-bytes, which is 191 characters.</li>
+bytes, which is 191 characters. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>mysql56</code>.</li>
 <li>Keep <code>utf8mb4</code> and <code>utf8mb4_unicode_ci</code>, the defaults. Never use an
 8.0-only collation such as <code>utf8mb4_0900_ai_ci</code> (not yet confirmed on a
 5.6 server).</li>
 <li>Store JSON as <code>text</code> or <code>longText</code>, with Eloquent <code>array</code> or <code>json</code> casts,
-and filter in PHP. 5.6 has no JSON column type.</li>
+and filter in PHP. 5.6 has no JSON column type. PROCTOR check: <code>mysql56</code>.</li>
 <li>Leave <code>use_upsert_alias</code> unset, so <code>upsert()</code> uses <code>VALUES()</code>. The row
 alias that setting switches to needs MySQL 8.0.19.</li>
 <li>Rename a column with raw <code>DB::statement('ALTER TABLE ... CHANGE ...')</code>.
-Avoid <code>renameColumn</code> and <code>renameIndex</code>, which emit 5.7 syntax.</li>
+Avoid <code>renameColumn</code> and <code>renameIndex</code>, which emit 5.7 syntax.
+PROCTOR check: <code>mysql56</code>.</li>
 <li>Use <code>Schema::hasTable</code> only. Column introspection is not reliable on 5.6
 (not yet confirmed on a 5.6 server).</li>
 <li>Skip <code>db:show</code> and <code>db:monitor</code>, and run one database-queue worker (or
@@ -534,7 +538,10 @@ Builds older than 5.6.46 also speak only TLS 1.0, which current hosts may
 refuse (not yet confirmed on a 5.6 server). Both are reasons to plan the move
 rather than wait for it.</p>
 <h3 id="databases--how-the-stack-checks-it"><a class="hb-sec" href="#databases--how-the-stack-checks-it">§5.7</a> How the stack checks it</h3>
-<p><a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> will flag the patterns in the avoid list above. Not yet.</p>
+<p>PROCTOR's <code>mysql56</code> check flags the patterns in the avoid list above that
+fail on 5.6: JSON columns, generated columns, <code>renameColumn</code>, long indexed
+strings and a missing <code>Schema::defaultStringLength(191)</code>. The rest of the
+list is not checked yet.</p>
 <h3 id="databases--sources"><a class="hb-sec" href="#databases--sources">§5.8</a> Sources</h3>
 <ul class="hb-sources">
 <li>Laravel 13 database docs: <a href="https://laravel.com/docs/13.x/database">https://laravel.com/docs/13.x/database</a></li>
@@ -654,7 +661,7 @@ packages run on any container platform)</span>.</li>
 <div class="hb-rfc" role="note"><p><span class="hb-rfc__label">Key words</span> The key words <strong class="kw kw--must">MUST</strong>, <strong class="kw kw--must-not">MUST NOT</strong>, <strong class="kw kw--should">SHOULD</strong>, <strong class="kw kw--should-not">SHOULD NOT</strong> and <strong class="kw kw--may">MAY</strong> in this chapter are to be interpreted as described in <a href="https://www.rfc-editor.org/rfc/rfc2119">RFC 2119</a>.</p></div>
 <ul>
 <li>CI is enforcement point (c): a red pipeline before merge (the stack's
-enforcement design).</li>
+enforcement design). <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>ci-pipelines</code>.</li>
 <li>The CI components are <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s: <code>proctor</code>, <code>php-test</code> and
 <code>composer-audit</code>, included with <code>include: component:</code> <span class="hb-cite">(first-repos)</span>.</li>
 <li>CI judges with deterministic commands, never with a model. No gate depends
@@ -712,7 +719,8 @@ macOS get bash (<code>.sh</code>), written for macOS's stock bash 3.2 and its BS
 <strong class="kw kw--must">MUST</strong> be LF: on Citadel, and on OpenShift, Coolify or raw Docker elsewhere
 <span class="hb-cite">(the stack's every-OS design)</span>.</li>
 <li>Paths are built with the language's path functions, and subprocesses start
-with argument arrays, never shell strings <span class="hb-cite">(the stack's every-OS design)</span>.</li>
+with argument arrays, never shell strings <span class="hb-cite">(the stack's every-OS design)</span>.
+<a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>portability</code>.</li>
 </ul>
           </div>
       </article>
@@ -731,9 +739,9 @@ with argument arrays, never shell strings <span class="hb-cite">(the stack's eve
 <ul>
 <li>Overrides are named, dated and visible <span class="hb-cite">(the stack's version policy)</span>.</li>
 <li>An app keeps a <code>policy-overrides.json</code> with an expiry date and a reason
-<span class="hb-cite">(the stack's version policy)</span>.</li>
+<span class="hb-cite">(the stack's version policy)</span>. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>overrides</code>.</li>
 <li>Check prints every override on every run, and Fleet lists them <span class="hb-cite">(the stack's version policy)</span>.</li>
-<li>An expired override is a failure <span class="hb-cite">(first-repos)</span>.</li>
+<li>An expired override is a failure <span class="hb-cite">(first-repos)</span>. PROCTOR check: <code>overrides</code>.</li>
 <li>On the Citadel side, overrides are held by Citadel admins, per app and per
 rule, with an expiry, a reason and an approver. There is no permanent
 override <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
@@ -741,7 +749,7 @@ override <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>c458852</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>0b17740</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

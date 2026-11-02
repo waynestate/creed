@@ -16,23 +16,23 @@ Decided
 
 Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and **MAY** in this chapter are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
-- No `dev-master`, `dev-*` or `*` constraints on runtime dependencies (the stack's version policy).
-- A lock file is required and **MUST** be committed (the stack's version policy).
-- `composer audit` **MUST** report no advisories at or above the policy's severity threshold (the stack's version policy).
-- `composer.json` `require.php` **MUST NOT** allow an EOL version as its lowest bound (the stack's version policy).
+- No `dev-master`, `dev-*` or `*` constraints on runtime dependencies (the stack's version policy). [PROCTOR](https://proctor.apps.wayne.edu/) check: `unbounded-constraints`.
+- A lock file is required and **MUST** be committed (the stack's version policy). PROCTOR check: `lock-committed`.
+- `composer audit` **MUST** report no advisories at or above the policy's severity threshold (the stack's version policy). PROCTOR check: `composer-audit`.
+- `composer.json` `require.php` **MUST NOT** allow an EOL version as its lowest bound (the stack's version policy). PROCTOR check: `php-floor`.
 - Every project is a framework-free core plus thin adapters. `composer.json` requires only `php` and PSR packages; Laravel, Inertia and Vue are `suggest` (the stack's core-plus-adapters design).
 - Adapters call the core and never re-implement it (the stack's core-plus-adapters design).
 
 ## [§2.1](https://creed.apps.wayne.edu/handbook/dependencies.html#private-packages) Private packages
 
 - Internal-only packages **MUST** be installed from one GitLab package registry per ecosystem (Composer, npm), not from one `vcs`, `path` or `artifact` repository entry per package (the stack's private-packages decision).
-- Credentials **MUST NOT** appear in any repository URL in `composer.json` or `composer.lock`, or as a literal value in a committed `.npmrc`. Tokens live in a gitignored `auth.json`, the npm user config, or a CI or build-time secret (the stack's private-packages decision).
+- Credentials **MUST NOT** appear in any repository URL in `composer.json` or `composer.lock`, or as a literal value in a committed `.npmrc`. Tokens live in a gitignored `auth.json`, the npm user config, or a CI or build-time secret (the stack's private-packages decision). PROCTOR check: `repo-url-credentials`.
 - Builds **MUST** use a read-only deploy token (`read_package_registry` only); personal access tokens **MUST NOT** be used in builds (the stack's private-packages decision).
 - The private Composer registry entry **MUST** be canonical, and the Packagist entry **SHOULD** exclude the internal vendor names, so a public package with the same name can never be installed instead (the stack's private-packages decision).
 - A released version **MUST** map to one commit for ever: tags are protected, and a version is never republished from a different commit (the stack's private-packages decision).
 - Public code **MUST NOT** go through the private registry; it is published to Packagist or npm (the stack's private-packages decision).
 - Apps **SHOULD NOT** proxy or mirror public registries in v1 (the stack's private-packages decision).
 
-[PROCTOR](https://proctor.apps.wayne.edu/)'s `repo-url-credentials`, `package-sources` and `internal-vendor-shadowing` checks enforce rules 1, 2 and 4 (warning first), and [Preflight](https://preflight.apps.wayne.edu/)'s publish job enforces rule 5.
+PROCTOR's `repo-url-credentials`, `package-sources` and `internal-vendor-shadowing` checks enforce rules 1, 2 and 4 (warning first), and [Preflight](https://preflight.apps.wayne.edu/)'s publish job enforces rule 5.
 
-Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `40008d6`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `e7daa67`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

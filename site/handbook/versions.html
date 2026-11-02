@@ -136,7 +136,7 @@
 from the date, through the CREED reader. No other code decides state
 <span class="hb-cite">(the stack's version policy)</span>.</li>
 <li>The PHP floor is <code>^8.2</code>, the oldest non-EOL version today <span class="hb-cite">(the stack's version policy)</span>. It
-moves to <code>^8.3</code> on 2027-01-01.</li>
+moves to <code>^8.3</code> on 2027-01-01. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>php-floor</code>.</li>
 <li>Stack packages raise their own <code>php</code> floor in a new major when a PHP version
 reaches EOL, so security fixes require the upgrade <span class="hb-cite">(the stack's version policy)</span>.</li>
 <li><code>policy.json</code> is a contract, versioned like <a class="tool" href="https://wayneui.apps.wayne.edu/">WayneUI</a>'s <code>/v2/</code>. Older Check
@@ -161,16 +161,16 @@ tool name, each value a <code>minimum</code> version. Today it holds Composer at
 <p>Composer 2.8.0 is the first release with the explicit <code>composer audit --abandoned</code> flag, so a tool can pick its own abandoned-package behavior
 instead of inheriting the <code>fail</code> default (changelog:
 <a href="https://getcomposer.org/changelog/2.8.0">https://getcomposer.org/changelog/2.8.0</a>).</p>
-<p><a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> will check a developer's Composer against this minimum and fail fast
-below it. The minimum is a floor, not a ceiling: we do not go lower, no matter
-how the crowd sings for more.</p>
+<p>PROCTOR will check a developer's Composer against this minimum and fail fast
+below it. PROCTOR check: <code>composer-version</code>. The minimum is a floor, not a
+ceiling: we do not go lower, no matter how the crowd sings for more.</p>
 <div class="hb-policy" role="note"><p class="hb-policy__title">In <a href="https://github.com/waynestate/creed/blob/main/policy/policy.json"><code>policy.json</code></a></p><dl><div><dt><code>components.*.versions.*.latest_patch</code></dt><dd>set per version</dd></div><div><dt><code>components.*.versions.*.latest_patch_checked</code></dt><dd>set per version</dd></div></dl></div>
           </div>
         </div>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="./"><span class="hb-pager__dir">Back to</span><span class="hb-pager__name">Contents</span></a><a class="hb-pager__link hb-pager__link--next" href="dependencies.html" rel="next"><span class="hb-pager__dir">Next · Chapter 2</span><span class="hb-pager__name">Dependencies</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/versions.md"><code>handbook/versions.md</code> on GitHub</a>, impression <code>3e6f4bc</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/versions.md"><code>handbook/versions.md</code> on GitHub</a>, impression <code>878132d</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

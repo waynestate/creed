@@ -30,11 +30,11 @@ An app **MAY** stay on a database version for 90 days after it leaves support, t
 
 ## [§5.4](https://creed.apps.wayne.edu/handbook/databases.html#conventions-that-keep-5-6-working) Conventions that keep 5.6 working
 
-- Set `Schema::defaultStringLength(191)` in `AppServiceProvider::boot()`, before any migration runs. 5.6 caps an indexed `utf8mb4` column at 767 bytes, which is 191 characters.
+- Set `Schema::defaultStringLength(191)` in `AppServiceProvider::boot()`, before any migration runs. 5.6 caps an indexed `utf8mb4` column at 767 bytes, which is 191 characters. [PROCTOR](https://proctor.apps.wayne.edu/) check: `mysql56`.
 - Keep `utf8mb4` and `utf8mb4_unicode_ci`, the defaults. Never use an 8.0-only collation such as `utf8mb4_0900_ai_ci` (not yet confirmed on a 5.6 server).
-- Store JSON as `text` or `longText`, with Eloquent `array` or `json` casts, and filter in PHP. 5.6 has no JSON column type.
+- Store JSON as `text` or `longText`, with Eloquent `array` or `json` casts, and filter in PHP. 5.6 has no JSON column type. PROCTOR check: `mysql56`.
 - Leave `use_upsert_alias` unset, so `upsert()` uses `VALUES()`. The row alias that setting switches to needs MySQL 8.0.19.
-- Rename a column with raw `DB::statement('ALTER TABLE ... CHANGE ...')`. Avoid `renameColumn` and `renameIndex`, which emit 5.7 syntax.
+- Rename a column with raw `DB::statement('ALTER TABLE ... CHANGE ...')`. Avoid `renameColumn` and `renameIndex`, which emit 5.7 syntax. PROCTOR check: `mysql56`.
 - Use `Schema::hasTable` only. Column introspection is not reliable on 5.6 (not yet confirmed on a 5.6 server).
 - Skip `db:show` and `db:monitor`, and run one database-queue worker (or another driver if the platform offers one). 5.6 has no `SKIP LOCKED`, so a single worker avoids double-processing.
 - Use `timestamp`, not `date`, for `useCurrent()`. A `date` column cannot take a current-timestamp default on 5.6.
@@ -73,7 +73,7 @@ Oracle moved 5.6 to Sustaining Support on 2021-02-01, so it gets no new fixes. B
 
 ## [§5.7](https://creed.apps.wayne.edu/handbook/databases.html#how-the-stack-checks-it) How the stack checks it
 
-[PROCTOR](https://proctor.apps.wayne.edu/) will flag the patterns in the avoid list above. Not yet.
+PROCTOR's `mysql56` check flags the patterns in the avoid list above that fail on 5.6: JSON columns, generated columns, `renameColumn`, long indexed strings and a missing `Schema::defaultStringLength(191)`. The rest of the list is not checked yet.
 
 ## [§5.8](https://creed.apps.wayne.edu/handbook/databases.html#sources) Sources
 
@@ -102,4 +102,4 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`rules.eol_grace_days`**: `90`
 - **`components.*.versions.*.security_until`**: set per version
 
-Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `8355d8f`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `2c2fd07`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

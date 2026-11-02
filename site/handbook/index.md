@@ -39,4 +39,4 @@ Eleven chapters · 105 provisions · **MUST** 16 · **SHOULD** 2 · **MAY** 1
 
 For printing, or for your browser's find. Every chapter, in order, from the same Markdown.
 
-Set from [`handbook/README.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/README.md), impression `c9c229b`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/README.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/README.md), impression `554d475`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

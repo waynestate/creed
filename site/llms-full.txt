@@ -890,10 +890,10 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - The app always owns its session. Every driver ends in the app's `findOrImportUser(identity)`, and the protocol never holds the session (the stack's auth design).
 - The `gateway` driver accepts only a signed assertion, never a bare header: user, attributes, issued-at, audience, an expiry of 60 seconds or less, and a signature the gateway and app share (the stack's auth design).
 - Drivers: `cas` (the default today), `gateway`, `oidc`, `oauth2`, `saml` (not built yet), and `fake` for local development and tests (the stack's auth design).
-- Non-EOL PHP only, with no exceptions (the stack's auth design).
+- Non-EOL PHP only, with no exceptions (the stack's auth design). [PROCTOR](https://proctor.apps.wayne.edu/) check: `php-floor`.
 - To be decided: the gateway's key distribution and rotation, and the SAML library choice if a `saml` driver is built (the stack's auth design).
 
-Set from [`handbook/auth.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/auth.md), impression `bf348fb`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/auth.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/auth.md), impression `643e5dc`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -909,13 +909,13 @@ Decided
 
 Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and **MAY** in this chapter are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
-- CI is enforcement point (c): a red pipeline before merge (the stack's enforcement design).
+- CI is enforcement point (c): a red pipeline before merge (the stack's enforcement design). [PROCTOR](https://proctor.apps.wayne.edu/) check: `ci-pipelines`.
 - The CI components are [Preflight](https://preflight.apps.wayne.edu/)'s: `proctor`, `php-test` and `composer-audit`, included with `include: component:` (first-repos).
 - CI judges with deterministic commands, never with a model. No gate depends on a model's opinion (the stack's rule on language models).
 - Components are pinned at a tag or SHA, never `~latest` (first-repos).
 - git.wayne.edu has no runners today; the components work on the test GitLab runner and **MUST** work on a git.wayne.edu runner when one exists (first-repos). Every product strongly recommends the instance runner.
 
-Set from [`handbook/ci.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/ci.md), impression `c7f3b98`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/ci.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/ci.md), impression `607693e`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -1060,11 +1060,11 @@ An app **MAY** stay on a database version for 90 days after it leaves support, t
 
 ### [§5.4](https://creed.apps.wayne.edu/handbook/databases.html#conventions-that-keep-5-6-working) Conventions that keep 5.6 working
 
-- Set `Schema::defaultStringLength(191)` in `AppServiceProvider::boot()`, before any migration runs. 5.6 caps an indexed `utf8mb4` column at 767 bytes, which is 191 characters.
+- Set `Schema::defaultStringLength(191)` in `AppServiceProvider::boot()`, before any migration runs. 5.6 caps an indexed `utf8mb4` column at 767 bytes, which is 191 characters. [PROCTOR](https://proctor.apps.wayne.edu/) check: `mysql56`.
 - Keep `utf8mb4` and `utf8mb4_unicode_ci`, the defaults. Never use an 8.0-only collation such as `utf8mb4_0900_ai_ci` (not yet confirmed on a 5.6 server).
-- Store JSON as `text` or `longText`, with Eloquent `array` or `json` casts, and filter in PHP. 5.6 has no JSON column type.
+- Store JSON as `text` or `longText`, with Eloquent `array` or `json` casts, and filter in PHP. 5.6 has no JSON column type. PROCTOR check: `mysql56`.
 - Leave `use_upsert_alias` unset, so `upsert()` uses `VALUES()`. The row alias that setting switches to needs MySQL 8.0.19.
-- Rename a column with raw `DB::statement('ALTER TABLE ... CHANGE ...')`. Avoid `renameColumn` and `renameIndex`, which emit 5.7 syntax.
+- Rename a column with raw `DB::statement('ALTER TABLE ... CHANGE ...')`. Avoid `renameColumn` and `renameIndex`, which emit 5.7 syntax. PROCTOR check: `mysql56`.
 - Use `Schema::hasTable` only. Column introspection is not reliable on 5.6 (not yet confirmed on a 5.6 server).
 - Skip `db:show` and `db:monitor`, and run one database-queue worker (or another driver if the platform offers one). 5.6 has no `SKIP LOCKED`, so a single worker avoids double-processing.
 - Use `timestamp`, not `date`, for `useCurrent()`. A `date` column cannot take a current-timestamp default on 5.6.
@@ -1103,7 +1103,7 @@ Oracle moved 5.6 to Sustaining Support on 2021-02-01, so it gets no new fixes. B
 
 ### [§5.7](https://creed.apps.wayne.edu/handbook/databases.html#how-the-stack-checks-it) How the stack checks it
 
-[PROCTOR](https://proctor.apps.wayne.edu/) will flag the patterns in the avoid list above. Not yet.
+PROCTOR's `mysql56` check flags the patterns in the avoid list above that fail on 5.6: JSON columns, generated columns, `renameColumn`, long indexed strings and a missing `Schema::defaultStringLength(191)`. The rest of the list is not checked yet.
 
 ### [§5.8](https://creed.apps.wayne.edu/handbook/databases.html#sources) Sources
 
@@ -1132,7 +1132,7 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`rules.eol_grace_days`**: `90`
 - **`components.*.versions.*.security_until`**: set per version
 
-Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `8355d8f`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `2c2fd07`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -1148,26 +1148,26 @@ Decided
 
 Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and **MAY** in this chapter are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
-- No `dev-master`, `dev-*` or `*` constraints on runtime dependencies (the stack's version policy).
-- A lock file is required and **MUST** be committed (the stack's version policy).
-- `composer audit` **MUST** report no advisories at or above the policy's severity threshold (the stack's version policy).
-- `composer.json` `require.php` **MUST NOT** allow an EOL version as its lowest bound (the stack's version policy).
+- No `dev-master`, `dev-*` or `*` constraints on runtime dependencies (the stack's version policy). [PROCTOR](https://proctor.apps.wayne.edu/) check: `unbounded-constraints`.
+- A lock file is required and **MUST** be committed (the stack's version policy). PROCTOR check: `lock-committed`.
+- `composer audit` **MUST** report no advisories at or above the policy's severity threshold (the stack's version policy). PROCTOR check: `composer-audit`.
+- `composer.json` `require.php` **MUST NOT** allow an EOL version as its lowest bound (the stack's version policy). PROCTOR check: `php-floor`.
 - Every project is a framework-free core plus thin adapters. `composer.json` requires only `php` and PSR packages; Laravel, Inertia and Vue are `suggest` (the stack's core-plus-adapters design).
 - Adapters call the core and never re-implement it (the stack's core-plus-adapters design).
 
 ### [§2.1](https://creed.apps.wayne.edu/handbook/dependencies.html#private-packages) Private packages
 
 - Internal-only packages **MUST** be installed from one GitLab package registry per ecosystem (Composer, npm), not from one `vcs`, `path` or `artifact` repository entry per package (the stack's private-packages decision).
-- Credentials **MUST NOT** appear in any repository URL in `composer.json` or `composer.lock`, or as a literal value in a committed `.npmrc`. Tokens live in a gitignored `auth.json`, the npm user config, or a CI or build-time secret (the stack's private-packages decision).
+- Credentials **MUST NOT** appear in any repository URL in `composer.json` or `composer.lock`, or as a literal value in a committed `.npmrc`. Tokens live in a gitignored `auth.json`, the npm user config, or a CI or build-time secret (the stack's private-packages decision). PROCTOR check: `repo-url-credentials`.
 - Builds **MUST** use a read-only deploy token (`read_package_registry` only); personal access tokens **MUST NOT** be used in builds (the stack's private-packages decision).
 - The private Composer registry entry **MUST** be canonical, and the Packagist entry **SHOULD** exclude the internal vendor names, so a public package with the same name can never be installed instead (the stack's private-packages decision).
 - A released version **MUST** map to one commit for ever: tags are protected, and a version is never republished from a different commit (the stack's private-packages decision).
 - Public code **MUST NOT** go through the private registry; it is published to Packagist or npm (the stack's private-packages decision).
 - Apps **SHOULD NOT** proxy or mirror public registries in v1 (the stack's private-packages decision).
 
-[PROCTOR](https://proctor.apps.wayne.edu/)'s `repo-url-credentials`, `package-sources` and `internal-vendor-shadowing` checks enforce rules 1, 2 and 4 (warning first), and [Preflight](https://preflight.apps.wayne.edu/)'s publish job enforces rule 5.
+PROCTOR's `repo-url-credentials`, `package-sources` and `internal-vendor-shadowing` checks enforce rules 1, 2 and 4 (warning first), and [Preflight](https://preflight.apps.wayne.edu/)'s publish job enforces rule 5.
 
-Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `40008d6`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `e7daa67`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -1220,9 +1220,9 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - A developer script ships as a `.ps1` and `.sh` pair that do the same thing, or as one PHP command, which works the same everywhere (the stack's every-OS design).
 - Windows gets PowerShell (`.ps1`), which never needs bash or WSL. Linux and macOS get bash (`.sh`), written for macOS's stock bash 3.2 and its BSD tools (the stack's every-OS design).
 - Every repo carries a `.gitattributes` with `* text=auto eol=lf`, and `.ps1`, `.bat` and `.cmd` set to CRLF. Anything that runs on a Linux host **MUST** be LF: on Citadel, and on OpenShift, Coolify or raw Docker elsewhere (the stack's every-OS design).
-- Paths are built with the language's path functions, and subprocesses start with argument arrays, never shell strings (the stack's every-OS design).
+- Paths are built with the language's path functions, and subprocesses start with argument arrays, never shell strings (the stack's every-OS design). [PROCTOR](https://proctor.apps.wayne.edu/) check: `portability`.
 
-Set from [`handbook/every-os.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/every-os.md), impression `a82b107`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/every-os.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/every-os.md), impression `665c7ab`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -1261,7 +1261,7 @@ Eleven chapters · 105 provisions · **MUST** 16 · **SHOULD** 2 · **MAY** 1
 
 For printing, or for your browser's find. Every chapter, in order, from the same Markdown.
 
-Set from [`handbook/README.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/README.md), impression `c9c229b`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/README.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/README.md), impression `554d475`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -1278,12 +1278,12 @@ Decided
 Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and **MAY** in this chapter are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
 - Overrides are named, dated and visible (the stack's version policy).
-- An app keeps a `policy-overrides.json` with an expiry date and a reason (the stack's version policy).
+- An app keeps a `policy-overrides.json` with an expiry date and a reason (the stack's version policy). [PROCTOR](https://proctor.apps.wayne.edu/) check: `overrides`.
 - Check prints every override on every run, and Fleet lists them (the stack's version policy).
-- An expired override is a failure (first-repos).
+- An expired override is a failure (first-repos). PROCTOR check: `overrides`.
 - On the Citadel side, overrides are held by Citadel admins, per app and per rule, with an expiry, a reason and an approver. There is no permanent override (the stack's deploy-gate decision).
 
-Set from [`handbook/overrides.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/overrides.md), impression `d54de99`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/overrides.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/overrides.md), impression `b516d2c`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -1336,7 +1336,7 @@ Table 1-1
 | EOL + 90 days | as above | fail; no override |  |
 
 - The dates live in [`policy/policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.json). Every tool derives a version's state from the date, through the CREED reader. No other code decides state (the stack's version policy).
-- The PHP floor is `^8.2`, the oldest non-EOL version today (the stack's version policy). It moves to `^8.3` on 2027-01-01.
+- The PHP floor is `^8.2`, the oldest non-EOL version today (the stack's version policy). It moves to `^8.3` on 2027-01-01. [PROCTOR](https://proctor.apps.wayne.edu/) check: `php-floor`.
 - Stack packages raise their own `php` floor in a new major when a PHP version reaches EOL, so security fixes require the upgrade (the stack's version policy).
 - `policy.json` is a contract, versioned like [WayneUI](https://wayneui.apps.wayne.edu/)'s `/v2/`. Older Check versions **MUST** still read newer policy files (the stack's version policy).
 
@@ -1350,11 +1350,11 @@ The `tools` block sets a minimum version for a developer tool. Each key is a too
 
 Composer 2.8.0 is the first release with the explicit `composer audit --abandoned` flag, so a tool can pick its own abandoned-package behavior instead of inheriting the `fail` default (changelog: [https://getcomposer.org/changelog/2.8.0](https://getcomposer.org/changelog/2.8.0)).
 
-[PROCTOR](https://proctor.apps.wayne.edu/) will check a developer's Composer against this minimum and fail fast below it. The minimum is a floor, not a ceiling: we do not go lower, no matter how the crowd sings for more.
+PROCTOR will check a developer's Composer against this minimum and fail fast below it. PROCTOR check: `composer-version`. The minimum is a floor, not a ceiling: we do not go lower, no matter how the crowd sings for more.
 
 In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.json)
 
 - **`components.*.versions.*.latest_patch`**: set per version
 - **`components.*.versions.*.latest_patch_checked`**: set per version
 
-Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `3e6f4bc`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `878132d`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

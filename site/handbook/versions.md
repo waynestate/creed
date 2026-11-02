@@ -28,7 +28,7 @@ Table 1-1
 | EOL + 90 days | as above | fail; no override |  |
 
 - The dates live in [`policy/policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.json). Every tool derives a version's state from the date, through the CREED reader. No other code decides state (the stack's version policy).
-- The PHP floor is `^8.2`, the oldest non-EOL version today (the stack's version policy). It moves to `^8.3` on 2027-01-01.
+- The PHP floor is `^8.2`, the oldest non-EOL version today (the stack's version policy). It moves to `^8.3` on 2027-01-01. [PROCTOR](https://proctor.apps.wayne.edu/) check: `php-floor`.
 - Stack packages raise their own `php` floor in a new major when a PHP version reaches EOL, so security fixes require the upgrade (the stack's version policy).
 - `policy.json` is a contract, versioned like [WayneUI](https://wayneui.apps.wayne.edu/)'s `/v2/`. Older Check versions **MUST** still read newer policy files (the stack's version policy).
 
@@ -42,11 +42,11 @@ The `tools` block sets a minimum version for a developer tool. Each key is a too
 
 Composer 2.8.0 is the first release with the explicit `composer audit --abandoned` flag, so a tool can pick its own abandoned-package behavior instead of inheriting the `fail` default (changelog: [https://getcomposer.org/changelog/2.8.0](https://getcomposer.org/changelog/2.8.0)).
 
-[PROCTOR](https://proctor.apps.wayne.edu/) will check a developer's Composer against this minimum and fail fast below it. The minimum is a floor, not a ceiling: we do not go lower, no matter how the crowd sings for more.
+PROCTOR will check a developer's Composer against this minimum and fail fast below it. PROCTOR check: `composer-version`. The minimum is a floor, not a ceiling: we do not go lower, no matter how the crowd sings for more.
 
 In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.json)
 
 - **`components.*.versions.*.latest_patch`**: set per version
 - **`components.*.versions.*.latest_patch_checked`**: set per version
 
-Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `3e6f4bc`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `878132d`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

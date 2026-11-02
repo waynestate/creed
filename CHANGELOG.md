@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added: handbook rules name the PROCTOR check that enforces them.
 - Fixed: BEST_PRACTICES statements match the tree.
 - Added: handbook note on MySQL lines and auth plugin.
 - Added: a test pins that an older reader accepts a newer policy file.
