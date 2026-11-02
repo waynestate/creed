@@ -67,7 +67,9 @@
       <li><a href="ci.html"><span class="hb-nav__no">8</span><span class="hb-nav__name">CI</span></a></li>
       <li><a href="accessibility.html"><span class="hb-nav__no">9</span><span class="hb-nav__name">Accessibility</span><span class="hb-nav__tbd" title="To be decided"><span class="wsu-sr-only">, to be decided</span></span></a></li>
       <li><a href="every-os.html"><span class="hb-nav__no">10</span><span class="hb-nav__name">Every OS</span></a></li>
-      <li><a href="overrides.html"><span class="hb-nav__no">11</span><span class="hb-nav__name">Overrides</span></a></li>
+      <li><a href="secrets.html"><span class="hb-nav__no">11</span><span class="hb-nav__name">Secrets and debugging</span></a></li>
+      <li><a href="production.html"><span class="hb-nav__no">12</span><span class="hb-nav__name">Production</span></a></li>
+      <li><a href="overrides.html"><span class="hb-nav__no">13</span><span class="hb-nav__name">Overrides</span></a></li>
   </ol>
   <p class="hb-nav__more"><a href="print.html">Whole book on one page</a></p>
 </nav>
@@ -76,8 +78,8 @@
       <header class="chap-head hb-door__head">
         <p class="chap-head__kicker">The handbook · 2026 Edition</p>
         <h1 id="page-title">The CREED handbook</h1>
-        <p class="chap-head__lede">The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have already decided, with the ADR number, and marks the rest as &quot;To be decided&quot;.</p>
-        <p class="hb-register" aria-label="In this edition">Eleven chapters · 105 provisions · <strong class="kw kw--must">MUST</strong> 16 · <strong class="kw kw--should">SHOULD</strong> 2 · <strong class="kw kw--may">MAY</strong> 1</p>
+        <p class="chap-head__lede">The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU&apos;s developer standards (2024) already require, and marks the rest as &quot;To be decided&quot;.</p>
+        <p class="hb-register" aria-label="In this edition">Thirteen chapters · 130 provisions · <strong class="kw kw--must">MUST</strong> 27 · <strong class="kw kw--should">SHOULD</strong> 7 · <strong class="kw kw--may">MAY</strong> 1</p>
       </header>
 
       <h2 class="hb-door__title" id="contents">Contents</h2>
@@ -92,7 +94,9 @@
         <li class="hb-door__row"><a class="hb-door__link" href="ci.html"><span class="toc__no">8</span><span class="hb-door__text"><span class="toc__name">CI</span></span></a><span class="hb-door__meta">5 provisions · <strong class="kw kw--must">MUST</strong> 1</span><span class="stamp stamp--enforced hb-status">Decided</span></li>
         <li class="hb-door__row"><a class="hb-door__link" href="accessibility.html"><span class="toc__no">9</span><span class="hb-door__text"><span class="toc__name">Accessibility</span></span></a><span class="hb-door__meta">1 provision</span><span class="stamp stamp--notyet hb-status">To be decided</span></li>
         <li class="hb-door__row"><a class="hb-door__link" href="every-os.html"><span class="toc__no">10</span><span class="hb-door__text"><span class="toc__name">Every OS</span></span></a><span class="hb-door__meta">5 provisions · <strong class="kw kw--must">MUST</strong> 1</span><span class="stamp stamp--enforced hb-status">Decided</span></li>
-        <li class="hb-door__row"><a class="hb-door__link" href="overrides.html"><span class="toc__no">11</span><span class="hb-door__text"><span class="toc__name">Overrides</span></span></a><span class="hb-door__meta">5 provisions</span><span class="stamp stamp--enforced hb-status">Decided</span></li>
+        <li class="hb-door__row"><a class="hb-door__link" href="secrets.html"><span class="toc__no">11</span><span class="hb-door__text"><span class="toc__name">Secrets and debugging</span><span class="hb-door__sections">Credentials · Errors and debug output · Not decided here</span></span></a><span class="hb-door__meta">3 sections · 8 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 2</span><span class="stamp stamp--enforced hb-status">Decided</span></li>
+        <li class="hb-door__row"><a class="hb-door__link" href="production.html"><span class="toc__no">12</span><span class="hb-door__text"><span class="toc__name">Production</span><span class="hb-door__sections">Environments · Running safely · Who can reach it</span></span></a><span class="hb-door__meta">3 sections · 17 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 3 · <strong class="kw kw--should">SHOULD</strong> 5</span><span class="stamp stamp--enforced hb-status">Decided</span></li>
+        <li class="hb-door__row"><a class="hb-door__link" href="overrides.html"><span class="toc__no">13</span><span class="hb-door__text"><span class="toc__name">Overrides</span></span></a><span class="hb-door__meta">5 provisions</span><span class="stamp stamp--enforced hb-status">Decided</span></li>
       </ol>
 
       <div class="key hb-key">
@@ -109,7 +113,7 @@
         <p><a class="btn btn--rule" href="print.html">The whole book on one page</a></p>
         <p>For printing, or for your browser's find. Every chapter, in order, from the same Markdown.</p>
       </div>
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/README.md"><code>handbook/README.md</code> on GitHub</a>, impression <code>554d475</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/README.md"><code>handbook/README.md</code> on GitHub</a>, impression <code>b268724</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

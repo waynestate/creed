@@ -1,12 +1,12 @@
 ---
-title: "CREED Handbook: 11 Overrides"
-description: "Chapter 11 of the CREED handbook, the written rules for the Wayne State app stack: Overrides."
+title: "CREED Handbook: 13 Overrides"
+description: "Chapter 13 of the CREED handbook, the written rules for the Wayne State app stack: Overrides."
 url: https://creed.apps.wayne.edu/handbook/overrides.html
 llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
 ---
 
-Chapter 11
+Chapter 13
 
 # Overrides
 

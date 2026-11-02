@@ -10,9 +10,9 @@ The handbook · 2026 Edition
 
 # The CREED handbook
 
-The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have already decided, with the ADR number, and marks the rest as "To be decided".
+The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and marks the rest as "To be decided".
 
-Eleven chapters · 105 provisions · **MUST** 16 · **SHOULD** 2 · **MAY** 1
+Thirteen chapters · 130 provisions · **MUST** 27 · **SHOULD** 7 · **MAY** 1
 
 ## Contents
 
@@ -26,7 +26,9 @@ Eleven chapters · 105 provisions · **MUST** 16 · **SHOULD** 2 · **MAY** 1
 8. [8 CI](https://creed.apps.wayne.edu/handbook/ci.html)5 provisions · **MUST** 1Decided
 9. [9 Accessibility](https://creed.apps.wayne.edu/handbook/accessibility.html)1 provisionTo be decided
 10. [10 Every OS](https://creed.apps.wayne.edu/handbook/every-os.html)5 provisions · **MUST** 1Decided
-11. [11 Overrides](https://creed.apps.wayne.edu/handbook/overrides.html)5 provisionsDecided
+11. [11 Secrets and debugging Credentials · Errors and debug output · Not decided here](https://creed.apps.wayne.edu/handbook/secrets.html)3 sections · 8 provisions · **MUST NOT** 3 · **MUST** 2Decided
+12. [12 Production Environments · Running safely · Who can reach it](https://creed.apps.wayne.edu/handbook/production.html)3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 3 · **SHOULD** 5Decided
+13. [13 Overrides](https://creed.apps.wayne.edu/handbook/overrides.html)5 provisionsDecided
 
 ## How to read this book
 
@@ -39,4 +41,4 @@ Eleven chapters · 105 provisions · **MUST** 16 · **SHOULD** 2 · **MAY** 1
 
 For printing, or for your browser's find. Every chapter, in order, from the same Markdown.
 
-Set from [`handbook/README.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/README.md), impression `554d475`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/README.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/README.md), impression `b268724`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

@@ -1248,9 +1248,9 @@ The handbook · 2026 Edition
 
 ## The CREED handbook
 
-The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have already decided, with the ADR number, and marks the rest as "To be decided".
+The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and marks the rest as "To be decided".
 
-Eleven chapters · 105 provisions · **MUST** 16 · **SHOULD** 2 · **MAY** 1
+Thirteen chapters · 130 provisions · **MUST** 27 · **SHOULD** 7 · **MAY** 1
 
 ### Contents
 
@@ -1264,7 +1264,9 @@ Eleven chapters · 105 provisions · **MUST** 16 · **SHOULD** 2 · **MAY** 1
 8. [8 CI](https://creed.apps.wayne.edu/handbook/ci.html)5 provisions · **MUST** 1Decided
 9. [9 Accessibility](https://creed.apps.wayne.edu/handbook/accessibility.html)1 provisionTo be decided
 10. [10 Every OS](https://creed.apps.wayne.edu/handbook/every-os.html)5 provisions · **MUST** 1Decided
-11. [11 Overrides](https://creed.apps.wayne.edu/handbook/overrides.html)5 provisionsDecided
+11. [11 Secrets and debugging Credentials · Errors and debug output · Not decided here](https://creed.apps.wayne.edu/handbook/secrets.html)3 sections · 8 provisions · **MUST NOT** 3 · **MUST** 2Decided
+12. [12 Production Environments · Running safely · Who can reach it](https://creed.apps.wayne.edu/handbook/production.html)3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 3 · **SHOULD** 5Decided
+13. [13 Overrides](https://creed.apps.wayne.edu/handbook/overrides.html)5 provisionsDecided
 
 ### How to read this book
 
@@ -1277,13 +1279,13 @@ Eleven chapters · 105 provisions · **MUST** 16 · **SHOULD** 2 · **MAY** 1
 
 For printing, or for your browser's find. Every chapter, in order, from the same Markdown.
 
-Set from [`handbook/README.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/README.md), impression `554d475`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/README.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/README.md), impression `b268724`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
 Source: https://creed.apps.wayne.edu/handbook/overrides.html
 
-Chapter 11
+Chapter 13
 
 ## Overrides
 
@@ -1300,6 +1302,50 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - On the Citadel side, overrides are held by Citadel admins, per app and per rule, with an expiry, a reason and an approver. There is no permanent override (the stack's deploy-gate decision).
 
 Set from [`handbook/overrides.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/overrides.md), impression `b516d2c`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+
+---
+
+Source: https://creed.apps.wayne.edu/handbook/production.html
+
+Chapter 12
+
+## Production
+
+3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 3 · **SHOULD** 5
+
+Decided
+
+Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and **MAY** in this chapter are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
+
+### [§12.1](https://creed.apps.wayne.edu/handbook/production.html#environments) Environments
+
+- Every environment more than one person can reach follows the whole handbook; only a developer's own machine is exempt (WSU developer standards, 2024).
+- Keep at least a pre-production and a production environment, each with its own working copy of every piece, database and supporting services included (WSU developer standards, 2024).
+- Each deployment **SHOULD** be isolated from the others (one container per app), so one compromise does not become many. This holds on Citadel, OpenShift, Coolify and plain Docker (WSU developer standards, 2024).
+- Decide early whether the deployment is in disaster-recovery scope, and write the decision in the README (WSU developer standards, 2024).
+- Back up anything kept outside source control, databases included. Say in the README how to restore one app (WSU developer standards, 2024).
+- An app **SHOULD** be load tested in each environment where heavy use is expected (WSU developer standards, 2024).
+
+### [§12.2](https://creed.apps.wayne.edu/handbook/production.html#running-safely) Running safely
+
+- The app and its scripts **MUST** run as a non-root, non-administrator user with the least access they need (WSU developer standards, 2024).
+- The web server **MUST NOT** list directory contents (WSU developer standards, 2024).
+- File permissions **MUST** be set per path; write access for the web server is granted only to specific files or folders, and mode `777` **MUST NOT** be used (WSU developer standards, 2024). A [PROCTOR](https://proctor.apps.wayne.edu/) check for this is proposed, not built: it flags mode `777` and web-writable paths outside the allowed list.
+- Debugging and diagnostic files, scripts, dumps and backups **MUST NOT** sit in the served folder (WSU developer standards, 2024). A PROCTOR check for this is proposed, not built: a scan of the served folder for `phpinfo.php`, dumps, backups, `.env` and `.git`.
+- On failure the app degrades predictably and fails closed: an authentication error withholds access (WSU developer standards, 2024).
+- A person is told when something fails: a monitor calls `/up` on a schedule and alerts someone (WSU developer standards, 2024).
+- Logs are rotated or removed at a set interval; temporary files are cleaned up; uploaded files have a retention rule. Citadel rotates container logs; elsewhere the platform or the app **MUST** (WSU developer standards, 2024).
+- Where it is practical, an app **SHOULD** record an audit trail of changes to data and of successful and failed access to sensitive data (WSU developer standards, 2024).
+
+Production is the encore. Keep the lights on and the doors locked, and the band plays on.
+
+### [§12.3](https://creed.apps.wayne.edu/handbook/production.html#who-can-reach-it) Who can reach it
+
+- Public front pages are meant to be crawled and are exempt from the two rules in this section. This follows the stack's agent-ready sites decision (WSU developer standards, 2024).
+- An app with a defined WSU audience **SHOULD** set `robots.txt` to keep spiders out where they are unwanted (WSU developer standards, 2024).
+- Where the audience is known, the app **SHOULD** also limit access by network address, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024).
+
+Set from [`handbook/production.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/production.md), impression `d41ddfd`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -1325,6 +1371,41 @@ What is known:
 When the rules are decided, they will land here, with the ADR number that decided them.
 
 Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `877eecc`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+
+---
+
+Source: https://creed.apps.wayne.edu/handbook/secrets.html
+
+Chapter 11
+
+## Secrets and debugging
+
+3 sections · 8 provisions · **MUST NOT** 3 · **MUST** 2
+
+Decided
+
+Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and **MAY** in this chapter are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
+
+### [§11.1](https://creed.apps.wayne.edu/handbook/secrets.html#credentials) Credentials
+
+- Credentials (database and service passwords, API keys, tokens) **MUST NOT** be committed to version control, because history keeps them forever. Commit `.env.example` with placeholders instead. A credential that was ever committed is treated as exposed and rotated (WSU developer standards, 2024).
+- Credentials and sensitive data **MUST** live outside any folder the web server serves. Laravel's `public/` is the only served folder; raw PHP apps serve one `public/` folder the same way (WSU developer standards, 2024).
+- An app uses its own dedicated application ID, never a person's employee or student AccessID, to reach another server or service, with the fewest permissions the task needs (WSU developer standards, 2024).
+- Real values come from the environment at deploy time (the Citadel dashboard or CI variables), never from a file in the repo (WSU developer standards, 2024).
+
+### [§11.2](https://creed.apps.wayne.edu/handbook/secrets.html#errors-and-debug-output) Errors and debug output
+
+- `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024).
+- Public-facing code **MUST NOT** display default interpreter or framework error pages to the user; show a controlled message and log the detail (WSU developer standards, 2024).
+- Logs and diagnostic output **MUST NOT** contain credentials or personally identifiable information such as Social Security numbers. That includes logged exceptions (WSU developer standards, 2024).
+
+A leaked password is a bad encore: everyone remembers it, and nobody asked for a second showing.
+
+### [§11.3](https://creed.apps.wayne.edu/handbook/secrets.html#not-decided-here) Not decided here
+
+- Which [HELMET](https://helmet.apps.wayne.edu/) header rules and runtime refusals apply is still to be decided. See `runtime-and-headers.md`.
+
+Set from [`handbook/secrets.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/secrets.md), impression `51b4acc`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 

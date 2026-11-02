@@ -41,8 +41,10 @@ Every page below is Markdown. The HTML pages send the same Markdown to a client 
 - [CREED Handbook: 7 Deploy gate](https://creed.apps.wayne.edu/handbook/deploy-gate.md): Chapter 7 of the CREED handbook, the written rules for the Wayne State app stack: Deploy gate.
 - [CREED Handbook: 10 Every OS](https://creed.apps.wayne.edu/handbook/every-os.md): Chapter 10 of the CREED handbook, the written rules for the Wayne State app stack: Every OS.
 - [CREED Handbook: the rules, chapter by chapter](https://creed.apps.wayne.edu/handbook/index.md): The CREED handbook: the written rules for the Wayne State app stack, chapter by chapter, each citing the decision behind it.
-- [CREED Handbook: 11 Overrides](https://creed.apps.wayne.edu/handbook/overrides.md): Chapter 11 of the CREED handbook, the written rules for the Wayne State app stack: Overrides.
+- [CREED Handbook: 13 Overrides](https://creed.apps.wayne.edu/handbook/overrides.md): Chapter 13 of the CREED handbook, the written rules for the Wayne State app stack: Overrides.
+- [CREED Handbook: 12 Production](https://creed.apps.wayne.edu/handbook/production.md): Chapter 12 of the CREED handbook, the written rules for the Wayne State app stack: Production.
 - [CREED Handbook: 6 Runtime and headers](https://creed.apps.wayne.edu/handbook/runtime-and-headers.md): Chapter 6 of the CREED handbook, the written rules for the Wayne State app stack: Runtime and headers.
+- [CREED Handbook: 11 Secrets and debugging](https://creed.apps.wayne.edu/handbook/secrets.md): Chapter 11 of the CREED handbook, the written rules for the Wayne State app stack: Secrets and debugging.
 - [CREED Handbook: 1 Versions](https://creed.apps.wayne.edu/handbook/versions.md): Chapter 1 of the CREED handbook, the written rules for the Wayne State app stack: Versions.
 
 ## Prompts

@@ -66,7 +66,9 @@
       <li><a href="ci.html"><span class="hb-nav__no">8</span><span class="hb-nav__name">CI</span></a></li>
       <li><a href="accessibility.html"><span class="hb-nav__no">9</span><span class="hb-nav__name">Accessibility</span><span class="hb-nav__tbd" title="To be decided"><span class="wsu-sr-only">, to be decided</span></span></a></li>
       <li><a href="every-os.html"><span class="hb-nav__no">10</span><span class="hb-nav__name">Every OS</span></a></li>
-      <li><a href="overrides.html"><span class="hb-nav__no">11</span><span class="hb-nav__name">Overrides</span></a></li>
+      <li><a href="secrets.html"><span class="hb-nav__no">11</span><span class="hb-nav__name">Secrets and debugging</span></a></li>
+      <li><a href="production.html"><span class="hb-nav__no">12</span><span class="hb-nav__name">Production</span></a></li>
+      <li><a href="overrides.html"><span class="hb-nav__no">13</span><span class="hb-nav__name">Overrides</span></a></li>
   </ol>
   <p class="hb-nav__more"><a href="print.html">Whole book on one page</a></p>
 </nav>
@@ -90,7 +92,9 @@
           <li><a href="#ci"><span class="toc__no">8</span> CI</a></li>
           <li><a href="#accessibility"><span class="toc__no">9</span> Accessibility</a></li>
           <li><a href="#every-os"><span class="toc__no">10</span> Every OS</a></li>
-          <li><a href="#overrides"><span class="toc__no">11</span> Overrides</a></li>
+          <li><a href="#secrets"><span class="toc__no">11</span> Secrets and debugging</a></li>
+          <li><a href="#production"><span class="toc__no">12</span> Production</a></li>
+          <li><a href="#overrides"><span class="toc__no">13</span> Overrides</a></li>
         </ol>
       </nav>
       <article class="hb-chapter hb-chapter--book" id="versions" aria-labelledby="versions-title">
@@ -724,11 +728,86 @@ with argument arrays, never shell strings <span class="hb-cite">(the stack's eve
 </ul>
           </div>
       </article>
-      <article class="hb-chapter hb-chapter--book" id="overrides" aria-labelledby="overrides-title">
+      <article class="hb-chapter hb-chapter--book" id="secrets" aria-labelledby="secrets-title">
         <header class="chap-head chap-head--chapter hb-chapter__head">
           <p class="chap-head__no" aria-hidden="true">11</p>
           <div>
             <p class="chap-head__kicker">Chapter 11</p>
+            <h2 id="secrets-title" class="hb-book__title">Secrets and debugging</h2>
+            <p class="hb-register">3 sections · 8 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 2</p>
+          </div>
+          <span class="stamp stamp--enforced hb-status">Decided</span>
+        </header>
+        <div class="hb-prose hb-prose--book">
+<div class="hb-rfc" role="note"><p><span class="hb-rfc__label">Key words</span> The key words <strong class="kw kw--must">MUST</strong>, <strong class="kw kw--must-not">MUST NOT</strong>, <strong class="kw kw--should">SHOULD</strong>, <strong class="kw kw--should-not">SHOULD NOT</strong> and <strong class="kw kw--may">MAY</strong> in this chapter are to be interpreted as described in <a href="https://www.rfc-editor.org/rfc/rfc2119">RFC 2119</a>.</p></div>
+<h3 id="secrets--credentials"><a class="hb-sec" href="#secrets--credentials">§11.1</a> Credentials</h3>
+<ul>
+<li>Credentials (database and service passwords, API keys, tokens) <strong class="kw kw--must-not">MUST NOT</strong> be committed to version control, because history keeps them forever. Commit <code>.env.example</code> with placeholders instead. A credential that was ever committed is treated as exposed and rotated (WSU developer standards, 2024).</li>
+<li>Credentials and sensitive data <strong class="kw kw--must">MUST</strong> live outside any folder the web server serves. Laravel's <code>public/</code> is the only served folder; raw PHP apps serve one <code>public/</code> folder the same way (WSU developer standards, 2024).</li>
+<li>An app uses its own dedicated application ID, never a person's employee or student AccessID, to reach another server or service, with the fewest permissions the task needs (WSU developer standards, 2024).</li>
+<li>Real values come from the environment at deploy time (the Citadel dashboard or CI variables), never from a file in the repo (WSU developer standards, 2024).</li>
+</ul>
+<h3 id="secrets--errors-and-debug-output"><a class="hb-sec" href="#secrets--errors-and-debug-output">§11.2</a> Errors and debug output</h3>
+<ul>
+<li><code>APP_DEBUG</code> <strong class="kw kw--must">MUST</strong> be <code>false</code> in production (WSU developer standards, 2024).</li>
+<li>Public-facing code <strong class="kw kw--must-not">MUST NOT</strong> display default interpreter or framework error pages to the user; show a controlled message and log the detail (WSU developer standards, 2024).</li>
+<li>Logs and diagnostic output <strong class="kw kw--must-not">MUST NOT</strong> contain credentials or personally identifiable information such as Social Security numbers. That includes logged exceptions (WSU developer standards, 2024).</li>
+</ul>
+<p>A leaked password is a bad encore: everyone remembers it, and nobody asked for a second showing.</p>
+<h3 id="secrets--not-decided-here"><a class="hb-sec" href="#secrets--not-decided-here">§11.3</a> Not decided here</h3>
+<ul>
+<li>Which <a class="tool" href="https://helmet.apps.wayne.edu/"><img src="../assets/marks/helmet.png" alt="" width="16" height="16">HELMET</a> header rules and runtime refusals apply is still to be decided. See <code>runtime-and-headers.md</code>.</li>
+</ul>
+          </div>
+      </article>
+      <article class="hb-chapter hb-chapter--book" id="production" aria-labelledby="production-title">
+        <header class="chap-head chap-head--chapter hb-chapter__head">
+          <p class="chap-head__no" aria-hidden="true">12</p>
+          <div>
+            <p class="chap-head__kicker">Chapter 12</p>
+            <h2 id="production-title" class="hb-book__title">Production</h2>
+            <p class="hb-register">3 sections · 17 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 3 · <strong class="kw kw--should">SHOULD</strong> 5</p>
+          </div>
+          <span class="stamp stamp--enforced hb-status">Decided</span>
+        </header>
+        <div class="hb-prose hb-prose--book">
+<div class="hb-rfc" role="note"><p><span class="hb-rfc__label">Key words</span> The key words <strong class="kw kw--must">MUST</strong>, <strong class="kw kw--must-not">MUST NOT</strong>, <strong class="kw kw--should">SHOULD</strong>, <strong class="kw kw--should-not">SHOULD NOT</strong> and <strong class="kw kw--may">MAY</strong> in this chapter are to be interpreted as described in <a href="https://www.rfc-editor.org/rfc/rfc2119">RFC 2119</a>.</p></div>
+<h3 id="production--environments"><a class="hb-sec" href="#production--environments">§12.1</a> Environments</h3>
+<ul>
+<li>Every environment more than one person can reach follows the whole handbook; only a developer's own machine is exempt (WSU developer standards, 2024).</li>
+<li>Keep at least a pre-production and a production environment, each with its own working copy of every piece, database and supporting services included (WSU developer standards, 2024).</li>
+<li>Each deployment <strong class="kw kw--should">SHOULD</strong> be isolated from the others (one container per app), so one compromise does not become many. This holds on Citadel, OpenShift, Coolify and plain Docker (WSU developer standards, 2024).</li>
+<li>Decide early whether the deployment is in disaster-recovery scope, and write the decision in the README (WSU developer standards, 2024).</li>
+<li>Back up anything kept outside source control, databases included. Say in the README how to restore one app (WSU developer standards, 2024).</li>
+<li>An app <strong class="kw kw--should">SHOULD</strong> be load tested in each environment where heavy use is expected (WSU developer standards, 2024).</li>
+</ul>
+<h3 id="production--running-safely"><a class="hb-sec" href="#production--running-safely">§12.2</a> Running safely</h3>
+<ul>
+<li>The app and its scripts <strong class="kw kw--must">MUST</strong> run as a non-root, non-administrator user with the least access they need (WSU developer standards, 2024).</li>
+<li>The web server <strong class="kw kw--must-not">MUST NOT</strong> list directory contents (WSU developer standards, 2024).</li>
+<li>File permissions <strong class="kw kw--must">MUST</strong> be set per path; write access for the web server is granted only to specific files or folders, and mode <code>777</code> <strong class="kw kw--must-not">MUST NOT</strong> be used (WSU developer standards, 2024).
+A <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check for this is proposed, not built: it flags mode <code>777</code> and web-writable paths outside the allowed list.</li>
+<li>Debugging and diagnostic files, scripts, dumps and backups <strong class="kw kw--must-not">MUST NOT</strong> sit in the served folder (WSU developer standards, 2024).
+A PROCTOR check for this is proposed, not built: a scan of the served folder for <code>phpinfo.php</code>, dumps, backups, <code>.env</code> and <code>.git</code>.</li>
+<li>On failure the app degrades predictably and fails closed: an authentication error withholds access (WSU developer standards, 2024).</li>
+<li>A person is told when something fails: a monitor calls <code>/up</code> on a schedule and alerts someone (WSU developer standards, 2024).</li>
+<li>Logs are rotated or removed at a set interval; temporary files are cleaned up; uploaded files have a retention rule. Citadel rotates container logs; elsewhere the platform or the app <strong class="kw kw--must">MUST</strong> (WSU developer standards, 2024).</li>
+<li>Where it is practical, an app <strong class="kw kw--should">SHOULD</strong> record an audit trail of changes to data and of successful and failed access to sensitive data (WSU developer standards, 2024).</li>
+</ul>
+<p>Production is the encore. Keep the lights on and the doors locked, and the band plays on.</p>
+<h3 id="production--who-can-reach-it"><a class="hb-sec" href="#production--who-can-reach-it">§12.3</a> Who can reach it</h3>
+<ul>
+<li>Public front pages are meant to be crawled and are exempt from the two rules in this section. This follows the stack's agent-ready sites decision (WSU developer standards, 2024).</li>
+<li>An app with a defined WSU audience <strong class="kw kw--should">SHOULD</strong> set <code>robots.txt</code> to keep spiders out where they are unwanted (WSU developer standards, 2024).</li>
+<li>Where the audience is known, the app <strong class="kw kw--should">SHOULD</strong> also limit access by network address, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024).</li>
+</ul>
+          </div>
+      </article>
+      <article class="hb-chapter hb-chapter--book" id="overrides" aria-labelledby="overrides-title">
+        <header class="chap-head chap-head--chapter hb-chapter__head">
+          <p class="chap-head__no" aria-hidden="true">13</p>
+          <div>
+            <p class="chap-head__kicker">Chapter 13</p>
             <h2 id="overrides-title" class="hb-book__title">Overrides</h2>
             <p class="hb-register">5 provisions</p>
           </div>
@@ -749,7 +828,7 @@ override <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>0b17740</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>54c7c62</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 
