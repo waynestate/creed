@@ -925,7 +925,7 @@ Chapter 8
 
 ## CI
 
-6 provisions · **MUST** 1 · **SHOULD** 1
+8 provisions · **MUST** 3 · **SHOULD** 1
 
 Decided
 
@@ -937,8 +937,10 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - Components are pinned at a tag or SHA, never `~latest` (first-repos).
 - git.wayne.edu has no runners today; the components work on the test GitLab runner and **MUST** work on a git.wayne.edu runner when one exists (first-repos). Every product strongly recommends the instance runner.
 - Every change lands through a merge request that another person reviews, and critical findings are addressed before merge (**SHOULD** for a one-person project: record the self-review in the merge request) (WSU developer standards, 2024).
+- Every project **MUST** have a defined, well-understood change-control process with change requests; review and approval of merge requests is change control only for simple projects, and the process **MUST** be followed strictly (WSU developer standards, 2024).
+- Known problem: the change-request procedure on Citadel is currently broken and needs fixing there; until it is fixed, record changes through reviewed merge requests and tell the Citadel team.
 
-Set from [`handbook/ci.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/ci.md), impression `a8896e6`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/ci.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/ci.md), impression `29f72c6`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -948,7 +950,7 @@ Chapter 3
 
 ## Code
 
-13 sections · 42 provisions · **MUST NOT** 3 · **MUST** 6 · **SHOULD** 2
+13 sections · 43 provisions · **MUST NOT** 3 · **MUST** 6 · **SHOULD** 2
 
 Partly decided
 
@@ -970,7 +972,9 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 ### [§3.3](https://creed.apps.wayne.edu/handbook/code.html#source-control-and-documentation) Source control and documentation
 
-- All source is kept in git, hosted on a WSU-run GitLab; mirrors are fine. Access to a repo **MUST** be removed when someone leaves the project or the university (WSU developer standards, 2024).
+- All source is kept in git. Access to a repo **MUST** be removed when someone leaves the project or the university (WSU developer standards, 2024).
+- The stack's code has its primary home on nougat, with git.wayne.edu as the mirror, until a CI runner exists on git.wayne.edu; the standards name git.wayne.edu as the preferred home.
+- Register the project in the catalog Enterprise Apps names, and keep its environments current. Stack apps also register with ROLLCALL, the stack's census (WSU developer standards, 2024).
 - Every repo's README **MUST** say how to install, configure and deploy the code for local development, on every OS (see `every-os.md`), and how to update an existing deployment (WSU developer standards, 2024).
 - If the Help Desk might be contacted about the project, keep an overview in the repo: what it does, who uses it, known common issues and who to call for an incident; deliver changes to the Help Desk when it changes (WSU developer standards, 2024).
 
@@ -1046,7 +1050,6 @@ Table 3-1
 - `declare(strict_types=1)` in every file. The sources recommend it, but the stack's coding standard does not decide it.
 - `phpstan-strict-rules` for the stack's packages (the stack's coding standard).
 - Where the ESLint package is published (the stack's coding standard).
-- Which catalog a project registers in, and how change control is recorded, are held for the owners' answer.
 
 ### [§3.13](https://creed.apps.wayne.edu/handbook/code.html#sources) Sources
 
@@ -1071,7 +1074,7 @@ Table 3-1
 - GitLab Code Quality: [https://docs.gitlab.com/ci/testing/code_quality/](https://docs.gitlab.com/ci/testing/code_quality/)
 - OWASP ASVS: [https://asvs.owasp.org/](https://asvs.owasp.org/)
 
-Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `e5954e9`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `d943c01`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -1281,22 +1284,22 @@ The handbook · 2026 Edition
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and marks the rest as "To be decided".
 
-Thirteen chapters · 149 provisions · **MUST** 40 · **SHOULD** 12 · **MAY** 1
+Thirteen chapters · 152 provisions · **MUST** 44 · **SHOULD** 10 · **MAY** 1
 
 ### Contents
 
 1. [1 Versions Latest patches · Tool minimums](https://creed.apps.wayne.edu/handbook/versions.html)2 sections · 4 provisions · **MUST** 1Decided
 2. [2 Dependencies Private packages](https://creed.apps.wayne.edu/handbook/dependencies.html)1 section · 14 provisions · **MUST NOT** 4 · **MUST** 6 · **SHOULD NOT** 1 · **SHOULD** 2Decided
-3. [3 Code PHP style · Reading the code · Source control and documentation · Static analysis · Input and files · Banned patterns · Vue and JavaScript · Security analysis · How it is enforced · Which preset enforces each rule · Not adopted · To be decided · Sources](https://creed.apps.wayne.edu/handbook/code.html)13 sections · 42 provisions · **MUST NOT** 3 · **MUST** 6 · **SHOULD** 2Partly decided
+3. [3 Code PHP style · Reading the code · Source control and documentation · Static analysis · Input and files · Banned patterns · Vue and JavaScript · Security analysis · How it is enforced · Which preset enforces each rule · Not adopted · To be decided · Sources](https://creed.apps.wayne.edu/handbook/code.html)13 sections · 43 provisions · **MUST NOT** 3 · **MUST** 6 · **SHOULD** 2Partly decided
 4. [4 Auth](https://creed.apps.wayne.edu/handbook/auth.html)12 provisions · **MUST** 3Partly decided
 5. [5 Databases What the stack supports · Which MySQL lines the policy lists · Grace period · Names, comments and connections · Conventions that keep 5.6 working · Avoid until the server is upgraded · Moving to 8.4 · How the stack checks it · Sources](https://creed.apps.wayne.edu/handbook/databases.html)9 sections · 25 provisions · **MUST** 4 · **SHOULD** 1 · **MAY** 1Decided
 6. [6 Runtime and headers](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html)2 provisionsTo be decided
 7. [7 Deploy gate On Citadel · Elsewhere](https://creed.apps.wayne.edu/handbook/deploy-gate.html)2 sections · 8 provisionsDecided
-8. [8 CI](https://creed.apps.wayne.edu/handbook/ci.html)6 provisions · **MUST** 1 · **SHOULD** 1Decided
+8. [8 CI](https://creed.apps.wayne.edu/handbook/ci.html)8 provisions · **MUST** 3 · **SHOULD** 1Decided
 9. [9 Accessibility](https://creed.apps.wayne.edu/handbook/accessibility.html)1 provisionTo be decided
 10. [10 Every OS](https://creed.apps.wayne.edu/handbook/every-os.html)5 provisions · **MUST** 1Decided
 11. [11 Secrets and debugging Credentials · Errors and debug output · Not decided here](https://creed.apps.wayne.edu/handbook/secrets.html)3 sections · 8 provisions · **MUST NOT** 3 · **MUST** 2Decided
-12. [12 Production Environments · Running safely · Who can reach it](https://creed.apps.wayne.edu/handbook/production.html)3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 3 · **SHOULD** 5Decided
+12. [12 Production Environments · Running safely · Who can reach it](https://creed.apps.wayne.edu/handbook/production.html)3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 5 · **SHOULD** 3Decided
 13. [13 Overrides](https://creed.apps.wayne.edu/handbook/overrides.html)5 provisionsDecided
 
 ### How to read this book
@@ -1342,7 +1345,7 @@ Chapter 12
 
 ## Production
 
-3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 3 · **SHOULD** 5
+3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 5 · **SHOULD** 3
 
 Decided
 
@@ -1372,11 +1375,11 @@ Production is the encore. Keep the lights on and the doors locked, and the band 
 
 ### [§12.3](https://creed.apps.wayne.edu/handbook/production.html#who-can-reach-it) Who can reach it
 
-- Public front pages are meant to be crawled and are exempt from the two rules in this section. This follows the stack's agent-ready sites decision (WSU developer standards, 2024).
-- An app with a defined WSU audience **SHOULD** set `robots.txt` to keep spiders out where they are unwanted (WSU developer standards, 2024).
-- Where the audience is known, the app **SHOULD** also limit access by network address, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024).
+- Every app **MUST** set `robots.txt` to keep spiders out unless crawling is wanted (WSU developer standards, 2024).
+- Every app **MUST** limit access by network address to the audience it serves, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024).
+- The one named exception: the stack's own public front pages are crawlable by design (the stack's agent-ready sites decision). It is a special case for those pages, not a general exemption for public pages.
 
-Set from [`handbook/production.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/production.md), impression `d41ddfd`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/production.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/production.md), impression `02f0f97`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 

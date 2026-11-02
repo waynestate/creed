@@ -245,7 +245,7 @@ and <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets
           <div>
             <p class="chap-head__kicker">Chapter 3</p>
             <h2 id="code-title" class="hb-book__title">Code</h2>
-            <p class="hb-register">13 sections · 42 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 6 · <strong class="kw kw--should">SHOULD</strong> 2</p>
+            <p class="hb-register">13 sections · 43 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 6 · <strong class="kw kw--should">SHOULD</strong> 2</p>
           </div>
           <span class="stamp stamp--checked hb-status">Partly decided</span>
         </header>
@@ -270,7 +270,9 @@ every-OS design).</li>
 </ul>
 <h3 id="code--source-control-and-documentation"><a class="hb-sec" href="#code--source-control-and-documentation">§3.3</a> Source control and documentation</h3>
 <ul>
-<li>All source is kept in git, hosted on a WSU-run GitLab; mirrors are fine. Access to a repo <strong class="kw kw--must">MUST</strong> be removed when someone leaves the project or the university (WSU developer standards, 2024).</li>
+<li>All source is kept in git. Access to a repo <strong class="kw kw--must">MUST</strong> be removed when someone leaves the project or the university (WSU developer standards, 2024).</li>
+<li>The stack's code has its primary home on nougat, with git.wayne.edu as the mirror, until a CI runner exists on git.wayne.edu; the standards name git.wayne.edu as the preferred home.</li>
+<li>Register the project in the catalog Enterprise Apps names, and keep its environments current. Stack apps also register with ROLLCALL, the stack's census (WSU developer standards, 2024).</li>
 <li>Every repo's README <strong class="kw kw--must">MUST</strong> say how to install, configure and deploy the code for local development, on every OS (see <code>every-os.md</code>), and how to update an existing deployment (WSU developer standards, 2024).</li>
 <li>If the Help Desk might be contacted about the project, keep an overview in the repo: what it does, who uses it, known common issues and who to call for an incident; deliver changes to the Help Desk when it changes (WSU developer standards, 2024).</li>
 </ul>
@@ -404,7 +406,6 @@ report is Planned.</li>
 the stack's coding standard does not decide it.</li>
 <li><code>phpstan-strict-rules</code> for the stack's packages <span class="hb-cite">(the stack's coding standard)</span>.</li>
 <li>Where the ESLint package is published <span class="hb-cite">(the stack's coding standard)</span>.</li>
-<li>Which catalog a project registers in, and how change control is recorded, are held for the owners' answer.</li>
 </ul>
 <h3 id="code--sources"><a class="hb-sec" href="#code--sources">§3.13</a> Sources</h3>
 <ul class="hb-sources">
@@ -687,7 +688,7 @@ packages run on any container platform)</span>.</li>
           <div>
             <p class="chap-head__kicker">Chapter 8</p>
             <h2 id="ci-title" class="hb-book__title">CI</h2>
-            <p class="hb-register">6 provisions · <strong class="kw kw--must">MUST</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 1</p>
+            <p class="hb-register">8 provisions · <strong class="kw kw--must">MUST</strong> 3 · <strong class="kw kw--should">SHOULD</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -705,6 +706,8 @@ on a model's opinion <span class="hb-cite">(the stack's rule on language models)
 runner and <strong class="kw kw--must">MUST</strong> work on a git.wayne.edu runner when one exists <span class="hb-cite">(first-repos)</span>.
 Every product strongly recommends the instance runner.</li>
 <li>Every change lands through a merge request that another person reviews, and critical findings are addressed before merge (<strong class="kw kw--should">SHOULD</strong> for a one-person project: record the self-review in the merge request) (WSU developer standards, 2024).</li>
+<li>Every project <strong class="kw kw--must">MUST</strong> have a defined, well-understood change-control process with change requests; review and approval of merge requests is change control only for simple projects, and the process <strong class="kw kw--must">MUST</strong> be followed strictly (WSU developer standards, 2024).</li>
+<li>Known problem: the change-request procedure on Citadel is currently broken and needs fixing there; until it is fixed, record changes through reviewed merge requests and tell the Citadel team.</li>
 </ul>
           </div>
       </article>
@@ -797,7 +800,7 @@ with argument arrays, never shell strings <span class="hb-cite">(the stack's eve
           <div>
             <p class="chap-head__kicker">Chapter 12</p>
             <h2 id="production-title" class="hb-book__title">Production</h2>
-            <p class="hb-register">3 sections · 17 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 3 · <strong class="kw kw--should">SHOULD</strong> 5</p>
+            <p class="hb-register">3 sections · 17 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 5 · <strong class="kw kw--should">SHOULD</strong> 3</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -828,9 +831,9 @@ A PROCTOR check for this is proposed, not built: a scan of the served folder for
 <p>Production is the encore. Keep the lights on and the doors locked, and the band plays on.</p>
 <h3 id="production--who-can-reach-it"><a class="hb-sec" href="#production--who-can-reach-it">§12.3</a> Who can reach it</h3>
 <ul>
-<li>Public front pages are meant to be crawled and are exempt from the two rules in this section. This follows the stack's agent-ready sites decision (WSU developer standards, 2024).</li>
-<li>An app with a defined WSU audience <strong class="kw kw--should">SHOULD</strong> set <code>robots.txt</code> to keep spiders out where they are unwanted (WSU developer standards, 2024).</li>
-<li>Where the audience is known, the app <strong class="kw kw--should">SHOULD</strong> also limit access by network address, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024).</li>
+<li>Every app <strong class="kw kw--must">MUST</strong> set <code>robots.txt</code> to keep spiders out unless crawling is wanted (WSU developer standards, 2024).</li>
+<li>Every app <strong class="kw kw--must">MUST</strong> limit access by network address to the audience it serves, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024).</li>
+<li>The one named exception: the stack's own public front pages are crawlable by design <span class="hb-cite">(the stack's agent-ready sites decision)</span>. It is a special case for those pages, not a general exemption for public pages.</li>
 </ul>
           </div>
       </article>
@@ -859,7 +862,7 @@ override <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>cfc978c</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>bec0cbb</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

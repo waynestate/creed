@@ -12,22 +12,22 @@ The handbook · 2026 Edition
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and marks the rest as "To be decided".
 
-Thirteen chapters · 149 provisions · **MUST** 40 · **SHOULD** 12 · **MAY** 1
+Thirteen chapters · 152 provisions · **MUST** 44 · **SHOULD** 10 · **MAY** 1
 
 ## Contents
 
 1. [1 Versions Latest patches · Tool minimums](https://creed.apps.wayne.edu/handbook/versions.html)2 sections · 4 provisions · **MUST** 1Decided
 2. [2 Dependencies Private packages](https://creed.apps.wayne.edu/handbook/dependencies.html)1 section · 14 provisions · **MUST NOT** 4 · **MUST** 6 · **SHOULD NOT** 1 · **SHOULD** 2Decided
-3. [3 Code PHP style · Reading the code · Source control and documentation · Static analysis · Input and files · Banned patterns · Vue and JavaScript · Security analysis · How it is enforced · Which preset enforces each rule · Not adopted · To be decided · Sources](https://creed.apps.wayne.edu/handbook/code.html)13 sections · 42 provisions · **MUST NOT** 3 · **MUST** 6 · **SHOULD** 2Partly decided
+3. [3 Code PHP style · Reading the code · Source control and documentation · Static analysis · Input and files · Banned patterns · Vue and JavaScript · Security analysis · How it is enforced · Which preset enforces each rule · Not adopted · To be decided · Sources](https://creed.apps.wayne.edu/handbook/code.html)13 sections · 43 provisions · **MUST NOT** 3 · **MUST** 6 · **SHOULD** 2Partly decided
 4. [4 Auth](https://creed.apps.wayne.edu/handbook/auth.html)12 provisions · **MUST** 3Partly decided
 5. [5 Databases What the stack supports · Which MySQL lines the policy lists · Grace period · Names, comments and connections · Conventions that keep 5.6 working · Avoid until the server is upgraded · Moving to 8.4 · How the stack checks it · Sources](https://creed.apps.wayne.edu/handbook/databases.html)9 sections · 25 provisions · **MUST** 4 · **SHOULD** 1 · **MAY** 1Decided
 6. [6 Runtime and headers](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html)2 provisionsTo be decided
 7. [7 Deploy gate On Citadel · Elsewhere](https://creed.apps.wayne.edu/handbook/deploy-gate.html)2 sections · 8 provisionsDecided
-8. [8 CI](https://creed.apps.wayne.edu/handbook/ci.html)6 provisions · **MUST** 1 · **SHOULD** 1Decided
+8. [8 CI](https://creed.apps.wayne.edu/handbook/ci.html)8 provisions · **MUST** 3 · **SHOULD** 1Decided
 9. [9 Accessibility](https://creed.apps.wayne.edu/handbook/accessibility.html)1 provisionTo be decided
 10. [10 Every OS](https://creed.apps.wayne.edu/handbook/every-os.html)5 provisions · **MUST** 1Decided
 11. [11 Secrets and debugging Credentials · Errors and debug output · Not decided here](https://creed.apps.wayne.edu/handbook/secrets.html)3 sections · 8 provisions · **MUST NOT** 3 · **MUST** 2Decided
-12. [12 Production Environments · Running safely · Who can reach it](https://creed.apps.wayne.edu/handbook/production.html)3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 3 · **SHOULD** 5Decided
+12. [12 Production Environments · Running safely · Who can reach it](https://creed.apps.wayne.edu/handbook/production.html)3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 5 · **SHOULD** 3Decided
 13. [13 Overrides](https://creed.apps.wayne.edu/handbook/overrides.html)5 provisionsDecided
 
 ## How to read this book

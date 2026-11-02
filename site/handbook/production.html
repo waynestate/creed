@@ -82,7 +82,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 12</p>
             <h1 id="page-title">Production</h1>
-            <p class="hb-register">3 sections · 17 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 3 · <strong class="kw kw--should">SHOULD</strong> 5</p>
+            <p class="hb-register">3 sections · 17 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 5 · <strong class="kw kw--should">SHOULD</strong> 3</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -122,16 +122,16 @@ A PROCTOR check for this is proposed, not built: a scan of the served folder for
 <p>Production is the encore. Keep the lights on and the doors locked, and the band plays on.</p>
 <h2 id="who-can-reach-it"><a class="hb-sec" href="#who-can-reach-it">§12.3</a> Who can reach it</h2>
 <ul>
-<li>Public front pages are meant to be crawled and are exempt from the two rules in this section. This follows the stack's agent-ready sites decision (WSU developer standards, 2024).</li>
-<li>An app with a defined WSU audience <strong class="kw kw--should">SHOULD</strong> set <code>robots.txt</code> to keep spiders out where they are unwanted (WSU developer standards, 2024).</li>
-<li>Where the audience is known, the app <strong class="kw kw--should">SHOULD</strong> also limit access by network address, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024).</li>
+<li>Every app <strong class="kw kw--must">MUST</strong> set <code>robots.txt</code> to keep spiders out unless crawling is wanted (WSU developer standards, 2024).</li>
+<li>Every app <strong class="kw kw--must">MUST</strong> limit access by network address to the audience it serves, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024).</li>
+<li>The one named exception: the stack's own public front pages are crawlable by design <span class="hb-cite">(the stack's agent-ready sites decision)</span>. It is a special case for those pages, not a general exemption for public pages.</li>
 </ul>
           </div>
         </div>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="secrets.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 11</span><span class="hb-pager__name">Secrets and debugging</span></a><a class="hb-pager__link hb-pager__link--next" href="overrides.html" rel="next"><span class="hb-pager__dir">Next · Chapter 13</span><span class="hb-pager__name">Overrides</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/production.md"><code>handbook/production.md</code> on GitHub</a>, impression <code>d41ddfd</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/production.md"><code>handbook/production.md</code> on GitHub</a>, impression <code>02f0f97</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

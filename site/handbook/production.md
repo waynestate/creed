@@ -10,7 +10,7 @@ Chapter 12
 
 # Production
 
-3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 3 · **SHOULD** 5
+3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 5 · **SHOULD** 3
 
 Decided
 
@@ -40,8 +40,8 @@ Production is the encore. Keep the lights on and the doors locked, and the band 
 
 ## [§12.3](https://creed.apps.wayne.edu/handbook/production.html#who-can-reach-it) Who can reach it
 
-- Public front pages are meant to be crawled and are exempt from the two rules in this section. This follows the stack's agent-ready sites decision (WSU developer standards, 2024).
-- An app with a defined WSU audience **SHOULD** set `robots.txt` to keep spiders out where they are unwanted (WSU developer standards, 2024).
-- Where the audience is known, the app **SHOULD** also limit access by network address, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024).
+- Every app **MUST** set `robots.txt` to keep spiders out unless crawling is wanted (WSU developer standards, 2024).
+- Every app **MUST** limit access by network address to the audience it serves, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024).
+- The one named exception: the stack's own public front pages are crawlable by design (the stack's agent-ready sites decision). It is a special case for those pages, not a general exemption for public pages.
 
-Set from [`handbook/production.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/production.md), impression `d41ddfd`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/production.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/production.md), impression `02f0f97`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
