@@ -952,8 +952,11 @@ How the stack holds it: `Documented`. `handbook/production.md` writes the rule.
 
 Every repo's README says how to install, configure and deploy the code for local development, on every OS, and how to
 update an existing deployment. If the Help Desk might be contacted about the project, the repo keeps an overview: what
-it does, who uses it, known common issues and who to call for an incident. Changes land through reviewed merge
-requests, and code that no longer runs is removed, not commented out.
+it does, who uses it, known common issues and who to call for an incident. Every project has a defined,
+well-understood change-control process with change requests; review and approval of merge requests is change
+control only for simple projects, and the process is followed strictly. The change-request procedure on Citadel
+is currently broken and needs fixing there; until it is fixed, changes are recorded through reviewed merge
+requests. Code that no longer runs is removed, not commented out.
 
 Why: the next person to touch the code is the reader, and a project nobody can read is a project nobody can fix.
 
@@ -1059,8 +1062,7 @@ Added from the WSU developer standards (2026-11-02):
     (practice 59).
 39. PROCTOR check for mode 777 and web-writable paths outside an allowed list (practice 59).
 40. A committed-secret scan in Preflight; extends items 10 and 25 and practice 55.
-41. Held for the owners: which catalog a project registers in, and how change control is recorded; also whether idle
-    sessions get a stated time limit (practices 57 and 61).
+41. Whether idle sessions get a stated time limit (practice 57).
 
 ## Sources
 
