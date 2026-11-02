@@ -175,9 +175,10 @@ Why: tools ship on different days, and apps run old tool versions.
 
 Sources: [Semantic Versioning 2.0.0](https://semver.org/).
 
-How the stack holds it: `Documented`. The stack's version policy and `versions.md` state it. The schema pins
-`schema_version` to `1` and
-the reader ignores unknown keys, but no test runs an older reader against a newer file.
+How the stack holds it: `Enforced`. The stack's version policy and `versions.md` state it. The schema pins
+`schema_version` to `1`, the reader ignores unknown keys, and `tests/OlderReaderContractTest.php` loads a
+future-shaped policy file with the reader: every known line answers the same, unknown keys are ignored, and a
+higher `schema_version` is accepted, because the reader checks for the key and never reads its value.
 
 Second pass: the schema sets `additionalProperties: false` at the top level, on each component, on each version entry and
 on `rules`. That is right for catching typos, but it means any tool that validates a newer policy against an older copy of
@@ -902,7 +903,8 @@ These are places where a source disagrees with the repository or with an earlier
 11. Add a PHPStan rule for `env()` outside `config/` and put the rule in Pinstripe (practice 25).
 12. Add a `config` check that `APP_DEBUG` is false in production, and write the runtime and headers chapter (practice 26).
 13. Put the PROCTOR check ID next to every handbook rule (practices 29 and 32).
-14. Add a test that an older reader accepts a newer policy file (practice 10).
+14. Done: `tests/OlderReaderContractTest.php` loads a future-shaped policy file with the reader and asserts every
+    known line still answers the same (practice 10).
 15. Add stage dates (`report`, `warn`, `block`) to the schema (practice 28).
 16. Add PROCTOR checks for `.gitattributes`, CRLF in server files and file-name case collisions (practice 34).
 17. Add a PROCTOR check that CI includes are pinned to a tag or SHA (practice 23).
