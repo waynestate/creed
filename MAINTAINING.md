@@ -59,7 +59,7 @@ This is CREED's real maintenance job.
   nodejs.org (Node) and endoflife.date (a PHP cross-check and Vue lines). It updates `latest_patch` and
   `latest_patch_checked`, and proposes new Vue lines. In CI the scheduled job is check-only: the refresh tool
   exits 3 when the policy changed and the job fails on the diff. The policy robot (`bin/policy-bot.php run`)
-  commits the data allowlist on `auto/policy-refresh` and pushes it as a merge request labelled `auto-data`,
+  commits the data allowlist on `auto/policy-refresh` and pushes it as a merge request labeled `auto-data`,
   auto-merged for a data-only run; missing CI variables stop the run before any push. A person runs it, or a
   schedule someone wires to it does; no pipeline in this repo runs it yet. Today the scheduled job only checks; the robot will open merge requests
   once a bot token is set as a masked, protected CI variable named `CREED_BOT_TOKEN`, requested from the GitLab

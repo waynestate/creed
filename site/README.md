@@ -4,7 +4,7 @@ A static page: `index.html`, `assets/creed.css`, `assets/creed.js`. No build ste
 anywhere (Citadel, any web server, or `python -m http.server` inside `site/` for a look).
 
 - type: **Source Serif 4** (400, 400 italic, 600, 700) for display and the book, **IBM Plex Mono** (400, 600) for
-  clause numbers, stamps and forms (both SIL OFL 1.1, self-hosted in `assets/fonts/`, licences in `OFL-*.txt`); Lato
+  clause numbers, stamps and forms (both SIL OFL 1.1, self-hosted in `assets/fonts/`, licenses in `OFL-*.txt`); Lato
   from WayneUI for running text.
 - base: WayneUI 2.0.8, copied from its static path into `assets/wayne-ui/` (tokens, container, skip link, Lato), then
   printed on cream stock and bound in green cloth.

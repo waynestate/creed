@@ -343,7 +343,7 @@ Sources: [Composer CLI reference, `audit`](https://getcomposer.org/doc/03-cli.md
 [Composer releases](https://github.com/composer/composer/releases).
 
 Second pass: you may already have a choice without writing one. The current config page gives `audit.abandoned` a default
-of `fail` (since Composer 2.7; it was `report` in 2.6), and says the whole `audit` section is deprecated in favour of
+of `fail` (since Composer 2.7; it was `report` in 2.6), and says the whole `audit` section is deprecated in favor of
 `config.policy`, where blocking abandoned packages (`block`) is off by default. Composer 2.10 added `config.policy`
 (2.10.0 on 2026-05-28), with advisory, abandoned and malware blocks; the latest stable is 2.10.3. The same page says the
 legacy keys keep
@@ -663,7 +663,7 @@ not depend on them. Pipeline secret detection is listed for
 Free, Premium and Ultimate, but its findings in merge request reports and the vulnerability report are Ultimate only. GitLab
 accessibility testing (Pa11y) is listed for Free, Premium and Ultimate. The tier of git.wayne.edu was not checked.
 
-Why: a gate that needs a licence the instance may not have is a gate that never runs.
+Why: a gate that needs a license the instance may not have is a gate that never runs.
 
 Sources: [GitLab dependency scanning](https://docs.gitlab.com/user/application_security/dependency_scanning/),
 [GitLab security policies](https://docs.gitlab.com/user/application_security/policies/),
@@ -686,7 +686,7 @@ CVE-2024-55556).
 Why: deleting a commit does not rotate a key.
 
 Sources: [GitGuardian, exploiting public APP_KEY leaks](https://blog.gitguardian.com/exploiting-public-app_key-leaks/),
-[Gitleaks](https://github.com/gitleaks/gitleaks) (MIT licence; its page says it is feature complete and will get security
+[Gitleaks](https://github.com/gitleaks/gitleaks) (MIT license; its page says it is feature complete and will get security
 patches only. It is one option, not an endorsement. Windows support is not stated on the page, so check it before
 adopting).
 
@@ -883,8 +883,8 @@ These are places where a source disagrees with the repository or with an earlier
 - **Composer audit exit codes: the sources differ because they come from different eras.** The 2.8.4 changelog says
   "1 for vulnerabilities and 2 for abandoned, 3 for both". The current CLI reference lists only 0 (no issues) and 1
   (found packages matching dependency policies, or missing required packages). The config page now describes a `policy`
-  system that replaced the old `audit` keys. Which behaviour a pipeline gets depends on the Composer version. Pin the
-  Composer version in CI and test the behaviour (practice 39).
+  system that replaced the old `audit` keys. Which behavior a pipeline gets depends on the Composer version. Pin the
+  Composer version in CI and test the behavior (practice 39).
 - **Policy "active" for Node and MySQL is a mapping.** `active_until` holds Node's maintenance start and MySQL's Premier
   end. This is a reasonable mapping and is not the vendors' own wording.
 
@@ -945,7 +945,7 @@ Added in the second pass (2026-10-27):
 35. Add an accessibility job to Preflight, using Pa11y or another deterministic tool (practice 53).
 36. Done: the Laravel 13 `active_until` date (2027-09-30) carries its source, endoflife.date, in `policy/sources.json` (Checks against the web).
 37. Make `security_until` required in the schema, so the schema and the reader agree (practice 2). Do this together with
-    item 3, because lines with no published end date (Vue 3) need another way to be modelled.
+    item 3, because lines with no published end date (Vue 3) need another way to be modeled.
 
 ## Sources
 

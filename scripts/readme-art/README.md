@@ -36,7 +36,7 @@ deterministic: the inspection day is the newest `latest_patch_checked` in
   `site/screenshots/sections/`.
 - `docs/readme/board.jpg`: the brand board, re-encoded.
 - `docs/readme/cast/*.png`: one 96×96 mark per stack part.
-- `docs/readme/badges/*.svg`: `php`, `licence` and `policy`, generated
+- `docs/readme/badges/*.svg`: `php`, `license` and `policy`, generated
   locally by `badge-maker`.
 
 Every file must stay at or under 300 KB, and no captured text may name an
