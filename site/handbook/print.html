@@ -446,7 +446,7 @@ library choice if a <code>saml</code> driver is built <span class="hb-cite">(the
           <div>
             <p class="chap-head__kicker">Chapter 5</p>
             <h2 id="databases-title" class="hb-book__title">Databases</h2>
-            <p class="hb-register">7 sections · 23 provisions · <strong class="kw kw--may">MAY</strong> 1</p>
+            <p class="hb-register">8 sections · 23 provisions · <strong class="kw kw--must">MUST</strong> 2 · <strong class="kw kw--may">MAY</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -461,13 +461,20 @@ conventions below keep an app working on the shared server until it is
 upgraded. They are a bridge, not the fix: the fix is the upgrade. Code that
 follows them runs unchanged on 8.4, so the move can be made With Arms Wide
 Open.</p>
-<h3 id="databases--grace-period"><a class="hb-sec" href="#databases--grace-period">§5.2</a> Grace period</h3>
+<h3 id="databases--which-mysql-lines-the-policy-lists"><a class="hb-sec" href="#databases--which-mysql-lines-the-policy-lists">§5.2</a> Which MySQL lines the policy lists</h3>
+<p>The policy lists the LTS lines, 8.4 and 9.7, for current use. It keeps the
+older lines, 5.6, 5.7 and 8.0, only to say that they are end of life. In
+MySQL 8.4 and later the default authentication plugin is
+<code>caching_sha2_password</code>: <code>mysql_native_password</code> is disabled by default in
+8.4 and removed in 9.0. An app that <strong class="kw kw--must">MUST</strong> reach a server on the older plugin
+<strong class="kw kw--must">MUST</strong> set the server's plugin explicitly in its database config.</p>
+<h3 id="databases--grace-period"><a class="hb-sec" href="#databases--grace-period">§5.3</a> Grace period</h3>
 <p>An app <strong class="kw kw--may">MAY</strong> stay on a database version for 90 days after it leaves support, the
 policy's <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json" title="rules.eol_grace_days in policy.json"><code>eol_grace_days</code></a>; the version is <code>Eol</code> through that window and
 <code>EolGraceExpired</code> the day after, when the gate fails with no override. The
 window is a bridge for the upgrade, not a second support window: the fix is
 still the upgrade.</p>
-<h3 id="databases--conventions-that-keep-5-6-working"><a class="hb-sec" href="#databases--conventions-that-keep-5-6-working">§5.3</a> Conventions that keep 5.6 working</h3>
+<h3 id="databases--conventions-that-keep-5-6-working"><a class="hb-sec" href="#databases--conventions-that-keep-5-6-working">§5.4</a> Conventions that keep 5.6 working</h3>
 <ul>
 <li>Set <code>Schema::defaultStringLength(191)</code> in <code>AppServiceProvider::boot()</code>,
 before any migration runs. 5.6 caps an indexed <code>utf8mb4</code> column at 767
@@ -491,8 +498,8 @@ take a current-timestamp default on 5.6.</li>
 <li>Run migrations in CI against a real 5.6 container. SQLite-only tests pass
 code that 5.6 rejects.</li>
 </ul>
-<h3 id="databases--avoid-until-the-server-is-upgraded"><a class="hb-sec" href="#databases--avoid-until-the-server-is-upgraded">§5.4</a> Avoid until the server is upgraded</h3>
-<h4 id="databases--schema"><a class="hb-sec" href="#databases--schema">§5.4.1</a> Schema</h4>
+<h3 id="databases--avoid-until-the-server-is-upgraded"><a class="hb-sec" href="#databases--avoid-until-the-server-is-upgraded">§5.5</a> Avoid until the server is upgraded</h3>
+<h4 id="databases--schema"><a class="hb-sec" href="#databases--schema">§5.5.1</a> Schema</h4>
 <ul>
 <li>JSON and jsonb columns</li>
 <li>Generated columns</li>
@@ -502,7 +509,7 @@ code that 5.6 rejects.</li>
 <li>InnoDB <code>spatialIndex</code> (needs 5.7.5, not yet confirmed on a 5.6 server)</li>
 <li>DESC indexes and CHECK constraints</li>
 </ul>
-<h4 id="databases--queries"><a class="hb-sec" href="#databases--queries">§5.4.2</a> Queries</h4>
+<h4 id="databases--queries"><a class="hb-sec" href="#databases--queries">§5.5.2</a> Queries</h4>
 <ul>
 <li><code>whereJson*</code> and JSON-path updates</li>
 <li>Window functions and CTEs</li>
@@ -510,12 +517,12 @@ code that 5.6 rejects.</li>
 <li><code>joinLateral</code></li>
 <li>Joined deletes with an order or a limit</li>
 </ul>
-<h4 id="databases--commands"><a class="hb-sec" href="#databases--commands">§5.4.3</a> Commands</h4>
+<h4 id="databases--commands"><a class="hb-sec" href="#databases--commands">§5.5.3</a> Commands</h4>
 <ul>
 <li><code>db:show</code></li>
 <li><code>db:monitor</code></li>
 </ul>
-<h3 id="databases--moving-to-8-4"><a class="hb-sec" href="#databases--moving-to-8-4">§5.5</a> Moving to 8.4</h3>
+<h3 id="databases--moving-to-8-4"><a class="hb-sec" href="#databases--moving-to-8-4">§5.6</a> Moving to 8.4</h3>
 <p>Code that follows the conventions and avoids the patterns above runs unchanged
 on 8.4. The server-side large-prefix settings (<code>innodb_large_prefix=ON</code>,
 <code>innodb_file_format=Barracuda</code>, DYNAMIC rows) are a question for the database
@@ -526,9 +533,9 @@ on a 5.6 server.</p>
 Builds older than 5.6.46 also speak only TLS 1.0, which current hosts may
 refuse (not yet confirmed on a 5.6 server). Both are reasons to plan the move
 rather than wait for it.</p>
-<h3 id="databases--how-the-stack-checks-it"><a class="hb-sec" href="#databases--how-the-stack-checks-it">§5.6</a> How the stack checks it</h3>
+<h3 id="databases--how-the-stack-checks-it"><a class="hb-sec" href="#databases--how-the-stack-checks-it">§5.7</a> How the stack checks it</h3>
 <p><a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> will flag the patterns in the avoid list above. Not yet.</p>
-<h3 id="databases--sources"><a class="hb-sec" href="#databases--sources">§5.7</a> Sources</h3>
+<h3 id="databases--sources"><a class="hb-sec" href="#databases--sources">§5.8</a> Sources</h3>
 <ul class="hb-sources">
 <li>Laravel 13 database docs: <a href="https://laravel.com/docs/13.x/database">https://laravel.com/docs/13.x/database</a></li>
 <li>Laravel docs, <code>migrations.md</code> (index-length section):
@@ -559,6 +566,8 @@ rather than wait for it.</p>
 <li>Oracle MySQL end-of-life notices: <a href="https://www.mysql.com/support/eol-notice.html">https://www.mysql.com/support/eol-notice.html</a></li>
 <li>MySQL 5.6 TLS protocols:
 <a href="https://docs.oracle.com/cd/E17952_01/mysql-5.6-en/encrypted-connection-protocols-ciphers.html">https://docs.oracle.com/cd/E17952_01/mysql-5.6-en/encrypted-connection-protocols-ciphers.html</a></li>
+<li>MySQL 9.7, native pluggable authentication:
+<a href="https://dev.mysql.com/doc/refman/9.7/en/native-pluggable-authentication.html">https://dev.mysql.com/doc/refman/9.7/en/native-pluggable-authentication.html</a></li>
 </ul>
 <div class="hb-policy" role="note"><p class="hb-policy__title">In <a href="https://github.com/waynestate/creed/blob/main/policy/policy.json"><code>policy.json</code></a></p><dl><div><dt><code>components.*.versions.*.active_until</code></dt><dd>set per version</dd></div><div><dt><code>rules.eol_grace_days</code></dt><dd><code>90</code></dd></div><div><dt><code>components.*.versions.*.security_until</code></dt><dd>set per version</dd></div></dl></div>
           </div>
@@ -732,7 +741,7 @@ override <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>30e4c8e</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>c458852</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

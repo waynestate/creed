@@ -12,7 +12,7 @@ The handbook · 2026 Edition
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have already decided, with the ADR number, and marks the rest as "To be decided".
 
-Eleven chapters · 105 provisions · **MUST** 14 · **SHOULD** 2 · **MAY** 1
+Eleven chapters · 105 provisions · **MUST** 16 · **SHOULD** 2 · **MAY** 1
 
 ## Contents
 
@@ -20,7 +20,7 @@ Eleven chapters · 105 provisions · **MUST** 14 · **SHOULD** 2 · **MAY** 1
 2. [2 Dependencies Private packages](https://creed.apps.wayne.edu/handbook/dependencies.html)1 section · 13 provisions · **MUST NOT** 4 · **MUST** 6 · **SHOULD NOT** 1 · **SHOULD** 1Decided
 3. [3 Code PHP style · Static analysis · Banned patterns · Vue and JavaScript · Security analysis · How it is enforced · Which preset enforces each rule · Not adopted · To be decided · Sources](https://creed.apps.wayne.edu/handbook/code.html)10 sections · 33 provisions · **MUST NOT** 1Partly decided
 4. [4 Auth](https://creed.apps.wayne.edu/handbook/auth.html)6 provisionsPartly decided
-5. [5 Databases What the stack supports · Grace period · Conventions that keep 5.6 working · Avoid until the server is upgraded · Moving to 8.4 · How the stack checks it · Sources](https://creed.apps.wayne.edu/handbook/databases.html)7 sections · 23 provisions · **MAY** 1Decided
+5. [5 Databases What the stack supports · Which MySQL lines the policy lists · Grace period · Conventions that keep 5.6 working · Avoid until the server is upgraded · Moving to 8.4 · How the stack checks it · Sources](https://creed.apps.wayne.edu/handbook/databases.html)8 sections · 23 provisions · **MUST** 2 · **MAY** 1Decided
 6. [6 Runtime and headers](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html)2 provisionsTo be decided
 7. [7 Deploy gate On Citadel · Elsewhere](https://creed.apps.wayne.edu/handbook/deploy-gate.html)2 sections · 8 provisionsDecided
 8. [8 CI](https://creed.apps.wayne.edu/handbook/ci.html)5 provisions · **MUST** 1Decided
