@@ -77,6 +77,9 @@ This is CREED's real maintenance job.
 - The schema is `version: 1`. Optional new fields keep it at 1; a breaking schema change needs a new version and a
   release of every reader.
 
+The older-reader contract is pinned by `tests/OlderReaderContractTest.php`; change the fixture only with a
+`schema_version` bump.
+
 ## Releasing
 
 1. Move the lines under `## Unreleased` in `CHANGELOG.md` to a new `## X.Y.Z (YYYY-MM-DD)` heading, leaving an empty
