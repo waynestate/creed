@@ -750,8 +750,8 @@ Why: the move off 5.6 will touch accounts, drivers and the upgrade path in one g
 Sources: [MySQL 9.7: native pluggable authentication](https://dev.mysql.com/doc/refman/9.7/en/native-pluggable-authentication.html),
 [endoflife.date MySQL](https://endoflife.date/mysql).
 
-How the stack holds it: `Not yet`. `policy.json` lists the LTS lines 8.4 and 9.7 and not the short-lived ones, which is
-the sensible choice, but the rule "list LTS lines only" is not written down.
+How the stack holds it: `Documented`. `policy.json` lists the LTS lines 8.4 and 9.7 and not the short-lived ones, and
+`handbook/databases.md` writes down the rule and the authentication-plugin step.
 
 ### 48. Say how fast the platform adds a new PHP, and how it announces a drop
 
@@ -927,7 +927,7 @@ Added in the second pass (2026-10-27):
 27. Ask the owners of git.wayne.edu to publish its GitLab patch level and a patch routine (practice 45).
 28. Record each Laravel release's minimum database in the policy, and add a check against the platform database
     (practice 46).
-29. Write down the MySQL auth plugin step and the rule "list LTS lines only" (practice 47).
+29. Done: `handbook/databases.md` writes down the MySQL auth plugin step and the rule "list LTS lines only" (practice 47).
 30. State a target for adding a new PHP image, per target (Citadel and elsewhere), and a notice period for retiring
     one (practice 48).
 31. Decide how `active_until` is derived for Node 27 and later, which have no Maintenance phase (practice 49).

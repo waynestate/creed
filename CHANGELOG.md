@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Fixed: BEST_PRACTICES statements match the tree.
+- Added: handbook note on MySQL lines and auth plugin.
+
 ## 0.1.4 (2026-10-30)
 
 - Fixed: the bot's GitLab HTTP client failed on every API call (`stream_context_create` options were not under the `http` wrapper, a ValueError on current PHP). It now works, and reads response headers from the stream's metadata, so PHP 8.5 shows no deprecation. Found by Booster's hop-data robot, which uses this client.
