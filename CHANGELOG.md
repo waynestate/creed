@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Changed: CI pulls its Docker Hub images through the GitLab Dependency Proxy (the group's CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX), so pipelines no longer hit Docker Hub's anonymous pull limit.
 - Added: a `wayneui-copies` CI job (strict WayneUI copies gate).
 - Changed: the scheduled refresh job only checks until a bot token is set; README and CI comments say so.
 - Removed: the unused `composer/semver` dependency.
