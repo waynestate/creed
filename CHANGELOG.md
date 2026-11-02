@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Added: a `wayneui-copies` CI job (strict WayneUI copies gate).
+- Changed: the scheduled refresh job only checks until a bot token is set; README and CI comments say so.
+- Removed: the unused `composer/semver` dependency.
 - Added: handbook rules name the PROCTOR check that enforces them.
 - Fixed: BEST_PRACTICES statements match the tree.
 - Added: handbook note on MySQL lines and auth plugin.

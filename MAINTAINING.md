@@ -8,7 +8,7 @@ follows.
 
 - `waynestate/creed` on Packagist: `policy/policy.json` (supported PHP, Laravel, Node and Vue versions, their support
   dates and newest patches), a framework-free PHP reader, and the handbook in `handbook/`.
-- Runtime dependency: `composer/semver` only. Dev: PHPUnit, Pint and PHPStan (presets from Pinstripe), opis/json-schema.
+- No runtime dependencies beyond PHP. Dev: PHPUnit, Pint and PHPStan (presets from Pinstripe), opis/json-schema.
 - **Who reads it:** PROCTOR, Rollcall and Booster carry a generated copy of the reader and policy (made by
   `bin/export.php`); ADVISOR bundles the policy and handbook in its `data/`; HELMET can read a `policy.json` at runtime;
   apps and the stack's front-page deploys install `waynestate/creed` from Packagist.
