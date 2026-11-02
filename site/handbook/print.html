@@ -188,7 +188,7 @@ ceiling: we do not go lower, no matter how the crowd sings for more.</p>
           <div>
             <p class="chap-head__kicker">Chapter 2</p>
             <h2 id="dependencies-title" class="hb-book__title">Dependencies</h2>
-            <p class="hb-register">1 section · 13 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 4 · <strong class="kw kw--must">MUST</strong> 6 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 1</p>
+            <p class="hb-register">1 section · 14 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 4 · <strong class="kw kw--must">MUST</strong> 6 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 2</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -207,6 +207,7 @@ bound <span class="hb-cite">(the stack's version policy)</span>. PROCTOR check: 
 requires only <code>php</code> and PSR packages; Laravel, Inertia and Vue are
 <code>suggest</code> <span class="hb-cite">(the stack's core-plus-adapters design)</span>.</li>
 <li>Adapters call the core and never re-implement it <span class="hb-cite">(the stack's core-plus-adapters design)</span>.</li>
+<li>Before adding a third-party package, check it comes from a trusted source, and where the source is open, read enough of it to judge it sound and fit (<strong class="kw kw--should">SHOULD</strong>). The audit and abandoned-package rules in this chapter apply after that choice (WSU developer standards, 2024).</li>
 </ul>
 <h3 id="dependencies--private-packages"><a class="hb-sec" href="#dependencies--private-packages">§2.1</a> Private packages</h3>
 <ul>
@@ -244,7 +245,7 @@ and <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets
           <div>
             <p class="chap-head__kicker">Chapter 3</p>
             <h2 id="code-title" class="hb-book__title">Code</h2>
-            <p class="hb-register">10 sections · 33 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1</p>
+            <p class="hb-register">13 sections · 42 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 6 · <strong class="kw kw--should">SHOULD</strong> 2</p>
           </div>
           <span class="stamp stamp--checked hb-status">Partly decided</span>
         </header>
@@ -261,7 +262,19 @@ with <code>--config</code> <span class="hb-cite">(the stack's coding standard)</
 <li>Files are UTF-8 without a BOM, with LF line endings (the stack's
 every-OS design).</li>
 </ul>
-<h3 id="code--static-analysis"><a class="hb-sec" href="#code--static-analysis">§3.2</a> Static analysis</h3>
+<h3 id="code--reading-the-code"><a class="hb-sec" href="#code--reading-the-code">§3.2</a> Reading the code</h3>
+<ul>
+<li>Comment where it helps: complex logic, areas that could improve, business rules that would otherwise be a mystery (<strong class="kw kw--should">SHOULD</strong>). Do not keep version history in comments; git is the change log (WSU developer standards, 2024).</li>
+<li>Code that no longer runs <strong class="kw kw--must">MUST</strong> be removed, not commented out; git keeps it (WSU developer standards, 2024).</li>
+<li>Variable, class and database names <strong class="kw kw--should">SHOULD</strong> be complete and descriptive; avoid ambiguous abbreviations (WSU developer standards, 2024).</li>
+</ul>
+<h3 id="code--source-control-and-documentation"><a class="hb-sec" href="#code--source-control-and-documentation">§3.3</a> Source control and documentation</h3>
+<ul>
+<li>All source is kept in git, hosted on a WSU-run GitLab; mirrors are fine. Access to a repo <strong class="kw kw--must">MUST</strong> be removed when someone leaves the project or the university (WSU developer standards, 2024).</li>
+<li>Every repo's README <strong class="kw kw--must">MUST</strong> say how to install, configure and deploy the code for local development, on every OS (see <code>every-os.md</code>), and how to update an existing deployment (WSU developer standards, 2024).</li>
+<li>If the Help Desk might be contacted about the project, keep an overview in the repo: what it does, who uses it, known common issues and who to call for an incident; deliver changes to the Help Desk when it changes (WSU developer standards, 2024).</li>
+</ul>
+<h3 id="code--static-analysis"><a class="hb-sec" href="#code--static-analysis">§3.4</a> Static analysis</h3>
 <ul>
 <li>PHPStan level 8 for new code: the stack's own packages and every app
 <a class="tool" href="https://sourdough.apps.wayne.edu/"><img src="../assets/marks/sourdough.png" alt="" width="16" height="16">Sourdough</a> generates <span class="hb-cite">(the stack's coding standard)</span>.</li>
@@ -281,7 +294,12 @@ header code, a null bug is a security bug <span class="hb-cite">(the stack's cod
 </ul>
 </li>
 </ul>
-<h3 id="code--banned-patterns"><a class="hb-sec" href="#code--banned-patterns">§3.3</a> Banned patterns</h3>
+<h3 id="code--input-and-files"><a class="hb-sec" href="#code--input-and-files">§3.5</a> Input and files</h3>
+<ul>
+<li>All input (forms, API calls, headers, cookies, and data read from a database you do not control) <strong class="kw kw--must">MUST</strong> be validated on the server; SQL uses bound parameters, and output is escaped for where it lands. That guards against SQL injection and cross-site scripting (WSU developer standards, 2024).</li>
+<li>Files from untrusted sources <strong class="kw kw--must">MUST</strong> be checked against the expected type, <strong class="kw kw--must-not">MUST NOT</strong> be passed to include, class-loading or reflection calls, <strong class="kw kw--must">MUST</strong> be stored outside the served folder with limited permissions, and <strong class="kw kw--must-not">MUST NOT</strong> be executable (WSU developer standards, 2024).</li>
+</ul>
+<h3 id="code--banned-patterns"><a class="hb-sec" href="#code--banned-patterns">§3.6</a> Banned patterns</h3>
 <p>Each ban becomes a PHPStan rule: Larastan's where it has one, <code>phpstan-disallowed-calls</code>
 for plain bans, and a custom rule only when neither fits.</p>
 <ul>
@@ -294,7 +312,7 @@ Prevention Cheat Sheet). Planned.</li>
 <li>No debug leftovers or dynamic code, from <code>phpstan-disallowed-calls</code>.
 Planned.</li>
 </ul>
-<h3 id="code--vue-and-javascript"><a class="hb-sec" href="#code--vue-and-javascript">§3.4</a> Vue and JavaScript</h3>
+<h3 id="code--vue-and-javascript"><a class="hb-sec" href="#code--vue-and-javascript">§3.7</a> Vue and JavaScript</h3>
 <ul>
 <li>ESLint flat config <span class="hb-cite">(the stack's coding standard)</span>.</li>
 <li><code>eslint-plugin-vue</code> <code>flat/recommended</code> <span class="hb-cite">(the stack's coding standard)</span>.</li>
@@ -305,14 +323,14 @@ Planned.</li>
 supported <span class="hb-cite">(the stack's coding standard)</span>.</li>
 <li>Node 22.13 or newer for the lint tools <span class="hb-cite">(the stack's coding standard)</span>.</li>
 </ul>
-<h3 id="code--security-analysis"><a class="hb-sec" href="#code--security-analysis">§3.5</a> Security analysis</h3>
+<h3 id="code--security-analysis"><a class="hb-sec" href="#code--security-analysis">§3.8</a> Security analysis</h3>
 <ul>
 <li>The stack's GitLab instances run the Free tier,
 so nothing relies on GitLab SAST <span class="hb-cite">(the stack's coding standard)</span>.</li>
 <li>The open tools instead: Larastan's env rule, <code>phpstan-disallowed-calls</code>,
 and a Psalm taint-analysis pilot on one app <span class="hb-cite">(the stack's coding standard)</span>.</li>
 </ul>
-<h3 id="code--how-it-is-enforced"><a class="hb-sec" href="#code--how-it-is-enforced">§3.6</a> How it is enforced</h3>
+<h3 id="code--how-it-is-enforced"><a class="hb-sec" href="#code--how-it-is-enforced">§3.9</a> How it is enforced</h3>
 <ul>
 <li>Pint, PHPStan, Rector dry-runs and ESLint run in CI through <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>
 components, not in the deploy gate <span class="hb-cite">(the stack's coding standard)</span>. The Preflight components
@@ -322,7 +340,7 @@ staging as PHP versions <span class="hb-cite">(the stack's enforcement design)</
 <li><a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> reports whether an app uses the presets <span class="hb-cite">(the stack's coding standard)</span>. The PROCTOR
 report is Planned.</li>
 </ul>
-<h3 id="code--which-preset-enforces-each-rule"><a class="hb-sec" href="#code--which-preset-enforces-each-rule">§3.7</a> Which preset enforces each rule</h3>
+<h3 id="code--which-preset-enforces-each-rule"><a class="hb-sec" href="#code--which-preset-enforces-each-rule">§3.10</a> Which preset enforces each rule</h3>
 <figure class="hb-table"><figcaption id="table-3-1"><span class="code-table__no">Table 3-1</span></figcaption><div class="hb-table__scroll" tabindex="0" role="region" aria-labelledby="table-3-1"><table>
 <thead>
 <tr>
@@ -374,20 +392,21 @@ report is Planned.</li>
 </tr>
 </tbody>
 </table></div></figure>
-<h3 id="code--not-adopted"><a class="hb-sec" href="#code--not-adopted">§3.8</a> Not adopted</h3>
+<h3 id="code--not-adopted"><a class="hb-sec" href="#code--not-adopted">§3.11</a> Not adopted</h3>
 <ul>
 <li>Mago and PHP_CodeSniffer 4 are not adopted; Pint is the only formatter
 <span class="hb-cite">(the stack's coding standard)</span>.</li>
 <li>Mago is looked at again before Pinstripe 1.0 <span class="hb-cite">(the stack's coding standard)</span>.</li>
 </ul>
-<h3 id="code--to-be-decided" class="hb-h-tbd"><a class="hb-sec" href="#code--to-be-decided">§3.9</a> To be decided</h3>
+<h3 id="code--to-be-decided" class="hb-h-tbd"><a class="hb-sec" href="#code--to-be-decided">§3.12</a> To be decided</h3>
 <ul>
 <li><code>declare(strict_types=1)</code> in every file. The sources recommend it, but
 the stack's coding standard does not decide it.</li>
 <li><code>phpstan-strict-rules</code> for the stack's packages <span class="hb-cite">(the stack's coding standard)</span>.</li>
 <li>Where the ESLint package is published <span class="hb-cite">(the stack's coding standard)</span>.</li>
+<li>Which catalog a project registers in, and how change control is recorded, are held for the owners' answer.</li>
 </ul>
-<h3 id="code--sources"><a class="hb-sec" href="#code--sources">§3.10</a> Sources</h3>
+<h3 id="code--sources"><a class="hb-sec" href="#code--sources">§3.13</a> Sources</h3>
 <ul class="hb-sources">
 <li>PER Coding Style 3.1: <a href="https://www.php-fig.org/per/coding-style/">https://www.php-fig.org/per/coding-style/</a></li>
 <li>PSR-1 Basic Coding Standard: <a href="https://www.php-fig.org/psr/psr-1/">https://www.php-fig.org/psr/psr-1/</a></li>
@@ -423,7 +442,7 @@ the stack's coding standard does not decide it.</li>
           <div>
             <p class="chap-head__kicker">Chapter 4</p>
             <h2 id="auth-title" class="hb-book__title">Auth</h2>
-            <p class="hb-register">6 provisions</p>
+            <p class="hb-register">12 provisions · <strong class="kw kw--must">MUST</strong> 3</p>
           </div>
           <span class="stamp stamp--checked hb-status">Partly decided</span>
         </header>
@@ -444,6 +463,12 @@ built yet), and <code>fake</code> for local development and tests <span class="h
 <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>php-floor</code>.</li>
 <li class="hb-tbd">To be decided: the gateway's key distribution and rotation, and the SAML
 library choice if a <code>saml</code> driver is built <span class="hb-cite">(the stack's auth design)</span>.</li>
+<li>API and other stateless requests are authenticated with signed, short-lived bearer tokens in an <code>Authorization</code> header, verified on every request. A token is signed, not merely encrypted; JSON Web Tokens are a good fit (WSU developer standards, 2024).</li>
+<li>Authentication is checked before any content is shown or any script function runs, on every request. Deny by default: routes are protected unless listed as public, and an unauthenticated person is sent to sign in (WSU developer standards, 2024).</li>
+<li>When authentication or an authorization lookup fails, the result is fail closed: access is withheld (WSU developer standards, 2024).</li>
+<li>Administrative access <strong class="kw kw--must">MUST</strong> be limited to named users or roles, and access that is due to end is revoked on a regular schedule (WSU developer standards, 2024).</li>
+<li>Access that is due to end when a person's status changes (for example an ended employment) <strong class="kw kw--must">MUST</strong> be removed by an automated process, not by memory (WSU developer standards, 2024).</li>
+<li>Idle sessions <strong class="kw kw--must">MUST</strong> time out after a configurable period of inactivity. The stack sets no number yet; Laravel's default session lifetime applies until it does (WSU developer standards, 2024).</li>
 </ul>
           </div>
       </article>
@@ -453,7 +478,7 @@ library choice if a <code>saml</code> driver is built <span class="hb-cite">(the
           <div>
             <p class="chap-head__kicker">Chapter 5</p>
             <h2 id="databases-title" class="hb-book__title">Databases</h2>
-            <p class="hb-register">8 sections · 23 provisions · <strong class="kw kw--must">MUST</strong> 2 · <strong class="kw kw--may">MAY</strong> 1</p>
+            <p class="hb-register">9 sections · 25 provisions · <strong class="kw kw--must">MUST</strong> 4 · <strong class="kw kw--should">SHOULD</strong> 1 · <strong class="kw kw--may">MAY</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -481,7 +506,12 @@ policy's <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob
 <code>EolGraceExpired</code> the day after, when the gate fails with no override. The
 window is a bridge for the upgrade, not a second support window: the fix is
 still the upgrade.</p>
-<h3 id="databases--conventions-that-keep-5-6-working"><a class="hb-sec" href="#databases--conventions-that-keep-5-6-working">§5.4</a> Conventions that keep 5.6 working</h3>
+<h3 id="databases--names-comments-and-connections"><a class="hb-sec" href="#databases--names-comments-and-connections">§5.4</a> Names, comments and connections</h3>
+<ul>
+<li>Table and column names are descriptive. Add table and column comments (Laravel's <code>-&gt;comment()</code>) where the database supports them, to say what an element is for (<strong class="kw kw--should">SHOULD</strong>) (WSU developer standards, 2024).</li>
+<li>The connection between the app and the database <strong class="kw kw--must">MUST</strong> be encrypted. The database account <strong class="kw kw--must">MUST</strong> have only the privileges the app needs, never an administrator account (WSU developer standards, 2024).</li>
+</ul>
+<h3 id="databases--conventions-that-keep-5-6-working"><a class="hb-sec" href="#databases--conventions-that-keep-5-6-working">§5.5</a> Conventions that keep 5.6 working</h3>
 <ul>
 <li>Set <code>Schema::defaultStringLength(191)</code> in <code>AppServiceProvider::boot()</code>,
 before any migration runs. 5.6 caps an indexed <code>utf8mb4</code> column at 767
@@ -506,8 +536,8 @@ take a current-timestamp default on 5.6.</li>
 <li>Run migrations in CI against a real 5.6 container. SQLite-only tests pass
 code that 5.6 rejects.</li>
 </ul>
-<h3 id="databases--avoid-until-the-server-is-upgraded"><a class="hb-sec" href="#databases--avoid-until-the-server-is-upgraded">§5.5</a> Avoid until the server is upgraded</h3>
-<h4 id="databases--schema"><a class="hb-sec" href="#databases--schema">§5.5.1</a> Schema</h4>
+<h3 id="databases--avoid-until-the-server-is-upgraded"><a class="hb-sec" href="#databases--avoid-until-the-server-is-upgraded">§5.6</a> Avoid until the server is upgraded</h3>
+<h4 id="databases--schema"><a class="hb-sec" href="#databases--schema">§5.6.1</a> Schema</h4>
 <ul>
 <li>JSON and jsonb columns</li>
 <li>Generated columns</li>
@@ -517,7 +547,7 @@ code that 5.6 rejects.</li>
 <li>InnoDB <code>spatialIndex</code> (needs 5.7.5, not yet confirmed on a 5.6 server)</li>
 <li>DESC indexes and CHECK constraints</li>
 </ul>
-<h4 id="databases--queries"><a class="hb-sec" href="#databases--queries">§5.5.2</a> Queries</h4>
+<h4 id="databases--queries"><a class="hb-sec" href="#databases--queries">§5.6.2</a> Queries</h4>
 <ul>
 <li><code>whereJson*</code> and JSON-path updates</li>
 <li>Window functions and CTEs</li>
@@ -525,12 +555,12 @@ code that 5.6 rejects.</li>
 <li><code>joinLateral</code></li>
 <li>Joined deletes with an order or a limit</li>
 </ul>
-<h4 id="databases--commands"><a class="hb-sec" href="#databases--commands">§5.5.3</a> Commands</h4>
+<h4 id="databases--commands"><a class="hb-sec" href="#databases--commands">§5.6.3</a> Commands</h4>
 <ul>
 <li><code>db:show</code></li>
 <li><code>db:monitor</code></li>
 </ul>
-<h3 id="databases--moving-to-8-4"><a class="hb-sec" href="#databases--moving-to-8-4">§5.6</a> Moving to 8.4</h3>
+<h3 id="databases--moving-to-8-4"><a class="hb-sec" href="#databases--moving-to-8-4">§5.7</a> Moving to 8.4</h3>
 <p>Code that follows the conventions and avoids the patterns above runs unchanged
 on 8.4. The server-side large-prefix settings (<code>innodb_large_prefix=ON</code>,
 <code>innodb_file_format=Barracuda</code>, DYNAMIC rows) are a question for the database
@@ -541,12 +571,12 @@ on a 5.6 server.</p>
 Builds older than 5.6.46 also speak only TLS 1.0, which current hosts may
 refuse (not yet confirmed on a 5.6 server). Both are reasons to plan the move
 rather than wait for it.</p>
-<h3 id="databases--how-the-stack-checks-it"><a class="hb-sec" href="#databases--how-the-stack-checks-it">§5.7</a> How the stack checks it</h3>
+<h3 id="databases--how-the-stack-checks-it"><a class="hb-sec" href="#databases--how-the-stack-checks-it">§5.8</a> How the stack checks it</h3>
 <p>PROCTOR's <code>mysql56</code> check flags the patterns in the avoid list above that
 fail on 5.6: JSON columns, generated columns, <code>renameColumn</code>, long indexed
 strings and a missing <code>Schema::defaultStringLength(191)</code>. The rest of the
 list is not checked yet.</p>
-<h3 id="databases--sources"><a class="hb-sec" href="#databases--sources">§5.8</a> Sources</h3>
+<h3 id="databases--sources"><a class="hb-sec" href="#databases--sources">§5.9</a> Sources</h3>
 <ul class="hb-sources">
 <li>Laravel 13 database docs: <a href="https://laravel.com/docs/13.x/database">https://laravel.com/docs/13.x/database</a></li>
 <li>Laravel docs, <code>migrations.md</code> (index-length section):
@@ -657,7 +687,7 @@ packages run on any container platform)</span>.</li>
           <div>
             <p class="chap-head__kicker">Chapter 8</p>
             <h2 id="ci-title" class="hb-book__title">CI</h2>
-            <p class="hb-register">5 provisions · <strong class="kw kw--must">MUST</strong> 1</p>
+            <p class="hb-register">6 provisions · <strong class="kw kw--must">MUST</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -674,6 +704,7 @@ on a model's opinion <span class="hb-cite">(the stack's rule on language models)
 <li>git.wayne.edu has no runners today; the components work on the test GitLab
 runner and <strong class="kw kw--must">MUST</strong> work on a git.wayne.edu runner when one exists <span class="hb-cite">(first-repos)</span>.
 Every product strongly recommends the instance runner.</li>
+<li>Every change lands through a merge request that another person reviews, and critical findings are addressed before merge (<strong class="kw kw--should">SHOULD</strong> for a one-person project: record the self-review in the merge request) (WSU developer standards, 2024).</li>
 </ul>
           </div>
       </article>
@@ -828,7 +859,7 @@ override <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>54c7c62</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>cfc978c</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

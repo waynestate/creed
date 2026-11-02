@@ -10,7 +10,7 @@ Chapter 8
 
 # CI
 
-5 provisions · **MUST** 1
+6 provisions · **MUST** 1 · **SHOULD** 1
 
 Decided
 
@@ -21,5 +21,6 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - CI judges with deterministic commands, never with a model. No gate depends on a model's opinion (the stack's rule on language models).
 - Components are pinned at a tag or SHA, never `~latest` (first-repos).
 - git.wayne.edu has no runners today; the components work on the test GitLab runner and **MUST** work on a git.wayne.edu runner when one exists (first-repos). Every product strongly recommends the instance runner.
+- Every change lands through a merge request that another person reviews, and critical findings are addressed before merge (**SHOULD** for a one-person project: record the self-review in the merge request) (WSU developer standards, 2024).
 
-Set from [`handbook/ci.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/ci.md), impression `607693e`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/ci.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/ci.md), impression `a8896e6`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

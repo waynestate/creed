@@ -10,7 +10,7 @@ Chapter 2
 
 # Dependencies
 
-1 section · 13 provisions · **MUST NOT** 4 · **MUST** 6 · **SHOULD NOT** 1 · **SHOULD** 1
+1 section · 14 provisions · **MUST NOT** 4 · **MUST** 6 · **SHOULD NOT** 1 · **SHOULD** 2
 
 Decided
 
@@ -22,6 +22,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - `composer.json` `require.php` **MUST NOT** allow an EOL version as its lowest bound (the stack's version policy). PROCTOR check: `php-floor`.
 - Every project is a framework-free core plus thin adapters. `composer.json` requires only `php` and PSR packages; Laravel, Inertia and Vue are `suggest` (the stack's core-plus-adapters design).
 - Adapters call the core and never re-implement it (the stack's core-plus-adapters design).
+- Before adding a third-party package, check it comes from a trusted source, and where the source is open, read enough of it to judge it sound and fit (**SHOULD**). The audit and abandoned-package rules in this chapter apply after that choice (WSU developer standards, 2024).
 
 ## [§2.1](https://creed.apps.wayne.edu/handbook/dependencies.html#private-packages) Private packages
 
@@ -35,4 +36,4 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 PROCTOR's `repo-url-credentials`, `package-sources` and `internal-vendor-shadowing` checks enforce rules 1, 2 and 4 (warning first), and [Preflight](https://preflight.apps.wayne.edu/)'s publish job enforces rule 5.
 
-Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `e7daa67`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `58249c9`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

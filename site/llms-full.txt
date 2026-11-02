@@ -896,7 +896,7 @@ Chapter 4
 
 ## Auth
 
-6 provisions
+12 provisions · **MUST** 3
 
 Partly decided
 
@@ -908,8 +908,14 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - Drivers: `cas` (the default today), `gateway`, `oidc`, `oauth2`, `saml` (not built yet), and `fake` for local development and tests (the stack's auth design).
 - Non-EOL PHP only, with no exceptions (the stack's auth design). [PROCTOR](https://proctor.apps.wayne.edu/) check: `php-floor`.
 - To be decided: the gateway's key distribution and rotation, and the SAML library choice if a `saml` driver is built (the stack's auth design).
+- API and other stateless requests are authenticated with signed, short-lived bearer tokens in an `Authorization` header, verified on every request. A token is signed, not merely encrypted; JSON Web Tokens are a good fit (WSU developer standards, 2024).
+- Authentication is checked before any content is shown or any script function runs, on every request. Deny by default: routes are protected unless listed as public, and an unauthenticated person is sent to sign in (WSU developer standards, 2024).
+- When authentication or an authorization lookup fails, the result is fail closed: access is withheld (WSU developer standards, 2024).
+- Administrative access **MUST** be limited to named users or roles, and access that is due to end is revoked on a regular schedule (WSU developer standards, 2024).
+- Access that is due to end when a person's status changes (for example an ended employment) **MUST** be removed by an automated process, not by memory (WSU developer standards, 2024).
+- Idle sessions **MUST** time out after a configurable period of inactivity. The stack sets no number yet; Laravel's default session lifetime applies until it does (WSU developer standards, 2024).
 
-Set from [`handbook/auth.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/auth.md), impression `643e5dc`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/auth.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/auth.md), impression `5b8bf9e`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -919,7 +925,7 @@ Chapter 8
 
 ## CI
 
-5 provisions · **MUST** 1
+6 provisions · **MUST** 1 · **SHOULD** 1
 
 Decided
 
@@ -930,8 +936,9 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - CI judges with deterministic commands, never with a model. No gate depends on a model's opinion (the stack's rule on language models).
 - Components are pinned at a tag or SHA, never `~latest` (first-repos).
 - git.wayne.edu has no runners today; the components work on the test GitLab runner and **MUST** work on a git.wayne.edu runner when one exists (first-repos). Every product strongly recommends the instance runner.
+- Every change lands through a merge request that another person reviews, and critical findings are addressed before merge (**SHOULD** for a one-person project: record the self-review in the merge request) (WSU developer standards, 2024).
 
-Set from [`handbook/ci.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/ci.md), impression `607693e`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/ci.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/ci.md), impression `a8896e6`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -941,7 +948,7 @@ Chapter 3
 
 ## Code
 
-10 sections · 33 provisions · **MUST NOT** 1
+13 sections · 42 provisions · **MUST NOT** 3 · **MUST** 6 · **SHOULD** 2
 
 Partly decided
 
@@ -955,7 +962,19 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - An app points Pint at the preset in `vendor/waynestate/pinstripe/pint/` with `--config` (the stack's coding standard).
 - Files are UTF-8 without a BOM, with LF line endings (the stack's every-OS design).
 
-### [§3.2](https://creed.apps.wayne.edu/handbook/code.html#static-analysis) Static analysis
+### [§3.2](https://creed.apps.wayne.edu/handbook/code.html#reading-the-code) Reading the code
+
+- Comment where it helps: complex logic, areas that could improve, business rules that would otherwise be a mystery (**SHOULD**). Do not keep version history in comments; git is the change log (WSU developer standards, 2024).
+- Code that no longer runs **MUST** be removed, not commented out; git keeps it (WSU developer standards, 2024).
+- Variable, class and database names **SHOULD** be complete and descriptive; avoid ambiguous abbreviations (WSU developer standards, 2024).
+
+### [§3.3](https://creed.apps.wayne.edu/handbook/code.html#source-control-and-documentation) Source control and documentation
+
+- All source is kept in git, hosted on a WSU-run GitLab; mirrors are fine. Access to a repo **MUST** be removed when someone leaves the project or the university (WSU developer standards, 2024).
+- Every repo's README **MUST** say how to install, configure and deploy the code for local development, on every OS (see `every-os.md`), and how to update an existing deployment (WSU developer standards, 2024).
+- If the Help Desk might be contacted about the project, keep an overview in the repo: what it does, who uses it, known common issues and who to call for an incident; deliver changes to the Help Desk when it changes (WSU developer standards, 2024).
+
+### [§3.4](https://creed.apps.wayne.edu/handbook/code.html#static-analysis) Static analysis
 
 - PHPStan level 8 for new code: the stack's own packages and every app [Sourdough](https://sourdough.apps.wayne.edu/) generates (the stack's coding standard).
 - Larastan loads only where Laravel is present (the stack's coding standard).
@@ -967,7 +986,12 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
   - The starters begin clean, so new apps pass from day one (the stack's coding standard).
   - Null handling is the class of bug level 8 adds; in the stack's auth and header code, a null bug is a security bug (the stack's coding standard).
 
-### [§3.3](https://creed.apps.wayne.edu/handbook/code.html#banned-patterns) Banned patterns
+### [§3.5](https://creed.apps.wayne.edu/handbook/code.html#input-and-files) Input and files
+
+- All input (forms, API calls, headers, cookies, and data read from a database you do not control) **MUST** be validated on the server; SQL uses bound parameters, and output is escaped for where it lands. That guards against SQL injection and cross-site scripting (WSU developer standards, 2024).
+- Files from untrusted sources **MUST** be checked against the expected type, **MUST NOT** be passed to include, class-loading or reflection calls, **MUST** be stored outside the served folder with limited permissions, and **MUST NOT** be executable (WSU developer standards, 2024).
+
+### [§3.6](https://creed.apps.wayne.edu/handbook/code.html#banned-patterns) Banned patterns
 
 Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowed-calls` for plain bans, and a custom rule only when neither fits.
 
@@ -976,7 +1000,7 @@ Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowe
 - No SQL built by joining strings; use bindings (OWASP SQL Injection Prevention Cheat Sheet). Planned.
 - No debug leftovers or dynamic code, from `phpstan-disallowed-calls`. Planned.
 
-### [§3.4](https://creed.apps.wayne.edu/handbook/code.html#vue-and-javascript) Vue and JavaScript
+### [§3.7](https://creed.apps.wayne.edu/handbook/code.html#vue-and-javascript) Vue and JavaScript
 
 - ESLint flat config (the stack's coding standard).
 - `eslint-plugin-vue` `flat/recommended` (the stack's coding standard).
@@ -986,18 +1010,18 @@ Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowe
 - The stack's Vue starters use TypeScript; plain JavaScript stays fully supported (the stack's coding standard).
 - Node 22.13 or newer for the lint tools (the stack's coding standard).
 
-### [§3.5](https://creed.apps.wayne.edu/handbook/code.html#security-analysis) Security analysis
+### [§3.8](https://creed.apps.wayne.edu/handbook/code.html#security-analysis) Security analysis
 
 - The stack's GitLab instances run the Free tier, so nothing relies on GitLab SAST (the stack's coding standard).
 - The open tools instead: Larastan's env rule, `phpstan-disallowed-calls`, and a Psalm taint-analysis pilot on one app (the stack's coding standard).
 
-### [§3.6](https://creed.apps.wayne.edu/handbook/code.html#how-it-is-enforced) How it is enforced
+### [§3.9](https://creed.apps.wayne.edu/handbook/code.html#how-it-is-enforced) How it is enforced
 
 - Pint, PHPStan, Rector dry-runs and ESLint run in CI through [Preflight](https://preflight.apps.wayne.edu/) components, not in the deploy gate (the stack's coding standard). The Preflight components are Planned.
 - New rules arrive as warnings and become errors on a stated date, the same staging as PHP versions (the stack's enforcement design).
 - [PROCTOR](https://proctor.apps.wayne.edu/) reports whether an app uses the presets (the stack's coding standard). The PROCTOR report is Planned.
 
-### [§3.7](https://creed.apps.wayne.edu/handbook/code.html#which-preset-enforces-each-rule) Which preset enforces each rule
+### [§3.10](https://creed.apps.wayne.edu/handbook/code.html#which-preset-enforces-each-rule) Which preset enforces each rule
 
 Table 3-1
 
@@ -1012,18 +1036,19 @@ Table 3-1
 | Vue and JavaScript | the ESLint package (name to be decided) | Planned |
 | Security analysis | to be decided | Planned |
 
-### [§3.8](https://creed.apps.wayne.edu/handbook/code.html#not-adopted) Not adopted
+### [§3.11](https://creed.apps.wayne.edu/handbook/code.html#not-adopted) Not adopted
 
 - Mago and PHP_CodeSniffer 4 are not adopted; Pint is the only formatter (the stack's coding standard).
 - Mago is looked at again before Pinstripe 1.0 (the stack's coding standard).
 
-### [§3.9](https://creed.apps.wayne.edu/handbook/code.html#to-be-decided) To be decided
+### [§3.12](https://creed.apps.wayne.edu/handbook/code.html#to-be-decided) To be decided
 
 - `declare(strict_types=1)` in every file. The sources recommend it, but the stack's coding standard does not decide it.
 - `phpstan-strict-rules` for the stack's packages (the stack's coding standard).
 - Where the ESLint package is published (the stack's coding standard).
+- Which catalog a project registers in, and how change control is recorded, are held for the owners' answer.
 
-### [§3.10](https://creed.apps.wayne.edu/handbook/code.html#sources) Sources
+### [§3.13](https://creed.apps.wayne.edu/handbook/code.html#sources) Sources
 
 - PER Coding Style 3.1: [https://www.php-fig.org/per/coding-style/](https://www.php-fig.org/per/coding-style/)
 - PSR-1 Basic Coding Standard: [https://www.php-fig.org/psr/psr-1/](https://www.php-fig.org/psr/psr-1/)
@@ -1046,7 +1071,7 @@ Table 3-1
 - GitLab Code Quality: [https://docs.gitlab.com/ci/testing/code_quality/](https://docs.gitlab.com/ci/testing/code_quality/)
 - OWASP ASVS: [https://asvs.owasp.org/](https://asvs.owasp.org/)
 
-Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `8d461ee`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `e5954e9`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -1056,7 +1081,7 @@ Chapter 5
 
 ## Databases
 
-8 sections · 23 provisions · **MUST** 2 · **MAY** 1
+9 sections · 25 provisions · **MUST** 4 · **SHOULD** 1 · **MAY** 1
 
 Decided
 
@@ -1074,7 +1099,12 @@ The policy lists the LTS lines, 8.4 and 9.7, for current use. It keeps the older
 
 An app **MAY** stay on a database version for 90 days after it leaves support, the policy's [`eol_grace_days`](https://github.com/waynestate/creed/blob/main/policy/policy.json); the version is `Eol` through that window and `EolGraceExpired` the day after, when the gate fails with no override. The window is a bridge for the upgrade, not a second support window: the fix is still the upgrade.
 
-### [§5.4](https://creed.apps.wayne.edu/handbook/databases.html#conventions-that-keep-5-6-working) Conventions that keep 5.6 working
+### [§5.4](https://creed.apps.wayne.edu/handbook/databases.html#names-comments-and-connections) Names, comments and connections
+
+- Table and column names are descriptive. Add table and column comments (Laravel's `->comment()`) where the database supports them, to say what an element is for (**SHOULD**) (WSU developer standards, 2024).
+- The connection between the app and the database **MUST** be encrypted. The database account **MUST** have only the privileges the app needs, never an administrator account (WSU developer standards, 2024).
+
+### [§5.5](https://creed.apps.wayne.edu/handbook/databases.html#conventions-that-keep-5-6-working) Conventions that keep 5.6 working
 
 - Set `Schema::defaultStringLength(191)` in `AppServiceProvider::boot()`, before any migration runs. 5.6 caps an indexed `utf8mb4` column at 767 bytes, which is 191 characters. [PROCTOR](https://proctor.apps.wayne.edu/) check: `mysql56`.
 - Keep `utf8mb4` and `utf8mb4_unicode_ci`, the defaults. Never use an 8.0-only collation such as `utf8mb4_0900_ai_ci` (not yet confirmed on a 5.6 server).
@@ -1086,9 +1116,9 @@ An app **MAY** stay on a database version for 90 days after it leaves support, t
 - Use `timestamp`, not `date`, for `useCurrent()`. A `date` column cannot take a current-timestamp default on 5.6.
 - Run migrations in CI against a real 5.6 container. SQLite-only tests pass code that 5.6 rejects.
 
-### [§5.5](https://creed.apps.wayne.edu/handbook/databases.html#avoid-until-the-server-is-upgraded) Avoid until the server is upgraded
+### [§5.6](https://creed.apps.wayne.edu/handbook/databases.html#avoid-until-the-server-is-upgraded) Avoid until the server is upgraded
 
-#### [§5.5.1](https://creed.apps.wayne.edu/handbook/databases.html#schema) Schema
+#### [§5.6.1](https://creed.apps.wayne.edu/handbook/databases.html#schema) Schema
 
 - JSON and jsonb columns
 - Generated columns
@@ -1098,7 +1128,7 @@ An app **MAY** stay on a database version for 90 days after it leaves support, t
 - InnoDB `spatialIndex` (needs 5.7.5, not yet confirmed on a 5.6 server)
 - DESC indexes and CHECK constraints
 
-#### [§5.5.2](https://creed.apps.wayne.edu/handbook/databases.html#queries) Queries
+#### [§5.6.2](https://creed.apps.wayne.edu/handbook/databases.html#queries) Queries
 
 - `whereJson*` and JSON-path updates
 - Window functions and CTEs
@@ -1106,22 +1136,22 @@ An app **MAY** stay on a database version for 90 days after it leaves support, t
 - `joinLateral`
 - Joined deletes with an order or a limit
 
-#### [§5.5.3](https://creed.apps.wayne.edu/handbook/databases.html#commands) Commands
+#### [§5.6.3](https://creed.apps.wayne.edu/handbook/databases.html#commands) Commands
 
 - `db:show`
 - `db:monitor`
 
-### [§5.6](https://creed.apps.wayne.edu/handbook/databases.html#moving-to-8-4) Moving to 8.4
+### [§5.7](https://creed.apps.wayne.edu/handbook/databases.html#moving-to-8-4) Moving to 8.4
 
 Code that follows the conventions and avoids the patterns above runs unchanged on 8.4. The server-side large-prefix settings (`innodb_large_prefix=ON`, `innodb_file_format=Barracuda`, DYNAMIC rows) are a question for the database owners, not something an app sets (not yet confirmed on a 5.6 server). Passing `ROW_FORMAT=DYNAMIC` through the `engine` config is likewise not yet confirmed on a 5.6 server.
 
 Oracle moved 5.6 to Sustaining Support on 2021-02-01, so it gets no new fixes. Builds older than 5.6.46 also speak only TLS 1.0, which current hosts may refuse (not yet confirmed on a 5.6 server). Both are reasons to plan the move rather than wait for it.
 
-### [§5.7](https://creed.apps.wayne.edu/handbook/databases.html#how-the-stack-checks-it) How the stack checks it
+### [§5.8](https://creed.apps.wayne.edu/handbook/databases.html#how-the-stack-checks-it) How the stack checks it
 
 PROCTOR's `mysql56` check flags the patterns in the avoid list above that fail on 5.6: JSON columns, generated columns, `renameColumn`, long indexed strings and a missing `Schema::defaultStringLength(191)`. The rest of the list is not checked yet.
 
-### [§5.8](https://creed.apps.wayne.edu/handbook/databases.html#sources) Sources
+### [§5.9](https://creed.apps.wayne.edu/handbook/databases.html#sources) Sources
 
 - Laravel 13 database docs: [https://laravel.com/docs/13.x/database](https://laravel.com/docs/13.x/database)
 - Laravel docs, `migrations.md` (index-length section): [https://github.com/laravel/docs/blob/10.x/migrations.md](https://github.com/laravel/docs/blob/10.x/migrations.md)
@@ -1148,7 +1178,7 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`rules.eol_grace_days`**: `90`
 - **`components.*.versions.*.security_until`**: set per version
 
-Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `2c2fd07`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `10e8473`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -1158,7 +1188,7 @@ Chapter 2
 
 ## Dependencies
 
-1 section · 13 provisions · **MUST NOT** 4 · **MUST** 6 · **SHOULD NOT** 1 · **SHOULD** 1
+1 section · 14 provisions · **MUST NOT** 4 · **MUST** 6 · **SHOULD NOT** 1 · **SHOULD** 2
 
 Decided
 
@@ -1170,6 +1200,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - `composer.json` `require.php` **MUST NOT** allow an EOL version as its lowest bound (the stack's version policy). PROCTOR check: `php-floor`.
 - Every project is a framework-free core plus thin adapters. `composer.json` requires only `php` and PSR packages; Laravel, Inertia and Vue are `suggest` (the stack's core-plus-adapters design).
 - Adapters call the core and never re-implement it (the stack's core-plus-adapters design).
+- Before adding a third-party package, check it comes from a trusted source, and where the source is open, read enough of it to judge it sound and fit (**SHOULD**). The audit and abandoned-package rules in this chapter apply after that choice (WSU developer standards, 2024).
 
 ### [§2.1](https://creed.apps.wayne.edu/handbook/dependencies.html#private-packages) Private packages
 
@@ -1183,7 +1214,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 PROCTOR's `repo-url-credentials`, `package-sources` and `internal-vendor-shadowing` checks enforce rules 1, 2 and 4 (warning first), and [Preflight](https://preflight.apps.wayne.edu/)'s publish job enforces rule 5.
 
-Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `e7daa67`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `58249c9`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -1250,18 +1281,18 @@ The handbook · 2026 Edition
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and marks the rest as "To be decided".
 
-Thirteen chapters · 130 provisions · **MUST** 27 · **SHOULD** 7 · **MAY** 1
+Thirteen chapters · 149 provisions · **MUST** 40 · **SHOULD** 12 · **MAY** 1
 
 ### Contents
 
 1. [1 Versions Latest patches · Tool minimums](https://creed.apps.wayne.edu/handbook/versions.html)2 sections · 4 provisions · **MUST** 1Decided
-2. [2 Dependencies Private packages](https://creed.apps.wayne.edu/handbook/dependencies.html)1 section · 13 provisions · **MUST NOT** 4 · **MUST** 6 · **SHOULD NOT** 1 · **SHOULD** 1Decided
-3. [3 Code PHP style · Static analysis · Banned patterns · Vue and JavaScript · Security analysis · How it is enforced · Which preset enforces each rule · Not adopted · To be decided · Sources](https://creed.apps.wayne.edu/handbook/code.html)10 sections · 33 provisions · **MUST NOT** 1Partly decided
-4. [4 Auth](https://creed.apps.wayne.edu/handbook/auth.html)6 provisionsPartly decided
-5. [5 Databases What the stack supports · Which MySQL lines the policy lists · Grace period · Conventions that keep 5.6 working · Avoid until the server is upgraded · Moving to 8.4 · How the stack checks it · Sources](https://creed.apps.wayne.edu/handbook/databases.html)8 sections · 23 provisions · **MUST** 2 · **MAY** 1Decided
+2. [2 Dependencies Private packages](https://creed.apps.wayne.edu/handbook/dependencies.html)1 section · 14 provisions · **MUST NOT** 4 · **MUST** 6 · **SHOULD NOT** 1 · **SHOULD** 2Decided
+3. [3 Code PHP style · Reading the code · Source control and documentation · Static analysis · Input and files · Banned patterns · Vue and JavaScript · Security analysis · How it is enforced · Which preset enforces each rule · Not adopted · To be decided · Sources](https://creed.apps.wayne.edu/handbook/code.html)13 sections · 42 provisions · **MUST NOT** 3 · **MUST** 6 · **SHOULD** 2Partly decided
+4. [4 Auth](https://creed.apps.wayne.edu/handbook/auth.html)12 provisions · **MUST** 3Partly decided
+5. [5 Databases What the stack supports · Which MySQL lines the policy lists · Grace period · Names, comments and connections · Conventions that keep 5.6 working · Avoid until the server is upgraded · Moving to 8.4 · How the stack checks it · Sources](https://creed.apps.wayne.edu/handbook/databases.html)9 sections · 25 provisions · **MUST** 4 · **SHOULD** 1 · **MAY** 1Decided
 6. [6 Runtime and headers](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html)2 provisionsTo be decided
 7. [7 Deploy gate On Citadel · Elsewhere](https://creed.apps.wayne.edu/handbook/deploy-gate.html)2 sections · 8 provisionsDecided
-8. [8 CI](https://creed.apps.wayne.edu/handbook/ci.html)5 provisions · **MUST** 1Decided
+8. [8 CI](https://creed.apps.wayne.edu/handbook/ci.html)6 provisions · **MUST** 1 · **SHOULD** 1Decided
 9. [9 Accessibility](https://creed.apps.wayne.edu/handbook/accessibility.html)1 provisionTo be decided
 10. [10 Every OS](https://creed.apps.wayne.edu/handbook/every-os.html)5 provisions · **MUST** 1Decided
 11. [11 Secrets and debugging Credentials · Errors and debug output · Not decided here](https://creed.apps.wayne.edu/handbook/secrets.html)3 sections · 8 provisions · **MUST NOT** 3 · **MUST** 2Decided

@@ -59,7 +59,7 @@
   <ol class="hb-nav__list">
       <li><a href="versions.html"><span class="hb-nav__no">1</span><span class="hb-nav__name">Versions</span></a></li>
       <li><a href="dependencies.html"><span class="hb-nav__no">2</span><span class="hb-nav__name">Dependencies</span></a></li>
-      <li class="is-here"><a href="code.html" aria-current="page"><span class="hb-nav__no">3</span><span class="hb-nav__name">Code</span></a><ol class="hb-nav__sub"><li><a href="#php-style" data-toc="php-style">PHP style</a></li><li><a href="#static-analysis" data-toc="static-analysis">Static analysis</a></li><li><a href="#banned-patterns" data-toc="banned-patterns">Banned patterns</a></li><li><a href="#vue-and-javascript" data-toc="vue-and-javascript">Vue and JavaScript</a></li><li><a href="#security-analysis" data-toc="security-analysis">Security analysis</a></li><li><a href="#how-it-is-enforced" data-toc="how-it-is-enforced">How it is enforced</a></li><li><a href="#which-preset-enforces-each-rule" data-toc="which-preset-enforces-each-rule">Which preset enforces each rule</a></li><li><a href="#not-adopted" data-toc="not-adopted">Not adopted</a></li><li><a href="#to-be-decided" data-toc="to-be-decided">To be decided</a></li><li><a href="#sources" data-toc="sources">Sources</a></li></ol></li>
+      <li class="is-here"><a href="code.html" aria-current="page"><span class="hb-nav__no">3</span><span class="hb-nav__name">Code</span></a><ol class="hb-nav__sub"><li><a href="#php-style" data-toc="php-style">PHP style</a></li><li><a href="#reading-the-code" data-toc="reading-the-code">Reading the code</a></li><li><a href="#source-control-and-documentation" data-toc="source-control-and-documentation">Source control and documentation</a></li><li><a href="#static-analysis" data-toc="static-analysis">Static analysis</a></li><li><a href="#input-and-files" data-toc="input-and-files">Input and files</a></li><li><a href="#banned-patterns" data-toc="banned-patterns">Banned patterns</a></li><li><a href="#vue-and-javascript" data-toc="vue-and-javascript">Vue and JavaScript</a></li><li><a href="#security-analysis" data-toc="security-analysis">Security analysis</a></li><li><a href="#how-it-is-enforced" data-toc="how-it-is-enforced">How it is enforced</a></li><li><a href="#which-preset-enforces-each-rule" data-toc="which-preset-enforces-each-rule">Which preset enforces each rule</a></li><li><a href="#not-adopted" data-toc="not-adopted">Not adopted</a></li><li><a href="#to-be-decided" data-toc="to-be-decided">To be decided</a></li><li><a href="#sources" data-toc="sources">Sources</a></li></ol></li>
       <li><a href="auth.html"><span class="hb-nav__no">4</span><span class="hb-nav__name">Auth</span></a></li>
       <li><a href="databases.html"><span class="hb-nav__no">5</span><span class="hb-nav__name">Databases</span></a></li>
       <li><a href="runtime-and-headers.html"><span class="hb-nav__no">6</span><span class="hb-nav__name">Runtime and headers</span><span class="hb-nav__tbd" title="To be decided"><span class="wsu-sr-only">, to be decided</span></span></a></li>
@@ -82,7 +82,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 3</p>
             <h1 id="page-title">Code</h1>
-            <p class="hb-register">10 sections · 33 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1</p>
+            <p class="hb-register">13 sections · 42 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 6 · <strong class="kw kw--should">SHOULD</strong> 2</p>
           </div>
           <span class="stamp stamp--checked hb-status">Partly decided</span>
         </header>
@@ -91,15 +91,18 @@
         <p class="hb-toc__title">On this page</p>
         <ol>
             <li class="hb-toc__l2"><a href="#php-style" data-toc="php-style"><span class="hb-toc__no">3.1</span> PHP style</a></li>
-            <li class="hb-toc__l2"><a href="#static-analysis" data-toc="static-analysis"><span class="hb-toc__no">3.2</span> Static analysis</a></li>
-            <li class="hb-toc__l2"><a href="#banned-patterns" data-toc="banned-patterns"><span class="hb-toc__no">3.3</span> Banned patterns</a></li>
-            <li class="hb-toc__l2"><a href="#vue-and-javascript" data-toc="vue-and-javascript"><span class="hb-toc__no">3.4</span> Vue and JavaScript</a></li>
-            <li class="hb-toc__l2"><a href="#security-analysis" data-toc="security-analysis"><span class="hb-toc__no">3.5</span> Security analysis</a></li>
-            <li class="hb-toc__l2"><a href="#how-it-is-enforced" data-toc="how-it-is-enforced"><span class="hb-toc__no">3.6</span> How it is enforced</a></li>
-            <li class="hb-toc__l2"><a href="#which-preset-enforces-each-rule" data-toc="which-preset-enforces-each-rule"><span class="hb-toc__no">3.7</span> Which preset enforces each rule</a></li>
-            <li class="hb-toc__l2"><a href="#not-adopted" data-toc="not-adopted"><span class="hb-toc__no">3.8</span> Not adopted</a></li>
-            <li class="hb-toc__l2"><a href="#to-be-decided" data-toc="to-be-decided"><span class="hb-toc__no">3.9</span> To be decided</a></li>
-            <li class="hb-toc__l2"><a href="#sources" data-toc="sources"><span class="hb-toc__no">3.10</span> Sources</a></li>
+            <li class="hb-toc__l2"><a href="#reading-the-code" data-toc="reading-the-code"><span class="hb-toc__no">3.2</span> Reading the code</a></li>
+            <li class="hb-toc__l2"><a href="#source-control-and-documentation" data-toc="source-control-and-documentation"><span class="hb-toc__no">3.3</span> Source control and documentation</a></li>
+            <li class="hb-toc__l2"><a href="#static-analysis" data-toc="static-analysis"><span class="hb-toc__no">3.4</span> Static analysis</a></li>
+            <li class="hb-toc__l2"><a href="#input-and-files" data-toc="input-and-files"><span class="hb-toc__no">3.5</span> Input and files</a></li>
+            <li class="hb-toc__l2"><a href="#banned-patterns" data-toc="banned-patterns"><span class="hb-toc__no">3.6</span> Banned patterns</a></li>
+            <li class="hb-toc__l2"><a href="#vue-and-javascript" data-toc="vue-and-javascript"><span class="hb-toc__no">3.7</span> Vue and JavaScript</a></li>
+            <li class="hb-toc__l2"><a href="#security-analysis" data-toc="security-analysis"><span class="hb-toc__no">3.8</span> Security analysis</a></li>
+            <li class="hb-toc__l2"><a href="#how-it-is-enforced" data-toc="how-it-is-enforced"><span class="hb-toc__no">3.9</span> How it is enforced</a></li>
+            <li class="hb-toc__l2"><a href="#which-preset-enforces-each-rule" data-toc="which-preset-enforces-each-rule"><span class="hb-toc__no">3.10</span> Which preset enforces each rule</a></li>
+            <li class="hb-toc__l2"><a href="#not-adopted" data-toc="not-adopted"><span class="hb-toc__no">3.11</span> Not adopted</a></li>
+            <li class="hb-toc__l2"><a href="#to-be-decided" data-toc="to-be-decided"><span class="hb-toc__no">3.12</span> To be decided</a></li>
+            <li class="hb-toc__l2"><a href="#sources" data-toc="sources"><span class="hb-toc__no">3.13</span> Sources</a></li>
         </ol>
       </nav>
           <div class="hb-prose" data-hb-prose>
@@ -115,7 +118,19 @@ with <code>--config</code> <span class="hb-cite">(the stack's coding standard)</
 <li>Files are UTF-8 without a BOM, with LF line endings (the stack's
 every-OS design).</li>
 </ul>
-<h2 id="static-analysis"><a class="hb-sec" href="#static-analysis">§3.2</a> Static analysis</h2>
+<h2 id="reading-the-code"><a class="hb-sec" href="#reading-the-code">§3.2</a> Reading the code</h2>
+<ul>
+<li>Comment where it helps: complex logic, areas that could improve, business rules that would otherwise be a mystery (<strong class="kw kw--should">SHOULD</strong>). Do not keep version history in comments; git is the change log (WSU developer standards, 2024).</li>
+<li>Code that no longer runs <strong class="kw kw--must">MUST</strong> be removed, not commented out; git keeps it (WSU developer standards, 2024).</li>
+<li>Variable, class and database names <strong class="kw kw--should">SHOULD</strong> be complete and descriptive; avoid ambiguous abbreviations (WSU developer standards, 2024).</li>
+</ul>
+<h2 id="source-control-and-documentation"><a class="hb-sec" href="#source-control-and-documentation">§3.3</a> Source control and documentation</h2>
+<ul>
+<li>All source is kept in git, hosted on a WSU-run GitLab; mirrors are fine. Access to a repo <strong class="kw kw--must">MUST</strong> be removed when someone leaves the project or the university (WSU developer standards, 2024).</li>
+<li>Every repo's README <strong class="kw kw--must">MUST</strong> say how to install, configure and deploy the code for local development, on every OS (see <code>every-os.md</code>), and how to update an existing deployment (WSU developer standards, 2024).</li>
+<li>If the Help Desk might be contacted about the project, keep an overview in the repo: what it does, who uses it, known common issues and who to call for an incident; deliver changes to the Help Desk when it changes (WSU developer standards, 2024).</li>
+</ul>
+<h2 id="static-analysis"><a class="hb-sec" href="#static-analysis">§3.4</a> Static analysis</h2>
 <ul>
 <li>PHPStan level 8 for new code: the stack's own packages and every app
 <a class="tool" href="https://sourdough.apps.wayne.edu/"><img src="../assets/marks/sourdough.png" alt="" width="16" height="16">Sourdough</a> generates <span class="hb-cite">(the stack's coding standard)</span>.</li>
@@ -135,7 +150,12 @@ header code, a null bug is a security bug <span class="hb-cite">(the stack's cod
 </ul>
 </li>
 </ul>
-<h2 id="banned-patterns"><a class="hb-sec" href="#banned-patterns">§3.3</a> Banned patterns</h2>
+<h2 id="input-and-files"><a class="hb-sec" href="#input-and-files">§3.5</a> Input and files</h2>
+<ul>
+<li>All input (forms, API calls, headers, cookies, and data read from a database you do not control) <strong class="kw kw--must">MUST</strong> be validated on the server; SQL uses bound parameters, and output is escaped for where it lands. That guards against SQL injection and cross-site scripting (WSU developer standards, 2024).</li>
+<li>Files from untrusted sources <strong class="kw kw--must">MUST</strong> be checked against the expected type, <strong class="kw kw--must-not">MUST NOT</strong> be passed to include, class-loading or reflection calls, <strong class="kw kw--must">MUST</strong> be stored outside the served folder with limited permissions, and <strong class="kw kw--must-not">MUST NOT</strong> be executable (WSU developer standards, 2024).</li>
+</ul>
+<h2 id="banned-patterns"><a class="hb-sec" href="#banned-patterns">§3.6</a> Banned patterns</h2>
 <p>Each ban becomes a PHPStan rule: Larastan's where it has one, <code>phpstan-disallowed-calls</code>
 for plain bans, and a custom rule only when neither fits.</p>
 <ul>
@@ -148,7 +168,7 @@ Prevention Cheat Sheet). Planned.</li>
 <li>No debug leftovers or dynamic code, from <code>phpstan-disallowed-calls</code>.
 Planned.</li>
 </ul>
-<h2 id="vue-and-javascript"><a class="hb-sec" href="#vue-and-javascript">§3.4</a> Vue and JavaScript</h2>
+<h2 id="vue-and-javascript"><a class="hb-sec" href="#vue-and-javascript">§3.7</a> Vue and JavaScript</h2>
 <ul>
 <li>ESLint flat config <span class="hb-cite">(the stack's coding standard)</span>.</li>
 <li><code>eslint-plugin-vue</code> <code>flat/recommended</code> <span class="hb-cite">(the stack's coding standard)</span>.</li>
@@ -159,14 +179,14 @@ Planned.</li>
 supported <span class="hb-cite">(the stack's coding standard)</span>.</li>
 <li>Node 22.13 or newer for the lint tools <span class="hb-cite">(the stack's coding standard)</span>.</li>
 </ul>
-<h2 id="security-analysis"><a class="hb-sec" href="#security-analysis">§3.5</a> Security analysis</h2>
+<h2 id="security-analysis"><a class="hb-sec" href="#security-analysis">§3.8</a> Security analysis</h2>
 <ul>
 <li>The stack's GitLab instances run the Free tier,
 so nothing relies on GitLab SAST <span class="hb-cite">(the stack's coding standard)</span>.</li>
 <li>The open tools instead: Larastan's env rule, <code>phpstan-disallowed-calls</code>,
 and a Psalm taint-analysis pilot on one app <span class="hb-cite">(the stack's coding standard)</span>.</li>
 </ul>
-<h2 id="how-it-is-enforced"><a class="hb-sec" href="#how-it-is-enforced">§3.6</a> How it is enforced</h2>
+<h2 id="how-it-is-enforced"><a class="hb-sec" href="#how-it-is-enforced">§3.9</a> How it is enforced</h2>
 <ul>
 <li>Pint, PHPStan, Rector dry-runs and ESLint run in CI through <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>
 components, not in the deploy gate <span class="hb-cite">(the stack's coding standard)</span>. The Preflight components
@@ -176,7 +196,7 @@ staging as PHP versions <span class="hb-cite">(the stack's enforcement design)</
 <li><a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> reports whether an app uses the presets <span class="hb-cite">(the stack's coding standard)</span>. The PROCTOR
 report is Planned.</li>
 </ul>
-<h2 id="which-preset-enforces-each-rule"><a class="hb-sec" href="#which-preset-enforces-each-rule">§3.7</a> Which preset enforces each rule</h2>
+<h2 id="which-preset-enforces-each-rule"><a class="hb-sec" href="#which-preset-enforces-each-rule">§3.10</a> Which preset enforces each rule</h2>
 <figure class="hb-table"><figcaption id="table-3-1"><span class="code-table__no">Table 3-1</span></figcaption><div class="hb-table__scroll" tabindex="0" role="region" aria-labelledby="table-3-1"><table>
 <thead>
 <tr>
@@ -228,20 +248,21 @@ report is Planned.</li>
 </tr>
 </tbody>
 </table></div></figure>
-<h2 id="not-adopted"><a class="hb-sec" href="#not-adopted">§3.8</a> Not adopted</h2>
+<h2 id="not-adopted"><a class="hb-sec" href="#not-adopted">§3.11</a> Not adopted</h2>
 <ul>
 <li>Mago and PHP_CodeSniffer 4 are not adopted; Pint is the only formatter
 <span class="hb-cite">(the stack's coding standard)</span>.</li>
 <li>Mago is looked at again before Pinstripe 1.0 <span class="hb-cite">(the stack's coding standard)</span>.</li>
 </ul>
-<h2 id="to-be-decided" class="hb-h-tbd"><a class="hb-sec" href="#to-be-decided">§3.9</a> To be decided</h2>
+<h2 id="to-be-decided" class="hb-h-tbd"><a class="hb-sec" href="#to-be-decided">§3.12</a> To be decided</h2>
 <ul>
 <li><code>declare(strict_types=1)</code> in every file. The sources recommend it, but
 the stack's coding standard does not decide it.</li>
 <li><code>phpstan-strict-rules</code> for the stack's packages <span class="hb-cite">(the stack's coding standard)</span>.</li>
 <li>Where the ESLint package is published <span class="hb-cite">(the stack's coding standard)</span>.</li>
+<li>Which catalog a project registers in, and how change control is recorded, are held for the owners' answer.</li>
 </ul>
-<h2 id="sources"><a class="hb-sec" href="#sources">§3.10</a> Sources</h2>
+<h2 id="sources"><a class="hb-sec" href="#sources">§3.13</a> Sources</h2>
 <ul class="hb-sources">
 <li>PER Coding Style 3.1: <a href="https://www.php-fig.org/per/coding-style/">https://www.php-fig.org/per/coding-style/</a></li>
 <li>PSR-1 Basic Coding Standard: <a href="https://www.php-fig.org/psr/psr-1/">https://www.php-fig.org/psr/psr-1/</a></li>
@@ -274,7 +295,7 @@ the stack's coding standard does not decide it.</li>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="dependencies.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 2</span><span class="hb-pager__name">Dependencies</span></a><a class="hb-pager__link hb-pager__link--next" href="auth.html" rel="next"><span class="hb-pager__dir">Next · Chapter 4</span><span class="hb-pager__name">Auth</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/code.md"><code>handbook/code.md</code> on GitHub</a>, impression <code>8d461ee</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/code.md"><code>handbook/code.md</code> on GitHub</a>, impression <code>e5954e9</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

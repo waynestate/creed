@@ -10,7 +10,7 @@ Chapter 5
 
 # Databases
 
-8 sections · 23 provisions · **MUST** 2 · **MAY** 1
+9 sections · 25 provisions · **MUST** 4 · **SHOULD** 1 · **MAY** 1
 
 Decided
 
@@ -28,7 +28,12 @@ The policy lists the LTS lines, 8.4 and 9.7, for current use. It keeps the older
 
 An app **MAY** stay on a database version for 90 days after it leaves support, the policy's [`eol_grace_days`](https://github.com/waynestate/creed/blob/main/policy/policy.json); the version is `Eol` through that window and `EolGraceExpired` the day after, when the gate fails with no override. The window is a bridge for the upgrade, not a second support window: the fix is still the upgrade.
 
-## [§5.4](https://creed.apps.wayne.edu/handbook/databases.html#conventions-that-keep-5-6-working) Conventions that keep 5.6 working
+## [§5.4](https://creed.apps.wayne.edu/handbook/databases.html#names-comments-and-connections) Names, comments and connections
+
+- Table and column names are descriptive. Add table and column comments (Laravel's `->comment()`) where the database supports them, to say what an element is for (**SHOULD**) (WSU developer standards, 2024).
+- The connection between the app and the database **MUST** be encrypted. The database account **MUST** have only the privileges the app needs, never an administrator account (WSU developer standards, 2024).
+
+## [§5.5](https://creed.apps.wayne.edu/handbook/databases.html#conventions-that-keep-5-6-working) Conventions that keep 5.6 working
 
 - Set `Schema::defaultStringLength(191)` in `AppServiceProvider::boot()`, before any migration runs. 5.6 caps an indexed `utf8mb4` column at 767 bytes, which is 191 characters. [PROCTOR](https://proctor.apps.wayne.edu/) check: `mysql56`.
 - Keep `utf8mb4` and `utf8mb4_unicode_ci`, the defaults. Never use an 8.0-only collation such as `utf8mb4_0900_ai_ci` (not yet confirmed on a 5.6 server).
@@ -40,9 +45,9 @@ An app **MAY** stay on a database version for 90 days after it leaves support, t
 - Use `timestamp`, not `date`, for `useCurrent()`. A `date` column cannot take a current-timestamp default on 5.6.
 - Run migrations in CI against a real 5.6 container. SQLite-only tests pass code that 5.6 rejects.
 
-## [§5.5](https://creed.apps.wayne.edu/handbook/databases.html#avoid-until-the-server-is-upgraded) Avoid until the server is upgraded
+## [§5.6](https://creed.apps.wayne.edu/handbook/databases.html#avoid-until-the-server-is-upgraded) Avoid until the server is upgraded
 
-### [§5.5.1](https://creed.apps.wayne.edu/handbook/databases.html#schema) Schema
+### [§5.6.1](https://creed.apps.wayne.edu/handbook/databases.html#schema) Schema
 
 - JSON and jsonb columns
 - Generated columns
@@ -52,7 +57,7 @@ An app **MAY** stay on a database version for 90 days after it leaves support, t
 - InnoDB `spatialIndex` (needs 5.7.5, not yet confirmed on a 5.6 server)
 - DESC indexes and CHECK constraints
 
-### [§5.5.2](https://creed.apps.wayne.edu/handbook/databases.html#queries) Queries
+### [§5.6.2](https://creed.apps.wayne.edu/handbook/databases.html#queries) Queries
 
 - `whereJson*` and JSON-path updates
 - Window functions and CTEs
@@ -60,22 +65,22 @@ An app **MAY** stay on a database version for 90 days after it leaves support, t
 - `joinLateral`
 - Joined deletes with an order or a limit
 
-### [§5.5.3](https://creed.apps.wayne.edu/handbook/databases.html#commands) Commands
+### [§5.6.3](https://creed.apps.wayne.edu/handbook/databases.html#commands) Commands
 
 - `db:show`
 - `db:monitor`
 
-## [§5.6](https://creed.apps.wayne.edu/handbook/databases.html#moving-to-8-4) Moving to 8.4
+## [§5.7](https://creed.apps.wayne.edu/handbook/databases.html#moving-to-8-4) Moving to 8.4
 
 Code that follows the conventions and avoids the patterns above runs unchanged on 8.4. The server-side large-prefix settings (`innodb_large_prefix=ON`, `innodb_file_format=Barracuda`, DYNAMIC rows) are a question for the database owners, not something an app sets (not yet confirmed on a 5.6 server). Passing `ROW_FORMAT=DYNAMIC` through the `engine` config is likewise not yet confirmed on a 5.6 server.
 
 Oracle moved 5.6 to Sustaining Support on 2021-02-01, so it gets no new fixes. Builds older than 5.6.46 also speak only TLS 1.0, which current hosts may refuse (not yet confirmed on a 5.6 server). Both are reasons to plan the move rather than wait for it.
 
-## [§5.7](https://creed.apps.wayne.edu/handbook/databases.html#how-the-stack-checks-it) How the stack checks it
+## [§5.8](https://creed.apps.wayne.edu/handbook/databases.html#how-the-stack-checks-it) How the stack checks it
 
 PROCTOR's `mysql56` check flags the patterns in the avoid list above that fail on 5.6: JSON columns, generated columns, `renameColumn`, long indexed strings and a missing `Schema::defaultStringLength(191)`. The rest of the list is not checked yet.
 
-## [§5.8](https://creed.apps.wayne.edu/handbook/databases.html#sources) Sources
+## [§5.9](https://creed.apps.wayne.edu/handbook/databases.html#sources) Sources
 
 - Laravel 13 database docs: [https://laravel.com/docs/13.x/database](https://laravel.com/docs/13.x/database)
 - Laravel docs, `migrations.md` (index-length section): [https://github.com/laravel/docs/blob/10.x/migrations.md](https://github.com/laravel/docs/blob/10.x/migrations.md)
@@ -102,4 +107,4 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`rules.eol_grace_days`**: `90`
 - **`components.*.versions.*.security_until`**: set per version
 
-Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `2c2fd07`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `10e8473`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

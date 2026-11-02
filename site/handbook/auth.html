@@ -82,7 +82,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 4</p>
             <h1 id="page-title">Auth</h1>
-            <p class="hb-register">6 provisions</p>
+            <p class="hb-register">12 provisions · <strong class="kw kw--must">MUST</strong> 3</p>
           </div>
           <span class="stamp stamp--checked hb-status">Partly decided</span>
         </header>
@@ -104,13 +104,19 @@ built yet), and <code>fake</code> for local development and tests <span class="h
 <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>php-floor</code>.</li>
 <li class="hb-tbd">To be decided: the gateway's key distribution and rotation, and the SAML
 library choice if a <code>saml</code> driver is built <span class="hb-cite">(the stack's auth design)</span>.</li>
+<li>API and other stateless requests are authenticated with signed, short-lived bearer tokens in an <code>Authorization</code> header, verified on every request. A token is signed, not merely encrypted; JSON Web Tokens are a good fit (WSU developer standards, 2024).</li>
+<li>Authentication is checked before any content is shown or any script function runs, on every request. Deny by default: routes are protected unless listed as public, and an unauthenticated person is sent to sign in (WSU developer standards, 2024).</li>
+<li>When authentication or an authorization lookup fails, the result is fail closed: access is withheld (WSU developer standards, 2024).</li>
+<li>Administrative access <strong class="kw kw--must">MUST</strong> be limited to named users or roles, and access that is due to end is revoked on a regular schedule (WSU developer standards, 2024).</li>
+<li>Access that is due to end when a person's status changes (for example an ended employment) <strong class="kw kw--must">MUST</strong> be removed by an automated process, not by memory (WSU developer standards, 2024).</li>
+<li>Idle sessions <strong class="kw kw--must">MUST</strong> time out after a configurable period of inactivity. The stack sets no number yet; Laravel's default session lifetime applies until it does (WSU developer standards, 2024).</li>
 </ul>
           </div>
         </div>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="code.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 3</span><span class="hb-pager__name">Code</span></a><a class="hb-pager__link hb-pager__link--next" href="databases.html" rel="next"><span class="hb-pager__dir">Next · Chapter 5</span><span class="hb-pager__name">Databases</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/auth.md"><code>handbook/auth.md</code> on GitHub</a>, impression <code>643e5dc</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/auth.md"><code>handbook/auth.md</code> on GitHub</a>, impression <code>5b8bf9e</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

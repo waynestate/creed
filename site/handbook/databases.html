@@ -61,7 +61,7 @@
       <li><a href="dependencies.html"><span class="hb-nav__no">2</span><span class="hb-nav__name">Dependencies</span></a></li>
       <li><a href="code.html"><span class="hb-nav__no">3</span><span class="hb-nav__name">Code</span></a></li>
       <li><a href="auth.html"><span class="hb-nav__no">4</span><span class="hb-nav__name">Auth</span></a></li>
-      <li class="is-here"><a href="databases.html" aria-current="page"><span class="hb-nav__no">5</span><span class="hb-nav__name">Databases</span></a><ol class="hb-nav__sub"><li><a href="#what-the-stack-supports" data-toc="what-the-stack-supports">What the stack supports</a></li><li><a href="#which-mysql-lines-the-policy-lists" data-toc="which-mysql-lines-the-policy-lists">Which MySQL lines the policy lists</a></li><li><a href="#grace-period" data-toc="grace-period">Grace period</a></li><li><a href="#conventions-that-keep-5-6-working" data-toc="conventions-that-keep-5-6-working">Conventions that keep 5.6 working</a></li><li><a href="#avoid-until-the-server-is-upgraded" data-toc="avoid-until-the-server-is-upgraded">Avoid until the server is upgraded</a></li><li><a href="#moving-to-8-4" data-toc="moving-to-8-4">Moving to 8.4</a></li><li><a href="#how-the-stack-checks-it" data-toc="how-the-stack-checks-it">How the stack checks it</a></li><li><a href="#sources" data-toc="sources">Sources</a></li></ol></li>
+      <li class="is-here"><a href="databases.html" aria-current="page"><span class="hb-nav__no">5</span><span class="hb-nav__name">Databases</span></a><ol class="hb-nav__sub"><li><a href="#what-the-stack-supports" data-toc="what-the-stack-supports">What the stack supports</a></li><li><a href="#which-mysql-lines-the-policy-lists" data-toc="which-mysql-lines-the-policy-lists">Which MySQL lines the policy lists</a></li><li><a href="#grace-period" data-toc="grace-period">Grace period</a></li><li><a href="#names-comments-and-connections" data-toc="names-comments-and-connections">Names, comments and connections</a></li><li><a href="#conventions-that-keep-5-6-working" data-toc="conventions-that-keep-5-6-working">Conventions that keep 5.6 working</a></li><li><a href="#avoid-until-the-server-is-upgraded" data-toc="avoid-until-the-server-is-upgraded">Avoid until the server is upgraded</a></li><li><a href="#moving-to-8-4" data-toc="moving-to-8-4">Moving to 8.4</a></li><li><a href="#how-the-stack-checks-it" data-toc="how-the-stack-checks-it">How the stack checks it</a></li><li><a href="#sources" data-toc="sources">Sources</a></li></ol></li>
       <li><a href="runtime-and-headers.html"><span class="hb-nav__no">6</span><span class="hb-nav__name">Runtime and headers</span><span class="hb-nav__tbd" title="To be decided"><span class="wsu-sr-only">, to be decided</span></span></a></li>
       <li><a href="deploy-gate.html"><span class="hb-nav__no">7</span><span class="hb-nav__name">Deploy gate</span></a></li>
       <li><a href="ci.html"><span class="hb-nav__no">8</span><span class="hb-nav__name">CI</span></a></li>
@@ -82,7 +82,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 5</p>
             <h1 id="page-title">Databases</h1>
-            <p class="hb-register">8 sections · 23 provisions · <strong class="kw kw--must">MUST</strong> 2 · <strong class="kw kw--may">MAY</strong> 1</p>
+            <p class="hb-register">9 sections · 25 provisions · <strong class="kw kw--must">MUST</strong> 4 · <strong class="kw kw--should">SHOULD</strong> 1 · <strong class="kw kw--may">MAY</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -93,14 +93,15 @@
             <li class="hb-toc__l2"><a href="#what-the-stack-supports" data-toc="what-the-stack-supports"><span class="hb-toc__no">5.1</span> What the stack supports</a></li>
             <li class="hb-toc__l2"><a href="#which-mysql-lines-the-policy-lists" data-toc="which-mysql-lines-the-policy-lists"><span class="hb-toc__no">5.2</span> Which MySQL lines the policy lists</a></li>
             <li class="hb-toc__l2"><a href="#grace-period" data-toc="grace-period"><span class="hb-toc__no">5.3</span> Grace period</a></li>
-            <li class="hb-toc__l2"><a href="#conventions-that-keep-5-6-working" data-toc="conventions-that-keep-5-6-working"><span class="hb-toc__no">5.4</span> Conventions that keep 5.6 working</a></li>
-            <li class="hb-toc__l2"><a href="#avoid-until-the-server-is-upgraded" data-toc="avoid-until-the-server-is-upgraded"><span class="hb-toc__no">5.5</span> Avoid until the server is upgraded</a></li>
-            <li class="hb-toc__l3"><a href="#schema" data-toc="schema"><span class="hb-toc__no">5.5.1</span> Schema</a></li>
-            <li class="hb-toc__l3"><a href="#queries" data-toc="queries"><span class="hb-toc__no">5.5.2</span> Queries</a></li>
-            <li class="hb-toc__l3"><a href="#commands" data-toc="commands"><span class="hb-toc__no">5.5.3</span> Commands</a></li>
-            <li class="hb-toc__l2"><a href="#moving-to-8-4" data-toc="moving-to-8-4"><span class="hb-toc__no">5.6</span> Moving to 8.4</a></li>
-            <li class="hb-toc__l2"><a href="#how-the-stack-checks-it" data-toc="how-the-stack-checks-it"><span class="hb-toc__no">5.7</span> How the stack checks it</a></li>
-            <li class="hb-toc__l2"><a href="#sources" data-toc="sources"><span class="hb-toc__no">5.8</span> Sources</a></li>
+            <li class="hb-toc__l2"><a href="#names-comments-and-connections" data-toc="names-comments-and-connections"><span class="hb-toc__no">5.4</span> Names, comments and connections</a></li>
+            <li class="hb-toc__l2"><a href="#conventions-that-keep-5-6-working" data-toc="conventions-that-keep-5-6-working"><span class="hb-toc__no">5.5</span> Conventions that keep 5.6 working</a></li>
+            <li class="hb-toc__l2"><a href="#avoid-until-the-server-is-upgraded" data-toc="avoid-until-the-server-is-upgraded"><span class="hb-toc__no">5.6</span> Avoid until the server is upgraded</a></li>
+            <li class="hb-toc__l3"><a href="#schema" data-toc="schema"><span class="hb-toc__no">5.6.1</span> Schema</a></li>
+            <li class="hb-toc__l3"><a href="#queries" data-toc="queries"><span class="hb-toc__no">5.6.2</span> Queries</a></li>
+            <li class="hb-toc__l3"><a href="#commands" data-toc="commands"><span class="hb-toc__no">5.6.3</span> Commands</a></li>
+            <li class="hb-toc__l2"><a href="#moving-to-8-4" data-toc="moving-to-8-4"><span class="hb-toc__no">5.7</span> Moving to 8.4</a></li>
+            <li class="hb-toc__l2"><a href="#how-the-stack-checks-it" data-toc="how-the-stack-checks-it"><span class="hb-toc__no">5.8</span> How the stack checks it</a></li>
+            <li class="hb-toc__l2"><a href="#sources" data-toc="sources"><span class="hb-toc__no">5.9</span> Sources</a></li>
         </ol>
       </nav>
           <div class="hb-prose" data-hb-prose>
@@ -127,7 +128,12 @@ policy's <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob
 <code>EolGraceExpired</code> the day after, when the gate fails with no override. The
 window is a bridge for the upgrade, not a second support window: the fix is
 still the upgrade.</p>
-<h2 id="conventions-that-keep-5-6-working"><a class="hb-sec" href="#conventions-that-keep-5-6-working">§5.4</a> Conventions that keep 5.6 working</h2>
+<h2 id="names-comments-and-connections"><a class="hb-sec" href="#names-comments-and-connections">§5.4</a> Names, comments and connections</h2>
+<ul>
+<li>Table and column names are descriptive. Add table and column comments (Laravel's <code>-&gt;comment()</code>) where the database supports them, to say what an element is for (<strong class="kw kw--should">SHOULD</strong>) (WSU developer standards, 2024).</li>
+<li>The connection between the app and the database <strong class="kw kw--must">MUST</strong> be encrypted. The database account <strong class="kw kw--must">MUST</strong> have only the privileges the app needs, never an administrator account (WSU developer standards, 2024).</li>
+</ul>
+<h2 id="conventions-that-keep-5-6-working"><a class="hb-sec" href="#conventions-that-keep-5-6-working">§5.5</a> Conventions that keep 5.6 working</h2>
 <ul>
 <li>Set <code>Schema::defaultStringLength(191)</code> in <code>AppServiceProvider::boot()</code>,
 before any migration runs. 5.6 caps an indexed <code>utf8mb4</code> column at 767
@@ -152,8 +158,8 @@ take a current-timestamp default on 5.6.</li>
 <li>Run migrations in CI against a real 5.6 container. SQLite-only tests pass
 code that 5.6 rejects.</li>
 </ul>
-<h2 id="avoid-until-the-server-is-upgraded"><a class="hb-sec" href="#avoid-until-the-server-is-upgraded">§5.5</a> Avoid until the server is upgraded</h2>
-<h3 id="schema"><a class="hb-sec" href="#schema">§5.5.1</a> Schema</h3>
+<h2 id="avoid-until-the-server-is-upgraded"><a class="hb-sec" href="#avoid-until-the-server-is-upgraded">§5.6</a> Avoid until the server is upgraded</h2>
+<h3 id="schema"><a class="hb-sec" href="#schema">§5.6.1</a> Schema</h3>
 <ul>
 <li>JSON and jsonb columns</li>
 <li>Generated columns</li>
@@ -163,7 +169,7 @@ code that 5.6 rejects.</li>
 <li>InnoDB <code>spatialIndex</code> (needs 5.7.5, not yet confirmed on a 5.6 server)</li>
 <li>DESC indexes and CHECK constraints</li>
 </ul>
-<h3 id="queries"><a class="hb-sec" href="#queries">§5.5.2</a> Queries</h3>
+<h3 id="queries"><a class="hb-sec" href="#queries">§5.6.2</a> Queries</h3>
 <ul>
 <li><code>whereJson*</code> and JSON-path updates</li>
 <li>Window functions and CTEs</li>
@@ -171,12 +177,12 @@ code that 5.6 rejects.</li>
 <li><code>joinLateral</code></li>
 <li>Joined deletes with an order or a limit</li>
 </ul>
-<h3 id="commands"><a class="hb-sec" href="#commands">§5.5.3</a> Commands</h3>
+<h3 id="commands"><a class="hb-sec" href="#commands">§5.6.3</a> Commands</h3>
 <ul>
 <li><code>db:show</code></li>
 <li><code>db:monitor</code></li>
 </ul>
-<h2 id="moving-to-8-4"><a class="hb-sec" href="#moving-to-8-4">§5.6</a> Moving to 8.4</h2>
+<h2 id="moving-to-8-4"><a class="hb-sec" href="#moving-to-8-4">§5.7</a> Moving to 8.4</h2>
 <p>Code that follows the conventions and avoids the patterns above runs unchanged
 on 8.4. The server-side large-prefix settings (<code>innodb_large_prefix=ON</code>,
 <code>innodb_file_format=Barracuda</code>, DYNAMIC rows) are a question for the database
@@ -187,12 +193,12 @@ on a 5.6 server.</p>
 Builds older than 5.6.46 also speak only TLS 1.0, which current hosts may
 refuse (not yet confirmed on a 5.6 server). Both are reasons to plan the move
 rather than wait for it.</p>
-<h2 id="how-the-stack-checks-it"><a class="hb-sec" href="#how-the-stack-checks-it">§5.7</a> How the stack checks it</h2>
+<h2 id="how-the-stack-checks-it"><a class="hb-sec" href="#how-the-stack-checks-it">§5.8</a> How the stack checks it</h2>
 <p>PROCTOR's <code>mysql56</code> check flags the patterns in the avoid list above that
 fail on 5.6: JSON columns, generated columns, <code>renameColumn</code>, long indexed
 strings and a missing <code>Schema::defaultStringLength(191)</code>. The rest of the
 list is not checked yet.</p>
-<h2 id="sources"><a class="hb-sec" href="#sources">§5.8</a> Sources</h2>
+<h2 id="sources"><a class="hb-sec" href="#sources">§5.9</a> Sources</h2>
 <ul class="hb-sources">
 <li>Laravel 13 database docs: <a href="https://laravel.com/docs/13.x/database">https://laravel.com/docs/13.x/database</a></li>
 <li>Laravel docs, <code>migrations.md</code> (index-length section):
@@ -232,7 +238,7 @@ list is not checked yet.</p>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="auth.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 4</span><span class="hb-pager__name">Auth</span></a><a class="hb-pager__link hb-pager__link--next" href="runtime-and-headers.html" rel="next"><span class="hb-pager__dir">Next · Chapter 6</span><span class="hb-pager__name">Runtime and headers</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/databases.md"><code>handbook/databases.md</code> on GitHub</a>, impression <code>2c2fd07</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/databases.md"><code>handbook/databases.md</code> on GitHub</a>, impression <code>10e8473</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

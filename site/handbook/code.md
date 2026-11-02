@@ -10,7 +10,7 @@ Chapter 3
 
 # Code
 
-10 sections · 33 provisions · **MUST NOT** 1
+13 sections · 42 provisions · **MUST NOT** 3 · **MUST** 6 · **SHOULD** 2
 
 Partly decided
 
@@ -24,7 +24,19 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - An app points Pint at the preset in `vendor/waynestate/pinstripe/pint/` with `--config` (the stack's coding standard).
 - Files are UTF-8 without a BOM, with LF line endings (the stack's every-OS design).
 
-## [§3.2](https://creed.apps.wayne.edu/handbook/code.html#static-analysis) Static analysis
+## [§3.2](https://creed.apps.wayne.edu/handbook/code.html#reading-the-code) Reading the code
+
+- Comment where it helps: complex logic, areas that could improve, business rules that would otherwise be a mystery (**SHOULD**). Do not keep version history in comments; git is the change log (WSU developer standards, 2024).
+- Code that no longer runs **MUST** be removed, not commented out; git keeps it (WSU developer standards, 2024).
+- Variable, class and database names **SHOULD** be complete and descriptive; avoid ambiguous abbreviations (WSU developer standards, 2024).
+
+## [§3.3](https://creed.apps.wayne.edu/handbook/code.html#source-control-and-documentation) Source control and documentation
+
+- All source is kept in git, hosted on a WSU-run GitLab; mirrors are fine. Access to a repo **MUST** be removed when someone leaves the project or the university (WSU developer standards, 2024).
+- Every repo's README **MUST** say how to install, configure and deploy the code for local development, on every OS (see `every-os.md`), and how to update an existing deployment (WSU developer standards, 2024).
+- If the Help Desk might be contacted about the project, keep an overview in the repo: what it does, who uses it, known common issues and who to call for an incident; deliver changes to the Help Desk when it changes (WSU developer standards, 2024).
+
+## [§3.4](https://creed.apps.wayne.edu/handbook/code.html#static-analysis) Static analysis
 
 - PHPStan level 8 for new code: the stack's own packages and every app [Sourdough](https://sourdough.apps.wayne.edu/) generates (the stack's coding standard).
 - Larastan loads only where Laravel is present (the stack's coding standard).
@@ -36,7 +48,12 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
   - The starters begin clean, so new apps pass from day one (the stack's coding standard).
   - Null handling is the class of bug level 8 adds; in the stack's auth and header code, a null bug is a security bug (the stack's coding standard).
 
-## [§3.3](https://creed.apps.wayne.edu/handbook/code.html#banned-patterns) Banned patterns
+## [§3.5](https://creed.apps.wayne.edu/handbook/code.html#input-and-files) Input and files
+
+- All input (forms, API calls, headers, cookies, and data read from a database you do not control) **MUST** be validated on the server; SQL uses bound parameters, and output is escaped for where it lands. That guards against SQL injection and cross-site scripting (WSU developer standards, 2024).
+- Files from untrusted sources **MUST** be checked against the expected type, **MUST NOT** be passed to include, class-loading or reflection calls, **MUST** be stored outside the served folder with limited permissions, and **MUST NOT** be executable (WSU developer standards, 2024).
+
+## [§3.6](https://creed.apps.wayne.edu/handbook/code.html#banned-patterns) Banned patterns
 
 Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowed-calls` for plain bans, and a custom rule only when neither fits.
 
@@ -45,7 +62,7 @@ Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowe
 - No SQL built by joining strings; use bindings (OWASP SQL Injection Prevention Cheat Sheet). Planned.
 - No debug leftovers or dynamic code, from `phpstan-disallowed-calls`. Planned.
 
-## [§3.4](https://creed.apps.wayne.edu/handbook/code.html#vue-and-javascript) Vue and JavaScript
+## [§3.7](https://creed.apps.wayne.edu/handbook/code.html#vue-and-javascript) Vue and JavaScript
 
 - ESLint flat config (the stack's coding standard).
 - `eslint-plugin-vue` `flat/recommended` (the stack's coding standard).
@@ -55,18 +72,18 @@ Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowe
 - The stack's Vue starters use TypeScript; plain JavaScript stays fully supported (the stack's coding standard).
 - Node 22.13 or newer for the lint tools (the stack's coding standard).
 
-## [§3.5](https://creed.apps.wayne.edu/handbook/code.html#security-analysis) Security analysis
+## [§3.8](https://creed.apps.wayne.edu/handbook/code.html#security-analysis) Security analysis
 
 - The stack's GitLab instances run the Free tier, so nothing relies on GitLab SAST (the stack's coding standard).
 - The open tools instead: Larastan's env rule, `phpstan-disallowed-calls`, and a Psalm taint-analysis pilot on one app (the stack's coding standard).
 
-## [§3.6](https://creed.apps.wayne.edu/handbook/code.html#how-it-is-enforced) How it is enforced
+## [§3.9](https://creed.apps.wayne.edu/handbook/code.html#how-it-is-enforced) How it is enforced
 
 - Pint, PHPStan, Rector dry-runs and ESLint run in CI through [Preflight](https://preflight.apps.wayne.edu/) components, not in the deploy gate (the stack's coding standard). The Preflight components are Planned.
 - New rules arrive as warnings and become errors on a stated date, the same staging as PHP versions (the stack's enforcement design).
 - [PROCTOR](https://proctor.apps.wayne.edu/) reports whether an app uses the presets (the stack's coding standard). The PROCTOR report is Planned.
 
-## [§3.7](https://creed.apps.wayne.edu/handbook/code.html#which-preset-enforces-each-rule) Which preset enforces each rule
+## [§3.10](https://creed.apps.wayne.edu/handbook/code.html#which-preset-enforces-each-rule) Which preset enforces each rule
 
 Table 3-1
 
@@ -81,18 +98,19 @@ Table 3-1
 | Vue and JavaScript | the ESLint package (name to be decided) | Planned |
 | Security analysis | to be decided | Planned |
 
-## [§3.8](https://creed.apps.wayne.edu/handbook/code.html#not-adopted) Not adopted
+## [§3.11](https://creed.apps.wayne.edu/handbook/code.html#not-adopted) Not adopted
 
 - Mago and PHP_CodeSniffer 4 are not adopted; Pint is the only formatter (the stack's coding standard).
 - Mago is looked at again before Pinstripe 1.0 (the stack's coding standard).
 
-## [§3.9](https://creed.apps.wayne.edu/handbook/code.html#to-be-decided) To be decided
+## [§3.12](https://creed.apps.wayne.edu/handbook/code.html#to-be-decided) To be decided
 
 - `declare(strict_types=1)` in every file. The sources recommend it, but the stack's coding standard does not decide it.
 - `phpstan-strict-rules` for the stack's packages (the stack's coding standard).
 - Where the ESLint package is published (the stack's coding standard).
+- Which catalog a project registers in, and how change control is recorded, are held for the owners' answer.
 
-## [§3.10](https://creed.apps.wayne.edu/handbook/code.html#sources) Sources
+## [§3.13](https://creed.apps.wayne.edu/handbook/code.html#sources) Sources
 
 - PER Coding Style 3.1: [https://www.php-fig.org/per/coding-style/](https://www.php-fig.org/per/coding-style/)
 - PSR-1 Basic Coding Standard: [https://www.php-fig.org/psr/psr-1/](https://www.php-fig.org/psr/psr-1/)
@@ -115,4 +133,4 @@ Table 3-1
 - GitLab Code Quality: [https://docs.gitlab.com/ci/testing/code_quality/](https://docs.gitlab.com/ci/testing/code_quality/)
 - OWASP ASVS: [https://asvs.owasp.org/](https://asvs.owasp.org/)
 
-Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `8d461ee`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `e5954e9`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
