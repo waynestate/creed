@@ -1,0 +1,55 @@
+{
+    "schema_version": 1,
+    "refreshed_on": "2026-10-29",
+    "components": {
+        "php": {
+            "versions": {
+                "8.4": {
+                    "active_until": "2026-12-31",
+                    "security_until": "2028-12-31",
+                    "latest_patch": "8.4.27",
+                    "latest_patch_checked": "2026-10-28"
+                },
+                "8.5": {
+                    "active_until": "2027-12-31",
+                    "security_until": "2029-12-31",
+                    "latest_patch": "8.5.12",
+                    "latest_patch_checked": "2026-10-28"
+                }
+            }
+        },
+        "laravel": {
+            "versions": {
+                "13": {
+                    "active_until": "2027-09-30",
+                    "security_until": "2028-03-17",
+                    "latest_patch": "13.39.0",
+                    "latest_patch_checked": "2026-10-28"
+                }
+            }
+        },
+        "node": {
+            "versions": {
+                "24": {
+                    "active_until": "2026-10-20",
+                    "security_until": "2028-04-30",
+                    "latest_patch": "24.22.2",
+                    "latest_patch_checked": "2026-10-29"
+                }
+            }
+        }
+    },
+    "tools": {
+        "composer": {
+            "minimum": "2.8.0"
+        }
+    },
+    "rules": {
+        "audit_severity_threshold": "high",
+        "banned_constraints": [
+            "dev-*",
+            "*"
+        ],
+        "eol_grace_days": 90
+    }
+}
