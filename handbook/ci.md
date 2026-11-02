@@ -12,3 +12,4 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
 - git.wayne.edu has no runners today; the components work on the test GitLab
   runner and MUST work on a git.wayne.edu runner when one exists (first-repos).
   Every product strongly recommends the instance runner.
+- Every change lands through a merge request that another person reviews, and critical findings are addressed before merge (SHOULD for a one-person project: record the self-review in the merge request) (WSU developer standards, 2024).
