@@ -9,6 +9,7 @@
 - Fixed: BEST_PRACTICES statements match the tree.
 - Added: handbook note on MySQL lines and auth plugin.
 - Added: a test pins that an older reader accepts a newer policy file.
+- Fixed: BEST_PRACTICES gap list matches the schema and tests.
 
 ## 0.1.4 (2026-10-30)
 

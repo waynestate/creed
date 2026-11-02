@@ -56,9 +56,9 @@ How the stack holds it: `Enforced`. `PolicySchemaTest` validates the bundled fil
 date, missing rules block, unknown key, string where an integer belongs). `composer validate-policy` runs the same
 check. Both run in the `php-test` component.
 
-Second pass: the schema does not list `security_until` as required, so a version without it passes the schema. Only the
-reader refuses it (practice 4, fixture `no-security-until.json`). The two checks together cover the case, but the schema
-alone does not.
+Second pass: the schema requires `security_until` on every line that is not `"current": true`, and rejects a current
+line that carries one (practice 4, fixtures `no-security-until.json` and `current-with-security-until.json`), so the
+schema and the reader agree.
 
 ### 3. Write dates as ISO 8601 days, never prose
 
@@ -944,8 +944,8 @@ Added in the second pass (2026-10-27):
     (practices 52 and 54).
 35. Add an accessibility job to Preflight, using Pa11y or another deterministic tool (practice 53).
 36. Done: the Laravel 13 `active_until` date (2027-09-30) carries its source, endoflife.date, in `policy/sources.json` (Checks against the web).
-37. Make `security_until` required in the schema, so the schema and the reader agree (practice 2). Do this together with
-    item 3, because lines with no published end date (Vue 3) need another way to be modeled.
+37. Done: the schema requires `security_until` on every line that is not `"current": true` (`policy/policy.schema.json`),
+    and `tests/PolicySchemaTest.php` rejects a line with neither (practice 2).
 
 ## Sources
 
