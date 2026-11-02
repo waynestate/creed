@@ -13,6 +13,7 @@
 - Fixed: BEST_PRACTICES gap list matches the schema and tests.
 - Added: handbook chapters Secrets and Production, from the WSU developer standards (2024).
 - Added: WSU developer standards (2024) rules in the Code, Auth, Databases, Dependencies and CI chapters.
+- Added: BEST_PRACTICES section 11 (practices 55 to 61) from the WSU developer standards (2024).
 
 ## 0.1.4 (2026-10-30)
 
