@@ -11,6 +11,7 @@
 - Added: handbook note on MySQL lines and auth plugin.
 - Added: a test pins that an older reader accepts a newer policy file.
 - Fixed: BEST_PRACTICES gap list matches the schema and tests.
+- Added: handbook chapters Secrets and Production, from the WSU developer standards (2024).
 
 ## 0.1.4 (2026-10-30)
 
