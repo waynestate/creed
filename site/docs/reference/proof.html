@@ -18,7 +18,7 @@
   <a class="docs-header__brand" href="../../docs/index.html">CREED</a>
   <span><a class="docs-header__home" rel="noopener" href="https://nougat.snu.gs/enterprise-apps/creed">Source</a> <a class="docs-header__home" href="../../index.html">Back to CREED</a></span>
 </header>
-<div class="docs-layout">
+<div class="docs-layout docs-layout--toc">
   <details class="docs-menu">
     <summary>Menu</summary>
     <nav class="docs-nav" aria-label="Documentation"><ul class="docs-nav__list"><li class="docs-nav__group"><span class="docs-nav__label">Getting started</span><ul><li><a href="../../docs/index.html">Overview</a></li><li><a href="../../docs/install.html">Install</a></li><li><a href="../../docs/guides/quick-start.html">Quick start</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Guides</span><ul><li><a href="../../docs/guides/reading-the-policy.html">Reading the policy from PHP</a></li><li><a href="../../docs/guides/support-states.html">Support states and the grace period</a></li><li><a href="../../docs/guides/patch-refresh.html">Keeping the patches fresh</a></li><li><a href="../../docs/guides/policy-refresh.html">Refreshing the policy</a></li><li><a href="../../docs/guides/policy-bot.html">The policy robot</a></li><li><a href="../../docs/guides/carrying-creed.html">Carrying CREED in another package</a></li><li><a href="../../docs/guides/handbook.html">The handbook</a></li><li><a href="../../docs/guides/instance-runner.html">The instance runner</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Reference</span><ul><li><a href="../../docs/reference/api.html">Reader API</a></li><li><a href="../../docs/reference/policy-format.html">Policy file format</a></li><li><a href="../../docs/reference/commands.html">Commands and exit codes</a></li><li><a href="../../docs/reference/configuration.html">Configuration</a></li><li><a href="../../docs/reference/proof.html" aria-current="page">Proof</a></li></ul></li><li><a href="../../docs/troubleshooting.html">Troubleshooting</a></li><li><a href="../../docs/upgrading.html">Upgrading</a></li><li><a href="../../docs/contributing.html">Contributing</a></li><li><a href="../../docs/changelog.html">Changelog</a></li></ul></nav>
@@ -27,11 +27,36 @@
   <div class="docs-content">
     <main id="main">
       <article class="docs-article"><h1 id="proof">Proof<a class="docs-heading-link" aria-label="Link to this section" href="#proof">#</a></h1>
-<p>STUB: this page is written in a later batch.</p>
+<p>This page shows where CREED proves itself against real Wayne State applications and what the <code>composer ci</code> gate checks before anything ships.</p>
+<h2 id="where-the-proof-runs">Where the proof runs<a class="docs-heading-link" aria-label="Link to this section" href="#where-the-proof-runs">#</a></h2>
+<p>Proof runs against real Wayne State applications are on a private site, <a rel="noopener" href="https://proof.apps.wayne.edu/creed/">proof.apps.wayne.edu/creed</a>, behind a Wayne State employee sign-in.</p>
+<blockquote>
+<p>[!NOTE]
+The front page, <a rel="noopener" href="https://creed.apps.wayne.edu/"><code>site/index.html</code></a>, is a static page you can open in a browser or serve from <code>site/</code>. On Citadel it is served by the raw-PHP deploy layer in <code>deploy/</code>: a Squire kit whose front controller serves <code>site/</code> behind HELMET's security headers. For local development, keep serving <code>site/</code> directly.</p>
+</blockquote>
+<h2 id="what-composer-ci-proves">What <code>composer ci</code> proves<a class="docs-heading-link" aria-label="Link to this section" href="#what-composer-ci-proves">#</a></h2>
+<p><code>composer ci</code> is the same command that runs on GitLab and GitHub. Green means it passed on all three PHP versions on both. It runs the reader on PHP 8.3, 8.4 and 8.5, validates <code>policy/policy.json</code> against its schema, and runs the handbook lint. It also fails when the committed docs pages go stale, so the site you are reading cannot drift from <code>docs/</code>.</p>
+<h2 id="the-badges">The badges<a class="docs-heading-link" aria-label="Link to this section" href="#the-badges">#</a></h2>
+<p>The README carries four badges:</p>
+<ul>
+<li><code>php ^8.3</code>: CREED itself requires PHP <code>^8.3</code>, like every stack package.</li>
+<li><code>license MIT</code>.</li>
+<li><code>policy schema v1, 6 components</code>: the schema is <code>version: 1</code>, and the policy lists the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia.</li>
+<li>GitHub CI: the status of the <code>composer ci</code> workflow on the mirror.</li>
+</ul>
+<p>Creed Bratton keeps his records in a filing cabinet nobody can find; ours are in <code>docs/</code>, where anyone can.</p>
+<h2 id="related">Related<a class="docs-heading-link" aria-label="Link to this section" href="#related">#</a></h2>
+<ul>
+<li><a href="../install.html">Install</a></li>
+<li><a href="../troubleshooting.html">Troubleshooting</a></li>
+<li><a href="../upgrading.html">Upgrading</a></li>
+<li><a href="../changelog.html">Changelog</a></li>
+</ul>
 </article>
     </main>
     <nav class="docs-pager" aria-label="Pages"><a class="docs-pager__link" href="../../docs/reference/configuration.html"><span class="docs-pager__dir">Previous</span><span class="docs-pager__title">Configuration</span></a><a class="docs-pager__link docs-pager__link--next" href="../../docs/troubleshooting.html"><span class="docs-pager__dir">Next</span><span class="docs-pager__title">Troubleshooting</span></a></nav>
   </div>
+  <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#where-the-proof-runs">Where the proof runs</a></li><li class="docs-toc__item"><a href="#what-composer-ci-proves">What composer ci proves</a></li><li class="docs-toc__item"><a href="#the-badges">The badges</a></li><li class="docs-toc__item"><a href="#related">Related</a></li></ul></nav>
 </div>
 <footer class="docs-footer">
   <span>Documents CREED <span data-docs-version>0.1.6</span></span>
