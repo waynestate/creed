@@ -31,9 +31,11 @@ Vue and Inertia, plus the rules every check runs against. A small
 framework-free PHP reader, `Waynestate\Creed\Policy`, answers the one question
 every tool needs: what state is this version in, on this date?
 
-This repository is published from Wayne State University's internal GitLab
-and mirrored here. Changes land there first; Wayne State developers open
-issues and merge requests on the internal project.
+## Where the code lives
+
+The canonical repository is on nougat: [enterprise-apps/creed](https://nougat.snu.gs/enterprise-apps/creed). git.wayne.edu and GitHub ([waynestate/creed](https://github.com/waynestate/creed)) are read-only mirrors of it.
+Open issues and merge requests on nougat, not on the mirrors.
+This moves to git.wayne.edu once it has CI runners. Creed Bratton would say the code lives wherever he last left it. Ours lives on nougat.
 
 No other code in the stack decides a version's state. The rules live in one
 place, and every tool reads them from here.

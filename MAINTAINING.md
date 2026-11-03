@@ -15,9 +15,9 @@ follows.
 
 ## Where it lives
 
-Development happens on Wayne State's GitLab. This GitHub repository is a read-only release mirror: `main` and tags are
-copied here automatically, and changes, issues and merge requests go to GitLab first. Nobody pushes to GitHub
-directly.
+Development happens on nougat, the canonical repository ([enterprise-apps/creed](https://nougat.snu.gs/enterprise-apps/creed)).
+This GitHub repository and git.wayne.edu are read-only mirrors: `main` and tags are copied automatically. Changes,
+issues and merge requests go to nougat. Nobody pushes to the mirrors.
 
 ## Build and test
 
@@ -86,7 +86,7 @@ The older-reader contract is pinned by `tests/OlderReaderContractTest.php`; chan
    `## Unreleased`. (0.1.0 predates the heading convention, so it has none.)
 2. `composer ci` green locally, then on both pipelines for that commit.
 3. Run a secrets scan of the history and check that nothing internal (server names, people, IDs) is in the tree.
-4. Tag `X.Y.Z` (no `v`) on GitLab. The mirror carries the tag to GitHub, and Packagist picks it up from there.
+4. Tag `X.Y.Z` (no `v`) on nougat. The mirror carries the tag to GitHub, and Packagist picks it up from there.
 5. A release needs a maintainer's approval. Never move or delete a published tag.
 6. Then bump `waynestate/creed` where the stack pins it, and refresh the generated copies.
 

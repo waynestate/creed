@@ -3,7 +3,8 @@
     "description": "The Wayne State app stack version policy as data, with a framework-free PHP reader.",
     "homepage": "https://creed.apps.wayne.edu/",
     "support": {
-        "source": "https://github.com/waynestate/creed"
+        "source": "https://nougat.snu.gs/enterprise-apps/creed",
+        "issues": "https://nougat.snu.gs/enterprise-apps/creed/-/issues"
     },
     "license": "MIT",
     "type": "library",
