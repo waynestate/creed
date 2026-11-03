@@ -18,7 +18,7 @@
   <a class="docs-header__brand" href="../docs/index.html">CREED</a>
   <span><a class="docs-header__home" rel="noopener" href="https://nougat.snu.gs/enterprise-apps/creed">Source</a> <a class="docs-header__home" href="../index.html">Back to CREED</a></span>
 </header>
-<div class="docs-layout">
+<div class="docs-layout docs-layout--toc">
   <details class="docs-menu">
     <summary>Menu</summary>
     <nav class="docs-nav" aria-label="Documentation"><ul class="docs-nav__list"><li class="docs-nav__group"><span class="docs-nav__label">Getting started</span><ul><li><a href="../docs/index.html">Overview</a></li><li><a href="../docs/install.html">Install</a></li><li><a href="../docs/guides/quick-start.html">Quick start</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Guides</span><ul><li><a href="../docs/guides/reading-the-policy.html">Reading the policy from PHP</a></li><li><a href="../docs/guides/support-states.html">Support states and the grace period</a></li><li><a href="../docs/guides/patch-refresh.html">Keeping the patches fresh</a></li><li><a href="../docs/guides/policy-refresh.html">Refreshing the policy</a></li><li><a href="../docs/guides/policy-bot.html">The policy robot</a></li><li><a href="../docs/guides/carrying-creed.html">Carrying CREED in another package</a></li><li><a href="../docs/guides/handbook.html">The handbook</a></li><li><a href="../docs/guides/instance-runner.html">The instance runner</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Reference</span><ul><li><a href="../docs/reference/api.html">Reader API</a></li><li><a href="../docs/reference/policy-format.html">Policy file format</a></li><li><a href="../docs/reference/commands.html">Commands and exit codes</a></li><li><a href="../docs/reference/configuration.html">Configuration</a></li><li><a href="../docs/reference/proof.html">Proof</a></li></ul></li><li><a href="../docs/troubleshooting.html">Troubleshooting</a></li><li><a href="../docs/upgrading.html">Upgrading</a></li><li><a href="../docs/contributing.html" aria-current="page">Contributing</a></li><li><a href="../docs/changelog.html">Changelog</a></li></ul></nav>
@@ -27,11 +27,97 @@
   <div class="docs-content">
     <main id="main">
       <article class="docs-article"><h1 id="contributing">Contributing<a class="docs-heading-link" aria-label="Link to this section" href="#contributing">#</a></h1>
-<p>STUB: this page is written in a later batch.</p>
+<p>This page tells you how to build, test and release CREED, and how its policy data stays current.</p>
+<h2 id="where-the-code-lives">Where the code lives<a class="docs-heading-link" aria-label="Link to this section" href="#where-the-code-lives">#</a></h2>
+<p>Development happens on nougat, the canonical repository (<a rel="noopener" href="https://nougat.snu.gs/enterprise-apps/creed">enterprise-apps/creed</a>). This GitHub repository and git.wayne.edu are read-only mirrors: <code>main</code> and tags are copied automatically. Changes, issues and merge requests go to nougat. Nobody pushes to the mirrors.</p>
+<h2 id="build-and-test">Build and test<a class="docs-heading-link" aria-label="Link to this section" href="#build-and-test">#</a></h2>
+<p>You need PHP 8.3 or newer and Composer, or only Docker. Everything has a native path on Windows (PowerShell), Linux and macOS.</p>
+<div class="docs-table" role="region" aria-label="Table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Task</th>
+<th>Command</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Install</td>
+<td><code>composer install</code></td>
+</tr>
+<tr>
+<td>All checks (what CI runs)</td>
+<td><code>composer ci</code></td>
+</tr>
+<tr>
+<td>Only the tests</td>
+<td><code>composer test</code></td>
+</tr>
+<tr>
+<td>Validate <code>policy.json</code> against its schema</td>
+<td><code>composer validate-policy</code></td>
+</tr>
+<tr>
+<td>Lint the handbook</td>
+<td><code>composer lint-handbook</code></td>
+</tr>
+<tr>
+<td>Fix code style</td>
+<td><code>composer fix</code></td>
+</tr>
+</tbody>
+</table></div>
+<p>With only Docker (the same line works in PowerShell and sh):</p>
+<pre><code class="language-sh">docker run --rm -v &quot;${PWD}:/app&quot; -w /app composer:2.10.3 sh -c &quot;composer install --no-interaction &amp;&amp; composer ci&quot;
+docker run --rm -v &quot;${PWD}:/app&quot; -w /app php:8.5-cli vendor/bin/phpunit
+</code></pre>
+<p><code>composer ci</code> runs <code>composer validate --strict</code>, the tests, the policy validator, Pint, the handbook lint, PHPStan and <code>composer audit</code>. On Windows, if tests fail oddly after a Docker install, delete <code>vendor/</code> and install again.</p>
+<h2 id="the-docs-site">The docs site<a class="docs-heading-link" aria-label="Link to this section" href="#the-docs-site">#</a></h2>
+<p>The documentation site is built by <code>composer docs</code> and checked by <code>composer docs:check</code>. Its sources live in <code>docs/</code>, one Markdown file per page, and <code>composer ci</code> fails when the committed pages go stale.</p>
+<h2 id="ci">CI<a class="docs-heading-link" aria-label="Link to this section" href="#ci">#</a></h2>
+<ul>
+<li><strong>GitLab:</strong> Preflight components (<code>php-test</code> on PHP 8.3, 8.4 and 8.5, <code>composer-audit</code>, and <code>proctor</code> for the <code>deploy/</code> layer), plus a <code>composer-ci</code> job. A <code>refresh-patches</code> job runs on scheduled pipelines only.</li>
+<li><strong>GitHub:</strong> <code>.github/workflows/ci.yml</code> calls Preflight's reusable workflow with <code>composer ci</code>, and runs <code>refresh-patches</code> weekly (Mondays) and on demand.</li>
+<li>Green means <code>composer ci</code> passed on all three PHP versions on both.</li>
+</ul>
+<h2 id="keeping-the-policy-current">Keeping the policy current<a class="docs-heading-link" aria-label="Link to this section" href="#keeping-the-policy-current">#</a></h2>
+<p>This is CREED's real maintenance job.</p>
+<ul>
+<li><strong>Patch levels are watched automatically.</strong> <code>bin/refresh-patches.php</code> reads php.net (PHP), Packagist (Laravel), nodejs.org (Node) and endoflife.date (a PHP cross-check and Vue lines). It updates <code>latest_patch</code> and <code>latest_patch_checked</code>, and proposes new Vue lines. In CI the scheduled job is check-only: the refresh tool exits 3 when the policy changed and the job fails on the diff. The policy robot (<code>bin/policy-bot.php run</code>) commits the data allowlist on <code>auto/policy-refresh</code> and pushes it as a merge request labeled <code>auto-data</code>, auto-merged for a data-only run; missing CI variables stop the run before any push. It never tags or releases, and support dates stay hand-edited: a person reviews each support-date edit. The branch <code>auto/policy-refresh</code> must not be protected. The schedules live in the project's CI/CD settings on nougat, not in this repo.</li>
+<li><strong>Support dates are edited by hand.</strong> <code>active_until</code> and <code>security_until</code> for existing lines change only when a person edits them, with the upstream source in the commit message. End days are inclusive.</li>
+<li><strong>A red scheduled run is a to-do, not an outage:</strong> run <code>php bin/refresh-patches.php</code>, read the diff, <code>composer ci</code>, add a CHANGELOG line, commit.</li>
+<li><strong>After any policy change,</strong> the copies downstream are stale until refreshed. In each consumer (PROCTOR, Rollcall, Booster), run <code>php &lt;creed&gt;/bin/export.php --namespace='Waynestate\&lt;Project&gt;\Creed' --to=src/Creed</code>, then <code>composer creed-copy:check</code> with <code>CREED_PATH</code> pointing at this checkout. ADVISOR regenerates with <code>content:generate</code>.</li>
+<li>The schema is <code>version: 1</code>. Optional new fields keep it at 1; a breaking schema change needs a new version and a release of every reader. The older-reader contract is pinned by <code>tests/OlderReaderContractTest.php</code>; change the fixture only with a <code>schema_version</code> bump.</li>
+</ul>
+<h2 id="releasing">Releasing<a class="docs-heading-link" aria-label="Link to this section" href="#releasing">#</a></h2>
+<ol>
+<li>Move the lines under <code>## Unreleased</code> in <code>CHANGELOG.md</code> to a new <code>## X.Y.Z (YYYY-MM-DD)</code> heading, leaving an empty <code>## Unreleased</code>. (0.1.0 predates the heading convention, so it has none.)</li>
+<li><code>composer ci</code> green locally, then on both pipelines for that commit.</li>
+<li>Run a secrets scan of the history and check that nothing internal (server names, people, IDs) is in the tree.</li>
+<li>Tag <code>X.Y.Z</code> (no <code>v</code>) on nougat. The mirror carries the tag to GitHub, and Packagist picks it up from there.</li>
+<li>A release needs a maintainer's approval. Never move or delete a published tag.</li>
+<li>Then bump <code>waynestate/creed</code> where the stack pins it, and refresh the generated copies.</li>
+</ol>
+<h2 id="the-front-page-and-its-deploy">The front page and its deploy<a class="docs-heading-link" aria-label="Link to this section" href="#the-front-page-and-its-deploy">#</a></h2>
+<p><code>site/</code> is the static front page. It is served on Citadel at <code>https://creed.apps.wayne.edu/</code> (pre-production first) by the raw-PHP layer in <code>deploy/</code>: HELMET's headers in front, PROCTOR and this policy in the release. <code>deploy/</code> is its own Composer project, separate from the library. Most of it is generated by Squire (<code>deploy/.squire.json</code> records what), so regenerate it rather than hand-editing it. Only <code>deploy/public/index.php</code>, <code>deploy/public/.htaccess</code> and <code>deploy/composer.json</code> are written by hand. Run the parity kit with <code>deploy\scripts\parity.ps1</code> (Windows) or <code>deploy/scripts/parity.sh</code> (Linux and macOS).</p>
+<h2 id="things-that-trip-people-up">Things that trip people up<a class="docs-heading-link" aria-label="Link to this section" href="#things-that-trip-people-up">#</a></h2>
+<ul>
+<li><code>composer.json</code> pins Pinstripe for dev; PROCTOR warns on any <code>dev-main</code> pin.</li>
+<li>A scheduled <code>refresh-patches</code> failure is expected whenever upstream ships a patch.</li>
+<li>No em or en dashes anywhere in the docs; the handbook lint and the house style both care. Creed Bratton would not care, but he is not reviewing the merge request.</li>
+</ul>
+<h2 id="related">Related<a class="docs-heading-link" aria-label="Link to this section" href="#related">#</a></h2>
+<ul>
+<li><a href="index.html">Overview</a></li>
+<li><a href="install.html">Install</a></li>
+<li><a href="guides/quick-start.html">Quick start</a></li>
+<li><a href="guides/patch-refresh.html">Keeping the patches fresh</a></li>
+<li><a href="changelog.html">Changelog</a></li>
+</ul>
 </article>
     </main>
     <nav class="docs-pager" aria-label="Pages"><a class="docs-pager__link" href="../docs/upgrading.html"><span class="docs-pager__dir">Previous</span><span class="docs-pager__title">Upgrading</span></a><a class="docs-pager__link docs-pager__link--next" href="../docs/changelog.html"><span class="docs-pager__dir">Next</span><span class="docs-pager__title">Changelog</span></a></nav>
   </div>
+  <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#where-the-code-lives">Where the code lives</a></li><li class="docs-toc__item"><a href="#build-and-test">Build and test</a></li><li class="docs-toc__item"><a href="#the-docs-site">The docs site</a></li><li class="docs-toc__item"><a href="#ci">CI</a></li><li class="docs-toc__item"><a href="#keeping-the-policy-current">Keeping the policy current</a></li><li class="docs-toc__item"><a href="#releasing">Releasing</a></li><li class="docs-toc__item"><a href="#the-front-page-and-its-deploy">The front page and its deploy</a></li><li class="docs-toc__item"><a href="#things-that-trip-people-up">Things that trip people up</a></li><li class="docs-toc__item"><a href="#related">Related</a></li></ul></nav>
 </div>
 <footer class="docs-footer">
   <span>Documents CREED <span data-docs-version>0.1.6</span></span>
