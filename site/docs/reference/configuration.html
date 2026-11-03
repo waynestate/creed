@@ -18,7 +18,7 @@
   <a class="docs-header__brand" href="../../docs/index.html">CREED</a>
   <span><a class="docs-header__home" rel="noopener" href="https://nougat.snu.gs/enterprise-apps/creed">Source</a> <a class="docs-header__home" href="../../index.html">Back to CREED</a></span>
 </header>
-<div class="docs-layout">
+<div class="docs-layout docs-layout--toc">
   <details class="docs-menu">
     <summary>Menu</summary>
     <nav class="docs-nav" aria-label="Documentation"><ul class="docs-nav__list"><li class="docs-nav__group"><span class="docs-nav__label">Getting started</span><ul><li><a href="../../docs/index.html">Overview</a></li><li><a href="../../docs/install.html">Install</a></li><li><a href="../../docs/guides/quick-start.html">Quick start</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Guides</span><ul><li><a href="../../docs/guides/reading-the-policy.html">Reading the policy from PHP</a></li><li><a href="../../docs/guides/support-states.html">Support states and the grace period</a></li><li><a href="../../docs/guides/patch-refresh.html">Keeping the patches fresh</a></li><li><a href="../../docs/guides/policy-refresh.html">Refreshing the policy</a></li><li><a href="../../docs/guides/policy-bot.html">The policy robot</a></li><li><a href="../../docs/guides/carrying-creed.html">Carrying CREED in another package</a></li><li><a href="../../docs/guides/handbook.html">The handbook</a></li><li><a href="../../docs/guides/instance-runner.html">The instance runner</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Reference</span><ul><li><a href="../../docs/reference/api.html">Reader API</a></li><li><a href="../../docs/reference/policy-format.html">Policy file format</a></li><li><a href="../../docs/reference/commands.html">Commands and exit codes</a></li><li><a href="../../docs/reference/configuration.html" aria-current="page">Configuration</a></li><li><a href="../../docs/reference/proof.html">Proof</a></li></ul></li><li><a href="../../docs/troubleshooting.html">Troubleshooting</a></li><li><a href="../../docs/upgrading.html">Upgrading</a></li><li><a href="../../docs/contributing.html">Contributing</a></li><li><a href="../../docs/changelog.html">Changelog</a></li></ul></nav>
@@ -27,11 +27,85 @@
   <div class="docs-content">
     <main id="main">
       <article class="docs-article"><h1 id="configuration">Configuration<a class="docs-heading-link" aria-label="Link to this section" href="#configuration">#</a></h1>
-<p>STUB: this page is written in a later batch.</p>
+<p>This page lists the environment CREED reads and the options of <code>bin/refresh-policy.php</code>.</p>
+<h2 id="environment-variables">Environment variables<a class="docs-heading-link" aria-label="Link to this section" href="#environment-variables">#</a></h2>
+<div class="docs-table" role="region" aria-label="Table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>What it is</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CREED_BOT_TOKEN</code></td>
+<td>A CI/CD variable holding the project access token for the policy robot. Masked and hidden, protected, not a file. The schedule runs on <code>main</code>, which is a protected branch, so the protected variable is available there. Without the token the <code>policy-bot</code> job prints &quot;CREED_BOT_TOKEN not set; skipping the policy robot&quot; and stays green.</td>
+</tr>
+<tr>
+<td><code>CREED_JOB</code></td>
+<td>The schedule variable, set to <code>policy-bot</code> on the robot's dedicated schedule (weekly, Monday). The <code>policy-bot</code> job in <code>.gitlab-ci.yml</code> runs <code>bin/policy-bot.php run</code> on that schedule and by hand from the web; the check-only refresh-patches job skips it.</td>
+</tr>
+</tbody>
+</table></div>
+<p><code>src/Bot/PolicyBot.php</code> also reads six GitLab predefined variables: <code>CI_PROJECT_ID</code>, <code>CI_SERVER_PROTOCOL</code>, <code>CI_SERVER_HOST</code>, <code>CI_SERVER_PORT</code>, <code>CI_PROJECT_PATH</code> and <code>CI_DEFAULT_BRANCH</code>. Each is a GitLab predefined variable the robot uses to find the project and default branch, nothing more. Missing CI variables stop the run before any push.</p>
+<blockquote>
+<p>[!WARNING]
+The token is masked, hidden and protected, and never printed. Every line the robot prints, including runner errors and command echoes, passes through one mask function that replaces the token value with <code>[masked]</code>, so a runner error that echoes the URL back never leaks it.</p>
+</blockquote>
+<h2 id="refresh-policy-options">refresh-policy options<a class="docs-heading-link" aria-label="Link to this section" href="#refresh-policy-options">#</a></h2>
+<pre><code>php bin/refresh-policy.php [--dry-run] [--offline &lt;dir&gt;] [--policy &lt;path&gt;]
+    [--sources &lt;path&gt;] [--report &lt;file&gt;] [--today YYYY-MM-DD] [--touch]
+</code></pre>
+<div class="docs-table" role="region" aria-label="Table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Option</th>
+<th>What it does</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dry-run</code></td>
+<td>Print what would change without writing anything.</td>
+</tr>
+<tr>
+<td><code>--offline &lt;dir&gt;</code></td>
+<td>Read the feeds from <code>&lt;dir&gt;</code> instead of fetching them. Expects the feed files named after each source in <code>tests/fixtures/feeds/</code>.</td>
+</tr>
+<tr>
+<td><code>--policy &lt;path&gt;</code></td>
+<td>Path to the policy file (default: <code>policy/policy.json</code>).</td>
+</tr>
+<tr>
+<td><code>--sources &lt;path&gt;</code></td>
+<td>Path to the provenance ledger (default: <code>sources.json</code> next to the policy).</td>
+</tr>
+<tr>
+<td><code>--report &lt;file&gt;</code></td>
+<td>Also write a machine-readable report of the run. The report is JSON with <code>changes</code>, <code>held</code>, <code>refused</code>, <code>disagreements</code> and <code>source_errors</code>.</td>
+</tr>
+<tr>
+<td><code>--today YYYY-MM-DD</code></td>
+<td>Pretend today is this date (deterministic runs).</td>
+</tr>
+<tr>
+<td><code>--touch</code></td>
+<td>Set <code>refreshed_on</code> to today even when nothing else changed: the robot's weekly heartbeat.</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="related">Related<a class="docs-heading-link" aria-label="Link to this section" href="#related">#</a></h2>
+<ul>
+<li><a href="commands.html">Commands and exit codes</a></li>
+<li><a href="policy-format.html">Policy file format</a></li>
+<li><a href="../guides/policy-bot.html">The policy robot</a></li>
+<li><a href="../guides/policy-refresh.html">Refreshing the policy</a></li>
+</ul>
 </article>
     </main>
     <nav class="docs-pager" aria-label="Pages"><a class="docs-pager__link" href="../../docs/reference/commands.html"><span class="docs-pager__dir">Previous</span><span class="docs-pager__title">Commands and exit codes</span></a><a class="docs-pager__link docs-pager__link--next" href="../../docs/reference/proof.html"><span class="docs-pager__dir">Next</span><span class="docs-pager__title">Proof</span></a></nav>
   </div>
+  <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#environment-variables">Environment variables</a></li><li class="docs-toc__item"><a href="#refresh-policy-options">refresh-policy options</a></li><li class="docs-toc__item"><a href="#related">Related</a></li></ul></nav>
 </div>
 <footer class="docs-footer">
   <span>Documents CREED <span data-docs-version>0.1.6</span></span>
