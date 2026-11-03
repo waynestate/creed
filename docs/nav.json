@@ -1,0 +1,112 @@
+{
+  "title": "CREED",
+  "tagline": "The standard everything rests on.",
+  "items": [
+    {
+      "title": "Getting started",
+      "items": [
+        {
+          "title": "Overview",
+          "path": "index"
+        },
+        {
+          "title": "Install",
+          "path": "install"
+        },
+        {
+          "title": "Quick start",
+          "path": "guides/quick-start"
+        }
+      ]
+    },
+    {
+      "title": "Guides",
+      "items": [
+        {
+          "title": "Reading the policy from PHP",
+          "path": "guides/reading-the-policy"
+        },
+        {
+          "title": "Support states and the grace period",
+          "path": "guides/support-states"
+        },
+        {
+          "title": "Keeping the patches fresh",
+          "path": "guides/patch-refresh"
+        },
+        {
+          "title": "Refreshing the policy",
+          "path": "guides/policy-refresh"
+        },
+        {
+          "title": "The policy robot",
+          "path": "guides/policy-bot"
+        },
+        {
+          "title": "Carrying CREED in another package",
+          "path": "guides/carrying-creed"
+        },
+        {
+          "title": "The handbook",
+          "path": "guides/handbook"
+        },
+        {
+          "title": "The instance runner",
+          "path": "guides/instance-runner"
+        }
+      ]
+    },
+    {
+      "title": "Reference",
+      "items": [
+        {
+          "title": "Reader API",
+          "path": "reference/api"
+        },
+        {
+          "title": "Policy file format",
+          "path": "reference/policy-format"
+        },
+        {
+          "title": "Commands and exit codes",
+          "path": "reference/commands"
+        },
+        {
+          "title": "Configuration",
+          "path": "reference/configuration"
+        },
+        {
+          "title": "Proof",
+          "path": "reference/proof"
+        }
+      ]
+    },
+    {
+      "title": "Troubleshooting",
+      "path": "troubleshooting"
+    },
+    {
+      "title": "Upgrading",
+      "path": "upgrading"
+    },
+    {
+      "title": "Contributing",
+      "path": "contributing"
+    },
+    {
+      "title": "Changelog",
+      "path": "changelog"
+    }
+  ],
+  "source": "https://nougat.snu.gs/enterprise-apps/creed",
+  "mirrors": [
+    {
+      "title": "git.wayne.edu",
+      "url": "https://git.wayne.edu/enterprise-apps/creed"
+    },
+    {
+      "title": "GitHub",
+      "url": "https://github.com/waynestate/creed"
+    }
+  ]
+}

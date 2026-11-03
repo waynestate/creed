@@ -1,9 +1,11 @@
 {
     "preset": "per",
     "exclude": [
-        "tests/fixtures"
+        "tests/fixtures",
+        "bin/docs-site.php"
     ],
     "notPath": [
-        "bin/agent-ready.php"
+        "bin/agent-ready.php",
+        "bin/docs-site.php"
     ]
 }
