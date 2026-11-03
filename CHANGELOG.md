@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added: a policy-bot CI job (weekly schedule with CREED_JOB=policy-bot, or run by hand) that runs bin/policy-bot.php run with CREED_BOT_TOKEN; without the token it skips green. The check-only refresh-patches job now skips that schedule.
 - Changed: docs and package metadata name nougat as the canonical repository, with git.wayne.edu and GitHub as read-only mirrors, until git.wayne.edu has CI runners.
 
 ## 0.1.5 (2026-11-03)

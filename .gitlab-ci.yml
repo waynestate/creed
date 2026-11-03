@@ -36,12 +36,35 @@ composer-ci:
 # The scheduled job re-reads the upstream feeds, rewrites the latest_patch
 # fields in policy/policy.json, and fails the pipeline when the policy was
 # stale. It is check-only and never commits. bin/policy-bot.php run is the
-# committing path, and no job in this file runs it yet.
+# committing path, and the policy-bot job below runs it. This job skips the
+# robot's schedule (CREED_JOB=policy-bot), so a robot pipeline runs only the
+# robot and today's check-only schedules run only this job.
 refresh-patches:
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/composer:2.10.3
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CREED_JOB != "policy-bot"'
   script:
     - composer install --no-interaction --no-progress --prefer-dist
     - php bin/refresh-patches.php
     - git diff --exit-code policy/policy.json
+
+# The policy robot (bin/policy-bot.php run) is the committing path: it
+# commits the data allowlist on auto/policy-refresh and pushes it as a
+# merge request labeled auto-data, auto-merged for a data-only run. It runs
+# on the dedicated schedule (the one carrying CREED_JOB=policy-bot) and by
+# hand from the web. GIT_DEPTH "0" fetches the full history, because the
+# robot force-pushes its branch. The single script step checks the masked
+# CREED_BOT_TOKEN variable first: without it the job prints a notice and
+# exits 0, so it stays green until the owner creates the token.
+policy-bot:
+  image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/composer:2.10.3
+  variables:
+    GIT_DEPTH: "0"
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CREED_JOB == "policy-bot"'
+    - if: '$CI_PIPELINE_SOURCE == "web"'
+  script: |
+    set -eu
+    if [ -z "${CREED_BOT_TOKEN:-}" ]; then echo "CREED_BOT_TOKEN not set; skipping the policy robot"; exit 0; fi
+    composer install --no-interaction --no-progress --prefer-dist
+    php bin/policy-bot.php run
