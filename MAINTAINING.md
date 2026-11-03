@@ -60,12 +60,13 @@ This is CREED's real maintenance job.
   `latest_patch_checked`, and proposes new Vue lines. In CI the scheduled job is check-only: the refresh tool
   exits 3 when the policy changed and the job fails on the diff. The policy robot (`bin/policy-bot.php run`)
   commits the data allowlist on `auto/policy-refresh` and pushes it as a merge request labeled `auto-data`,
-  auto-merged for a data-only run; missing CI variables stop the run before any push. A person runs it, or a
-  schedule someone wires to it does; no pipeline in this repo runs it yet. Today the scheduled job only checks; the robot will open merge requests
-  once a bot token is set as a masked, protected CI variable named `CREED_BOT_TOKEN`, requested from the GitLab
-  administrator. It never tags or releases, and
-  support dates stay hand-edited: a person reviews each support-date edit. The GitLab schedule lives in the
-  project's CI/CD settings, not in this repo.
+  auto-merged for a data-only run; missing CI variables stop the run before any push. The `policy-bot` job in
+  `.gitlab-ci.yml` runs it on its dedicated schedule (the one carrying `CREED_JOB=policy-bot`) and by hand;
+  without the masked `CREED_BOT_TOKEN` variable it prints "CREED_BOT_TOKEN not set; skipping the policy robot"
+  and stays green. It never tags or releases, and support dates stay hand-edited: a person reviews each
+  support-date edit. The branch `auto/policy-refresh` must not be protected. The owner's setup (access token,
+  `CREED_BOT_TOKEN` variable, schedule) is the numbered list in "Keeping the patches fresh" in the README; the
+  schedules live in the project's CI/CD settings on nougat, not in this repo.
 - **Support dates are edited by hand.** `active_until` and `security_until` for existing lines change only when a
   person edits them, with the upstream source in the commit message. End days are inclusive.
 - **A red scheduled run is a to-do, not an outage:** run `php bin/refresh-patches.php`, read the diff, `composer ci`,
