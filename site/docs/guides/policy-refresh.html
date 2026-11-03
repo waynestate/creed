@@ -18,7 +18,7 @@
   <a class="docs-header__brand" href="../../docs/index.html">CREED</a>
   <span><a class="docs-header__home" rel="noopener" href="https://nougat.snu.gs/enterprise-apps/creed">Source</a> <a class="docs-header__home" href="../../index.html">Back to CREED</a></span>
 </header>
-<div class="docs-layout">
+<div class="docs-layout docs-layout--toc">
   <details class="docs-menu">
     <summary>Menu</summary>
     <nav class="docs-nav" aria-label="Documentation"><ul class="docs-nav__list"><li class="docs-nav__group"><span class="docs-nav__label">Getting started</span><ul><li><a href="../../docs/index.html">Overview</a></li><li><a href="../../docs/install.html">Install</a></li><li><a href="../../docs/guides/quick-start.html">Quick start</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Guides</span><ul><li><a href="../../docs/guides/reading-the-policy.html">Reading the policy from PHP</a></li><li><a href="../../docs/guides/support-states.html">Support states and the grace period</a></li><li><a href="../../docs/guides/patch-refresh.html">Keeping the patches fresh</a></li><li><a href="../../docs/guides/policy-refresh.html" aria-current="page">Refreshing the policy</a></li><li><a href="../../docs/guides/policy-bot.html">The policy robot</a></li><li><a href="../../docs/guides/carrying-creed.html">Carrying CREED in another package</a></li><li><a href="../../docs/guides/handbook.html">The handbook</a></li><li><a href="../../docs/guides/instance-runner.html">The instance runner</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Reference</span><ul><li><a href="../../docs/reference/api.html">Reader API</a></li><li><a href="../../docs/reference/policy-format.html">Policy file format</a></li><li><a href="../../docs/reference/commands.html">Commands and exit codes</a></li><li><a href="../../docs/reference/configuration.html">Configuration</a></li><li><a href="../../docs/reference/proof.html">Proof</a></li></ul></li><li><a href="../../docs/troubleshooting.html">Troubleshooting</a></li><li><a href="../../docs/upgrading.html">Upgrading</a></li><li><a href="../../docs/contributing.html">Contributing</a></li><li><a href="../../docs/changelog.html">Changelog</a></li></ul></nav>
@@ -27,11 +27,68 @@
   <div class="docs-content">
     <main id="main">
       <article class="docs-article"><h1 id="refreshing-the-policy">Refreshing the policy<a class="docs-heading-link" aria-label="Link to this section" href="#refreshing-the-policy">#</a></h1>
-<p>STUB: this page is written in a later batch.</p>
+<p>This page explains how <code>bin/refresh-policy.php</code> keeps every support date, patch and new line in <code>policy/policy.json</code> tied to a canonical source, so nobody types a date by hand.</p>
+<h2 id="sources-per-component">Sources per component<a class="docs-heading-link" aria-label="Link to this section" href="#sources-per-component">#</a></h2>
+<p>PHP dates come from php.net, Node dates from the Node.js release schedule, and Laravel, MySQL, Vue and Composer from endoflife.date; patches come from php.net, nodejs.org, Packagist and npm.</p>
+<h2 id="change-classes">Change classes<a class="docs-heading-link" aria-label="Link to this section" href="#change-classes">#</a></h2>
+<p>Each run sorts every change into a class:</p>
+<div class="docs-table" role="region" aria-label="Table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Class</th>
+<th>What it is</th>
+<th>What happens</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>tighten</code></td>
+<td>a date moves earlier, or a <code>current</code> line gets its first end date</td>
+<td>written</td>
+</tr>
+<tr>
+<td><code>neutral</code></td>
+<td>a new <code>latest_patch</code>, or a new line above every listed line</td>
+<td>written</td>
+</tr>
+<tr>
+<td><code>loosen-warning</code></td>
+<td><code>active_until</code> moves later (a warning tier, never a failure)</td>
+<td>written</td>
+</tr>
+<tr>
+<td><code>loosen-fail</code></td>
+<td><code>security_until</code> moves later, or an EOL line would be supported again</td>
+<td>held, unless two independent sources agree (php.net and endoflife.date for PHP, schedule.json and endoflife.date for Node) or <code>policy/sources.json</code> shows the same value from the same source for 14 days</td>
+</tr>
+<tr>
+<td><code>refused</code></td>
+<td>removing a line or a date, or any change to <code>tools</code> or <code>rules</code></td>
+<td>never automatic; reported (a Composer minimum on an EOL line shows up here)</td>
+</tr>
+</tbody>
+</table></div>
+<h2 id="when-a-source-is-down">When a source is down<a class="docs-heading-link" aria-label="Link to this section" href="#when-a-source-is-down">#</a></h2>
+<p>A source that is down, slow or returns something unreadable changes nothing: its fields keep their last good value. A line missing from a feed is never removed. Where a first-party source and endoflife.date disagree, the first party wins and the disagreement is reported.</p>
+<h2 id="running-the-refresher">Running the refresher<a class="docs-heading-link" aria-label="Link to this section" href="#running-the-refresher">#</a></h2>
+<pre><code>php bin/refresh-policy.php [--dry-run] [--offline &lt;dir&gt;] [--policy &lt;path&gt;]
+    [--sources &lt;path&gt;] [--report &lt;file&gt;] [--today YYYY-MM-DD] [--touch]
+</code></pre>
+<p><code>--report</code> writes JSON with <code>changes</code>, <code>held</code>, <code>refused</code>, <code>disagreements</code> and <code>source_errors</code>. <code>--touch</code> sets <code>refreshed_on</code> to today even when nothing else changed (the weekly heartbeat). <code>policy/sources.json</code> records, per value, which source said it, and the first and last day it was seen.</p>
+<h2 id="exit-codes">Exit codes<a class="docs-heading-link" aria-label="Link to this section" href="#exit-codes">#</a></h2>
+<p>Exit codes: <code>0</code> nothing worth committing (always <code>0</code> with <code>--dry-run</code>); <code>1</code> hard failure; <code>3</code> something was written to <code>policy/policy.json</code> or <code>policy/sources.json</code>, including a released <code>loosen-fail</code> (the policy robot raises the alert from the report); <code>4</code> something was held or refused; nothing is committed for that run. Written changes are always written.</p>
+<p><code>bin/refresh-patches.php</code> still works as before.</p>
+<h2 id="related">Related<a class="docs-heading-link" aria-label="Link to this section" href="#related">#</a></h2>
+<ul>
+<li><a href="patch-refresh.html">Keeping the patches fresh</a></li>
+<li><a href="policy-bot.html">The policy robot</a></li>
+<li><a href="../reference/policy-format.html">Policy file format</a></li>
+</ul>
 </article>
     </main>
     <nav class="docs-pager" aria-label="Pages"><a class="docs-pager__link" href="../../docs/guides/patch-refresh.html"><span class="docs-pager__dir">Previous</span><span class="docs-pager__title">Keeping the patches fresh</span></a><a class="docs-pager__link docs-pager__link--next" href="../../docs/guides/policy-bot.html"><span class="docs-pager__dir">Next</span><span class="docs-pager__title">The policy robot</span></a></nav>
   </div>
+  <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#sources-per-component">Sources per component</a></li><li class="docs-toc__item"><a href="#change-classes">Change classes</a></li><li class="docs-toc__item"><a href="#when-a-source-is-down">When a source is down</a></li><li class="docs-toc__item"><a href="#running-the-refresher">Running the refresher</a></li><li class="docs-toc__item"><a href="#exit-codes">Exit codes</a></li><li class="docs-toc__item"><a href="#related">Related</a></li></ul></nav>
 </div>
 <footer class="docs-footer">
   <span>Documents CREED <span data-docs-version>0.1.6</span></span>

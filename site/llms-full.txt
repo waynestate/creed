@@ -903,7 +903,34 @@ Source: https://creed.apps.wayne.edu/docs/guides/carrying-creed.html
 
 ## Carrying CREED in another package[#](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html#carrying-creed-in-another-package)
 
-STUB: this page is written in a later batch.
+This page explains who carries a copy of CREED's reader and policy, what the copy is, and how `bin/export.php` generates it and checks it.
+
+### Who carries a copy[#](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html#who-carries-a-copy)
+
+- PROCTOR, Booster and Rollcall each carry a generated copy of the reader and policy under their own namespace, made by `bin/export.php`, so two tools in one app never fight over a class name.
+- ADVISOR carries CREED's policy and handbook as a data bundle instead, in its `data/`.
+- HELMET can read a `policy.json` at runtime, and apps and the stack's front-page deploys install `waynestate/creed` from Packagist.
+
+### Why the copies began[#](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html#why-the-copies-began)
+
+The copies began because CREED was not on Packagist. It is now (`waynestate/creed` 0.1.3), so each copy can become a real `require`, one consumer at a time; until a consumer switches, its copy stays.
+
+### Generating and checking the copy[#](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html#generating-and-checking-the-copy)
+
+CREED owns the generator and the check:
+
+```
+php bin/export.php --namespace=Waynestate\Proctor\Creed --to=vendor/creed-copy
+php bin/export.php --check --namespace=Waynestate\Proctor\Creed --to=vendor/creed-copy
+```
+
+The copy is the reader with the namespace rewritten and `bundled()` repointed at its own `policy.json`; `--check` fails when the copy drifts from the source. Creed Bratton would have a form for this.
+
+### Related[#](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html#related)
+
+- [The handbook](https://creed.apps.wayne.edu/docs/guides/handbook.html)
+- [Reading the policy from PHP](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html)
+- [Install](https://creed.apps.wayne.edu/docs/install.html)
 
 ---
 
@@ -911,7 +938,38 @@ Source: https://creed.apps.wayne.edu/docs/guides/handbook.html
 
 ## The handbook[#](https://creed.apps.wayne.edu/docs/guides/handbook.html#the-handbook)
 
-STUB: this page is written in a later batch.
+This page maps the CREED handbook: what it is, how to read its key words and PROCTOR check lines, and where each of the thirteen chapters lives.
+
+### What the handbook is[#](https://creed.apps.wayne.edu/docs/guides/handbook.html#what-the-handbook-is)
+
+The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and marks the rest as "To be decided". The rules, chapter by chapter, live in the handbook site, built separately from `handbook/`.
+
+### How to read a rule[#](https://creed.apps.wayne.edu/docs/guides/handbook.html#how-to-read-a-rule)
+
+- The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in each chapter are to be interpreted as described in RFC 2119.
+- A line that reads "PROCTOR check: `<id>`" names the PROCTOR check that reports a breach of that rule.
+
+### The chapters[#](https://creed.apps.wayne.edu/docs/guides/handbook.html#the-chapters)
+
+- [Versions](https://creed.apps.wayne.edu/handbook/versions.html): the stack's version policy, the state table from active to EOL plus 90 days, with the dates in `policy/policy.json` and every tool deriving a version's state from the date.
+- [Dependencies](https://creed.apps.wayne.edu/handbook/dependencies.html): no unbounded constraints, a committed lock file, an audit with no advisories at or above the policy's severity threshold, and the private-packages registry rules.
+- [Code](https://creed.apps.wayne.edu/handbook/code.html): PHP style with one Pint preset per repo, reading the code, static analysis at PHPStan level 8, banned patterns, and Vue and JavaScript linting.
+- [Auth](https://creed.apps.wayne.edu/handbook/auth.html): one protocol-neutral library that returns a verified identity and leaves the session to the app, with its drivers and non-EOL PHP only.
+- [Databases](https://creed.apps.wayne.edu/handbook/databases.html): the MySQL lines the policy lists, the conventions that keep an app working on the shared 5.6 server, and the 90-day grace period.
+- [Runtime and headers](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html): to be decided; no ADR decides the runtime and header rules yet, so this chapter states no rules.
+- [Deploy gate](https://creed.apps.wayne.edu/handbook/deploy-gate.html): the gate runs PROCTOR against the commit being released, before it is released, and refuses EOL PHP.
+- [CI](https://creed.apps.wayne.edu/handbook/ci.html): CI is enforcement point (c), a red pipeline before merge, built from Preflight's pinned components and judged with deterministic commands, never with a model.
+- [Accessibility](https://creed.apps.wayne.edu/handbook/accessibility.html): to be decided; what is known is that WayneUI is the component library the stack builds on.
+- [Every OS](https://creed.apps.wayne.edu/handbook/every-os.html): every developer tool works on Windows, macOS and Linux, with `.ps1` and `.sh` pairs, LF line endings and portable paths.
+- [Secrets](https://creed.apps.wayne.edu/handbook/secrets.html): credentials never in version control and never in the served folder, with errors and debug output that hide them.
+- [Production](https://creed.apps.wayne.edu/handbook/production.html): pre-production and production environments, running safely with the least access needed, and who can reach an app.
+- [Overrides](https://creed.apps.wayne.edu/handbook/overrides.html): overrides are named, dated and visible, with an expiry date and a reason, and an expired override is a failure.
+
+### Related[#](https://creed.apps.wayne.edu/docs/guides/handbook.html#related)
+
+- [Carrying CREED in another package](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html)
+- [Support states and the grace period](https://creed.apps.wayne.edu/docs/guides/support-states.html)
+- [The instance runner](https://creed.apps.wayne.edu/docs/guides/instance-runner.html)
 
 ---
 
@@ -919,7 +977,27 @@ Source: https://creed.apps.wayne.edu/docs/guides/instance-runner.html
 
 ## The instance runner[#](https://creed.apps.wayne.edu/docs/guides/instance-runner.html#the-instance-runner)
 
-STUB: this page is written in a later batch.
+This page explains why every product in the stack strongly recommends a git.wayne.edu instance runner, and where CREED's code lives until one exists.
+
+### Strongly recommended: a git.wayne.edu instance runner[#](https://creed.apps.wayne.edu/docs/guides/instance-runner.html#strongly-recommended-a-git-wayne-edu-instance-runner)
+
+git.wayne.edu has no runners today. Every product in the stack strongly recommends a git.wayne.edu instance runner.
+
+![Creed Bratton from The Office in a dark suit and blue shirt with a wide, wild-eyed grin](https://creed.apps.wayne.edu/docs/readme/creed-bratton.gif)
+
+Creed Bratton, whose quality assurance work we all admire. His past is a mystery. Ours is in `policy/policy.json`, where it belongs.
+
+### Where the code lives[#](https://creed.apps.wayne.edu/docs/guides/instance-runner.html#where-the-code-lives)
+
+The canonical repository is on nougat: [enterprise-apps/creed](https://nougat.snu.gs/enterprise-apps/creed). git.wayne.edu and GitHub ([waynestate/creed](https://github.com/waynestate/creed)) are read-only mirrors of it. Open issues and merge requests on nougat, not on the mirrors. This moves to git.wayne.edu once it has CI runners.
+
+Creed Bratton would say the code lives wherever he last left it. Ours lives on nougat.
+
+### Related[#](https://creed.apps.wayne.edu/docs/guides/instance-runner.html#related)
+
+- [Carrying CREED in another package](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html)
+- [The handbook](https://creed.apps.wayne.edu/docs/guides/handbook.html)
+- [Contributing](https://creed.apps.wayne.edu/docs/contributing.html)
 
 ---
 
@@ -927,7 +1005,31 @@ Source: https://creed.apps.wayne.edu/docs/guides/patch-refresh.html
 
 ## Keeping the patches fresh[#](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html#keeping-the-patches-fresh)
 
-STUB: this page is written in a later batch.
+This page explains how the patch-level data in `policy/policy.json` stays tied to the upstream feeds, and what the check-only scheduled job does when the refresh changes something.
+
+### What the refresh does[#](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html#what-the-refresh-does)
+
+`bin/refresh-patches.php` re-reads the upstream feeds, rewrites the `latest_patch` fields in `policy/policy.json`, and proposes new Vue lines from endoflife.date. In doing so it updates `latest_patch` and `latest_patch_checked`.
+
+### Where the data comes from[#](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html#where-the-data-comes-from)
+
+Patch levels are watched automatically. `bin/refresh-patches.php` reads php.net (PHP), Packagist (Laravel), nodejs.org (Node) and endoflife.date (a PHP cross-check and Vue lines).
+
+### The check-only scheduled job[#](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html#the-check-only-scheduled-job)
+
+A scheduled CI job runs the refresh and is check-only: when the policy changed, the tool exits 3 and the job fails on the diff. A red scheduled run is a to-do, not an outage: run `php bin/refresh-patches.php`, read the diff, `composer ci`, add a CHANGELOG line, commit.
+
+The committing path for the same refresh is the policy robot, covered in [The policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html).
+
+### Support dates stay hand-edited[#](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html#support-dates-stay-hand-edited)
+
+Support dates stay hand-edited: a person reviews each support-date edit. `active_until` and `security_until` for existing lines change only when a person edits them, with the upstream source in the commit message. End days are inclusive.
+
+### Related[#](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html#related)
+
+- [Refreshing the policy](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html)
+- [The policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html)
+- [Reading the policy from PHP](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html)
 
 ---
 
@@ -935,7 +1037,35 @@ Source: https://creed.apps.wayne.edu/docs/guides/policy-bot.html
 
 ## The policy robot[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-policy-robot)
 
-STUB: this page is written in a later batch.
+This page explains how the policy robot commits the refresh output as a merge request, and how to put it on the schedule.
+
+### What the robot does[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#what-the-robot-does)
+
+The policy robot (`bin/policy-bot.php run`) is the committing path: it commits the data allowlist on `auto/policy-refresh` and pushes it as a merge request labeled `auto-data`; a data-only run is auto-merged, and missing CI variables stop the run before any push.
+
+> \[!NOTE\] The robot never tags or releases, and support dates stay hand-edited: a person reviews each support-date edit.
+
+### The CI job[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-ci-job)
+
+The `policy-bot` job in `.gitlab-ci.yml` runs `bin/policy-bot.php run` with `CREED_BOT_TOKEN`: on its dedicated schedule (the one carrying `CREED_JOB=policy-bot`) and by hand from the web. Without the token the job prints "CREED_BOT_TOKEN not set; skipping the policy robot" and stays green. The check-only refresh-patches job skips that schedule.
+
+### Putting the robot on the schedule[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#putting-the-robot-on-the-schedule)
+
+To put the robot on the schedule, the owner creates three things on the CREED project:
+
+1. A project access token (Settings > Access tokens): role Maintainer (Developer works only if Developers may merge to the default branch), scopes `api` and `write_repository`, an expiry of 90 days, then rotate.
+2. A CI/CD variable `CREED_BOT_TOKEN` holding the token: masked and hidden, protected, not a file. The schedule runs on `main`, which is a protected branch, so the protected variable is available there.
+3. A schedule on `main` (CI/CD > Schedules): weekly, Monday, with the variable `CREED_JOB` = `policy-bot`. The existing check-only schedule (no variable) can stay or be replaced by this one.
+
+> \[!WARNING\] The branch `auto/policy-refresh` must not be protected, or the robot cannot push it.
+
+The schedules are GitLab project settings, not files in this repo. The GitHub mirror runs the same check on a cron and on demand.
+
+### Related[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#related)
+
+- [Keeping the patches fresh](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html)
+- [Refreshing the policy](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html)
+- [Contributing](https://creed.apps.wayne.edu/docs/contributing.html)
 
 ---
 
@@ -943,7 +1073,48 @@ Source: https://creed.apps.wayne.edu/docs/guides/policy-refresh.html
 
 ## Refreshing the policy[#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#refreshing-the-policy)
 
-STUB: this page is written in a later batch.
+This page explains how `bin/refresh-policy.php` keeps every support date, patch and new line in `policy/policy.json` tied to a canonical source, so nobody types a date by hand.
+
+### Sources per component[#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#sources-per-component)
+
+PHP dates come from php.net, Node dates from the Node.js release schedule, and Laravel, MySQL, Vue and Composer from endoflife.date; patches come from php.net, nodejs.org, Packagist and npm.
+
+### Change classes[#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#change-classes)
+
+Each run sorts every change into a class:
+
+| Class | What it is | What happens |
+| --- | --- | --- |
+| `tighten` | a date moves earlier, or a `current` line gets its first end date | written |
+| `neutral` | a new `latest_patch`, or a new line above every listed line | written |
+| `loosen-warning` | `active_until` moves later (a warning tier, never a failure) | written |
+| `loosen-fail` | `security_until` moves later, or an EOL line would be supported again | held, unless two independent sources agree (php.net and endoflife.date for PHP, schedule.json and endoflife.date for Node) or `policy/sources.json` shows the same value from the same source for 14 days |
+| `refused` | removing a line or a date, or any change to `tools` or `rules` | never automatic; reported (a Composer minimum on an EOL line shows up here) |
+
+### When a source is down[#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#when-a-source-is-down)
+
+A source that is down, slow or returns something unreadable changes nothing: its fields keep their last good value. A line missing from a feed is never removed. Where a first-party source and endoflife.date disagree, the first party wins and the disagreement is reported.
+
+### Running the refresher[#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#running-the-refresher)
+
+```
+php bin/refresh-policy.php [--dry-run] [--offline <dir>] [--policy <path>]
+    [--sources <path>] [--report <file>] [--today YYYY-MM-DD] [--touch]
+```
+
+`--report` writes JSON with `changes`, `held`, `refused`, `disagreements` and `source_errors`. `--touch` sets `refreshed_on` to today even when nothing else changed (the weekly heartbeat). `policy/sources.json` records, per value, which source said it, and the first and last day it was seen.
+
+### Exit codes[#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#exit-codes)
+
+Exit codes: `0` nothing worth committing (always `0` with `--dry-run`); `1` hard failure; `3` something was written to `policy/policy.json` or `policy/sources.json`, including a released `loosen-fail` (the policy robot raises the alert from the report); `4` something was held or refused; nothing is committed for that run. Written changes are always written.
+
+`bin/refresh-patches.php` still works as before.
+
+### Related[#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#related)
+
+- [Keeping the patches fresh](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html)
+- [The policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html)
+- [Policy file format](https://creed.apps.wayne.edu/docs/reference/policy-format.html)
 
 ---
 
@@ -959,7 +1130,49 @@ Source: https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html
 
 ## Reading the policy from PHP[#](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html#reading-the-policy-from-php)
 
-STUB: this page is written in a later batch.
+This page shows how a PHP program loads the CREED policy and asks it the one question every tool needs: what state is this version in, on this date?
+
+### Load a policy[#](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html#load-a-policy)
+
+CREED is the Wayne State app stack's version policy, as data. One file, `policy/policy.json`, lists the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, plus the rules every check runs against. A small framework-free PHP reader, `Waynestate\Creed\Policy`, answers the questions:
+
+- `Policy::bundled()`, `Policy::fromFile($path)`, `Policy::fromArray($data)`: load a policy; `origin()` says where it came from.
+
+### The example[#](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html#the-example)
+
+One snippet covers the whole round trip:
+
+```php
+use Waynestate\Creed\Policy;
+use Waynestate\Creed\State;
+
+$policy = Policy::bundled();
+
+// What state is PHP 8.2 in, on this date?
+$state = $policy->stateOf('php', '8.2', new DateTimeImmutable('2026-10-27'));
+// State::Security
+
+// What is the oldest PHP an app may declare?
+$floor = $policy->oldestSupported('php', new DateTimeImmutable('2026-10-27'));
+// '8.2'
+```
+
+### stateOf[#](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html#stateof)
+
+`stateOf($component, $version, $on)`: the state, or an exception; `tryStateOf()` is the same answer as `null` when it cannot be answered. In the example, PHP 8.2 on 2026-10-27 is `State::Security`.
+
+### oldestSupported[#](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html#oldestsupported)
+
+`oldestSupported($component, $on)`: the lowest version still Active or Security; `supported()` lists all of them, oldest first. In the example, the oldest PHP an app may declare on 2026-10-27 is `'8.2'`.
+
+> \[!TIP\] One last time: the reader answers, it does not guess.
+
+### Related[#](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html#related)
+
+- [Support states and the grace period](https://creed.apps.wayne.edu/docs/guides/support-states.html)
+- [Reader API](https://creed.apps.wayne.edu/docs/reference/api.html)
+- [Install](https://creed.apps.wayne.edu/docs/install.html)
+- [Quick start](https://creed.apps.wayne.edu/docs/guides/quick-start.html)
 
 ---
 
@@ -967,7 +1180,31 @@ Source: https://creed.apps.wayne.edu/docs/guides/support-states.html
 
 ## Support states and the grace period[#](https://creed.apps.wayne.edu/docs/guides/support-states.html#support-states-and-the-grace-period)
 
-STUB: this page is written in a later batch.
+This page explains how a version moves through the states `Active`, `Security`, `Eol` and `EolGraceExpired`, and what the reader does with versions it has never heard of.
+
+### With Arms Wide Open[#](https://creed.apps.wayne.edu/docs/guides/support-states.html#with-arms-wide-open)
+
+The support window stays open until `security_until`. A version is still `Security` on that day, moves to `Eol` the day after, and stays in `Eol` for `eol_grace_days` (90) more days before it is `EolGraceExpired`. The boundary is inclusive, and the reader never guesses.
+
+![Form CR-1 from the front page, filled in four times from policy.json and stamped: PHP 8.2 on 2026-10-29 is Security only, 63 days left; PHP 8.2 on 2027-01-01 is EOL, in grace until 2027-03-31; PHP 8.1 on 2026-10-29 is past grace; Laravel 13 on 2026-10-29 is Supported.](https://creed.apps.wayne.edu/docs/readme/form-cr1.svg)
+
+Form CR-1, as the front page fills it in: four real rows of `policy/policy.json`, the same answers `Policy::stateOf` gives, stamped.
+
+### Versions CREED hasn't heard of[#](https://creed.apps.wayne.edu/docs/guides/support-states.html#versions-creed-hasn-t-heard-of)
+
+The reader refuses what it does not know, except the newest thing and the oldest. A version that sorts above every line the policy lists is `Active`, and `isAheadOfPolicy()` says so. A version that parses and sorts below every listed line is `Eol`: it is older than the oldest listed line, and that is end of life by definition. `belowOldestLineReason()` gives the reason, `older than the oldest listed line (8.1)`. A version that falls between listed lines, or that does not parse, is still unknown, and still throws. Current versions are never refused.
+
+A line marked `"current": true` is `Active` on every date and carries no `security_until`: the policy says the line is current, and the reader does not guess when it stops being so.
+
+### Higher[#](https://creed.apps.wayne.edu/docs/guides/support-states.html#higher)
+
+CREED itself requires PHP `^8.3`, like every stack package, and CI tests it on 8.3, 8.4 and 8.5. The policy's floor for apps is a different number: `^8.2` until PHP 8.2 reaches end of life on 2026-12-31, then `^8.3`. Creed has always been one version ahead of everyone else, at least by his own account.
+
+### Related[#](https://creed.apps.wayne.edu/docs/guides/support-states.html#related)
+
+- [Reading the policy from PHP](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html)
+- [Reader API](https://creed.apps.wayne.edu/docs/reference/api.html)
+- [The versions chapter](https://creed.apps.wayne.edu/handbook/versions.html)
 
 ---
 
@@ -991,7 +1228,42 @@ Source: https://creed.apps.wayne.edu/docs/reference/api.html
 
 ## Reader API[#](https://creed.apps.wayne.edu/docs/reference/api.html#reader-api)
 
-STUB: this page is written in a later batch.
+This page lists every public member of the `Waynestate\Creed\Policy` reader, in the order the README introduces them, with the signature from `src/Policy.php`.
+
+| Member | What it does | Signature |
+| --- | --- | --- |
+| `Policy::bundled()` | Load a policy | `public static function bundled(): self` |
+| `Policy::fromFile($path)` | Load a policy | `public static function fromFile(string $path): self` |
+| `Policy::fromArray($data)` | Load a policy | `public static function fromArray(array $data): self` |
+| `origin()` | Says where it came from | `public function origin(): string` |
+| `stateOf($component, $version, $on)` | The state, or an exception | `public function stateOf(string $component, string $version, DateTimeImmutable $on): State` |
+| `tryStateOf()` | The same answer as `null` when it cannot be answered | `public function tryStateOf(string $component, ?string $version, DateTimeImmutable $on): ?State` |
+| `oldestSupported($component, $on)` | The lowest version still Active or Security | `public function oldestSupported(string $component, DateTimeImmutable $on): ?string` |
+| `supported()` | Lists all of them, oldest first | `public function supported(string $component, DateTimeImmutable $on): array` |
+| `latestPatch($component, $version)` | The current patch in that line | `public function latestPatch(string $component, string $version): ?string` |
+| `latestPatchChecked()` | Says when it was last checked | `public function latestPatchChecked(string $component, string $version): ?string` |
+| `line($component, $version)` | The raw line, with `active_until`, `security_until`, `latest_patch`, `latest_patch_checked` (each a string or null) and `current` (true or null) | `public function line(string $component, string $version): ?array` |
+| `activeUntil()` | Those dates as `DateTimeImmutable`, or null | `public function activeUntil(string $component, string $version): ?DateTimeImmutable` |
+| `securityUntil()` | Those dates as `DateTimeImmutable`, or null | `public function securityUntil(string $component, string $version): ?DateTimeImmutable` |
+| `daysToEol($component, $version, $on)` | Whole days until `security_until`, signed | `public function daysToEol(string $component, string $version, DateTimeImmutable $on): ?int` |
+| `isPastGrace()` | Says whether the grace period is over | `public function isPastGrace(string $component, string $version, DateTimeImmutable $on): bool` |
+| `resolveVersion($component, $version)` | The policy line a full version like `8.3.12` belongs to | `public function resolveVersion(string $component, string $version): ?string` |
+| `isAheadOfPolicy($component, $version)` | Whether a version sorts above every line the policy lists | `public function isAheadOfPolicy(string $component, string $version): bool` |
+| `belowOldestLineReason($component, $version)` | The reason a version is `Eol` for sorting below every listed line, or null | `public function belowOldestLineReason(string $component, string $version): ?string` |
+| `hasComponent()` | The shape of the policy itself | `public function hasComponent(string $component): bool` |
+| `components()` | The shape of the policy itself | `public function components(): array` |
+| `versions($component)` | The shape of the policy itself | `public function versions(string $component): array` |
+| `tools()` | The shape of the policy itself | `public function tools(): array` |
+| `toolMinimum($tool)` | The shape of the policy itself | `public function toolMinimum(string $tool): ?string` |
+| `rules()` | The shape of the policy itself | `public function rules(): array` |
+
+> \[!NOTE\] The wording is the README's, one line per member; the signatures are copied from `src/Policy.php`.
+
+### Related[#](https://creed.apps.wayne.edu/docs/reference/api.html#related)
+
+- [Reading the policy from PHP](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html)
+- [Support states and the grace period](https://creed.apps.wayne.edu/docs/guides/support-states.html)
+- [Install](https://creed.apps.wayne.edu/docs/install.html)
 
 ---
 

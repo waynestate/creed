@@ -18,7 +18,7 @@
   <a class="docs-header__brand" href="../../docs/index.html">CREED</a>
   <span><a class="docs-header__home" rel="noopener" href="https://nougat.snu.gs/enterprise-apps/creed">Source</a> <a class="docs-header__home" href="../../index.html">Back to CREED</a></span>
 </header>
-<div class="docs-layout">
+<div class="docs-layout docs-layout--toc">
   <details class="docs-menu">
     <summary>Menu</summary>
     <nav class="docs-nav" aria-label="Documentation"><ul class="docs-nav__list"><li class="docs-nav__group"><span class="docs-nav__label">Getting started</span><ul><li><a href="../../docs/index.html">Overview</a></li><li><a href="../../docs/install.html">Install</a></li><li><a href="../../docs/guides/quick-start.html">Quick start</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Guides</span><ul><li><a href="../../docs/guides/reading-the-policy.html">Reading the policy from PHP</a></li><li><a href="../../docs/guides/support-states.html">Support states and the grace period</a></li><li><a href="../../docs/guides/patch-refresh.html">Keeping the patches fresh</a></li><li><a href="../../docs/guides/policy-refresh.html">Refreshing the policy</a></li><li><a href="../../docs/guides/policy-bot.html">The policy robot</a></li><li><a href="../../docs/guides/carrying-creed.html">Carrying CREED in another package</a></li><li><a href="../../docs/guides/handbook.html">The handbook</a></li><li><a href="../../docs/guides/instance-runner.html">The instance runner</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Reference</span><ul><li><a href="../../docs/reference/api.html" aria-current="page">Reader API</a></li><li><a href="../../docs/reference/policy-format.html">Policy file format</a></li><li><a href="../../docs/reference/commands.html">Commands and exit codes</a></li><li><a href="../../docs/reference/configuration.html">Configuration</a></li><li><a href="../../docs/reference/proof.html">Proof</a></li></ul></li><li><a href="../../docs/troubleshooting.html">Troubleshooting</a></li><li><a href="../../docs/upgrading.html">Upgrading</a></li><li><a href="../../docs/contributing.html">Contributing</a></li><li><a href="../../docs/changelog.html">Changelog</a></li></ul></nav>
@@ -27,11 +27,153 @@
   <div class="docs-content">
     <main id="main">
       <article class="docs-article"><h1 id="reader-api">Reader API<a class="docs-heading-link" aria-label="Link to this section" href="#reader-api">#</a></h1>
-<p>STUB: this page is written in a later batch.</p>
+<p>This page lists every public member of the <code>Waynestate\Creed\Policy</code> reader, in the order the README introduces them, with the signature from <code>src/Policy.php</code>.</p>
+<div class="docs-table" role="region" aria-label="Table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Member</th>
+<th>What it does</th>
+<th>Signature</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Policy::bundled()</code></td>
+<td>Load a policy</td>
+<td><code>public static function bundled(): self</code></td>
+</tr>
+<tr>
+<td><code>Policy::fromFile($path)</code></td>
+<td>Load a policy</td>
+<td><code>public static function fromFile(string $path): self</code></td>
+</tr>
+<tr>
+<td><code>Policy::fromArray($data)</code></td>
+<td>Load a policy</td>
+<td><code>public static function fromArray(array $data): self</code></td>
+</tr>
+<tr>
+<td><code>origin()</code></td>
+<td>Says where it came from</td>
+<td><code>public function origin(): string</code></td>
+</tr>
+<tr>
+<td><code>stateOf($component, $version, $on)</code></td>
+<td>The state, or an exception</td>
+<td><code>public function stateOf(string $component, string $version, DateTimeImmutable $on): State</code></td>
+</tr>
+<tr>
+<td><code>tryStateOf()</code></td>
+<td>The same answer as <code>null</code> when it cannot be answered</td>
+<td><code>public function tryStateOf(string $component, ?string $version, DateTimeImmutable $on): ?State</code></td>
+</tr>
+<tr>
+<td><code>oldestSupported($component, $on)</code></td>
+<td>The lowest version still Active or Security</td>
+<td><code>public function oldestSupported(string $component, DateTimeImmutable $on): ?string</code></td>
+</tr>
+<tr>
+<td><code>supported()</code></td>
+<td>Lists all of them, oldest first</td>
+<td><code>public function supported(string $component, DateTimeImmutable $on): array</code></td>
+</tr>
+<tr>
+<td><code>latestPatch($component, $version)</code></td>
+<td>The current patch in that line</td>
+<td><code>public function latestPatch(string $component, string $version): ?string</code></td>
+</tr>
+<tr>
+<td><code>latestPatchChecked()</code></td>
+<td>Says when it was last checked</td>
+<td><code>public function latestPatchChecked(string $component, string $version): ?string</code></td>
+</tr>
+<tr>
+<td><code>line($component, $version)</code></td>
+<td>The raw line, with <code>active_until</code>, <code>security_until</code>, <code>latest_patch</code>, <code>latest_patch_checked</code> (each a string or null) and <code>current</code> (true or null)</td>
+<td><code>public function line(string $component, string $version): ?array</code></td>
+</tr>
+<tr>
+<td><code>activeUntil()</code></td>
+<td>Those dates as <code>DateTimeImmutable</code>, or null</td>
+<td><code>public function activeUntil(string $component, string $version): ?DateTimeImmutable</code></td>
+</tr>
+<tr>
+<td><code>securityUntil()</code></td>
+<td>Those dates as <code>DateTimeImmutable</code>, or null</td>
+<td><code>public function securityUntil(string $component, string $version): ?DateTimeImmutable</code></td>
+</tr>
+<tr>
+<td><code>daysToEol($component, $version, $on)</code></td>
+<td>Whole days until <code>security_until</code>, signed</td>
+<td><code>public function daysToEol(string $component, string $version, DateTimeImmutable $on): ?int</code></td>
+</tr>
+<tr>
+<td><code>isPastGrace()</code></td>
+<td>Says whether the grace period is over</td>
+<td><code>public function isPastGrace(string $component, string $version, DateTimeImmutable $on): bool</code></td>
+</tr>
+<tr>
+<td><code>resolveVersion($component, $version)</code></td>
+<td>The policy line a full version like <code>8.3.12</code> belongs to</td>
+<td><code>public function resolveVersion(string $component, string $version): ?string</code></td>
+</tr>
+<tr>
+<td><code>isAheadOfPolicy($component, $version)</code></td>
+<td>Whether a version sorts above every line the policy lists</td>
+<td><code>public function isAheadOfPolicy(string $component, string $version): bool</code></td>
+</tr>
+<tr>
+<td><code>belowOldestLineReason($component, $version)</code></td>
+<td>The reason a version is <code>Eol</code> for sorting below every listed line, or null</td>
+<td><code>public function belowOldestLineReason(string $component, string $version): ?string</code></td>
+</tr>
+<tr>
+<td><code>hasComponent()</code></td>
+<td>The shape of the policy itself</td>
+<td><code>public function hasComponent(string $component): bool</code></td>
+</tr>
+<tr>
+<td><code>components()</code></td>
+<td>The shape of the policy itself</td>
+<td><code>public function components(): array</code></td>
+</tr>
+<tr>
+<td><code>versions($component)</code></td>
+<td>The shape of the policy itself</td>
+<td><code>public function versions(string $component): array</code></td>
+</tr>
+<tr>
+<td><code>tools()</code></td>
+<td>The shape of the policy itself</td>
+<td><code>public function tools(): array</code></td>
+</tr>
+<tr>
+<td><code>toolMinimum($tool)</code></td>
+<td>The shape of the policy itself</td>
+<td><code>public function toolMinimum(string $tool): ?string</code></td>
+</tr>
+<tr>
+<td><code>rules()</code></td>
+<td>The shape of the policy itself</td>
+<td><code>public function rules(): array</code></td>
+</tr>
+</tbody>
+</table></div>
+<blockquote>
+<p>[!NOTE]
+The wording is the README's, one line per member; the signatures are copied from <code>src/Policy.php</code>.</p>
+</blockquote>
+<h2 id="related">Related<a class="docs-heading-link" aria-label="Link to this section" href="#related">#</a></h2>
+<ul>
+<li><a href="../guides/reading-the-policy.html">Reading the policy from PHP</a></li>
+<li><a href="../guides/support-states.html">Support states and the grace period</a></li>
+<li><a href="../install.html">Install</a></li>
+</ul>
 </article>
     </main>
     <nav class="docs-pager" aria-label="Pages"><a class="docs-pager__link" href="../../docs/guides/instance-runner.html"><span class="docs-pager__dir">Previous</span><span class="docs-pager__title">The instance runner</span></a><a class="docs-pager__link docs-pager__link--next" href="../../docs/reference/policy-format.html"><span class="docs-pager__dir">Next</span><span class="docs-pager__title">Policy file format</span></a></nav>
   </div>
+  <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#related">Related</a></li></ul></nav>
 </div>
 <footer class="docs-footer">
   <span>Documents CREED <span data-docs-version>0.1.6</span></span>
