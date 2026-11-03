@@ -14,7 +14,9 @@ This page shows where CREED proves itself against real Wayne State applications 
 
 Proof runs against real Wayne State applications are on a private site, [proof.apps.wayne.edu/creed](https://proof.apps.wayne.edu/creed/), behind a Wayne State employee sign-in.
 
-> \[!NOTE\] The front page, [`site/index.html`](https://creed.apps.wayne.edu/), is a static page you can open in a browser or serve from `site/`. On Citadel it is served by the raw-PHP deploy layer in `deploy/`: a Squire kit whose front controller serves `site/` behind HELMET's security headers. For local development, keep serving `site/` directly.
+Note
+
+The front page, [`site/index.html`](https://creed.apps.wayne.edu/), is a static page you can open in a browser or serve from `site/`. On Citadel it is served by the raw-PHP deploy layer in `deploy/`: a Squire kit whose front controller serves `site/` behind HELMET's security headers. For local development, keep serving `site/` directly.
 
 ## What `composer ci` proves[#](https://creed.apps.wayne.edu/docs/reference/proof.html#what-composer-ci-proves)
 

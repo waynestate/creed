@@ -19,7 +19,9 @@ This page lists the environment CREED reads and the options of `bin/refresh-poli
 
 `src/Bot/PolicyBot.php` also reads six GitLab predefined variables: `CI_PROJECT_ID`, `CI_SERVER_PROTOCOL`, `CI_SERVER_HOST`, `CI_SERVER_PORT`, `CI_PROJECT_PATH` and `CI_DEFAULT_BRANCH`. Each is a GitLab predefined variable the robot uses to find the project and default branch, nothing more. Missing CI variables stop the run before any push.
 
-> \[!WARNING\] The token is masked, hidden and protected, and never printed. Every line the robot prints, including runner errors and command echoes, passes through one mask function that replaces the token value with `[masked]`, so a runner error that echoes the URL back never leaks it.
+Warning
+
+The token is masked, hidden and protected, and never printed. Every line the robot prints, including runner errors and command echoes, passes through one mask function that replaces the token value with `[masked]`, so a runner error that echoes the URL back never leaks it.
 
 ## refresh-policy options[#](https://creed.apps.wayne.edu/docs/reference/configuration.html#refresh-policy-options)
 

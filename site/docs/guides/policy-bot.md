@@ -14,7 +14,9 @@ This page explains how the policy robot commits the refresh output as a merge re
 
 The policy robot (`bin/policy-bot.php run`) is the committing path: it commits the data allowlist on `auto/policy-refresh` and pushes it as a merge request labeled `auto-data`; a data-only run is auto-merged, and missing CI variables stop the run before any push.
 
-> \[!NOTE\] The robot never tags or releases, and support dates stay hand-edited: a person reviews each support-date edit.
+Note
+
+The robot never tags or releases, and support dates stay hand-edited: a person reviews each support-date edit.
 
 ## The CI job[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-ci-job)
 
@@ -28,7 +30,9 @@ To put the robot on the schedule, the owner creates three things on the CREED pr
 2. A CI/CD variable `CREED_BOT_TOKEN` holding the token: masked and hidden, protected, not a file. The schedule runs on `main`, which is a protected branch, so the protected variable is available there.
 3. A schedule on `main` (CI/CD > Schedules): weekly, Monday, with the variable `CREED_JOB` = `policy-bot`. The existing check-only schedule (no variable) can stay or be replaced by this one.
 
-> \[!WARNING\] The branch `auto/policy-refresh` must not be protected, or the robot cannot push it.
+Warning
+
+The branch `auto/policy-refresh` must not be protected, or the robot cannot push it.
 
 The schedules are GitLab project settings, not files in this repo. The GitHub mirror runs the same check on a cron and on demand.
 

@@ -48,10 +48,7 @@
 </tbody>
 </table></div>
 <p><code>src/Bot/PolicyBot.php</code> also reads six GitLab predefined variables: <code>CI_PROJECT_ID</code>, <code>CI_SERVER_PROTOCOL</code>, <code>CI_SERVER_HOST</code>, <code>CI_SERVER_PORT</code>, <code>CI_PROJECT_PATH</code> and <code>CI_DEFAULT_BRANCH</code>. Each is a GitLab predefined variable the robot uses to find the project and default branch, nothing more. Missing CI variables stop the run before any push.</p>
-<blockquote>
-<p>[!WARNING]
-The token is masked, hidden and protected, and never printed. Every line the robot prints, including runner errors and command echoes, passes through one mask function that replaces the token value with <code>[masked]</code>, so a runner error that echoes the URL back never leaks it.</p>
-</blockquote>
+<aside class="docs-callout docs-callout--warning" role="note"><p class="docs-callout__label">Warning</p><p>The token is masked, hidden and protected, and never printed. Every line the robot prints, including runner errors and command echoes, passes through one mask function that replaces the token value with <code>[masked]</code>, so a runner error that echoes the URL back never leaks it.</p></aside>
 <h2 id="refresh-policy-options">refresh-policy options<a class="docs-heading-link" aria-label="Link to this section" href="#refresh-policy-options">#</a></h2>
 <pre><code>php bin/refresh-policy.php [--dry-run] [--offline &lt;dir&gt;] [--policy &lt;path&gt;]
     [--sources &lt;path&gt;] [--report &lt;file&gt;] [--today YYYY-MM-DD] [--touch]

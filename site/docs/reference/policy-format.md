@@ -91,7 +91,9 @@ One real line from `policy/policy.json`, verbatim (the PHP 8.2 entry):
 },
 ```
 
-> \[!NOTE\] Creed Bratton's past is a mystery. Ours is in `policy/policy.json`, where it belongs.
+Note
+
+Creed Bratton's past is a mystery. Ours is in `policy/policy.json`, where it belongs.
 
 ## Related[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#related)
 

@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Changelog | CREED docs</title>
-<meta name="description" content="The record of every released change to CREED, newest first, from CHANGELOG.md.">
+<meta name="description" content="All notable changes to this project.">
 <meta name="docs-version" content="0.1.6">
 <link rel="stylesheet" href="../assets/wayne-ui/wayne-ui.css">
 <link rel="stylesheet" href="../assets/docs.css">
@@ -18,7 +18,7 @@
   <a class="docs-header__brand" href="../docs/index.html">CREED</a>
   <span><a class="docs-header__home" rel="noopener" href="https://nougat.snu.gs/enterprise-apps/creed">Source</a> <a class="docs-header__home" href="../index.html">Back to CREED</a></span>
 </header>
-<div class="docs-layout">
+<div class="docs-layout docs-layout--toc">
   <details class="docs-menu">
     <summary>Menu</summary>
     <nav class="docs-nav" aria-label="Documentation"><ul class="docs-nav__list"><li class="docs-nav__group"><span class="docs-nav__label">Getting started</span><ul><li><a href="../docs/index.html">Overview</a></li><li><a href="../docs/install.html">Install</a></li><li><a href="../docs/guides/quick-start.html">Quick start</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Guides</span><ul><li><a href="../docs/guides/reading-the-policy.html">Reading the policy from PHP</a></li><li><a href="../docs/guides/support-states.html">Support states and the grace period</a></li><li><a href="../docs/guides/patch-refresh.html">Keeping the patches fresh</a></li><li><a href="../docs/guides/policy-refresh.html">Refreshing the policy</a></li><li><a href="../docs/guides/policy-bot.html">The policy robot</a></li><li><a href="../docs/guides/carrying-creed.html">Carrying CREED in another package</a></li><li><a href="../docs/guides/handbook.html">The handbook</a></li><li><a href="../docs/guides/instance-runner.html">The instance runner</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Reference</span><ul><li><a href="../docs/reference/api.html">Reader API</a></li><li><a href="../docs/reference/policy-format.html">Policy file format</a></li><li><a href="../docs/reference/commands.html">Commands and exit codes</a></li><li><a href="../docs/reference/configuration.html">Configuration</a></li><li><a href="../docs/reference/proof.html">Proof</a></li></ul></li><li><a href="../docs/troubleshooting.html">Troubleshooting</a></li><li><a href="../docs/upgrading.html">Upgrading</a></li><li><a href="../docs/contributing.html">Contributing</a></li><li><a href="../docs/changelog.html" aria-current="page">Changelog</a></li></ul></nav>
@@ -26,12 +26,163 @@
   <nav class="docs-nav docs-nav--sidebar" aria-label="Documentation"><ul class="docs-nav__list"><li class="docs-nav__group"><span class="docs-nav__label">Getting started</span><ul><li><a href="../docs/index.html">Overview</a></li><li><a href="../docs/install.html">Install</a></li><li><a href="../docs/guides/quick-start.html">Quick start</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Guides</span><ul><li><a href="../docs/guides/reading-the-policy.html">Reading the policy from PHP</a></li><li><a href="../docs/guides/support-states.html">Support states and the grace period</a></li><li><a href="../docs/guides/patch-refresh.html">Keeping the patches fresh</a></li><li><a href="../docs/guides/policy-refresh.html">Refreshing the policy</a></li><li><a href="../docs/guides/policy-bot.html">The policy robot</a></li><li><a href="../docs/guides/carrying-creed.html">Carrying CREED in another package</a></li><li><a href="../docs/guides/handbook.html">The handbook</a></li><li><a href="../docs/guides/instance-runner.html">The instance runner</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Reference</span><ul><li><a href="../docs/reference/api.html">Reader API</a></li><li><a href="../docs/reference/policy-format.html">Policy file format</a></li><li><a href="../docs/reference/commands.html">Commands and exit codes</a></li><li><a href="../docs/reference/configuration.html">Configuration</a></li><li><a href="../docs/reference/proof.html">Proof</a></li></ul></li><li><a href="../docs/troubleshooting.html">Troubleshooting</a></li><li><a href="../docs/upgrading.html">Upgrading</a></li><li><a href="../docs/contributing.html">Contributing</a></li><li><a href="../docs/changelog.html" aria-current="page">Changelog</a></li></ul></nav>
   <div class="docs-content">
     <main id="main">
-      <article class="docs-article"><h1 id="changelog">Changelog<a class="docs-heading-link" aria-label="Link to this section" href="#changelog">#</a></h1>
-<p>STUB: this page is written in a later batch.</p>
+      <article class="docs-article"><!-- Generated from CHANGELOG.md by bin/docs-site.php. Edit CHANGELOG.md, not this file. -->
+<h2 id="unreleased">Unreleased<a class="docs-heading-link" aria-label="Link to this section" href="#unreleased">#</a></h2>
+<ul>
+<li>Added: a docs site (site/docs/) built by the shared docs builder from docs/, checked in composer ci.</li>
+<li>Changed: the front-page deploy layer pins HELMET ^0.3, PROCTOR ^0.4 and CREED ^0.1 (lock: HELMET 0.3.0, PROCTOR 0.4.0, CREED 0.1.6).</li>
+<li>Changed: CI pins Preflight 0.1.4 (GitLab component includes and the GitHub reusable workflow at its tag commit); the deploy layer sets minimum-stability to stable.</li>
+</ul>
+<h2 id="0-1-6-2026-11-03">0.1.6 (2026-11-03)<a class="docs-heading-link" aria-label="Link to this section" href="#0-1-6-2026-11-03">#</a></h2>
+<ul>
+<li>Added: a policy-bot CI job (weekly schedule with CREED_JOB=policy-bot, or run by hand) that runs bin/policy-bot.php run with CREED_BOT_TOKEN; without the token it skips green. The check-only refresh-patches job now skips that schedule.</li>
+<li>Changed: docs and package metadata name nougat as the canonical repository, with git.wayne.edu and GitHub as read-only mirrors, until git.wayne.edu has CI runners.</li>
+</ul>
+<h2 id="0-1-5-2026-11-03">0.1.5 (2026-11-03)<a class="docs-heading-link" aria-label="Link to this section" href="#0-1-5-2026-11-03">#</a></h2>
+<ul>
+<li>Changed: WSU developer standards rules updated with the owners' answers (source home, catalog, change control, crawling).</li>
+<li>Changed: CI pulls its Docker Hub images through the GitLab Dependency Proxy (the group's CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX), so pipelines no longer hit Docker Hub's anonymous pull limit.</li>
+<li>Added: a <code>wayneui-copies</code> CI job (strict WayneUI copies gate).</li>
+<li>Changed: the scheduled refresh job only checks until a bot token is set; README and CI comments say so.</li>
+<li>Removed: the unused <code>composer/semver</code> dependency.</li>
+<li>Added: handbook rules name the PROCTOR check that enforces them.</li>
+<li>Fixed: BEST_PRACTICES statements match the tree.</li>
+<li>Added: handbook note on MySQL lines and auth plugin.</li>
+<li>Added: a test pins that an older reader accepts a newer policy file.</li>
+<li>Fixed: BEST_PRACTICES gap list matches the schema and tests.</li>
+<li>Added: handbook chapters Secrets and Production, from the WSU developer standards (2024).</li>
+<li>Added: WSU developer standards (2024) rules in the Code, Auth, Databases, Dependencies and CI chapters.</li>
+<li>Added: BEST_PRACTICES section 11 (practices 55 to 61) from the WSU developer standards (2024).</li>
+</ul>
+<h2 id="0-1-4-2026-10-30">0.1.4 (2026-10-30)<a class="docs-heading-link" aria-label="Link to this section" href="#0-1-4-2026-10-30">#</a></h2>
+<ul>
+<li>Fixed: the bot's GitLab HTTP client failed on every API call (<code>stream_context_create</code> options were not under the <code>http</code> wrapper, a ValueError on current PHP). It now works, and reads response headers from the stream's metadata, so PHP 8.5 shows no deprecation. Found by Booster's hop-data robot, which uses this client.</li>
+<li>Changed: the deploy layer's Squire kit is refreshed to 0.3.3 (release options can now live in ./.env.squire).</li>
+<li>Changed: the deploy layer's Squire kit is refreshed to 0.3.4 (the local .env.squire file is now git-ignored).</li>
+</ul>
+<h2 id="0-1-3-2026-10-29">0.1.3 (2026-10-29)<a class="docs-heading-link" aria-label="Link to this section" href="#0-1-3-2026-10-29">#</a></h2>
+<ul>
+<li>
+<p>Changed: the proof page moves to a private site that needs a Wayne State sign-in.</p>
+</li>
+<li>
+<p>Changed: project names written as words except acronyms.</p>
+</li>
+<li>
+<p>Changed: README images show the current site and policy.</p>
+</li>
+<li>
+<p>Changed: README names which tools carry the reader copy; the auth chapter lists the <code>oidc</code> driver.</p>
+</li>
+<li>
+<p>Changed: the agent-ready kit is Squire 0.3.0's, so generated labels read &quot;Squire's agent-ready kit&quot;.</p>
+</li>
+<li>
+<p><code>bin/policy-bot.php run</code>: a real (non dry-run) run now commits the data
+allowlist on <code>auto/policy-refresh</code> and force-pushes it with GitLab merge
+request push options (create, target, remove source branch, label
+<code>auto-data</code>, title; <code>merge_request.auto_merge</code> on exit 3 only). The push
+URL comes from the CI_SERVER_* variables and CREED_BOT_TOKEN; missing
+variables stop the run with exit 1 naming them, and every printed line
+masks the token as <code>[masked]</code>. After an exit 0, a refresh whose
+<code>refreshed_on</code> is 7 or more days old runs the refresher again with
+<code>--touch</code> and treats that result like a normal run.</p>
+</li>
+<li>
+<p><code>bin/policy-bot.php run</code>: after a handled real run the robot now keeps its
+GitLab alert issues in line with the report, one open issue per alert key
+(<code>held:&lt;component&gt;:&lt;line&gt;:&lt;field&gt;</code>, <code>refused:&lt;component&gt;:&lt;line&gt;:&lt;field&gt;</code>,
+<code>disagreement:&lt;component&gt;:&lt;line&gt;:&lt;field&gt;</code> while policy sides with neither
+source, and <code>upcoming-eol:&lt;component&gt;:&lt;line&gt;</code> within 60 days of
+<code>security_until</code>), each labelled <code>auto-alert</code> and titled <code>[auto-alert] &lt;key&gt;</code>. A key that is still present gets a note on its existing issue; a
+key that is gone is closed with a &quot;Cleared on <date>.&quot; note. The client is
+built from CI_API_V4_URL, CI_PROJECT_ID and CREED_BOT_TOKEN; an incomplete
+environment stops the run with exit 1 naming the missing variables. A dry
+run prints the issues it would open and never calls the API.</p>
+</li>
+<li>
+<p>New <code>src/Bot/GitLabClient.php</code>: a small GitLab API client (list open
+issues, create an issue, add a note, close an issue) over an injectable
+<code>HttpTransport</code>, shipped with a dependency-free PHP streams transport
+(<code>GitLabClient::streamTransport</code>). The token rides only in the
+<code>PRIVATE-TOKEN</code> header, never in a URL, and every error it throws is
+masked, so a failed call can never print the token.</p>
+</li>
+<li>
+<p>Fixed: stale capability claims in the site and docs.</p>
+</li>
+</ul>
+<h2 id="0-1-2-2026-10-29">0.1.2 (2026-10-29)<a class="docs-heading-link" aria-label="Link to this section" href="#0-1-2-2026-10-29">#</a></h2>
+<ul>
+<li>
+<p><code>bin/refresh-policy.php</code>: a released version that loosens a constraint now exits 3 (changes written) with an alert in the report, instead of exit 4.</p>
+</li>
+<li>
+<p>Fixed: a version of a known component that is older than the oldest listed
+line (PHP 5.x to 8.0, Laravel 5 to 8, Inertia 0.x) is now <code>Eol</code>, with the
+reason <code>older than the oldest listed line (8.1)</code> from the new
+<code>belowOldestLineReason($component, $version)</code>, instead of being refused as
+an unknown version. Unlisted components and version strings that do not
+parse are still refused, and a version above every listed line is still
+<code>Active</code>.</p>
+</li>
+</ul>
+<h2 id="0-1-1-2026-10-29">0.1.1 (2026-10-29)<a class="docs-heading-link" aria-label="Link to this section" href="#0-1-1-2026-10-29">#</a></h2>
+<ul>
+<li><code>bin/refresh-policy.php</code> keeps every support date, patch and new line in the
+policy tied to a canonical source (php.net, the Node.js release schedule,
+endoflife.date, Packagist, npm). Changes are classed tighten, neutral,
+loosen-warning or loosen-fail; a later security date is held until two
+sources agree or 14 days pass; nothing is ever removed. Provenance lives in
+the new <code>policy/sources.json</code> (schema and validation included), and the policy
+gains an optional <code>refreshed_on</code> date. <code>refresh-patches.php</code> keeps working.</li>
+<li>PHPStan now includes Pinstripe's raw preset
+(<code>vendor/waynestate/pinstripe/phpstan/raw.neon</code>) instead of carrying a hand
+copy; <code>phpstan.neon</code> keeps only this repo's own paths and phpVersion.
+<code>waynestate/pinstripe</code> joins require-dev (dev-main until 0.1.0 is tagged)
+and <code>phpstan/extension-installer</code> is allowed so the preset's deprecation
+rules load. The suit is off the rack now.</li>
+<li><code>handbook/dependencies.md</code> gains a &quot;Private packages&quot; section: internal-only
+packages install from one GitLab registry per ecosystem, credentials stay
+out of repository URLs and lock files, builds use read-only deploy tokens,
+the private Composer entry is canonical, released versions never move, and
+public code goes to Packagist or npm. PROCTOR checks and the PREFLIGHT
+publish job enforce the rules. One standard, no cover versions.</li>
+<li>Policy lines may be marked <code>&quot;current&quot;: true</code>: Active on every date, with no
+<code>security_until</code>. The schema rejects a current line that also carries a
+<code>security_until</code>, and a line that carries neither.</li>
+<li><code>stateOf()</code> resolves a version to its policy line before judging it. A
+version that sorts above every listed line is <code>Active</code> (current versions
+are never refused), while a version between listed lines still throws.</li>
+<li>New reader method <code>isAheadOfPolicy($component, $version)</code>.</li>
+<li><code>line()</code> reports a fifth field, <code>current</code> (true or null).</li>
+<li>The bundled policy lists Vue 3 and Inertia 2 as current lines.</li>
+<li><code>bin/refresh-patches.php</code> reads the endoflife.date Vue feed and proposes new
+Vue lines (a current line, or EOL dates) alongside the patch refresh.</li>
+<li>The README's reader example is now a test: <code>tests/ReadmeTest.php</code> runs every
+<pre><code class="language-php">values printed beside it. A snippet that cannot run as-is is skipped with a
+`&lt;!-- readme-test: skip --&gt;` comment.
+</code></pre>
+</li>
+<li>The handbook is now linted for RFC 2119 capitalization. <code>src/HandbookLinter.php</code>
+and <code>bin/lint-handbook.php</code> flag lowercase <code>must</code>, <code>must not</code>, <code>should</code>,
+<code>should not</code> and <code>may</code> in any chapter that declares RFC 2119, ignoring code
+spans and blocks; a same-line <code>&lt;!-- lint: allow --&gt;</code> excuses a deliberate
+plain-English use. <code>composer ci</code> runs the lint as <code>lint-handbook</code>.</li>
+<li>Every handbook chapter now declares RFC 2119 and uses capital keywords;
+<code>handbook/databases.md</code> gains a &quot;Grace period&quot; section spelling out the 90-day
+<code>eol_grace_days</code> window (<code>Security</code> on <code>security_until</code>, <code>Eol</code> for the window,
+<code>EolGraceExpired</code> after, no override).</li>
+</ul>
+<h2 id="0-1-0-2026-10-27">0.1.0 (2026-10-27)<a class="docs-heading-link" aria-label="Link to this section" href="#0-1-0-2026-10-27">#</a></h2>
+<ul>
+<li>First tagged release.</li>
+</ul>
 </article>
     </main>
     <nav class="docs-pager" aria-label="Pages"><a class="docs-pager__link" href="../docs/contributing.html"><span class="docs-pager__dir">Previous</span><span class="docs-pager__title">Contributing</span></a></nav>
   </div>
+  <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#unreleased">Unreleased</a></li><li class="docs-toc__item"><a href="#0-1-6-2026-11-03">0.1.6 (2026-11-03)</a></li><li class="docs-toc__item"><a href="#0-1-5-2026-11-03">0.1.5 (2026-11-03)</a></li><li class="docs-toc__item"><a href="#0-1-4-2026-10-30">0.1.4 (2026-10-30)</a></li><li class="docs-toc__item"><a href="#0-1-3-2026-10-29">0.1.3 (2026-10-29)</a></li><li class="docs-toc__item"><a href="#0-1-2-2026-10-29">0.1.2 (2026-10-29)</a></li><li class="docs-toc__item"><a href="#0-1-1-2026-10-29">0.1.1 (2026-10-29)</a></li><li class="docs-toc__item"><a href="#0-1-0-2026-10-27">0.1.0 (2026-10-27)</a></li></ul></nav>
 </div>
 <footer class="docs-footer">
   <span>Documents CREED <span data-docs-version>0.1.6</span></span>

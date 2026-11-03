@@ -30,10 +30,7 @@
 <p>This page explains how the policy robot commits the refresh output as a merge request, and how to put it on the schedule.</p>
 <h2 id="what-the-robot-does">What the robot does<a class="docs-heading-link" aria-label="Link to this section" href="#what-the-robot-does">#</a></h2>
 <p>The policy robot (<code>bin/policy-bot.php run</code>) is the committing path: it commits the data allowlist on <code>auto/policy-refresh</code> and pushes it as a merge request labeled <code>auto-data</code>; a data-only run is auto-merged, and missing CI variables stop the run before any push.</p>
-<blockquote>
-<p>[!NOTE]
-The robot never tags or releases, and support dates stay hand-edited: a person reviews each support-date edit.</p>
-</blockquote>
+<aside class="docs-callout docs-callout--note" role="note"><p class="docs-callout__label">Note</p><p>The robot never tags or releases, and support dates stay hand-edited: a person reviews each support-date edit.</p></aside>
 <h2 id="the-ci-job">The CI job<a class="docs-heading-link" aria-label="Link to this section" href="#the-ci-job">#</a></h2>
 <p>The <code>policy-bot</code> job in <code>.gitlab-ci.yml</code> runs <code>bin/policy-bot.php run</code> with <code>CREED_BOT_TOKEN</code>: on its dedicated schedule (the one carrying <code>CREED_JOB=policy-bot</code>) and by hand from the web. Without the token the job prints &quot;CREED_BOT_TOKEN not set; skipping the policy robot&quot; and stays green. The check-only refresh-patches job skips that schedule.</p>
 <h2 id="putting-the-robot-on-the-schedule">Putting the robot on the schedule<a class="docs-heading-link" aria-label="Link to this section" href="#putting-the-robot-on-the-schedule">#</a></h2>
@@ -43,10 +40,7 @@ The robot never tags or releases, and support dates stay hand-edited: a person r
 <li>A CI/CD variable <code>CREED_BOT_TOKEN</code> holding the token: masked and hidden, protected, not a file. The schedule runs on <code>main</code>, which is a protected branch, so the protected variable is available there.</li>
 <li>A schedule on <code>main</code> (CI/CD &gt; Schedules): weekly, Monday, with the variable <code>CREED_JOB</code> = <code>policy-bot</code>. The existing check-only schedule (no variable) can stay or be replaced by this one.</li>
 </ol>
-<blockquote>
-<p>[!WARNING]
-The branch <code>auto/policy-refresh</code> must not be protected, or the robot cannot push it.</p>
-</blockquote>
+<aside class="docs-callout docs-callout--warning" role="note"><p class="docs-callout__label">Warning</p><p>The branch <code>auto/policy-refresh</code> must not be protected, or the robot cannot push it.</p></aside>
 <p>The schedules are GitLab project settings, not files in this repo. The GitHub mirror runs the same check on a cron and on demand.</p>
 <h2 id="related">Related<a class="docs-heading-link" aria-label="Link to this section" href="#related">#</a></h2>
 <ul>

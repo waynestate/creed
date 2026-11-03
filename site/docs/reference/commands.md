@@ -25,7 +25,9 @@ This page lists every command CREED ships, what each one does, and the exit code
 | `composer site:handbook` | Rebuild `site/handbook/` from `handbook/*.md`. |
 | `composer site:agent-ready` | Rewrite the Markdown twins, `llms.txt`, `llms-full.txt`, `robots.txt` and `sitemap.xml` in `site/` (SQUIRE's agent-ready kit). |
 
-> \[!TIP\] On Windows, if tests fail oddly after a Docker install, delete `vendor/` and install again.
+Tip
+
+On Windows, if tests fail oddly after a Docker install, delete `vendor/` and install again.
 
 The whole band fits in three commands, and nobody needs a solo.
 

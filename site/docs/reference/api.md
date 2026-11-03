@@ -37,7 +37,9 @@ This page lists every public member of the `Waynestate\Creed\Policy` reader, in 
 | `toolMinimum($tool)` | The shape of the policy itself | `public function toolMinimum(string $tool): ?string` |
 | `rules()` | The shape of the policy itself | `public function rules(): array` |
 
-> \[!NOTE\] The wording is the README's, one line per member; the signatures are copied from `src/Policy.php`.
+Note
+
+The wording is the README's, one line per member; the signatures are copied from `src/Policy.php`.
 
 ## Related[#](https://creed.apps.wayne.edu/docs/reference/api.html#related)
 

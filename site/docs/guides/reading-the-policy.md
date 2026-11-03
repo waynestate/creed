@@ -43,7 +43,9 @@ $floor = $policy->oldestSupported('php', new DateTimeImmutable('2026-10-27'));
 
 `oldestSupported($component, $on)`: the lowest version still Active or Security; `supported()` lists all of them, oldest first. In the example, the oldest PHP an app may declare on 2026-10-27 is `'8.2'`.
 
-> \[!TIP\] One last time: the reader answers, it does not guess.
+Tip
+
+One last time: the reader answers, it does not guess.
 
 ## Related[#](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html#related)
 

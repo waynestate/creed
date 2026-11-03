@@ -30,10 +30,7 @@
 <p>This page shows where CREED proves itself against real Wayne State applications and what the <code>composer ci</code> gate checks before anything ships.</p>
 <h2 id="where-the-proof-runs">Where the proof runs<a class="docs-heading-link" aria-label="Link to this section" href="#where-the-proof-runs">#</a></h2>
 <p>Proof runs against real Wayne State applications are on a private site, <a rel="noopener" href="https://proof.apps.wayne.edu/creed/">proof.apps.wayne.edu/creed</a>, behind a Wayne State employee sign-in.</p>
-<blockquote>
-<p>[!NOTE]
-The front page, <a rel="noopener" href="https://creed.apps.wayne.edu/"><code>site/index.html</code></a>, is a static page you can open in a browser or serve from <code>site/</code>. On Citadel it is served by the raw-PHP deploy layer in <code>deploy/</code>: a Squire kit whose front controller serves <code>site/</code> behind HELMET's security headers. For local development, keep serving <code>site/</code> directly.</p>
-</blockquote>
+<aside class="docs-callout docs-callout--note" role="note"><p class="docs-callout__label">Note</p><p>The front page, <a rel="noopener" href="https://creed.apps.wayne.edu/"><code>site/index.html</code></a>, is a static page you can open in a browser or serve from <code>site/</code>. On Citadel it is served by the raw-PHP deploy layer in <code>deploy/</code>: a Squire kit whose front controller serves <code>site/</code> behind HELMET's security headers. For local development, keep serving <code>site/</code> directly.</p></aside>
 <h2 id="what-composer-ci-proves">What <code>composer ci</code> proves<a class="docs-heading-link" aria-label="Link to this section" href="#what-composer-ci-proves">#</a></h2>
 <p><code>composer ci</code> is the same command that runs on GitLab and GitHub. Green means it passed on all three PHP versions on both. It runs the reader on PHP 8.3, 8.4 and 8.5, validates <code>policy/policy.json</code> against its schema, and runs the handbook lint. It also fails when the committed docs pages go stale, so the site you are reading cannot drift from <code>docs/</code>.</p>
 <h2 id="the-badges">The badges<a class="docs-heading-link" aria-label="Link to this section" href="#the-badges">#</a></h2>

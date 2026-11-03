@@ -52,10 +52,7 @@ $floor = $policy-&gt;oldestSupported('php', new DateTimeImmutable('2026-10-27'))
 <p><code>stateOf($component, $version, $on)</code>: the state, or an exception; <code>tryStateOf()</code> is the same answer as <code>null</code> when it cannot be answered. In the example, PHP 8.2 on 2026-10-27 is <code>State::Security</code>.</p>
 <h2 id="oldestsupported">oldestSupported<a class="docs-heading-link" aria-label="Link to this section" href="#oldestsupported">#</a></h2>
 <p><code>oldestSupported($component, $on)</code>: the lowest version still Active or Security; <code>supported()</code> lists all of them, oldest first. In the example, the oldest PHP an app may declare on 2026-10-27 is <code>'8.2'</code>.</p>
-<blockquote>
-<p>[!TIP]
-One last time: the reader answers, it does not guess.</p>
-</blockquote>
+<aside class="docs-callout docs-callout--tip" role="note"><p class="docs-callout__label">Tip</p><p>One last time: the reader answers, it does not guess.</p></aside>
 <h2 id="related">Related<a class="docs-heading-link" aria-label="Link to this section" href="#related">#</a></h2>
 <ul>
 <li><a href="support-states.html">Support states and the grace period</a></li>
