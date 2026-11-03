@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Changed: the front-page deploy layer pins HELMET ^0.3, PROCTOR ^0.4 and CREED ^0.1 (lock: HELMET 0.3.0, PROCTOR 0.4.0, CREED 0.1.6).
+- Changed: CI pins Preflight 0.1.4 (GitLab component includes and the GitHub reusable workflow at its tag commit); the deploy layer sets minimum-stability to stable.
+
 ## 0.1.6 (2026-11-03)
 
 - Added: a policy-bot CI job (weekly schedule with CREED_JOB=policy-bot, or run by hand) that runs bin/policy-bot.php run with CREED_BOT_TOKEN; without the token it skips green. The check-only refresh-patches job now skips that schedule.
