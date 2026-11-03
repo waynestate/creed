@@ -31,6 +31,10 @@ Vue and Inertia, plus the rules every check runs against. A small
 framework-free PHP reader, `Waynestate\Creed\Policy`, answers the one question
 every tool needs: what state is this version in, on this date?
 
+## Documentation
+
+The documentation site lives at [`site/docs/index.html`](site/docs/index.html) and deploys to [https://creed.apps.wayne.edu/docs/](https://creed.apps.wayne.edu/docs/). It is built from `docs/` by Squire's shared docs builder, and `composer ci` fails when the committed pages go stale. Creed Bratton keeps his records in a filing cabinet nobody can find; ours are in `docs/`, where anyone can.
+
 ## Where the code lives
 
 The canonical repository is on nougat: [enterprise-apps/creed](https://nougat.snu.gs/enterprise-apps/creed). git.wayne.edu and GitHub ([waynestate/creed](https://github.com/waynestate/creed)) are read-only mirrors of it.

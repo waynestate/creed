@@ -2,6 +2,26 @@
 <!-- Written by Squire's agent-ready kit from the pages in the site folder; do not edit. -->
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://creed.apps.wayne.edu/</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/docs/changelog.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/docs/contributing.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/docs/guides/carrying-creed.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/docs/guides/handbook.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/docs/guides/instance-runner.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/docs/guides/patch-refresh.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/docs/guides/policy-bot.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/docs/guides/policy-refresh.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/docs/guides/quick-start.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/docs/guides/support-states.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/docs/</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/docs/install.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/docs/reference/api.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/docs/reference/commands.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/docs/reference/configuration.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/docs/reference/policy-format.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/docs/reference/proof.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/docs/troubleshooting.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/docs/upgrading.html</loc></url>
   <url><loc>https://creed.apps.wayne.edu/handbook/accessibility.html</loc></url>
   <url><loc>https://creed.apps.wayne.edu/handbook/auth.html</loc></url>
   <url><loc>https://creed.apps.wayne.edu/handbook/ci.html</loc></url>

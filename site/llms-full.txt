@@ -30,6 +30,10 @@ Vue and Inertia, plus the rules every check runs against. A small
 framework-free PHP reader, `Waynestate\Creed\Policy`, answers the one question
 every tool needs: what state is this version in, on this date?
 
+### Documentation
+
+The documentation site lives at [`site/docs/index.html`](https://nougat.snu.gs/enterprise-apps/creed/blob/HEAD/site/docs/index.html) and deploys to [https://creed.apps.wayne.edu/docs/](https://creed.apps.wayne.edu/docs/). It is built from `docs/` by Squire's shared docs builder, and `composer ci` fails when the committed pages go stale. Creed Bratton keeps his records in a filing cabinet nobody can find; ours are in `docs/`, where anyone can.
+
 ### Where the code lives
 
 The canonical repository is on nougat: [enterprise-apps/creed](https://nougat.snu.gs/enterprise-apps/creed). git.wayne.edu and GitHub ([waynestate/creed](https://github.com/waynestate/creed)) are read-only mirrors of it.
@@ -876,6 +880,166 @@ Output: a findings table (rule, chapter, result, evidence, half), then the three
 ```
 
 The agent reads the same pages you do: [llms.txt](https://creed.apps.wayne.edu/llms.txt) lists them, [llms-full.txt](https://creed.apps.wayne.edu/llms-full.txt) holds them all in one file, and every page has a Markdown twin. Nothing here phones home. The buttons only copy text or open the tool you picked.
+
+---
+
+Source: https://creed.apps.wayne.edu/docs/changelog.html
+
+## Changelog[#](https://creed.apps.wayne.edu/docs/changelog.html#changelog)
+
+STUB: this page is written in a later batch.
+
+---
+
+Source: https://creed.apps.wayne.edu/docs/contributing.html
+
+## Contributing[#](https://creed.apps.wayne.edu/docs/contributing.html#contributing)
+
+STUB: this page is written in a later batch.
+
+---
+
+Source: https://creed.apps.wayne.edu/docs/guides/carrying-creed.html
+
+## Carrying CREED in another package[#](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html#carrying-creed-in-another-package)
+
+STUB: this page is written in a later batch.
+
+---
+
+Source: https://creed.apps.wayne.edu/docs/guides/handbook.html
+
+## The handbook[#](https://creed.apps.wayne.edu/docs/guides/handbook.html#the-handbook)
+
+STUB: this page is written in a later batch.
+
+---
+
+Source: https://creed.apps.wayne.edu/docs/guides/instance-runner.html
+
+## The instance runner[#](https://creed.apps.wayne.edu/docs/guides/instance-runner.html#the-instance-runner)
+
+STUB: this page is written in a later batch.
+
+---
+
+Source: https://creed.apps.wayne.edu/docs/guides/patch-refresh.html
+
+## Keeping the patches fresh[#](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html#keeping-the-patches-fresh)
+
+STUB: this page is written in a later batch.
+
+---
+
+Source: https://creed.apps.wayne.edu/docs/guides/policy-bot.html
+
+## The policy robot[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-policy-robot)
+
+STUB: this page is written in a later batch.
+
+---
+
+Source: https://creed.apps.wayne.edu/docs/guides/policy-refresh.html
+
+## Refreshing the policy[#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#refreshing-the-policy)
+
+STUB: this page is written in a later batch.
+
+---
+
+Source: https://creed.apps.wayne.edu/docs/guides/quick-start.html
+
+## Quick start[#](https://creed.apps.wayne.edu/docs/guides/quick-start.html#quick-start)
+
+STUB: this page is written in a later batch.
+
+---
+
+Source: https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html
+
+## Reading the policy from PHP[#](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html#reading-the-policy-from-php)
+
+STUB: this page is written in a later batch.
+
+---
+
+Source: https://creed.apps.wayne.edu/docs/guides/support-states.html
+
+## Support states and the grace period[#](https://creed.apps.wayne.edu/docs/guides/support-states.html#support-states-and-the-grace-period)
+
+STUB: this page is written in a later batch.
+
+---
+
+Source: https://creed.apps.wayne.edu/docs/
+
+## Overview[#](https://creed.apps.wayne.edu/docs/#overview)
+
+STUB: this page is written in a later batch.
+
+---
+
+Source: https://creed.apps.wayne.edu/docs/install.html
+
+## Install[#](https://creed.apps.wayne.edu/docs/install.html#install)
+
+STUB: this page is written in a later batch.
+
+---
+
+Source: https://creed.apps.wayne.edu/docs/reference/api.html
+
+## Reader API[#](https://creed.apps.wayne.edu/docs/reference/api.html#reader-api)
+
+STUB: this page is written in a later batch.
+
+---
+
+Source: https://creed.apps.wayne.edu/docs/reference/commands.html
+
+## Commands and exit codes[#](https://creed.apps.wayne.edu/docs/reference/commands.html#commands-and-exit-codes)
+
+STUB: this page is written in a later batch.
+
+---
+
+Source: https://creed.apps.wayne.edu/docs/reference/configuration.html
+
+## Configuration[#](https://creed.apps.wayne.edu/docs/reference/configuration.html#configuration)
+
+STUB: this page is written in a later batch.
+
+---
+
+Source: https://creed.apps.wayne.edu/docs/reference/policy-format.html
+
+## Policy file format[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#policy-file-format)
+
+STUB: this page is written in a later batch.
+
+---
+
+Source: https://creed.apps.wayne.edu/docs/reference/proof.html
+
+## Proof[#](https://creed.apps.wayne.edu/docs/reference/proof.html#proof)
+
+STUB: this page is written in a later batch.
+
+---
+
+Source: https://creed.apps.wayne.edu/docs/troubleshooting.html
+
+## Troubleshooting[#](https://creed.apps.wayne.edu/docs/troubleshooting.html#troubleshooting)
+
+STUB: this page is written in a later batch.
+
+---
+
+Source: https://creed.apps.wayne.edu/docs/upgrading.html
+
+## Upgrading[#](https://creed.apps.wayne.edu/docs/upgrading.html#upgrading)
+
+STUB: this page is written in a later batch.
 
 ---
 
