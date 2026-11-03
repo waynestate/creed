@@ -18,7 +18,7 @@
   <a class="docs-header__brand" href="../../docs/index.html">CREED</a>
   <span><a class="docs-header__home" rel="noopener" href="https://nougat.snu.gs/enterprise-apps/creed">Source</a> <a class="docs-header__home" href="../../index.html">Back to CREED</a></span>
 </header>
-<div class="docs-layout">
+<div class="docs-layout docs-layout--toc">
   <details class="docs-menu">
     <summary>Menu</summary>
     <nav class="docs-nav" aria-label="Documentation"><ul class="docs-nav__list"><li class="docs-nav__group"><span class="docs-nav__label">Getting started</span><ul><li><a href="../../docs/index.html">Overview</a></li><li><a href="../../docs/install.html">Install</a></li><li><a href="../../docs/guides/quick-start.html">Quick start</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Guides</span><ul><li><a href="../../docs/guides/reading-the-policy.html">Reading the policy from PHP</a></li><li><a href="../../docs/guides/support-states.html">Support states and the grace period</a></li><li><a href="../../docs/guides/patch-refresh.html">Keeping the patches fresh</a></li><li><a href="../../docs/guides/policy-refresh.html">Refreshing the policy</a></li><li><a href="../../docs/guides/policy-bot.html">The policy robot</a></li><li><a href="../../docs/guides/carrying-creed.html">Carrying CREED in another package</a></li><li><a href="../../docs/guides/handbook.html" aria-current="page">The handbook</a></li><li><a href="../../docs/guides/instance-runner.html">The instance runner</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Reference</span><ul><li><a href="../../docs/reference/api.html">Reader API</a></li><li><a href="../../docs/reference/policy-format.html">Policy file format</a></li><li><a href="../../docs/reference/commands.html">Commands and exit codes</a></li><li><a href="../../docs/reference/configuration.html">Configuration</a></li><li><a href="../../docs/reference/proof.html">Proof</a></li></ul></li><li><a href="../../docs/troubleshooting.html">Troubleshooting</a></li><li><a href="../../docs/upgrading.html">Upgrading</a></li><li><a href="../../docs/contributing.html">Contributing</a></li><li><a href="../../docs/changelog.html">Changelog</a></li></ul></nav>
@@ -27,11 +27,41 @@
   <div class="docs-content">
     <main id="main">
       <article class="docs-article"><h1 id="the-handbook">The handbook<a class="docs-heading-link" aria-label="Link to this section" href="#the-handbook">#</a></h1>
-<p>STUB: this page is written in a later batch.</p>
+<p>This page maps the CREED handbook: what it is, how to read its key words and PROCTOR check lines, and where each of the thirteen chapters lives.</p>
+<h2 id="what-the-handbook-is">What the handbook is<a class="docs-heading-link" aria-label="Link to this section" href="#what-the-handbook-is">#</a></h2>
+<p>The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and marks the rest as &quot;To be decided&quot;. The rules, chapter by chapter, live in the handbook site, built separately from <code>handbook/</code>.</p>
+<h2 id="how-to-read-a-rule">How to read a rule<a class="docs-heading-link" aria-label="Link to this section" href="#how-to-read-a-rule">#</a></h2>
+<ul>
+<li>The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in each chapter are to be interpreted as described in RFC 2119.</li>
+<li>A line that reads &quot;PROCTOR check: <code>&lt;id&gt;</code>&quot; names the PROCTOR check that reports a breach of that rule.</li>
+</ul>
+<h2 id="the-chapters">The chapters<a class="docs-heading-link" aria-label="Link to this section" href="#the-chapters">#</a></h2>
+<ul>
+<li><a href="../../handbook/versions.html">Versions</a>: the stack's version policy, the state table from active to EOL plus 90 days, with the dates in <code>policy/policy.json</code> and every tool deriving a version's state from the date.</li>
+<li><a href="../../handbook/dependencies.html">Dependencies</a>: no unbounded constraints, a committed lock file, an audit with no advisories at or above the policy's severity threshold, and the private-packages registry rules.</li>
+<li><a href="../../handbook/code.html">Code</a>: PHP style with one Pint preset per repo, reading the code, static analysis at PHPStan level 8, banned patterns, and Vue and JavaScript linting.</li>
+<li><a href="../../handbook/auth.html">Auth</a>: one protocol-neutral library that returns a verified identity and leaves the session to the app, with its drivers and non-EOL PHP only.</li>
+<li><a href="../../handbook/databases.html">Databases</a>: the MySQL lines the policy lists, the conventions that keep an app working on the shared 5.6 server, and the 90-day grace period.</li>
+<li><a href="../../handbook/runtime-and-headers.html">Runtime and headers</a>: to be decided; no ADR decides the runtime and header rules yet, so this chapter states no rules.</li>
+<li><a href="../../handbook/deploy-gate.html">Deploy gate</a>: the gate runs PROCTOR against the commit being released, before it is released, and refuses EOL PHP.</li>
+<li><a href="../../handbook/ci.html">CI</a>: CI is enforcement point (c), a red pipeline before merge, built from Preflight's pinned components and judged with deterministic commands, never with a model.</li>
+<li><a href="../../handbook/accessibility.html">Accessibility</a>: to be decided; what is known is that WayneUI is the component library the stack builds on.</li>
+<li><a href="../../handbook/every-os.html">Every OS</a>: every developer tool works on Windows, macOS and Linux, with <code>.ps1</code> and <code>.sh</code> pairs, LF line endings and portable paths.</li>
+<li><a href="../../handbook/secrets.html">Secrets</a>: credentials never in version control and never in the served folder, with errors and debug output that hide them.</li>
+<li><a href="../../handbook/production.html">Production</a>: pre-production and production environments, running safely with the least access needed, and who can reach an app.</li>
+<li><a href="../../handbook/overrides.html">Overrides</a>: overrides are named, dated and visible, with an expiry date and a reason, and an expired override is a failure.</li>
+</ul>
+<h2 id="related">Related<a class="docs-heading-link" aria-label="Link to this section" href="#related">#</a></h2>
+<ul>
+<li><a href="carrying-creed.html">Carrying CREED in another package</a></li>
+<li><a href="support-states.html">Support states and the grace period</a></li>
+<li><a href="instance-runner.html">The instance runner</a></li>
+</ul>
 </article>
     </main>
     <nav class="docs-pager" aria-label="Pages"><a class="docs-pager__link" href="../../docs/guides/carrying-creed.html"><span class="docs-pager__dir">Previous</span><span class="docs-pager__title">Carrying CREED in another package</span></a><a class="docs-pager__link docs-pager__link--next" href="../../docs/guides/instance-runner.html"><span class="docs-pager__dir">Next</span><span class="docs-pager__title">The instance runner</span></a></nav>
   </div>
+  <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#what-the-handbook-is">What the handbook is</a></li><li class="docs-toc__item"><a href="#how-to-read-a-rule">How to read a rule</a></li><li class="docs-toc__item"><a href="#the-chapters">The chapters</a></li><li class="docs-toc__item"><a href="#related">Related</a></li></ul></nav>
 </div>
 <footer class="docs-footer">
   <span>Documents CREED <span data-docs-version>0.1.6</span></span>

@@ -18,7 +18,7 @@
   <a class="docs-header__brand" href="../../docs/index.html">CREED</a>
   <span><a class="docs-header__home" rel="noopener" href="https://nougat.snu.gs/enterprise-apps/creed">Source</a> <a class="docs-header__home" href="../../index.html">Back to CREED</a></span>
 </header>
-<div class="docs-layout">
+<div class="docs-layout docs-layout--toc">
   <details class="docs-menu">
     <summary>Menu</summary>
     <nav class="docs-nav" aria-label="Documentation"><ul class="docs-nav__list"><li class="docs-nav__group"><span class="docs-nav__label">Getting started</span><ul><li><a href="../../docs/index.html">Overview</a></li><li><a href="../../docs/install.html">Install</a></li><li><a href="../../docs/guides/quick-start.html">Quick start</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Guides</span><ul><li><a href="../../docs/guides/reading-the-policy.html">Reading the policy from PHP</a></li><li><a href="../../docs/guides/support-states.html">Support states and the grace period</a></li><li><a href="../../docs/guides/patch-refresh.html">Keeping the patches fresh</a></li><li><a href="../../docs/guides/policy-refresh.html">Refreshing the policy</a></li><li><a href="../../docs/guides/policy-bot.html">The policy robot</a></li><li><a href="../../docs/guides/carrying-creed.html" aria-current="page">Carrying CREED in another package</a></li><li><a href="../../docs/guides/handbook.html">The handbook</a></li><li><a href="../../docs/guides/instance-runner.html">The instance runner</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Reference</span><ul><li><a href="../../docs/reference/api.html">Reader API</a></li><li><a href="../../docs/reference/policy-format.html">Policy file format</a></li><li><a href="../../docs/reference/commands.html">Commands and exit codes</a></li><li><a href="../../docs/reference/configuration.html">Configuration</a></li><li><a href="../../docs/reference/proof.html">Proof</a></li></ul></li><li><a href="../../docs/troubleshooting.html">Troubleshooting</a></li><li><a href="../../docs/upgrading.html">Upgrading</a></li><li><a href="../../docs/contributing.html">Contributing</a></li><li><a href="../../docs/changelog.html">Changelog</a></li></ul></nav>
@@ -27,11 +27,32 @@
   <div class="docs-content">
     <main id="main">
       <article class="docs-article"><h1 id="carrying-creed-in-another-package">Carrying CREED in another package<a class="docs-heading-link" aria-label="Link to this section" href="#carrying-creed-in-another-package">#</a></h1>
-<p>STUB: this page is written in a later batch.</p>
+<p>This page explains who carries a copy of CREED's reader and policy, what the copy is, and how <code>bin/export.php</code> generates it and checks it.</p>
+<h2 id="who-carries-a-copy">Who carries a copy<a class="docs-heading-link" aria-label="Link to this section" href="#who-carries-a-copy">#</a></h2>
+<ul>
+<li>PROCTOR, Booster and Rollcall each carry a generated copy of the reader and policy under their own namespace, made by <code>bin/export.php</code>, so two tools in one app never fight over a class name.</li>
+<li>ADVISOR carries CREED's policy and handbook as a data bundle instead, in its <code>data/</code>.</li>
+<li>HELMET can read a <code>policy.json</code> at runtime, and apps and the stack's front-page deploys install <code>waynestate/creed</code> from Packagist.</li>
+</ul>
+<h2 id="why-the-copies-began">Why the copies began<a class="docs-heading-link" aria-label="Link to this section" href="#why-the-copies-began">#</a></h2>
+<p>The copies began because CREED was not on Packagist. It is now (<code>waynestate/creed</code> 0.1.3), so each copy can become a real <code>require</code>, one consumer at a time; until a consumer switches, its copy stays.</p>
+<h2 id="generating-and-checking-the-copy">Generating and checking the copy<a class="docs-heading-link" aria-label="Link to this section" href="#generating-and-checking-the-copy">#</a></h2>
+<p>CREED owns the generator and the check:</p>
+<pre><code>php bin/export.php --namespace=Waynestate\Proctor\Creed --to=vendor/creed-copy
+php bin/export.php --check --namespace=Waynestate\Proctor\Creed --to=vendor/creed-copy
+</code></pre>
+<p>The copy is the reader with the namespace rewritten and <code>bundled()</code> repointed at its own <code>policy.json</code>; <code>--check</code> fails when the copy drifts from the source. Creed Bratton would have a form for this.</p>
+<h2 id="related">Related<a class="docs-heading-link" aria-label="Link to this section" href="#related">#</a></h2>
+<ul>
+<li><a href="handbook.html">The handbook</a></li>
+<li><a href="reading-the-policy.html">Reading the policy from PHP</a></li>
+<li><a href="../install.html">Install</a></li>
+</ul>
 </article>
     </main>
     <nav class="docs-pager" aria-label="Pages"><a class="docs-pager__link" href="../../docs/guides/policy-bot.html"><span class="docs-pager__dir">Previous</span><span class="docs-pager__title">The policy robot</span></a><a class="docs-pager__link docs-pager__link--next" href="../../docs/guides/handbook.html"><span class="docs-pager__dir">Next</span><span class="docs-pager__title">The handbook</span></a></nav>
   </div>
+  <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#who-carries-a-copy">Who carries a copy</a></li><li class="docs-toc__item"><a href="#why-the-copies-began">Why the copies began</a></li><li class="docs-toc__item"><a href="#generating-and-checking-the-copy">Generating and checking the copy</a></li><li class="docs-toc__item"><a href="#related">Related</a></li></ul></nav>
 </div>
 <footer class="docs-footer">
   <span>Documents CREED <span data-docs-version>0.1.6</span></span>
