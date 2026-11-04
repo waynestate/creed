@@ -217,7 +217,7 @@
 </tbody>
 </table></div>
 <h2 id="schema-version-and-older-readers">Schema version and older readers<a class="docs-heading-link" aria-label="Link to this section" href="#schema-version-and-older-readers">#</a></h2>
-<p>The schema is <code>version: 1</code>. Optional new fields keep it at 1; a breaking schema change needs a new version and a release of every reader. The older-reader contract is pinned by <code>tests/OlderReaderContractTest.php</code>; change the fixture only with a <code>schema_version</code> bump.</p>
+<p>The schema is <code>version: 1</code>. Optional new fields keep it at 1; a breaking schema change needs a new version and a release of every reader. The schema is strict: unknown keys fail CREED's own CI. Readers are tolerant: unknown keys are ignored, so older readers keep working on a newer file. The older-reader contract is pinned by <code>tests/OlderReaderContractTest.php</code>; change the fixture only with a <code>schema_version</code> bump.</p>
 <h2 id="a-real-excerpt">A real excerpt<a class="docs-heading-link" aria-label="Link to this section" href="#a-real-excerpt">#</a></h2>
 <p>One real line from <code>policy/policy.json</code>, verbatim (the PHP 8.2 entry):</p>
 <pre><code class="language-json">&quot;8.2&quot;: {

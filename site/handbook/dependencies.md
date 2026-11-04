@@ -10,7 +10,7 @@ Chapter 2
 
 # Dependencies
 
-1 section · 14 provisions · **MUST NOT** 4 · **MUST** 6 · **SHOULD NOT** 1 · **SHOULD** 2
+1 section · 15 provisions · **MUST NOT** 4 · **MUST** 6 · **SHOULD NOT** 1 · **SHOULD** 3
 
 Decided
 
@@ -20,6 +20,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - A lock file is required and **MUST** be committed (the stack's version policy). PROCTOR check: `lock-committed`.
 - `composer audit` **MUST** report no advisories at or above the policy's severity threshold (the stack's version policy). PROCTOR check: `composer-audit`.
 - `composer.json` `require.php` **MUST NOT** allow an EOL version as its lowest bound (the stack's version policy). PROCTOR check: `php-floor`.
+- Apps **SHOULD** set a Composer cooldown of 3 days, once Composer 2.11 is stable and in the base images; until then no cooldown is set (the stack's dependency decision, 2026-11-03). A PROCTOR check for a missing cooldown is planned, not built.
 - Every project is a framework-free core plus thin adapters. `composer.json` requires only `php` and PSR packages; Laravel, Inertia and Vue are `suggest` (the stack's core-plus-adapters design).
 - Adapters call the core and never re-implement it (the stack's core-plus-adapters design).
 - Before adding a third-party package, check it comes from a trusted source, and where the source is open, read enough of it to judge it sound and fit (**SHOULD**). The audit and abandoned-package rules in this chapter apply after that choice (WSU developer standards, 2024).
@@ -36,4 +37,4 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 PROCTOR's `repo-url-credentials`, `package-sources` and `internal-vendor-shadowing` checks enforce rules 1, 2 and 4 (warning first), and [Preflight](https://preflight.apps.wayne.edu/)'s publish job enforces rule 5.
 
-Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `58249c9`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `4a4e1d8`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

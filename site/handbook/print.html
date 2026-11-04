@@ -103,7 +103,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 1</p>
             <h2 id="versions-title" class="hb-book__title">Versions</h2>
-            <p class="hb-register">2 sections · 4 provisions · <strong class="kw kw--must">MUST</strong> 1</p>
+            <p class="hb-register">3 sections · 4 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -170,7 +170,10 @@ version the feeds do not cover (an EOL branch, for instance) is left as-is
 with a warning, and a php.net / endoflife.date disagreement is reported but
 never fails the run. Run it with <code>--dry-run</code> to preview, or <code>--offline &lt;dir&gt;</code>
 to test against saved feeds.</p>
-<h3 id="versions--tool-minimums"><a class="hb-sec" href="#versions--tool-minimums">§1.2</a> Tool minimums</h3>
+<h3 id="versions--node"><a class="hb-sec" href="#versions--node">§1.2</a> Node</h3>
+<p>The policy lists even Node majors only, because even majors are the LTS lines;
+odd majors <strong class="kw kw--must-not">MUST NOT</strong> be a target and are not listed <span class="hb-cite">(the stack's version policy)</span>.</p>
+<h3 id="versions--tool-minimums"><a class="hb-sec" href="#versions--tool-minimums">§1.3</a> Tool minimums</h3>
 <p>The <code>tools</code> block sets a minimum version for a developer tool. Each key is a
 tool name, each value a <code>minimum</code> version. Today it holds Composer at 2.8.0.</p>
 <p>Composer 2.8.0 is the first release with the explicit <code>composer audit --abandoned</code> flag, so a tool can pick its own abandoned-package behavior
@@ -188,7 +191,7 @@ ceiling: we do not go lower, no matter how the crowd sings for more.</p>
           <div>
             <p class="chap-head__kicker">Chapter 2</p>
             <h2 id="dependencies-title" class="hb-book__title">Dependencies</h2>
-            <p class="hb-register">1 section · 14 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 4 · <strong class="kw kw--must">MUST</strong> 6 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 2</p>
+            <p class="hb-register">1 section · 15 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 4 · <strong class="kw kw--must">MUST</strong> 6 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 3</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -203,6 +206,10 @@ policy)</span>. PROCTOR check: <code>lock-committed</code>.</li>
 threshold <span class="hb-cite">(the stack's version policy)</span>. PROCTOR check: <code>composer-audit</code>.</li>
 <li><code>composer.json</code> <code>require.php</code> <strong class="kw kw--must-not">MUST NOT</strong> allow an EOL version as its lowest
 bound <span class="hb-cite">(the stack's version policy)</span>. PROCTOR check: <code>php-floor</code>.</li>
+<li>Apps <strong class="kw kw--should">SHOULD</strong> set a Composer cooldown of 3 days, once Composer 2.11 is stable
+and in the base images; until then no cooldown is set <span class="hb-cite">(the stack's dependency
+decision, 2026-11-03)</span>. A PROCTOR check for a missing cooldown is planned, not
+built.</li>
 <li>Every project is a framework-free core plus thin adapters. <code>composer.json</code>
 requires only <code>php</code> and PSR packages; Laravel, Inertia and Vue are
 <code>suggest</code> <span class="hb-cite">(the stack's core-plus-adapters design)</span>.</li>
@@ -862,7 +869,7 @@ override <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>bec0cbb</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>f4616e6</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

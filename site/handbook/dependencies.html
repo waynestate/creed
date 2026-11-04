@@ -82,7 +82,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 2</p>
             <h1 id="page-title">Dependencies</h1>
-            <p class="hb-register">1 section · 14 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 4 · <strong class="kw kw--must">MUST</strong> 6 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 2</p>
+            <p class="hb-register">1 section · 15 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 4 · <strong class="kw kw--must">MUST</strong> 6 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 3</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -104,6 +104,10 @@ policy)</span>. PROCTOR check: <code>lock-committed</code>.</li>
 threshold <span class="hb-cite">(the stack's version policy)</span>. PROCTOR check: <code>composer-audit</code>.</li>
 <li><code>composer.json</code> <code>require.php</code> <strong class="kw kw--must-not">MUST NOT</strong> allow an EOL version as its lowest
 bound <span class="hb-cite">(the stack's version policy)</span>. PROCTOR check: <code>php-floor</code>.</li>
+<li>Apps <strong class="kw kw--should">SHOULD</strong> set a Composer cooldown of 3 days, once Composer 2.11 is stable
+and in the base images; until then no cooldown is set <span class="hb-cite">(the stack's dependency
+decision, 2026-11-03)</span>. A PROCTOR check for a missing cooldown is planned, not
+built.</li>
 <li>Every project is a framework-free core plus thin adapters. <code>composer.json</code>
 requires only <code>php</code> and PSR packages; Laravel, Inertia and Vue are
 <code>suggest</code> <span class="hb-cite">(the stack's core-plus-adapters design)</span>.</li>
@@ -143,7 +147,7 @@ and <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="versions.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 1</span><span class="hb-pager__name">Versions</span></a><a class="hb-pager__link hb-pager__link--next" href="code.html" rel="next"><span class="hb-pager__dir">Next · Chapter 3</span><span class="hb-pager__name">Code</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/dependencies.md"><code>handbook/dependencies.md</code> on GitHub</a>, impression <code>58249c9</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/dependencies.md"><code>handbook/dependencies.md</code> on GitHub</a>, impression <code>4a4e1d8</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

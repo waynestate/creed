@@ -10,7 +10,7 @@ Chapter 1
 
 # Versions
 
-2 sections · 4 provisions · **MUST** 1
+3 sections · 4 provisions · **MUST NOT** 1 · **MUST** 1
 
 Decided
 
@@ -36,7 +36,11 @@ Table 1-1
 
 Each version can also carry a [`latest_patch`](https://github.com/waynestate/creed/blob/main/policy/policy.json): the newest patch release for that version as of a [`latest_patch_checked`](https://github.com/waynestate/creed/blob/main/policy/policy.json) date. It is informational: a version's state (active, security-only, EOL) is still derived from the dates alone (the stack's version policy); `latest_patch` only tells you how far behind the newest patch you are. `bin/refresh-patches.php` keeps it current by reading the four upstream feeds (php.net's active releases, Packagist's `laravel/framework`, nodejs.org's dist index, and endoflife.date's PHP data) and writing `latest_patch` and `latest_patch_checked` for every version the feeds cover; a version the feeds do not cover (an EOL branch, for instance) is left as-is with a warning, and a php.net / endoflife.date disagreement is reported but never fails the run. Run it with `--dry-run` to preview, or `--offline <dir>` to test against saved feeds.
 
-## [§1.2](https://creed.apps.wayne.edu/handbook/versions.html#tool-minimums) Tool minimums
+## [§1.2](https://creed.apps.wayne.edu/handbook/versions.html#node) Node
+
+The policy lists even Node majors only, because even majors are the LTS lines; odd majors **MUST NOT** be a target and are not listed (the stack's version policy).
+
+## [§1.3](https://creed.apps.wayne.edu/handbook/versions.html#tool-minimums) Tool minimums
 
 The `tools` block sets a minimum version for a developer tool. Each key is a tool name, each value a `minimum` version. Today it holds Composer at 2.8.0.
 
@@ -49,4 +53,4 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`components.*.versions.*.latest_patch`**: set per version
 - **`components.*.versions.*.latest_patch_checked`**: set per version
 
-Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `878132d`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `e56a790`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

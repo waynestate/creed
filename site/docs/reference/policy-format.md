@@ -76,7 +76,7 @@ Each leaf record carries exactly three fields:
 
 ## Schema version and older readers[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#schema-version-and-older-readers)
 
-The schema is `version: 1`. Optional new fields keep it at 1; a breaking schema change needs a new version and a release of every reader. The older-reader contract is pinned by `tests/OlderReaderContractTest.php`; change the fixture only with a `schema_version` bump.
+The schema is `version: 1`. Optional new fields keep it at 1; a breaking schema change needs a new version and a release of every reader. The schema is strict: unknown keys fail CREED's own CI. Readers are tolerant: unknown keys are ignored, so older readers keep working on a newer file. The older-reader contract is pinned by `tests/OlderReaderContractTest.php`; change the fixture only with a `schema_version` bump.
 
 ## A real excerpt[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#a-real-excerpt)
 

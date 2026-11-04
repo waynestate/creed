@@ -234,7 +234,7 @@ Maintainers: how to build, test and release this project, and where its data com
 No PHP on the machine? Fine. Docker runs the suite:
 
 ```
-docker run --rm -v "${PWD}:/app" -w /app composer:2 composer install --no-interaction
+docker run --rm -v "${PWD}:/app" -w /app composer:2.10.3 composer install --no-interaction
 docker run --rm -v "${PWD}:/app" -w /app php:8.4-cli vendor/bin/phpunit
 docker run --rm -v "${PWD}:/app" -w /app php:8.3-cli vendor/bin/phpunit
 ```
@@ -242,7 +242,7 @@ docker run --rm -v "${PWD}:/app" -w /app php:8.3-cli vendor/bin/phpunit
 The policy validates against its schema:
 
 ```
-docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy
+docker run --rm -v "${PWD}:/app" -w /app composer:2.10.3 composer validate-policy
 ```
 
 ### Strongly recommended: a git.wayne.edu instance runner
@@ -889,6 +889,8 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Changed: README commands use the pinned Composer image.
+- Added: decisions recorded: a 3 day Composer cooldown once Composer 2.11 is in the base images, even Node majors only, strict schema with tolerant readers, schema version 2 deferred.
 - Added: a docs site (site/docs/) built by the shared docs builder from docs/, checked in composer ci.
 - Changed: the front-page deploy layer pins HELMET ^0.3, PROCTOR ^0.4 and CREED ^0.1 (lock: HELMET 0.3.0, PROCTOR 0.4.0, CREED 0.1.6).
 - Changed: CI pins Preflight 0.1.4 (GitLab component includes and the GitHub reusable workflow at its tag commit); the deploy layer sets minimum-stability to stable.
@@ -1806,7 +1808,7 @@ Each leaf record carries exactly three fields:
 
 ### Schema version and older readers[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#schema-version-and-older-readers)
 
-The schema is `version: 1`. Optional new fields keep it at 1; a breaking schema change needs a new version and a release of every reader. The older-reader contract is pinned by `tests/OlderReaderContractTest.php`; change the fixture only with a `schema_version` bump.
+The schema is `version: 1`. Optional new fields keep it at 1; a breaking schema change needs a new version and a release of every reader. The schema is strict: unknown keys fail CREED's own CI. Readers are tolerant: unknown keys are ignored, so older readers keep working on a newer file. The older-reader contract is pinned by `tests/OlderReaderContractTest.php`; change the fixture only with a `schema_version` bump.
 
 ### A real excerpt[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#a-real-excerpt)
 
@@ -2301,7 +2303,7 @@ Chapter 2
 
 ## Dependencies
 
-1 section · 14 provisions · **MUST NOT** 4 · **MUST** 6 · **SHOULD NOT** 1 · **SHOULD** 2
+1 section · 15 provisions · **MUST NOT** 4 · **MUST** 6 · **SHOULD NOT** 1 · **SHOULD** 3
 
 Decided
 
@@ -2311,6 +2313,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - A lock file is required and **MUST** be committed (the stack's version policy). PROCTOR check: `lock-committed`.
 - `composer audit` **MUST** report no advisories at or above the policy's severity threshold (the stack's version policy). PROCTOR check: `composer-audit`.
 - `composer.json` `require.php` **MUST NOT** allow an EOL version as its lowest bound (the stack's version policy). PROCTOR check: `php-floor`.
+- Apps **SHOULD** set a Composer cooldown of 3 days, once Composer 2.11 is stable and in the base images; until then no cooldown is set (the stack's dependency decision, 2026-11-03). A PROCTOR check for a missing cooldown is planned, not built.
 - Every project is a framework-free core plus thin adapters. `composer.json` requires only `php` and PSR packages; Laravel, Inertia and Vue are `suggest` (the stack's core-plus-adapters design).
 - Adapters call the core and never re-implement it (the stack's core-plus-adapters design).
 - Before adding a third-party package, check it comes from a trusted source, and where the source is open, read enough of it to judge it sound and fit (**SHOULD**). The audit and abandoned-package rules in this chapter apply after that choice (WSU developer standards, 2024).
@@ -2327,7 +2330,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 PROCTOR's `repo-url-credentials`, `package-sources` and `internal-vendor-shadowing` checks enforce rules 1, 2 and 4 (warning first), and [Preflight](https://preflight.apps.wayne.edu/)'s publish job enforces rule 5.
 
-Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `58249c9`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `4a4e1d8`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2394,12 +2397,12 @@ The handbook · 2026 Edition
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and marks the rest as "To be decided".
 
-Thirteen chapters · 152 provisions · **MUST** 44 · **SHOULD** 10 · **MAY** 1
+Thirteen chapters · 153 provisions · **MUST** 45 · **SHOULD** 11 · **MAY** 1
 
 ### Contents
 
-1. [1 Versions Latest patches · Tool minimums](https://creed.apps.wayne.edu/handbook/versions.html)2 sections · 4 provisions · **MUST** 1Decided
-2. [2 Dependencies Private packages](https://creed.apps.wayne.edu/handbook/dependencies.html)1 section · 14 provisions · **MUST NOT** 4 · **MUST** 6 · **SHOULD NOT** 1 · **SHOULD** 2Decided
+1. [1 Versions Latest patches · Node · Tool minimums](https://creed.apps.wayne.edu/handbook/versions.html)3 sections · 4 provisions · **MUST NOT** 1 · **MUST** 1Decided
+2. [2 Dependencies Private packages](https://creed.apps.wayne.edu/handbook/dependencies.html)1 section · 15 provisions · **MUST NOT** 4 · **MUST** 6 · **SHOULD NOT** 1 · **SHOULD** 3Decided
 3. [3 Code PHP style · Reading the code · Source control and documentation · Static analysis · Input and files · Banned patterns · Vue and JavaScript · Security analysis · How it is enforced · Which preset enforces each rule · Not adopted · To be decided · Sources](https://creed.apps.wayne.edu/handbook/code.html)13 sections · 43 provisions · **MUST NOT** 3 · **MUST** 6 · **SHOULD** 2Partly decided
 4. [4 Auth](https://creed.apps.wayne.edu/handbook/auth.html)12 provisions · **MUST** 3Partly decided
 5. [5 Databases What the stack supports · Which MySQL lines the policy lists · Grace period · Names, comments and connections · Conventions that keep 5.6 working · Avoid until the server is upgraded · Moving to 8.4 · How the stack checks it · Sources](https://creed.apps.wayne.edu/handbook/databases.html)9 sections · 25 provisions · **MUST** 4 · **SHOULD** 1 · **MAY** 1Decided
@@ -2559,7 +2562,7 @@ Chapter 1
 
 ## Versions
 
-2 sections · 4 provisions · **MUST** 1
+3 sections · 4 provisions · **MUST NOT** 1 · **MUST** 1
 
 Decided
 
@@ -2585,7 +2588,11 @@ Table 1-1
 
 Each version can also carry a [`latest_patch`](https://github.com/waynestate/creed/blob/main/policy/policy.json): the newest patch release for that version as of a [`latest_patch_checked`](https://github.com/waynestate/creed/blob/main/policy/policy.json) date. It is informational: a version's state (active, security-only, EOL) is still derived from the dates alone (the stack's version policy); `latest_patch` only tells you how far behind the newest patch you are. `bin/refresh-patches.php` keeps it current by reading the four upstream feeds (php.net's active releases, Packagist's `laravel/framework`, nodejs.org's dist index, and endoflife.date's PHP data) and writing `latest_patch` and `latest_patch_checked` for every version the feeds cover; a version the feeds do not cover (an EOL branch, for instance) is left as-is with a warning, and a php.net / endoflife.date disagreement is reported but never fails the run. Run it with `--dry-run` to preview, or `--offline <dir>` to test against saved feeds.
 
-### [§1.2](https://creed.apps.wayne.edu/handbook/versions.html#tool-minimums) Tool minimums
+### [§1.2](https://creed.apps.wayne.edu/handbook/versions.html#node) Node
+
+The policy lists even Node majors only, because even majors are the LTS lines; odd majors **MUST NOT** be a target and are not listed (the stack's version policy).
+
+### [§1.3](https://creed.apps.wayne.edu/handbook/versions.html#tool-minimums) Tool minimums
 
 The `tools` block sets a minimum version for a developer tool. Each key is a tool name, each value a `minimum` version. Today it holds Composer at 2.8.0.
 
@@ -2598,4 +2605,4 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`components.*.versions.*.latest_patch`**: set per version
 - **`components.*.versions.*.latest_patch_checked`**: set per version
 
-Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `878132d`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `e56a790`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

@@ -57,7 +57,7 @@
 <nav class="hb-nav" id="hb-nav" aria-label="Handbook chapters" data-hb-nav>
   <p class="hb-nav__title"><a href="./">The Handbook</a></p>
   <ol class="hb-nav__list">
-      <li class="is-here"><a href="versions.html" aria-current="page"><span class="hb-nav__no">1</span><span class="hb-nav__name">Versions</span></a><ol class="hb-nav__sub"><li><a href="#latest-patches" data-toc="latest-patches">Latest patches</a></li><li><a href="#tool-minimums" data-toc="tool-minimums">Tool minimums</a></li></ol></li>
+      <li class="is-here"><a href="versions.html" aria-current="page"><span class="hb-nav__no">1</span><span class="hb-nav__name">Versions</span></a><ol class="hb-nav__sub"><li><a href="#latest-patches" data-toc="latest-patches">Latest patches</a></li><li><a href="#node" data-toc="node">Node</a></li><li><a href="#tool-minimums" data-toc="tool-minimums">Tool minimums</a></li></ol></li>
       <li><a href="dependencies.html"><span class="hb-nav__no">2</span><span class="hb-nav__name">Dependencies</span></a></li>
       <li><a href="code.html"><span class="hb-nav__no">3</span><span class="hb-nav__name">Code</span></a></li>
       <li><a href="auth.html"><span class="hb-nav__no">4</span><span class="hb-nav__name">Auth</span></a></li>
@@ -82,7 +82,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 1</p>
             <h1 id="page-title">Versions</h1>
-            <p class="hb-register">2 sections · 4 provisions · <strong class="kw kw--must">MUST</strong> 1</p>
+            <p class="hb-register">3 sections · 4 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -91,7 +91,8 @@
         <p class="hb-toc__title">On this page</p>
         <ol>
             <li class="hb-toc__l2"><a href="#latest-patches" data-toc="latest-patches"><span class="hb-toc__no">1.1</span> Latest patches</a></li>
-            <li class="hb-toc__l2"><a href="#tool-minimums" data-toc="tool-minimums"><span class="hb-toc__no">1.2</span> Tool minimums</a></li>
+            <li class="hb-toc__l2"><a href="#node" data-toc="node"><span class="hb-toc__no">1.2</span> Node</a></li>
+            <li class="hb-toc__l2"><a href="#tool-minimums" data-toc="tool-minimums"><span class="hb-toc__no">1.3</span> Tool minimums</a></li>
         </ol>
       </nav>
           <div class="hb-prose" data-hb-prose>
@@ -157,7 +158,10 @@ version the feeds do not cover (an EOL branch, for instance) is left as-is
 with a warning, and a php.net / endoflife.date disagreement is reported but
 never fails the run. Run it with <code>--dry-run</code> to preview, or <code>--offline &lt;dir&gt;</code>
 to test against saved feeds.</p>
-<h2 id="tool-minimums"><a class="hb-sec" href="#tool-minimums">§1.2</a> Tool minimums</h2>
+<h2 id="node"><a class="hb-sec" href="#node">§1.2</a> Node</h2>
+<p>The policy lists even Node majors only, because even majors are the LTS lines;
+odd majors <strong class="kw kw--must-not">MUST NOT</strong> be a target and are not listed <span class="hb-cite">(the stack's version policy)</span>.</p>
+<h2 id="tool-minimums"><a class="hb-sec" href="#tool-minimums">§1.3</a> Tool minimums</h2>
 <p>The <code>tools</code> block sets a minimum version for a developer tool. Each key is a
 tool name, each value a <code>minimum</code> version. Today it holds Composer at 2.8.0.</p>
 <p>Composer 2.8.0 is the first release with the explicit <code>composer audit --abandoned</code> flag, so a tool can pick its own abandoned-package behavior
@@ -172,7 +176,7 @@ ceiling: we do not go lower, no matter how the crowd sings for more.</p>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="./"><span class="hb-pager__dir">Back to</span><span class="hb-pager__name">Contents</span></a><a class="hb-pager__link hb-pager__link--next" href="dependencies.html" rel="next"><span class="hb-pager__dir">Next · Chapter 2</span><span class="hb-pager__name">Dependencies</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/versions.md"><code>handbook/versions.md</code> on GitHub</a>, impression <code>878132d</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/versions.md"><code>handbook/versions.md</code> on GitHub</a>, impression <code>e56a790</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 
