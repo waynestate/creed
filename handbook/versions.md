@@ -36,6 +36,11 @@ with a warning, and a php.net / endoflife.date disagreement is reported but
 never fails the run. Run it with `--dry-run` to preview, or `--offline <dir>`
 to test against saved feeds.
 
+## Node
+
+The policy lists even Node majors only, because even majors are the LTS lines;
+odd majors MUST NOT be a target and are not listed (the stack's version policy).
+
 ## Tool minimums
 
 The `tools` block sets a minimum version for a developer tool. Each key is a

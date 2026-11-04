@@ -636,8 +636,10 @@ Sources: [Packagist supply chain security update](https://blog.packagist.com/an-
 [GitHub: plan for a more secure npm supply chain](https://github.blog/security/supply-chain-security/our-plan-for-a-more-secure-npm-supply-chain/),
 [OWASP Top 10:2025](https://top10.owasp.org/2025) (A03, Software Supply Chain Failures).
 
-How the stack holds it: `Not yet`. No setting in `policy.json` or in CI delays new versions. The lock file (practice 18)
-is necessary but, per Packagist, not enough.
+How the stack holds it: `Not yet`. No setting in `policy.json` or in CI delays new versions. Decided 2026-11-03: a 3 day
+cooldown once Composer 2.11 is stable and in the base images, with Sourdough apps setting it and PROCTOR warning when it
+is missing (PROCTOR plan 4.11); nothing sets it yet because Composer 2.11 is not in the base images. The lock file
+(practice 18) is necessary but, per Packagist, not enough.
 
 ### 41. Set the front-end install options, and map severity words
 
@@ -786,7 +788,8 @@ the current mapping has nothing to copy. The maintainers must pick a rule and wr
 
 Sources: [Node.js release schedule](https://github.com/nodejs/Release).
 
-How the stack holds it: `Not yet`. Node 26 is in `policy.json` correctly; the mapping rule for 27 is undecided.
+How the stack holds it: `Not yet`. Node 26 is in `policy.json` correctly. Decided 2026-11-03: policy lists only even Node
+majors, which are the LTS lines; odd majors are never a target and are not listed, so no mapping rule is needed for 27.
 
 ### 50. Design the freshness check around a real feed
 
@@ -815,7 +818,9 @@ Why: "add fields, never rename" fails in practice if the strict schema is the th
 Sources: [Semantic Versioning 2.0.0](https://semver.org/),
 [JSON Schema introduction](https://json-schema.org/understanding-json-schema/about).
 
-How the stack holds it: `Not yet`. No test pairs an old schema or reader with a new policy file.
+How the stack holds it: `Not yet`. No test pairs an old schema or reader with a new policy file. Decided 2026-11-03: strict
+where the file is published, tolerant where it is read; the schema forbids unknown keys, so CREED's own CI fails on a stray
+key, and readers ignore them, so an older reader keeps working on a newer file.
 
 ## 10. Accessibility and the legal floor (second pass)
 
@@ -1004,7 +1009,7 @@ These are places where a source disagrees with the repository or with an earlier
 2. Partially: a scheduled job checks the latest patch levels against the upstream feeds and fails when they are stale;
    support dates stay hand-edited, and the full refresher is not scheduled (practice 8).
 3. Done: the schema allows `"current": true` lines with no end date, and Vue 3, Inertia 2 and Inertia 3 are listed (practice 9).
-4. Add a `source` and `checked_on` field to each version entry (practice 6).
+4. Done: `policy/sources.json` records each source with its first_seen and last_seen, and `policy.json` keeps `latest_patch_checked` (practice 6).
 5. Record the supported PHP range per Laravel release, and add a PROCTOR check for the pair (practice 14).
 6. Add a PROCTOR check that reads the Laravel version from `composer.lock` against the policy (practice 15).
 7. Add a PROCTOR check for the Node version in `.nvmrc` or `package.json` engines (practice 16).
@@ -1030,7 +1035,7 @@ Added in the second pass (2026-10-27):
     check that applies it to `composer audit` output (practice 38).
 21. Record a Composer version in CI and in the README commands, and decide between the legacy `audit` keys and
     `config.policy` (practices 21 and 39).
-22. Evaluate Composer's cooldown policy once it is in a stable release, and decide the period (practice 40).
+22. Done: decided 2026-11-03: a 3 day cooldown once Composer 2.11 is stable and in the base images; Sourdough apps set it and PROCTOR warns when it is missing (PROCTOR plan 4.11). Not set anywhere yet, because Composer 2.11 is not in the base images (practice 40).
 23. Add an npm check (`audit-level`, `ignore-scripts`, `min-release-age`) to Preflight, with a severity word map between
     Composer and npm (practice 41).
 24. Write down "gates must run on any GitLab tier" and confirm the tier of git.wayne.edu (practice 42).
@@ -1044,11 +1049,10 @@ Added in the second pass (2026-10-27):
 29. Done: `handbook/databases.md` writes down the MySQL auth plugin step and the rule "list LTS lines only" (practice 47).
 30. State a target for adding a new PHP image, per target (Citadel and elsewhere), and a notice period for retiring
     one (practice 48).
-31. Decide how `active_until` is derived for Node 27 and later, which have no Maintenance phase (practice 49).
+31. Done: decided 2026-11-03: policy lists only even Node majors, which are the LTS lines; odd majors are never a target and are not listed. A new even major is added from Node's release schedule when it is announced (practice 49).
 32. Partially: `bin/refresh-policy.php` calls the API with the filter rules in practice 50 and classifies every change,
    but no pipeline runs it yet (extends item 2).
-33. Decide strict or tolerant schema validation, and add a test with an old schema and reader against a new file
-    (practice 51; extends item 14).
+33. Done: decided 2026-11-03: strict where the file is published, tolerant where it is read. The schema forbids unknown keys, so CREED's own CI fails on a stray key; readers ignore unknown keys, so an older reader keeps working on a newer file (`tests/OlderReaderContractTest.php`; practice 51, extends item 14).
 34. Ask WSU's accessibility office and counsel which Title II dates apply, then write the chapter's target level
     (practices 52 and 54).
 35. Add an accessibility job to Preflight, using Pa11y or another deterministic tool (practice 53).
@@ -1063,6 +1067,7 @@ Added from the WSU developer standards (2026-11-02):
 39. PROCTOR check for mode 777 and web-writable paths outside an allowed list (practice 59).
 40. A committed-secret scan in Preflight; extends items 10 and 25 and practice 55.
 41. Whether idle sessions get a stated time limit (practice 57).
+42. Deferred past 1.0: a schema version 2 with `platform_components` per target. It would be a breaking schema change and nothing needs it yet.
 
 ## Sources
 
