@@ -1010,7 +1010,7 @@ These are places where a source disagrees with the repository or with an earlier
    support dates stay hand-edited, and the full refresher is not scheduled (practice 8).
 3. Done: the schema allows `"current": true` lines with no end date, and Vue 3, Inertia 2 and Inertia 3 are listed (practice 9).
 4. Done: `policy/sources.json` records each source with its first_seen and last_seen, and `policy.json` keeps `latest_patch_checked` (practice 6).
-5. Record the supported PHP range per Laravel release, and add a PROCTOR check for the pair (practice 14).
+5. Partly done: policy.json records the supported PHP range per Laravel release (practice 14); the PROCTOR check that compares an app with it is not built.
 6. Add a PROCTOR check that reads the Laravel version from `composer.lock` against the policy (practice 15).
 7. Add a PROCTOR check for the Node version in `.nvmrc` or `package.json` engines (practice 16).
 8. Add a MySQL check or report once the platform timeline is known (practice 17).
@@ -1044,8 +1044,8 @@ Added in the second pass (2026-10-27):
 26. Fill `images` for supported versions, per target (Citadel and elsewhere), and write a rebuild schedule for base
     images (practice 44).
 27. Ask the owners of git.wayne.edu to publish its GitLab patch level and a patch routine (practice 45).
-28. Record each Laravel release's minimum database in the policy, and add a check against the platform database
-    (practice 46).
+28. Partly done: policy.json records each Laravel release's minimum database (practice 46); the PROCTOR check that
+    compares an app with it is not built.
 29. Done: `handbook/databases.md` writes down the MySQL auth plugin step and the rule "list LTS lines only" (practice 47).
 30. State a target for adding a new PHP image, per target (Citadel and elsewhere), and a notice period for retiring
     one (practice 48).

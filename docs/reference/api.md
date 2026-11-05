@@ -20,6 +20,8 @@ This page lists every public member of the `Waynestate\Creed\Policy` reader, in 
 | `latestPatch($component, $version)` | The current patch in that line | `public function latestPatch(string $component, string $version): ?string` |
 | `latestPatchChecked()` | Says when it was last checked | `public function latestPatchChecked(string $component, string $version): ?string` |
 | `line($component, $version)` | The raw line, with `active_until`, `security_until`, `latest_patch`, `latest_patch_checked` (each a string or null) and `current` (true or null) | `public function line(string $component, string $version): ?array` |
+| `requires($component, $version)` | The line's `requires` object as an array (`php` range, `mysql` and `mariadb` minimums), or null | `public function requires(string $component, string $version): ?array` |
+| `phpRange($component, $version)` | The line's PHP range as `['min' => ..., 'max' => ...]`, or null | `public function phpRange(string $component, string $version): ?array` |
 | `activeUntil()` | Those dates as `DateTimeImmutable`, or null | `public function activeUntil(string $component, string $version): ?DateTimeImmutable` |
 | `securityUntil()` | Those dates as `DateTimeImmutable`, or null | `public function securityUntil(string $component, string $version): ?DateTimeImmutable` |
 | `daysToEol($component, $version, $on)` | Whole days until `security_until`, signed | `public function daysToEol(string $component, string $version, DateTimeImmutable $on): ?int` |

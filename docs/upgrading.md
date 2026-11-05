@@ -16,6 +16,10 @@ How CREED versions are cut, what each release changed that a consumer notices, a
 5. A release needs a maintainer's approval. Never move or delete a published tag.
 6. Then bump `waynestate/creed` where the stack pins it, and refresh the generated copies.
 
+## Unreleased
+
+The policy records, per Laravel line, the PHP versions it supports and the minimum MySQL and MariaDB versions, in a new optional `requires` field on the line. A policy file that uses `requires` fails validation against the 0.1.6 schema, so a publisher updates the schema first. Readers ignore the field, so an older reader keeps working on a newer file.
+
 ## 0.1.6 (2026-11-03)
 
 A `policy-bot` CI job runs `bin/policy-bot.php run` with `CREED_BOT_TOKEN` on a weekly schedule (the one carrying `CREED_JOB=policy-bot`) or by hand; without the token it skips green, and the check-only `refresh-patches` job now skips that schedule. Docs and package metadata name nougat as the canonical repository, with git.wayne.edu and GitHub as read-only mirrors, until git.wayne.edu has CI runners.
