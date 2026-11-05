@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added: `images.docker` for PHP 8.3 to 8.5 in the policy, and a base-image rebuild rule in the versions chapter.
 - Changed: README commands use the pinned Composer image.
 - Added: decisions recorded: a 3 day Composer cooldown once Composer 2.11 is in the base images, even Node majors only, strict schema with tolerant readers, schema version 2 deferred.
 - Added: a docs site (site/docs/) built by the shared docs builder from docs/, checked in composer ci.

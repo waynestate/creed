@@ -1041,8 +1041,8 @@ Added in the second pass (2026-10-27):
 24. Write down "gates must run on any GitLab tier" and confirm the tier of git.wayne.edu (practice 42).
 25. Add a secrets chapter section on `APP_KEY`: rotation, the session driver, and a scan that works on Windows, macOS and
     Linux (practice 43; extends item 10).
-26. Fill `images` for supported versions, per target (Citadel and elsewhere), and write a rebuild schedule for base
-    images (practice 44).
+26. Partly done: `images.docker` is filled for PHP 8.3 to 8.5 and the rebuild rule is in `handbook/versions.md`;
+    `citadel` waits for Citadel's image names.
 27. Ask the owners of git.wayne.edu to publish its GitLab patch level and a patch routine (practice 45).
 28. Record each Laravel release's minimum database in the policy, and add a check against the platform database
     (practice 46).
