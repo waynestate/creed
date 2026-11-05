@@ -774,27 +774,16 @@ body::before {
 }
 
 /* The colophon: green cloth under a gold rule, full bleed under a centered row. */
+/* The cloth and its gold rule are one border image pushed out to both edges:
+   an outset paints past the box without widening the page. */
 .docs-footer {
-  position: relative;
   flex-wrap: wrap;
   padding: 2rem var(--dk-gap) 2.25rem;
   font-size: .92rem;
   color: var(--c-colophon-fine);
   background: var(--c-colophon);
   border-top: 0;
-  box-shadow: 0 0 0 100vmax var(--c-colophon);
-  clip-path: inset(0 -100vmax);
-}
-
-/* The gold rule across the top of the colophon, edge to edge. */
-.docs-footer::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: -100vmax;
-  left: -100vmax;
-  height: 4px;
-  background: var(--c-gold);
+  border-image: linear-gradient(var(--c-gold) 0 4px, var(--c-colophon) 4px) fill 0 / 0 / 0 100vmax;
 }
 
 .docs-footer a {
@@ -970,15 +959,36 @@ body::before {
     width: 5px;
   }
 
+  /* The menu sets as a form's two ruled lines of three. As on the front
+     page, Errata steps out on a phone; the contents link reaches it. */
+  .runhead__nav {
+    display: grid;
+    grid-template-columns: repeat(3, auto);
+    justify-content: space-between;
+    gap: 0 .7rem;
+  }
+
   .runhead__nav a {
     font-size: .68rem;
-    letter-spacing: .02em;
+    letter-spacing: .04em;
+  }
+
+  .runhead__nav a[href$="#errata"] {
+    display: none;
+  }
+
+  .docs-article::before {
+    content: "CREED documentation";
+    content: "CREED documentation" / "";
+  }
+
+  .docs-article pre {
+    padding-inline: .85rem;
   }
 
   .docs-copy > pre {
     margin-right: 0;
     padding-top: 2.9rem;
-    padding-right: 1.1rem;
     border-radius: 3px;
   }
 }
@@ -1074,12 +1084,7 @@ body::before {
   .docs-footer {
     color: #1b2420;
     background: #ffffff;
-    box-shadow: none;
-    clip-path: none;
-  }
-
-  .docs-footer::before {
-    display: none;
+    border-image: none;
   }
 
   .docs-footer a {
