@@ -35,6 +35,8 @@ every tool needs: what state is this version in, on this date?
 
 The documentation site lives at [`site/docs/index.html`](site/docs/index.html) and deploys to [https://creed.apps.wayne.edu/docs/](https://creed.apps.wayne.edu/docs/). It is built from `docs/` by Squire's shared docs builder, and `composer ci` fails when the committed pages go stale. Creed Bratton keeps his records in a filing cabinet nobody can find; ours are in `docs/`, where anyone can.
 
+The docs pages are bound into the same code book as the front page: the running head and main menu, the cream stock and green cloth spine, Source Serif and IBM Plex Mono, stamped callouts and the green colophon, light and dark. That look lives in two files, `docs/_header.html` and `docs/theme/creed.css`, named by the `theme` key in `docs/docs.json`; edit those, never the kit's `site/assets/docs.css`.
+
 ## Where the code lives
 
 The canonical repository is on nougat: [enterprise-apps/creed](https://nougat.snu.gs/enterprise-apps/creed). git.wayne.edu and GitHub ([waynestate/creed](https://github.com/waynestate/creed)) are read-only mirrors of it.
