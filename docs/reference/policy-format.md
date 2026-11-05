@@ -31,8 +31,8 @@ Each component holds a `versions` object that maps a version to a line. Every li
 | `latest_patch` | string | Any string. Optional. |
 | `latest_patch_checked` | string | A date. Optional. |
 | `current` | boolean | Marks the line as current. Optional. |
-| `images` | object | May hold `citadel`, `docker`, `openshift` and `coolify`, each a non-empty string. Optional. |
 | `requires` | object | May hold `php` (an object with required `min` and `max`, each a version string matching `^\d+(\.\d+)*$`) and `mysql` and `mariadb` (each a version string matching the same pattern), and nothing else. Optional. The bundled policy fills it for the Laravel lines, from Laravel's release notes and database pages. |
+| `images` | object | May hold `citadel`, `docker`, `openshift` and `coolify`, each a non-empty string. Optional. Today `docker` is filled for PHP 8.3 to 8.5; the other keys are not filled. |
 
 The `current` rule is the only conditional in the schema: a line with `"current": true` must not carry `security_until`, and every other line must.
 
