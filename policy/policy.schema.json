@@ -75,6 +75,38 @@
                                             "minLength": 1
                                         }
                                     }
+                                },
+                                "requires": {
+                                    "type": "object",
+                                    "additionalProperties": false,
+                                    "properties": {
+                                        "php": {
+                                            "type": "object",
+                                            "required": [
+                                                "min",
+                                                "max"
+                                            ],
+                                            "additionalProperties": false,
+                                            "properties": {
+                                                "min": {
+                                                    "type": "string",
+                                                    "pattern": "^\\d+(\\.\\d+)*$"
+                                                },
+                                                "max": {
+                                                    "type": "string",
+                                                    "pattern": "^\\d+(\\.\\d+)*$"
+                                                }
+                                            }
+                                        },
+                                        "mysql": {
+                                            "type": "string",
+                                            "pattern": "^\\d+(\\.\\d+)*$"
+                                        },
+                                        "mariadb": {
+                                            "type": "string",
+                                            "pattern": "^\\d+(\\.\\d+)*$"
+                                        }
+                                    }
                                 }
                             },
                             "if": {
