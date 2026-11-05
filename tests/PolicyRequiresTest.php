@@ -67,6 +67,10 @@ final class PolicyRequiresTest extends TestCase
         ];
     }
 
+    /**
+     * @param array<string, mixed> $expected
+     * @param array{min: string, max: string} $expectedRange
+     */
     #[Test]
     #[DataProvider('laravelRequires')]
     public function bundledPolicyRecordsTheLaravelRequires(
@@ -125,10 +129,9 @@ final class PolicyRequiresTest extends TestCase
     public function olderShapedPolicyStillReads(): void
     {
         $policy = $this->olderShapedPolicy();
-        self::assertSame(
-            '2028-03-17',
-            $policy->securityUntil('laravel', '13')->format('Y-m-d'),
-        );
+        $until = $policy->securityUntil('laravel', '13');
+        self::assertNotNull($until);
+        self::assertSame('2028-03-17', $until->format('Y-m-d'));
         self::assertNull($policy->requires('laravel', '10'));
         self::assertNull($policy->phpRange('laravel', '13'));
     }
@@ -137,10 +140,9 @@ final class PolicyRequiresTest extends TestCase
     public function olderShapedFileStillReads(): void
     {
         $policy = Policy::fromFile(__DIR__ . '/fixtures/good.json');
-        self::assertSame(
-            '2027-12-31',
-            $policy->securityUntil('php', '8.3')->format('Y-m-d'),
-        );
+        $until = $policy->securityUntil('php', '8.3');
+        self::assertNotNull($until);
+        self::assertSame('2027-12-31', $until->format('Y-m-d'));
         self::assertNull($policy->requires('php', '8.2'));
         self::assertNull($policy->phpRange('php', '8.2'));
     }
@@ -193,6 +195,8 @@ final class PolicyRequiresTest extends TestCase
     }
 
     /**
+     * @param array<string, mixed> $requires
+     *
      * @return array<string, mixed>
      */
     private static function policyWithRequires(array $requires): array

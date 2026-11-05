@@ -63,6 +63,19 @@ final class PolicyImagesTest extends TestCase
     }
 
     /**
+     * Widen a policy entry to a plain assoc array so offsets beyond the
+     * line() accessor's declared five-field shape can be read.
+     *
+     * @param array<array-key, mixed> $entry
+     *
+     * @return array<string, mixed>
+     */
+    private static function widen(array $entry): array
+    {
+        return $entry;
+    }
+
+    /**
      * @return array<string, array{0: string}>
      */
     public static function phpLinesWithDockerImages(): array
@@ -115,7 +128,12 @@ final class PolicyImagesTest extends TestCase
         // checked both through the accessor and in the bundled file itself.
         $line = Policy::bundled()->line('php', $version);
         self::assertNotNull($line, "The bundled policy must list php {$version}.");
-        self::assertNull($line['images'] ?? null, "php {$version} must not carry images.");
+        // line() declares a fixed five-field shape without 'images'; read
+        // the entry widened so the absence check below is legal.
+        self::assertNull(
+            self::widen($line)['images'] ?? null,
+            "php {$version} must not carry images.",
+        );
 
         $entry = self::bundledPolicy()['components']['php']['versions'][$version];
         self::assertArrayNotHasKey('images', $entry, "php {$version} must not carry an images object.");
