@@ -891,12 +891,16 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Added: per-Laravel-line `requires` (PHP range, MySQL and MariaDB minimums) in the policy, schema and reader.
+- Added: `images.docker` for PHP 8.3 to 8.5 in the policy, and a base-image rebuild rule in the versions chapter.
 - Changed: the docs site wears CREED's header, main menu, palette and fonts (docs/\_header.html, docs/theme/creed.css and a theme key in docs/docs.json), light and dark, with callouts as stamped notes.
 - Changed: README commands use the pinned Composer image.
 - Added: decisions recorded: a 3 day Composer cooldown once Composer 2.11 is in the base images, even Node majors only, strict schema with tolerant readers, schema version 2 deferred.
 - Added: a docs site (site/docs/) built by the shared docs builder from docs/, checked in composer ci.
 - Changed: the front-page deploy layer pins HELMET ^0.3, PROCTOR ^0.4 and CREED ^0.1 (lock: HELMET 0.3.0, PROCTOR 0.4.0, CREED 0.1.6).
 - Changed: CI pins Preflight 0.1.4 (GitLab component includes and the GitHub reusable workflow at its tag commit); the deploy layer sets minimum-stability to stable.
+- Added: handbook chapter Runtime and headers (HELMET's headers, proxy trust, debug off in production).
+- Added: handbook chapter Accessibility (WCAG 2.2 AA as the target, an automated check, the open Title II question).
 
 ### 0.1.6 (2026-11-03)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-6-2026-11-03)
 
@@ -1091,7 +1095,7 @@ This page maps the CREED handbook: what it is, how to read its key words and PRO
 
 ### What the handbook is[#](https://creed.apps.wayne.edu/docs/guides/handbook.html#what-the-handbook-is)
 
-The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and marks the rest as "To be decided". The rules, chapter by chapter, live in the handbook site, built separately from `handbook/`.
+The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a "Not decided here" heading. The rules, chapter by chapter, live in the handbook site, built separately from `handbook/`.
 
 ### How to read a rule[#](https://creed.apps.wayne.edu/docs/guides/handbook.html#how-to-read-a-rule)
 
@@ -1105,10 +1109,10 @@ The rules for the Wayne State app stack, chapter by chapter. Each chapter states
 - [Code](https://creed.apps.wayne.edu/handbook/code.html): PHP style with one Pint preset per repo, reading the code, static analysis at PHPStan level 8, banned patterns, and Vue and JavaScript linting.
 - [Auth](https://creed.apps.wayne.edu/handbook/auth.html): one protocol-neutral library that returns a verified identity and leaves the session to the app, with its drivers and non-EOL PHP only.
 - [Databases](https://creed.apps.wayne.edu/handbook/databases.html): the MySQL lines the policy lists, the conventions that keep an app working on the shared 5.6 server, and the 90-day grace period.
-- [Runtime and headers](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html): to be decided; no ADR decides the runtime and header rules yet, so this chapter states no rules.
+- [Runtime and headers](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html): the runtime (Baseline) warns and refuses only for unsafe config, HELMET's headers on every response, proxy trust from a platform preset or the app's own list, and debug off in production.
 - [Deploy gate](https://creed.apps.wayne.edu/handbook/deploy-gate.html): the gate runs PROCTOR against the commit being released, before it is released, and refuses EOL PHP.
 - [CI](https://creed.apps.wayne.edu/handbook/ci.html): CI is enforcement point (c), a red pipeline before merge, built from Preflight's pinned components and judged with deterministic commands, never with a model.
-- [Accessibility](https://creed.apps.wayne.edu/handbook/accessibility.html): to be decided; what is known is that WayneUI is the component library the stack builds on.
+- [Accessibility](https://creed.apps.wayne.edu/handbook/accessibility.html): WCAG 2.2 Level AA as the target for every public page, WayneUI components as the checked starting point, an automated Pa11y check in CI, and the open Title II question.
 - [Every OS](https://creed.apps.wayne.edu/handbook/every-os.html): every developer tool works on Windows, macOS and Linux, with `.ps1` and `.sh` pairs, LF line endings and portable paths.
 - [Secrets](https://creed.apps.wayne.edu/handbook/secrets.html): credentials never in version control and never in the served folder, with errors and debug output that hide them.
 - [Production](https://creed.apps.wayne.edu/handbook/production.html): pre-production and production environments, running safely with the least access needed, and who can reach an app.
@@ -1549,6 +1553,8 @@ This page lists every public member of the `Waynestate\Creed\Policy` reader, in 
 | `latestPatch($component, $version)` | The current patch in that line | `public function latestPatch(string $component, string $version): ?string` |
 | `latestPatchChecked()` | Says when it was last checked | `public function latestPatchChecked(string $component, string $version): ?string` |
 | `line($component, $version)` | The raw line, with `active_until`, `security_until`, `latest_patch`, `latest_patch_checked` (each a string or null) and `current` (true or null) | `public function line(string $component, string $version): ?array` |
+| `requires($component, $version)` | The line's `requires` object as an array (`php` range, `mysql` and `mariadb` minimums), or null | `public function requires(string $component, string $version): ?array` |
+| `phpRange($component, $version)` | The line's PHP range as `['min' => ..., 'max' => ...]`, or null | `public function phpRange(string $component, string $version): ?array` |
 | `activeUntil()` | Those dates as `DateTimeImmutable`, or null | `public function activeUntil(string $component, string $version): ?DateTimeImmutable` |
 | `securityUntil()` | Those dates as `DateTimeImmutable`, or null | `public function securityUntil(string $component, string $version): ?DateTimeImmutable` |
 | `daysToEol($component, $version, $on)` | Whole days until `security_until`, signed | `public function daysToEol(string $component, string $version, DateTimeImmutable $on): ?int` |
@@ -1781,7 +1787,8 @@ Each component holds a `versions` object that maps a version to a line. Every li
 | `latest_patch` | string | Any string. Optional. |
 | `latest_patch_checked` | string | A date. Optional. |
 | `current` | boolean | Marks the line as current. Optional. |
-| `images` | object | May hold `citadel`, `docker`, `openshift` and `coolify`, each a non-empty string. Optional. |
+| `requires` | object | May hold `php` (an object with required `min` and `max`, each a version string matching `^\d+(\.\d+)*$`) and `mysql` and `mariadb` (each a version string matching the same pattern), and nothing else. Optional. The bundled policy fills it for the Laravel lines, from Laravel's release notes and database pages. |
+| `images` | object | May hold `citadel`, `docker`, `openshift` and `coolify`, each a non-empty string. Optional. Today `docker` is filled for PHP 8.3 to 8.5; the other keys are not filled. |
 
 The `current` rule is the only conditional in the schema: a line with `"current": true` must not carry `security_until`, and every other line must.
 
@@ -1950,6 +1957,10 @@ How CREED versions are cut, what each release changed that a consumer notices, a
 5. A release needs a maintainer's approval. Never move or delete a published tag.
 6. Then bump `waynestate/creed` where the stack pins it, and refresh the generated copies.
 
+### Unreleased[#](https://creed.apps.wayne.edu/docs/upgrading.html#unreleased)
+
+The policy records, per Laravel line, the PHP versions it supports and the minimum MySQL and MariaDB versions, in a new optional `requires` field on the line. A policy file that uses `requires` fails validation against the 0.1.6 schema, so a publisher updates the schema first. Readers ignore the field, so an older reader keeps working on a newer file.
+
 ### 0.1.6 (2026-11-03)[#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-6-2026-11-03)
 
 A `policy-bot` CI job runs `bin/policy-bot.php run` with `CREED_BOT_TOKEN` on a weekly schedule (the one carrying `CREED_JOB=policy-bot`) or by hand; without the token it skips green, and the check-only `refresh-patches` job now skips that schedule. Docs and package metadata name nougat as the canonical repository, with git.wayne.edu and GitHub as read-only mirrors, until git.wayne.edu has CI runners.
@@ -1999,21 +2010,34 @@ Chapter 9
 
 ## Accessibility
 
-1 provision
+4 sections · 9 provisions · **MUST NOT** 1 · **SHOULD** 1
 
-To be decided
+Decided
 
 Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and **MAY** in this chapter are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
-To be decided. No ADR decides the accessibility rules yet, so this chapter states no rules.
+### [§9.1](https://creed.apps.wayne.edu/handbook/accessibility.html#target) Target
 
-What is known:
+- Every public page of a stack app targets WCAG 2.2 Level AA (the stack's accessibility design).
+- W3C says content conforming to 2.2 also conforms to 2.1 and 2.0, so the target meets the WCAG 2.1 AA floor named in the ADA Title II web rule (the stack's accessibility design).
 
-- [WayneUI](https://wayneui.apps.wayne.edu/) is the component library the stack builds on.
+### [§9.2](https://creed.apps.wayne.edu/handbook/accessibility.html#components) Components
 
-When the accessibility rules are decided, they will land here, with the ADR number that decided them.
+- [WayneUI](https://wayneui.apps.wayne.edu/) is the stack's component library; pages built from its components start from markup and tokens already checked by WayneUI's own runnable accessibility gate (the stack's accessibility design).
+- An app **MUST NOT** fork or restyle a WayneUI component in a way that removes focus indicators, labels or contrast (the stack's accessibility design). [PROCTOR](https://proctor.apps.wayne.edu/) check: `wayneui-forked-views` catches forked views.
 
-Set from [`handbook/accessibility.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/accessibility.md), impression `b6b80ce`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+### [§9.3](https://creed.apps.wayne.edu/handbook/accessibility.html#checks) Checks
+
+- An automated accessibility check **SHOULD** run in CI on the app's key pages. GitLab's accessibility testing uses Pa11y and is available on every self-managed tier (the stack's accessibility design).
+- An automated tool catches regressions; it is not proof of conformance, and it never replaces a manual keyboard and screen reader pass before launch (the stack's accessibility design).
+- [Preflight](https://preflight.apps.wayne.edu/) has no accessibility component yet (not built yet).
+
+### [§9.4](https://creed.apps.wayne.edu/handbook/accessibility.html#not-decided-here) Not decided here
+
+- Whether and when the ADA Title II web rule applies to a given WSU unit. The rule applies WCAG 2.1 AA to public entities on dates that depend on the entity's size; the answer is for WSU's counsel and accessibility office, and this chapter does not decide it.
+- Which pages need a manual audit.
+
+Set from [`handbook/accessibility.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/accessibility.md), impression `977069b`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2410,21 +2434,21 @@ The handbook · 2026 Edition
 
 ## The CREED handbook
 
-The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and marks the rest as "To be decided".
+The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a "Not decided here" heading.
 
-Thirteen chapters · 153 provisions · **MUST** 45 · **SHOULD** 11 · **MAY** 1
+Thirteen chapters · 174 provisions · **MUST** 50 · **SHOULD** 13 · **MAY** 1
 
 ### Contents
 
-1. [1 Versions Latest patches · Node · Tool minimums](https://creed.apps.wayne.edu/handbook/versions.html)3 sections · 4 provisions · **MUST NOT** 1 · **MUST** 1Decided
+1. [1 Versions Latest patches · Base images · Node · Tool minimums](https://creed.apps.wayne.edu/handbook/versions.html)4 sections · 4 provisions · **MUST NOT** 2 · **MUST** 2Decided
 2. [2 Dependencies Private packages](https://creed.apps.wayne.edu/handbook/dependencies.html)1 section · 15 provisions · **MUST NOT** 4 · **MUST** 6 · **SHOULD NOT** 1 · **SHOULD** 3Decided
 3. [3 Code PHP style · Reading the code · Source control and documentation · Static analysis · Input and files · Banned patterns · Vue and JavaScript · Security analysis · How it is enforced · Which preset enforces each rule · Not adopted · To be decided · Sources](https://creed.apps.wayne.edu/handbook/code.html)13 sections · 43 provisions · **MUST NOT** 3 · **MUST** 6 · **SHOULD** 2Partly decided
 4. [4 Auth](https://creed.apps.wayne.edu/handbook/auth.html)12 provisions · **MUST** 3Partly decided
 5. [5 Databases What the stack supports · Which MySQL lines the policy lists · Grace period · Names, comments and connections · Conventions that keep 5.6 working · Avoid until the server is upgraded · Moving to 8.4 · How the stack checks it · Sources](https://creed.apps.wayne.edu/handbook/databases.html)9 sections · 25 provisions · **MUST** 4 · **SHOULD** 1 · **MAY** 1Decided
-6. [6 Runtime and headers](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html)2 provisionsTo be decided
+6. [6 Runtime and headers Enforcement · Headers · Proxy trust · Sessions · Health · Errors in production · Not decided here](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html)7 sections · 15 provisions · **MUST** 2 · **SHOULD NOT** 1Decided
 7. [7 Deploy gate On Citadel · Elsewhere](https://creed.apps.wayne.edu/handbook/deploy-gate.html)2 sections · 8 provisionsDecided
 8. [8 CI](https://creed.apps.wayne.edu/handbook/ci.html)8 provisions · **MUST** 3 · **SHOULD** 1Decided
-9. [9 Accessibility](https://creed.apps.wayne.edu/handbook/accessibility.html)1 provisionTo be decided
+9. [9 Accessibility Target · Components · Checks · Not decided here](https://creed.apps.wayne.edu/handbook/accessibility.html)4 sections · 9 provisions · **MUST NOT** 1 · **SHOULD** 1Decided
 10. [10 Every OS](https://creed.apps.wayne.edu/handbook/every-os.html)5 provisions · **MUST** 1Decided
 11. [11 Secrets and debugging Credentials · Errors and debug output · Not decided here](https://creed.apps.wayne.edu/handbook/secrets.html)3 sections · 8 provisions · **MUST NOT** 3 · **MUST** 2Decided
 12. [12 Production Environments · Running safely · Who can reach it](https://creed.apps.wayne.edu/handbook/production.html)3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 5 · **SHOULD** 3Decided
@@ -2441,7 +2465,7 @@ Thirteen chapters · 153 provisions · **MUST** 45 · **SHOULD** 11 · **MAY** 1
 
 For printing, or for your browser's find. Every chapter, in order, from the same Markdown.
 
-Set from [`handbook/README.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/README.md), impression `b268724`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/README.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/README.md), impression `741c4a8`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2517,22 +2541,60 @@ Chapter 6
 
 ## Runtime and headers
 
-2 provisions
+7 sections · 15 provisions · **MUST** 2 · **SHOULD NOT** 1
 
-To be decided
+Decided
 
 Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and **MAY** in this chapter are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
-To be decided. No ADR decides the runtime and header rules yet, so this chapter states no rules.
-
-What is known:
+### [§6.1](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#enforcement) Enforcement
 
 - The runtime (Baseline) is enforcement point (a): it warns, and refuses only for unsafe config (the stack's enforcement design).
-- The [HELMET](https://helmet.apps.wayne.edu/) header work is to be decided.
 
-When the rules are decided, they will land here, with the ADR number that decided them.
+### [§6.2](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#headers) Headers
 
-Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `877eecc`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+- Every response carries the same headers from [HELMET](https://helmet.apps.wayne.edu/) (the stack's runtime and headers design):
+  - Content-Security-Policy: the [WayneUI](https://wayneui.apps.wayne.edu/) default policy plus a per-request nonce and `strict-dynamic`, with `frame-ancestors 'self'`, `base-uri 'self'`, `object-src 'none'` and `form-action 'self'` added.
+  - X-Content-Type-Options `nosniff`.
+  - X-Frame-Options `SAMEORIGIN`.
+  - Referrer-Policy `strict-origin-when-cross-origin`.
+  - Permissions-Policy, with camera, geolocation, microphone, payment and usb denied by default.
+  - Cross-Origin-Opener-Policy `same-origin`.
+  - Strict-Transport-Security `max-age=31536000; includeSubDomains`, on HTTPS responses only.
+- Cross-Origin-Resource-Policy is off by default (the stack's runtime and headers design).
+- An app **SHOULD NOT** weaken the default Content-Security-Policy with `'unsafe-inline'` for scripts; it uses the nonce instead (the stack's runtime and headers design).
+
+The headers are the setlist: the same one on every response. The HSTS encore plays only when the show is really on HTTPS.
+
+### [§6.3](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#proxy-trust) Proxy trust
+
+- Behind a proxy the app sees the proxy's address, so `X-Forwarded-Proto` is honored only from a trusted proxy (the stack's runtime and headers design).
+- A platform preset (`citadel` or `docker`) names the trusted proxies; off the platform the app passes its own list. An unknown preset throws at boot (the stack's runtime and headers design).
+- No Strict-Transport-Security is sent for a request that was not really secure (the stack's runtime and headers design).
+
+### [§6.4](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#sessions) Sessions
+
+- HELMET hardens the PHP session settings before the session starts (the stack's runtime and headers design).
+- The request-forgery guard (Sec-Fetch-Site, then Origin) is optional and off by default; a rejected request gets 403 `Forbidden` (the stack's runtime and headers design).
+
+### [§6.5](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#health) Health
+
+- `/up` is the health endpoint HELMET answers for raw PHP apps (the stack's runtime and headers design).
+
+### [§6.6](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#errors-in-production) Errors in production
+
+- PHP `display_errors` **MUST** be `Off` and `log_errors` `On` in production ([Squire](https://squire.apps.wayne.edu/)'s deploy kit ships that php.ini; HELMET neither sets nor checks it).
+- Laravel `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment.
+
+A [PROCTOR](https://proctor.apps.wayne.edu/) check for this is proposed, not built.
+
+### [§6.7](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#not-decided-here) Not decided here
+
+- The Cross-Origin-Resource-Policy default.
+- The Content-Security-Policy report endpoints.
+- The metrics endpoint.
+
+Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `d44b32c`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2565,9 +2627,9 @@ A leaked password is a bad encore: everyone remembers it, and nobody asked for a
 
 ### [§11.3](https://creed.apps.wayne.edu/handbook/secrets.html#not-decided-here) Not decided here
 
-- Which [HELMET](https://helmet.apps.wayne.edu/) header rules and runtime refusals apply is still to be decided. See `runtime-and-headers.md`.
+- The [HELMET](https://helmet.apps.wayne.edu/) header rules and runtime refusals are written in `runtime-and-headers.md`.
 
-Set from [`handbook/secrets.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/secrets.md), impression `51b4acc`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/secrets.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/secrets.md), impression `605c722`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2577,7 +2639,7 @@ Chapter 1
 
 ## Versions
 
-3 sections · 4 provisions · **MUST NOT** 1 · **MUST** 1
+4 sections · 4 provisions · **MUST NOT** 2 · **MUST** 2
 
 Decided
 
@@ -2603,11 +2665,17 @@ Table 1-1
 
 Each version can also carry a [`latest_patch`](https://github.com/waynestate/creed/blob/main/policy/policy.json): the newest patch release for that version as of a [`latest_patch_checked`](https://github.com/waynestate/creed/blob/main/policy/policy.json) date. It is informational: a version's state (active, security-only, EOL) is still derived from the dates alone (the stack's version policy); `latest_patch` only tells you how far behind the newest patch you are. `bin/refresh-patches.php` keeps it current by reading the four upstream feeds (php.net's active releases, Packagist's `laravel/framework`, nodejs.org's dist index, and endoflife.date's PHP data) and writing `latest_patch` and `latest_patch_checked` for every version the feeds cover; a version the feeds do not cover (an EOL branch, for instance) is left as-is with a warning, and a php.net / endoflife.date disagreement is reported but never fails the run. Run it with `--dry-run` to preview, or `--offline <dir>` to test against saved feeds.
 
-### [§1.2](https://creed.apps.wayne.edu/handbook/versions.html#node) Node
+### [§1.2](https://creed.apps.wayne.edu/handbook/versions.html#base-images) Base images
+
+A base image **MUST** be rebuilt when the policy's `latest_patch` for its branch changes; the policy robot opens that change, so an image never sits behind the patch level the policy records (the stack's version policy). Every such change to `latest_patch` is a rebuild. An image **MUST NOT** be pinned to a branch the policy marks EOL (the stack's version policy).
+
+`images.docker` names the official image for a plain Docker target. Citadel names its own images, so `images.citadel` stays unset until Citadel publishes names. `openshift` and `coolify` are not filled yet.
+
+### [§1.3](https://creed.apps.wayne.edu/handbook/versions.html#node) Node
 
 The policy lists even Node majors only, because even majors are the LTS lines; odd majors **MUST NOT** be a target and are not listed (the stack's version policy).
 
-### [§1.3](https://creed.apps.wayne.edu/handbook/versions.html#tool-minimums) Tool minimums
+### [§1.4](https://creed.apps.wayne.edu/handbook/versions.html#tool-minimums) Tool minimums
 
 The `tools` block sets a minimum version for a developer tool. Each key is a tool name, each value a `minimum` version. Today it holds Composer at 2.8.0.
 
@@ -2620,4 +2688,4 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`components.*.versions.*.latest_patch`**: set per version
 - **`components.*.versions.*.latest_patch_checked`**: set per version
 
-Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `e56a790`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `4876356`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

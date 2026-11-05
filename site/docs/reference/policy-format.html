@@ -122,9 +122,14 @@
 <td>Marks the line as current. Optional.</td>
 </tr>
 <tr>
+<td><code>requires</code></td>
+<td>object</td>
+<td>May hold <code>php</code> (an object with required <code>min</code> and <code>max</code>, each a version string matching <code>^\d+(\.\d+)*$</code>) and <code>mysql</code> and <code>mariadb</code> (each a version string matching the same pattern), and nothing else. Optional. The bundled policy fills it for the Laravel lines, from Laravel's release notes and database pages.</td>
+</tr>
+<tr>
 <td><code>images</code></td>
 <td>object</td>
-<td>May hold <code>citadel</code>, <code>docker</code>, <code>openshift</code> and <code>coolify</code>, each a non-empty string. Optional.</td>
+<td>May hold <code>citadel</code>, <code>docker</code>, <code>openshift</code> and <code>coolify</code>, each a non-empty string. Optional. Today <code>docker</code> is filled for PHP 8.3 to 8.5; the other keys are not filled.</td>
 </tr>
 </tbody>
 </table></div>

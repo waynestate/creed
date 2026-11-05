@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Waynestate\Creed\Tests;
 
-use DateTimeImmutable;
 use Opis\JsonSchema\Validator;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;

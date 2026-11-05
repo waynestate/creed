@@ -43,7 +43,7 @@
       <article class="docs-article"><h1 id="the-handbook">The handbook<a class="docs-heading-link" aria-label="Link to this section" href="#the-handbook">#</a></h1>
 <p>This page maps the CREED handbook: what it is, how to read its key words and PROCTOR check lines, and where each of the thirteen chapters lives.</p>
 <h2 id="what-the-handbook-is">What the handbook is<a class="docs-heading-link" aria-label="Link to this section" href="#what-the-handbook-is">#</a></h2>
-<p>The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and marks the rest as &quot;To be decided&quot;. The rules, chapter by chapter, live in the handbook site, built separately from <code>handbook/</code>.</p>
+<p>The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a &quot;Not decided here&quot; heading. The rules, chapter by chapter, live in the handbook site, built separately from <code>handbook/</code>.</p>
 <h2 id="how-to-read-a-rule">How to read a rule<a class="docs-heading-link" aria-label="Link to this section" href="#how-to-read-a-rule">#</a></h2>
 <ul>
 <li>The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in each chapter are to be interpreted as described in RFC 2119.</li>
@@ -56,10 +56,10 @@
 <li><a href="../../handbook/code.html">Code</a>: PHP style with one Pint preset per repo, reading the code, static analysis at PHPStan level 8, banned patterns, and Vue and JavaScript linting.</li>
 <li><a href="../../handbook/auth.html">Auth</a>: one protocol-neutral library that returns a verified identity and leaves the session to the app, with its drivers and non-EOL PHP only.</li>
 <li><a href="../../handbook/databases.html">Databases</a>: the MySQL lines the policy lists, the conventions that keep an app working on the shared 5.6 server, and the 90-day grace period.</li>
-<li><a href="../../handbook/runtime-and-headers.html">Runtime and headers</a>: to be decided; no ADR decides the runtime and header rules yet, so this chapter states no rules.</li>
+<li><a href="../../handbook/runtime-and-headers.html">Runtime and headers</a>: the runtime (Baseline) warns and refuses only for unsafe config, HELMET's headers on every response, proxy trust from a platform preset or the app's own list, and debug off in production.</li>
 <li><a href="../../handbook/deploy-gate.html">Deploy gate</a>: the gate runs PROCTOR against the commit being released, before it is released, and refuses EOL PHP.</li>
 <li><a href="../../handbook/ci.html">CI</a>: CI is enforcement point (c), a red pipeline before merge, built from Preflight's pinned components and judged with deterministic commands, never with a model.</li>
-<li><a href="../../handbook/accessibility.html">Accessibility</a>: to be decided; what is known is that WayneUI is the component library the stack builds on.</li>
+<li><a href="../../handbook/accessibility.html">Accessibility</a>: WCAG 2.2 Level AA as the target for every public page, WayneUI components as the checked starting point, an automated Pa11y check in CI, and the open Title II question.</li>
 <li><a href="../../handbook/every-os.html">Every OS</a>: every developer tool works on Windows, macOS and Linux, with <code>.ps1</code> and <code>.sh</code> pairs, LF line endings and portable paths.</li>
 <li><a href="../../handbook/secrets.html">Secrets</a>: credentials never in version control and never in the served folder, with errors and debug output that hide them.</li>
 <li><a href="../../handbook/production.html">Production</a>: pre-production and production environments, running safely with the least access needed, and who can reach an app.</li>

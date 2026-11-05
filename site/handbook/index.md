@@ -10,21 +10,21 @@ The handbook · 2026 Edition
 
 # The CREED handbook
 
-The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and marks the rest as "To be decided".
+The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a "Not decided here" heading.
 
-Thirteen chapters · 153 provisions · **MUST** 45 · **SHOULD** 11 · **MAY** 1
+Thirteen chapters · 174 provisions · **MUST** 50 · **SHOULD** 13 · **MAY** 1
 
 ## Contents
 
-1. [1 Versions Latest patches · Node · Tool minimums](https://creed.apps.wayne.edu/handbook/versions.html)3 sections · 4 provisions · **MUST NOT** 1 · **MUST** 1Decided
+1. [1 Versions Latest patches · Base images · Node · Tool minimums](https://creed.apps.wayne.edu/handbook/versions.html)4 sections · 4 provisions · **MUST NOT** 2 · **MUST** 2Decided
 2. [2 Dependencies Private packages](https://creed.apps.wayne.edu/handbook/dependencies.html)1 section · 15 provisions · **MUST NOT** 4 · **MUST** 6 · **SHOULD NOT** 1 · **SHOULD** 3Decided
 3. [3 Code PHP style · Reading the code · Source control and documentation · Static analysis · Input and files · Banned patterns · Vue and JavaScript · Security analysis · How it is enforced · Which preset enforces each rule · Not adopted · To be decided · Sources](https://creed.apps.wayne.edu/handbook/code.html)13 sections · 43 provisions · **MUST NOT** 3 · **MUST** 6 · **SHOULD** 2Partly decided
 4. [4 Auth](https://creed.apps.wayne.edu/handbook/auth.html)12 provisions · **MUST** 3Partly decided
 5. [5 Databases What the stack supports · Which MySQL lines the policy lists · Grace period · Names, comments and connections · Conventions that keep 5.6 working · Avoid until the server is upgraded · Moving to 8.4 · How the stack checks it · Sources](https://creed.apps.wayne.edu/handbook/databases.html)9 sections · 25 provisions · **MUST** 4 · **SHOULD** 1 · **MAY** 1Decided
-6. [6 Runtime and headers](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html)2 provisionsTo be decided
+6. [6 Runtime and headers Enforcement · Headers · Proxy trust · Sessions · Health · Errors in production · Not decided here](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html)7 sections · 15 provisions · **MUST** 2 · **SHOULD NOT** 1Decided
 7. [7 Deploy gate On Citadel · Elsewhere](https://creed.apps.wayne.edu/handbook/deploy-gate.html)2 sections · 8 provisionsDecided
 8. [8 CI](https://creed.apps.wayne.edu/handbook/ci.html)8 provisions · **MUST** 3 · **SHOULD** 1Decided
-9. [9 Accessibility](https://creed.apps.wayne.edu/handbook/accessibility.html)1 provisionTo be decided
+9. [9 Accessibility Target · Components · Checks · Not decided here](https://creed.apps.wayne.edu/handbook/accessibility.html)4 sections · 9 provisions · **MUST NOT** 1 · **SHOULD** 1Decided
 10. [10 Every OS](https://creed.apps.wayne.edu/handbook/every-os.html)5 provisions · **MUST** 1Decided
 11. [11 Secrets and debugging Credentials · Errors and debug output · Not decided here](https://creed.apps.wayne.edu/handbook/secrets.html)3 sections · 8 provisions · **MUST NOT** 3 · **MUST** 2Decided
 12. [12 Production Environments · Running safely · Who can reach it](https://creed.apps.wayne.edu/handbook/production.html)3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 5 · **SHOULD** 3Decided
@@ -41,4 +41,4 @@ Thirteen chapters · 153 provisions · **MUST** 45 · **SHOULD** 11 · **MAY** 1
 
 For printing, or for your browser's find. Every chapter, in order, from the same Markdown.
 
-Set from [`handbook/README.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/README.md), impression `b268724`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/README.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/README.md), impression `741c4a8`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

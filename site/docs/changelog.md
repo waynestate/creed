@@ -10,12 +10,16 @@ generator: Squire agent-ready
 
 ## Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Added: per-Laravel-line `requires` (PHP range, MySQL and MariaDB minimums) in the policy, schema and reader.
+- Added: `images.docker` for PHP 8.3 to 8.5 in the policy, and a base-image rebuild rule in the versions chapter.
 - Changed: the docs site wears CREED's header, main menu, palette and fonts (docs/\_header.html, docs/theme/creed.css and a theme key in docs/docs.json), light and dark, with callouts as stamped notes.
 - Changed: README commands use the pinned Composer image.
 - Added: decisions recorded: a 3 day Composer cooldown once Composer 2.11 is in the base images, even Node majors only, strict schema with tolerant readers, schema version 2 deferred.
 - Added: a docs site (site/docs/) built by the shared docs builder from docs/, checked in composer ci.
 - Changed: the front-page deploy layer pins HELMET ^0.3, PROCTOR ^0.4 and CREED ^0.1 (lock: HELMET 0.3.0, PROCTOR 0.4.0, CREED 0.1.6).
 - Changed: CI pins Preflight 0.1.4 (GitLab component includes and the GitHub reusable workflow at its tag commit); the deploy layer sets minimum-stability to stable.
+- Added: handbook chapter Runtime and headers (HELMET's headers, proxy trust, debug off in production).
+- Added: handbook chapter Accessibility (WCAG 2.2 AA as the target, an automated check, the open Title II question).
 
 ## 0.1.6 (2026-11-03)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-6-2026-11-03)
 

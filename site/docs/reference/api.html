@@ -107,6 +107,16 @@
 <td><code>public function line(string $component, string $version): ?array</code></td>
 </tr>
 <tr>
+<td><code>requires($component, $version)</code></td>
+<td>The line's <code>requires</code> object as an array (<code>php</code> range, <code>mysql</code> and <code>mariadb</code> minimums), or null</td>
+<td><code>public function requires(string $component, string $version): ?array</code></td>
+</tr>
+<tr>
+<td><code>phpRange($component, $version)</code></td>
+<td>The line's PHP range as <code>['min' =&gt; ..., 'max' =&gt; ...]</code>, or null</td>
+<td><code>public function phpRange(string $component, string $version): ?array</code></td>
+</tr>
+<tr>
 <td><code>activeUntil()</code></td>
 <td>Those dates as <code>DateTimeImmutable</code>, or null</td>
 <td><code>public function activeUntil(string $component, string $version): ?DateTimeImmutable</code></td>

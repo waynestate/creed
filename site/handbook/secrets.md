@@ -33,6 +33,6 @@ A leaked password is a bad encore: everyone remembers it, and nobody asked for a
 
 ## [§11.3](https://creed.apps.wayne.edu/handbook/secrets.html#not-decided-here) Not decided here
 
-- Which [HELMET](https://helmet.apps.wayne.edu/) header rules and runtime refusals apply is still to be decided. See `runtime-and-headers.md`.
+- The [HELMET](https://helmet.apps.wayne.edu/) header rules and runtime refusals are written in `runtime-and-headers.md`.
 
-Set from [`handbook/secrets.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/secrets.md), impression `51b4acc`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/secrets.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/secrets.md), impression `605c722`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

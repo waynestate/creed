@@ -62,10 +62,10 @@
       <li><a href="code.html"><span class="hb-nav__no">3</span><span class="hb-nav__name">Code</span></a></li>
       <li><a href="auth.html"><span class="hb-nav__no">4</span><span class="hb-nav__name">Auth</span></a></li>
       <li><a href="databases.html"><span class="hb-nav__no">5</span><span class="hb-nav__name">Databases</span></a></li>
-      <li class="is-here"><a href="runtime-and-headers.html" aria-current="page"><span class="hb-nav__no">6</span><span class="hb-nav__name">Runtime and headers</span><span class="hb-nav__tbd" title="To be decided"><span class="wsu-sr-only">, to be decided</span></span></a></li>
+      <li class="is-here"><a href="runtime-and-headers.html" aria-current="page"><span class="hb-nav__no">6</span><span class="hb-nav__name">Runtime and headers</span></a><ol class="hb-nav__sub"><li><a href="#enforcement" data-toc="enforcement">Enforcement</a></li><li><a href="#headers" data-toc="headers">Headers</a></li><li><a href="#proxy-trust" data-toc="proxy-trust">Proxy trust</a></li><li><a href="#sessions" data-toc="sessions">Sessions</a></li><li><a href="#health" data-toc="health">Health</a></li><li><a href="#errors-in-production" data-toc="errors-in-production">Errors in production</a></li><li><a href="#not-decided-here" data-toc="not-decided-here">Not decided here</a></li></ol></li>
       <li><a href="deploy-gate.html"><span class="hb-nav__no">7</span><span class="hb-nav__name">Deploy gate</span></a></li>
       <li><a href="ci.html"><span class="hb-nav__no">8</span><span class="hb-nav__name">CI</span></a></li>
-      <li><a href="accessibility.html"><span class="hb-nav__no">9</span><span class="hb-nav__name">Accessibility</span><span class="hb-nav__tbd" title="To be decided"><span class="wsu-sr-only">, to be decided</span></span></a></li>
+      <li><a href="accessibility.html"><span class="hb-nav__no">9</span><span class="hb-nav__name">Accessibility</span></a></li>
       <li><a href="every-os.html"><span class="hb-nav__no">10</span><span class="hb-nav__name">Every OS</span></a></li>
       <li><a href="secrets.html"><span class="hb-nav__no">11</span><span class="hb-nav__name">Secrets and debugging</span></a></li>
       <li><a href="production.html"><span class="hb-nav__no">12</span><span class="hb-nav__name">Production</span></a></li>
@@ -82,29 +82,89 @@
           <div>
             <p class="chap-head__kicker">Chapter 6</p>
             <h1 id="page-title">Runtime and headers</h1>
-            <p class="hb-register">2 provisions</p>
+            <p class="hb-register">7 sections · 15 provisions · <strong class="kw kw--must">MUST</strong> 2 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1</p>
           </div>
-          <span class="stamp stamp--notyet hb-status">To be decided</span>
+          <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
         <div class="hb-body">
+      <nav class="hb-toc" aria-label="On this page">
+        <p class="hb-toc__title">On this page</p>
+        <ol>
+            <li class="hb-toc__l2"><a href="#enforcement" data-toc="enforcement"><span class="hb-toc__no">6.1</span> Enforcement</a></li>
+            <li class="hb-toc__l2"><a href="#headers" data-toc="headers"><span class="hb-toc__no">6.2</span> Headers</a></li>
+            <li class="hb-toc__l2"><a href="#proxy-trust" data-toc="proxy-trust"><span class="hb-toc__no">6.3</span> Proxy trust</a></li>
+            <li class="hb-toc__l2"><a href="#sessions" data-toc="sessions"><span class="hb-toc__no">6.4</span> Sessions</a></li>
+            <li class="hb-toc__l2"><a href="#health" data-toc="health"><span class="hb-toc__no">6.5</span> Health</a></li>
+            <li class="hb-toc__l2"><a href="#errors-in-production" data-toc="errors-in-production"><span class="hb-toc__no">6.6</span> Errors in production</a></li>
+            <li class="hb-toc__l2"><a href="#not-decided-here" data-toc="not-decided-here"><span class="hb-toc__no">6.7</span> Not decided here</a></li>
+        </ol>
+      </nav>
           <div class="hb-prose" data-hb-prose>
 <div class="hb-rfc" role="note"><p><span class="hb-rfc__label">Key words</span> The key words <strong class="kw kw--must">MUST</strong>, <strong class="kw kw--must-not">MUST NOT</strong>, <strong class="kw kw--should">SHOULD</strong>, <strong class="kw kw--should-not">SHOULD NOT</strong> and <strong class="kw kw--may">MAY</strong> in this chapter are to be interpreted as described in <a href="https://www.rfc-editor.org/rfc/rfc2119">RFC 2119</a>.</p></div>
-<p class="hb-tbd"><span class="stamp stamp--notyet" aria-hidden="true">Not yet</span> To be decided. No ADR decides the runtime and header rules yet, so this
-chapter states no rules.</p>
-<p>What is known:</p>
+<h2 id="enforcement"><a class="hb-sec" href="#enforcement">§6.1</a> Enforcement</h2>
 <ul>
-<li>The runtime (Baseline) is enforcement point (a): it warns, and refuses only
-for unsafe config <span class="hb-cite">(the stack's enforcement design)</span>.</li>
-<li>The <a class="tool" href="https://helmet.apps.wayne.edu/"><img src="../assets/marks/helmet.png" alt="" width="16" height="16">HELMET</a> header work is to be decided.</li>
+<li>The runtime (Baseline) is enforcement point (a): it warns, and refuses only for unsafe config
+<span class="hb-cite">(the stack's enforcement design)</span>.</li>
 </ul>
-<p>When the rules are decided, they will land here, with the ADR number that
-decided them.</p>
+<h2 id="headers"><a class="hb-sec" href="#headers">§6.2</a> Headers</h2>
+<ul>
+<li>Every response carries the same headers from <a class="tool" href="https://helmet.apps.wayne.edu/"><img src="../assets/marks/helmet.png" alt="" width="16" height="16">HELMET</a> <span class="hb-cite">(the stack's runtime and headers design)</span>:
+<ul>
+<li>Content-Security-Policy: the <a class="tool" href="https://wayneui.apps.wayne.edu/">WayneUI</a> default policy plus a per-request nonce and <code>strict-dynamic</code>, with
+<code>frame-ancestors 'self'</code>, <code>base-uri 'self'</code>, <code>object-src 'none'</code> and <code>form-action 'self'</code> added.</li>
+<li>X-Content-Type-Options <code>nosniff</code>.</li>
+<li>X-Frame-Options <code>SAMEORIGIN</code>.</li>
+<li>Referrer-Policy <code>strict-origin-when-cross-origin</code>.</li>
+<li>Permissions-Policy, with camera, geolocation, microphone, payment and usb denied by default.</li>
+<li>Cross-Origin-Opener-Policy <code>same-origin</code>.</li>
+<li>Strict-Transport-Security <code>max-age=31536000; includeSubDomains</code>, on HTTPS responses only.</li>
+</ul>
+</li>
+<li>Cross-Origin-Resource-Policy is off by default <span class="hb-cite">(the stack's runtime and headers design)</span>.</li>
+<li>An app <strong class="kw kw--should-not">SHOULD NOT</strong> weaken the default Content-Security-Policy with <code>'unsafe-inline'</code> for scripts; it uses the nonce
+instead <span class="hb-cite">(the stack's runtime and headers design)</span>.</li>
+</ul>
+<p>The headers are the setlist: the same one on every response. The HSTS encore plays only when the show is really on
+HTTPS.</p>
+<h2 id="proxy-trust"><a class="hb-sec" href="#proxy-trust">§6.3</a> Proxy trust</h2>
+<ul>
+<li>Behind a proxy the app sees the proxy's address, so <code>X-Forwarded-Proto</code> is honored only from a trusted proxy (the
+stack's runtime and headers design).</li>
+<li>A platform preset (<code>citadel</code> or <code>docker</code>) names the trusted proxies; off the platform the app passes its own list.
+An unknown preset throws at boot <span class="hb-cite">(the stack's runtime and headers design)</span>.</li>
+<li>No Strict-Transport-Security is sent for a request that was not really secure <span class="hb-cite">(the stack's runtime and headers
+design)</span>.</li>
+</ul>
+<h2 id="sessions"><a class="hb-sec" href="#sessions">§6.4</a> Sessions</h2>
+<ul>
+<li>HELMET hardens the PHP session settings before the session starts <span class="hb-cite">(the stack's runtime and headers design)</span>.</li>
+<li>The request-forgery guard (Sec-Fetch-Site, then Origin) is optional and off by default; a rejected request gets 403
+<code>Forbidden</code> <span class="hb-cite">(the stack's runtime and headers design)</span>.</li>
+</ul>
+<h2 id="health"><a class="hb-sec" href="#health">§6.5</a> Health</h2>
+<ul>
+<li><code>/up</code> is the health endpoint HELMET answers for raw PHP apps <span class="hb-cite">(the stack's runtime and headers design)</span>.</li>
+</ul>
+<h2 id="errors-in-production"><a class="hb-sec" href="#errors-in-production">§6.6</a> Errors in production</h2>
+<ul>
+<li>PHP <code>display_errors</code> <strong class="kw kw--must">MUST</strong> be <code>Off</code> and <code>log_errors</code> <code>On</code> in production (<a class="tool" href="https://squire.apps.wayne.edu/"><img src="../assets/marks/squire.png" alt="" width="16" height="16">Squire</a>'s deploy kit ships that php.ini;
+HELMET neither sets nor checks it).</li>
+<li>Laravel <code>APP_DEBUG</code> <strong class="kw kw--must">MUST</strong> be <code>false</code> in production (WSU developer standards, 2024). The Laravel adapter writes one
+warning <code>helmet.debug_enabled_in_production</code> when it is true in the production environment.</li>
+</ul>
+<p>A <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check for this is proposed, not built.</p>
+<h2 id="not-decided-here"><a class="hb-sec" href="#not-decided-here">§6.7</a> Not decided here</h2>
+<ul>
+<li>The Cross-Origin-Resource-Policy default.</li>
+<li>The Content-Security-Policy report endpoints.</li>
+<li>The metrics endpoint.</li>
+</ul>
           </div>
         </div>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="databases.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 5</span><span class="hb-pager__name">Databases</span></a><a class="hb-pager__link hb-pager__link--next" href="deploy-gate.html" rel="next"><span class="hb-pager__dir">Next · Chapter 7</span><span class="hb-pager__name">Deploy gate</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md"><code>handbook/runtime-and-headers.md</code> on GitHub</a>, impression <code>877eecc</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md"><code>handbook/runtime-and-headers.md</code> on GitHub</a>, impression <code>d44b32c</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

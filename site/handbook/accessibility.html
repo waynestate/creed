@@ -62,10 +62,10 @@
       <li><a href="code.html"><span class="hb-nav__no">3</span><span class="hb-nav__name">Code</span></a></li>
       <li><a href="auth.html"><span class="hb-nav__no">4</span><span class="hb-nav__name">Auth</span></a></li>
       <li><a href="databases.html"><span class="hb-nav__no">5</span><span class="hb-nav__name">Databases</span></a></li>
-      <li><a href="runtime-and-headers.html"><span class="hb-nav__no">6</span><span class="hb-nav__name">Runtime and headers</span><span class="hb-nav__tbd" title="To be decided"><span class="wsu-sr-only">, to be decided</span></span></a></li>
+      <li><a href="runtime-and-headers.html"><span class="hb-nav__no">6</span><span class="hb-nav__name">Runtime and headers</span></a></li>
       <li><a href="deploy-gate.html"><span class="hb-nav__no">7</span><span class="hb-nav__name">Deploy gate</span></a></li>
       <li><a href="ci.html"><span class="hb-nav__no">8</span><span class="hb-nav__name">CI</span></a></li>
-      <li class="is-here"><a href="accessibility.html" aria-current="page"><span class="hb-nav__no">9</span><span class="hb-nav__name">Accessibility</span><span class="hb-nav__tbd" title="To be decided"><span class="wsu-sr-only">, to be decided</span></span></a></li>
+      <li class="is-here"><a href="accessibility.html" aria-current="page"><span class="hb-nav__no">9</span><span class="hb-nav__name">Accessibility</span></a><ol class="hb-nav__sub"><li><a href="#target" data-toc="target">Target</a></li><li><a href="#components" data-toc="components">Components</a></li><li><a href="#checks" data-toc="checks">Checks</a></li><li><a href="#not-decided-here" data-toc="not-decided-here">Not decided here</a></li></ol></li>
       <li><a href="every-os.html"><span class="hb-nav__no">10</span><span class="hb-nav__name">Every OS</span></a></li>
       <li><a href="secrets.html"><span class="hb-nav__no">11</span><span class="hb-nav__name">Secrets and debugging</span></a></li>
       <li><a href="production.html"><span class="hb-nav__no">12</span><span class="hb-nav__name">Production</span></a></li>
@@ -82,27 +82,56 @@
           <div>
             <p class="chap-head__kicker">Chapter 9</p>
             <h1 id="page-title">Accessibility</h1>
-            <p class="hb-register">1 provision</p>
+            <p class="hb-register">4 sections · 9 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 1</p>
           </div>
-          <span class="stamp stamp--notyet hb-status">To be decided</span>
+          <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
         <div class="hb-body">
+      <nav class="hb-toc" aria-label="On this page">
+        <p class="hb-toc__title">On this page</p>
+        <ol>
+            <li class="hb-toc__l2"><a href="#target" data-toc="target"><span class="hb-toc__no">9.1</span> Target</a></li>
+            <li class="hb-toc__l2"><a href="#components" data-toc="components"><span class="hb-toc__no">9.2</span> Components</a></li>
+            <li class="hb-toc__l2"><a href="#checks" data-toc="checks"><span class="hb-toc__no">9.3</span> Checks</a></li>
+            <li class="hb-toc__l2"><a href="#not-decided-here" data-toc="not-decided-here"><span class="hb-toc__no">9.4</span> Not decided here</a></li>
+        </ol>
+      </nav>
           <div class="hb-prose" data-hb-prose>
 <div class="hb-rfc" role="note"><p><span class="hb-rfc__label">Key words</span> The key words <strong class="kw kw--must">MUST</strong>, <strong class="kw kw--must-not">MUST NOT</strong>, <strong class="kw kw--should">SHOULD</strong>, <strong class="kw kw--should-not">SHOULD NOT</strong> and <strong class="kw kw--may">MAY</strong> in this chapter are to be interpreted as described in <a href="https://www.rfc-editor.org/rfc/rfc2119">RFC 2119</a>.</p></div>
-<p class="hb-tbd"><span class="stamp stamp--notyet" aria-hidden="true">Not yet</span> To be decided. No ADR decides the accessibility rules yet, so this chapter
-states no rules.</p>
-<p>What is known:</p>
+<h2 id="target"><a class="hb-sec" href="#target">§9.1</a> Target</h2>
 <ul>
-<li><a class="tool" href="https://wayneui.apps.wayne.edu/">WayneUI</a> is the component library the stack builds on.</li>
+<li>Every public page of a stack app targets WCAG 2.2 Level AA <span class="hb-cite">(the stack's accessibility design)</span>.</li>
+<li>W3C says content conforming to 2.2 also conforms to 2.1 and 2.0, so the target meets the WCAG 2.1 AA floor named in
+the ADA Title II web rule <span class="hb-cite">(the stack's accessibility design)</span>.</li>
 </ul>
-<p>When the accessibility rules are decided, they will land here, with the ADR
-number that decided them.</p>
+<h2 id="components"><a class="hb-sec" href="#components">§9.2</a> Components</h2>
+<ul>
+<li><a class="tool" href="https://wayneui.apps.wayne.edu/">WayneUI</a> is the stack's component library; pages built from its components start from markup and tokens already
+checked by WayneUI's own runnable accessibility gate <span class="hb-cite">(the stack's accessibility design)</span>.</li>
+<li>An app <strong class="kw kw--must-not">MUST NOT</strong> fork or restyle a WayneUI component in a way that removes focus indicators, labels or contrast
+<span class="hb-cite">(the stack's accessibility design)</span>. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>wayneui-forked-views</code> catches forked views.</li>
+</ul>
+<h2 id="checks"><a class="hb-sec" href="#checks">§9.3</a> Checks</h2>
+<ul>
+<li>An automated accessibility check <strong class="kw kw--should">SHOULD</strong> run in CI on the app's key pages. GitLab's accessibility testing uses Pa11y
+and is available on every self-managed tier <span class="hb-cite">(the stack's accessibility design)</span>.</li>
+<li>An automated tool catches regressions; it is not proof of conformance, and it never replaces a manual keyboard and
+screen reader pass before launch <span class="hb-cite">(the stack's accessibility design)</span>.</li>
+<li><a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a> has no accessibility component yet (not built yet).</li>
+</ul>
+<h2 id="not-decided-here"><a class="hb-sec" href="#not-decided-here">§9.4</a> Not decided here</h2>
+<ul>
+<li>Whether and when the ADA Title II web rule applies to a given WSU unit. The rule applies WCAG 2.1 AA to public
+entities on dates that depend on the entity's size; the answer is for WSU's counsel and accessibility office, and
+this chapter does not decide it.</li>
+<li>Which pages need a manual audit.</li>
+</ul>
           </div>
         </div>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="ci.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 8</span><span class="hb-pager__name">CI</span></a><a class="hb-pager__link hb-pager__link--next" href="every-os.html" rel="next"><span class="hb-pager__dir">Next · Chapter 10</span><span class="hb-pager__name">Every OS</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/accessibility.md"><code>handbook/accessibility.md</code> on GitHub</a>, impression <code>b6b80ce</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/accessibility.md"><code>handbook/accessibility.md</code> on GitHub</a>, impression <code>977069b</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 
