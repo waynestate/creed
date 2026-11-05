@@ -9,7 +9,7 @@ This page maps the CREED handbook: what it is, how to read its key words and PRO
 
 ## What the handbook is
 
-The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and marks the rest as "To be decided". The rules, chapter by chapter, live in the handbook site, built separately from `handbook/`.
+The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a "Not decided here" heading. The rules, chapter by chapter, live in the handbook site, built separately from `handbook/`.
 
 ## How to read a rule
 
@@ -23,10 +23,10 @@ The rules for the Wayne State app stack, chapter by chapter. Each chapter states
 - [Code](../../handbook/code.html): PHP style with one Pint preset per repo, reading the code, static analysis at PHPStan level 8, banned patterns, and Vue and JavaScript linting.
 - [Auth](../../handbook/auth.html): one protocol-neutral library that returns a verified identity and leaves the session to the app, with its drivers and non-EOL PHP only.
 - [Databases](../../handbook/databases.html): the MySQL lines the policy lists, the conventions that keep an app working on the shared 5.6 server, and the 90-day grace period.
-- [Runtime and headers](../../handbook/runtime-and-headers.html): to be decided; no ADR decides the runtime and header rules yet, so this chapter states no rules.
+- [Runtime and headers](../../handbook/runtime-and-headers.html): the runtime (Baseline) warns and refuses only for unsafe config, HELMET's headers on every response, proxy trust from a platform preset or the app's own list, and debug off in production.
 - [Deploy gate](../../handbook/deploy-gate.html): the gate runs PROCTOR against the commit being released, before it is released, and refuses EOL PHP.
 - [CI](../../handbook/ci.html): CI is enforcement point (c), a red pipeline before merge, built from Preflight's pinned components and judged with deterministic commands, never with a model.
-- [Accessibility](../../handbook/accessibility.html): to be decided; what is known is that WayneUI is the component library the stack builds on.
+- [Accessibility](../../handbook/accessibility.html): WCAG 2.2 Level AA as the target for every public page, WayneUI components as the checked starting point, an automated Pa11y check in CI, and the open Title II question.
 - [Every OS](../../handbook/every-os.html): every developer tool works on Windows, macOS and Linux, with `.ps1` and `.sh` pairs, LF line endings and portable paths.
 - [Secrets](../../handbook/secrets.html): credentials never in version control and never in the served folder, with errors and debug output that hide them.
 - [Production](../../handbook/production.html): pre-production and production environments, running safely with the least access needed, and who can reach an app.

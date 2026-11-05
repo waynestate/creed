@@ -416,8 +416,9 @@ Why: debug pages expose configuration values to users.
 
 Sources: [Laravel configuration docs](https://laravel.com/docs/13.x/configuration).
 
-How the stack holds it: `Not yet`. The runtime and headers chapter says "To be decided". HELMET's ribbon and refusal
-rules are not built.
+How the stack holds it: `Documented`. `handbook/runtime-and-headers.md` and `handbook/secrets.md` write the rule.
+HELMET warns when the Laravel app boots with debug on in production (`helmet.debug_enabled_in_production`); no
+PROCTOR check reads `APP_DEBUG` yet.
 
 ## 5. Overrides and rollout
 
@@ -470,15 +471,15 @@ overrides). The chapters do not yet tag each rule with its enforcement point.
 
 ### 30. Cite the decision behind every rule
 
-Each handbook rule links to the ADR that decided it. Where nothing is decided, the chapter says "To be decided" and
-states no rule.
+Each handbook rule links to the ADR that decided it. Where nothing is decided, the chapter lists the point under a
+"Not decided here" heading and states no rule.
 
 Why: readers can trust a rule, and can find who to ask about the rest.
 
 Sources: [Architectural Decision Records](https://adr.github.io/).
 
-How the stack holds it: `Documented`. Every chapter in `handbook/` follows it. `accessibility.md` and
-`runtime-and-headers.md` are still placeholders.
+How the stack holds it: `Documented`. Every chapter in `handbook/` follows it, including `accessibility.md` and
+`runtime-and-headers.md`.
 
 ### 31. Record open questions with an owner
 
@@ -837,7 +838,7 @@ Why: the chapter currently says "To be decided"; the floor it must meet is alrea
 
 Sources: [ADA.gov, Title II web rule first steps](https://www.ada.gov/resources/web-rule-first-steps/).
 
-How the stack holds it: `Not yet`. `handbook/accessibility.md` states no rules.
+How the stack holds it: `Not yet`. `handbook/accessibility.md` states the floor and leaves the Title II dates open.
 
 ### 53. Run an automated accessibility check in CI
 
@@ -860,7 +861,7 @@ Why: it avoids a second migration.
 
 Sources: [WCAG 2.2](https://www.w3.org/TR/WCAG22/).
 
-How the stack holds it: `Not yet`. The target level is not written anywhere in the handbook.
+How the stack holds it: `Documented`. The target is written in `handbook/accessibility.md`.
 
 ## 11. WSU developer standards (2024)
 
@@ -1017,7 +1018,8 @@ These are places where a source disagrees with the repository or with an earlier
 9. Add an abandoned-package setting to `rules` and apply it in the audit check (practice 21).
 10. Add a secrets chapter, and a secret-scanning job in Preflight (practice 24).
 11. Add a PHPStan rule for `env()` outside `config/` and put the rule in Pinstripe (practice 25).
-12. Add a `config` check that `APP_DEBUG` is false in production, and write the runtime and headers chapter (practice 26).
+12. Partly done: the runtime and headers chapter is written (practice 26); the `config` check that `APP_DEBUG` is
+    false in production is not built.
 13. Partly done: versions, dependencies, auth, databases, ci, every-os and overrides carry check IDs; the other chapters
     are still to walk (practices 29 and 32).
 14. Done: `tests/OlderReaderContractTest.php` loads a future-shaped policy file with the reader and asserts every
@@ -1025,7 +1027,8 @@ These are places where a source disagrees with the repository or with an earlier
 15. Add stage dates (`report`, `warn`, `block`) to the schema (practice 28).
 16. Add PROCTOR checks for `.gitattributes`, CRLF in server files and file-name case collisions (practice 34).
 17. Add a PROCTOR check that CI includes are pinned to a tag or SHA (practice 23).
-18. Write the accessibility chapter once the rules are decided (practice 30).
+18. Partly done: the accessibility chapter is written, with the WCAG 2.2 AA target (practices 30 and 54); the Title
+    II dates stay open (practice 52).
 
 Added in the second pass (2026-10-27):
 

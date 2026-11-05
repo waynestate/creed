@@ -9,6 +9,8 @@
 - Added: a docs site (site/docs/) built by the shared docs builder from docs/, checked in composer ci.
 - Changed: the front-page deploy layer pins HELMET ^0.3, PROCTOR ^0.4 and CREED ^0.1 (lock: HELMET 0.3.0, PROCTOR 0.4.0, CREED 0.1.6).
 - Changed: CI pins Preflight 0.1.4 (GitLab component includes and the GitHub reusable workflow at its tag commit); the deploy layer sets minimum-stability to stable.
+- Added: handbook chapter Runtime and headers (HELMET's headers, proxy trust, debug off in production).
+- Added: handbook chapter Accessibility (WCAG 2.2 AA as the target, an automated check, the open Title II question).
 
 ## 0.1.6 (2026-11-03)
 
