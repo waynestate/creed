@@ -1,0 +1,25 @@
+<!--
+  The docs pages wear the front page's running head (site/index.html): the keystone mark, the name in Source Serif,
+  the edition line and the same main menu in the same order. The docs builder puts the header element below in place
+  of its generic one on every page, rewrites the relative links (written as if from site/) to the page's depth, fills
+  the placeholder and marks the Docs link aria-current. Styles: docs/theme/creed.css.
+  Keep the links in step with the front page's runhead nav. Like Creed Bratton's résumé, it should match everywhere.
+-->
+<header class="runhead">
+  <div class="runhead__inner">
+    <a class="runhead__brand" href="index.html">
+      <img src="brand/creed-avatar-256.png" width="28" height="28" alt="">
+      <span>{{project}}</span>
+    </a>
+    <span class="runhead__edition" aria-hidden="true">Wayne State App Stack Code · 2026 Edition</span>
+    <nav class="runhead__nav" aria-label="Site">
+      <a href="handbook/">Handbook</a>
+      <a href="docs/index.html">Docs</a>
+      <a href="index.html#contents">Contents</a>
+      <a href="index.html#inspection">Inspect</a>
+      <a href="index.html#errata">Errata</a>
+      <a href="index.html#appendix-a">Adopt</a>
+      <a href="https://proof.apps.wayne.edu/creed/">Proof</a>
+    </nav>
+  </div>
+</header>

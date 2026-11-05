@@ -1,3 +1,7 @@
 {
-  "blocks": {}
+    "theme": {
+        "css": "theme/creed.css",
+        "header": "_header.html"
+    },
+    "blocks": {}
 }
