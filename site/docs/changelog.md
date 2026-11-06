@@ -6,7 +6,7 @@ llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
 ---
 
-# Changelog | CREED docs
+# Changelog[#](https://creed.apps.wayne.edu/docs/changelog.html#changelog)
 
 ## Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 

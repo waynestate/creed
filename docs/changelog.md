@@ -5,6 +5,8 @@ description: All notable changes to this project.
 
 <!-- Generated from CHANGELOG.md by bin/docs-site.php. Edit CHANGELOG.md, not this file. -->
 
+# Changelog
+
 ## Unreleased
 
 - Added: per-Laravel-line `requires` (PHP range, MySQL and MariaDB minimums) in the policy, schema and reader.
