@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added: a site accessibility gate (axe-core in Playwright, WCAG 2.2 AA, run in Docker): `scripts/a11y.sh` on Linux and macOS, `scripts/a11y.ps1` on Windows; it checks the front page, every docs page and every handbook page in light and dark at 360 and 1280 px.
 - Fixed: the refresh command's tests use a frozen policy snapshot, so the policy robot's refresh merge requests no longer fail them.
 - Fixed: the front page's contents and key now tell the same story as the tally. Every chapter's stamp bar is recounted from BEST_PRACTICES.md, chapter 11 (WSU developer standards) has its row, the key explains all five stamps, and the new Partially stamp has its own ink (moss, between Checked's ochre and Documented's slate), a half-dashed frame and hatched bars. §4.3 is stamped Documented as BEST_PRACTICES.md has it, and the chapter 4 and 7 introductions say so. BEST_PRACTICES.md's own key lists Partially.
 - Added: `FrontPageTallyTest` fails `composer ci` when the front page's tally, contents heading, chapter bars, clause ranges, key or reprinted clause stamps drift from BEST_PRACTICES.md.
