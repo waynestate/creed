@@ -9,6 +9,10 @@ description: All notable changes to this project.
 
 ## Unreleased
 
+- Changed: the docs' dark mode is the code book read after hours (warm graphite stock, cream type, a pale tint of the green ink for links, gold foil for the title rule, the current page and focus) instead of a green wallpaper; every kit dark token is set by the theme. The cover's gold ribbon marks the page you are reading and each callout's stamp is pressed as it scrolls in (motion only under prefers-reduced-motion: no-preference); stamp frames wear the front page's ink texture; wide tables shade the side that scrolls.
+- Fixed: the docs and README describe the policy robot as it runs: the Monday schedule, the four outcomes, the merge request (title, label, auto-merge only after exit 3, force-pushed branch), the auto-alert issues, how to review a robot merge request, and the setup. Support dates are no longer described as hand-edited only, refresher exit 4 no longer says nothing is committed, and the composer ci lists name every step.
+- Fixed: docs name `waynestate/creed` 0.1.6 as the Packagist version, list all seven GitLab variables the robot reads, and say where each CI job runs on which PHP versions.
+- Security: the front-page deploy layer moves to Symfony 7.4.23 (symfony/http-foundation and symfony/yaml advisories, including CVE-2026-118514).
 - Fixed: the front page no longer scrolls sideways on phones or between 861 and 941px. On phones the running head sets like the docs (name over menu, two lines of three links, not sticky); the menu now hides Errata as intended instead of Inspect; the title-page book leaves room for its tabs in a narrow column.
 - Added: per-Laravel-line `requires` (PHP range, MySQL and MariaDB minimums) in the policy, schema and reader.
 - Added: `images.docker` for PHP 8.3 to 8.5 in the policy, and a base-image rebuild rule in the versions chapter.

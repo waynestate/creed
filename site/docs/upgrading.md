@@ -21,7 +21,9 @@ How CREED versions are cut, what each release changed that a consumer notices, a
 
 ## Unreleased[#](https://creed.apps.wayne.edu/docs/upgrading.html#unreleased)
 
-The policy records, per Laravel line, the PHP versions it supports and the minimum MySQL and MariaDB versions, in a new optional `requires` field on the line. A policy file that uses `requires` fails validation against the 0.1.6 schema, so a publisher updates the schema first. Readers ignore the field, so an older reader keeps working on a newer file.
+The policy records, per Laravel line, the PHP versions it supports and the minimum MySQL and MariaDB versions, in a new optional `requires` field on the line. A policy file that uses `requires` fails validation against the 0.1.6 schema, so a publisher updates the schema first. Readers ignore the field, so an older reader keeps working on a newer file. The same holds for the new optional `images` object on a line (`images.docker` is filled for PHP 8.3 to 8.5).
+
+Nothing changes for a consumer in how the policy is kept: the policy robot's Monday merge requests land in `policy/policy.json` like any other commit, so a consumer that carries a copy refreshes it after a release as before.
 
 ## 0.1.6 (2026-11-03)[#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-6-2026-11-03)
 

@@ -49,7 +49,7 @@
 <li>HELMET can read a <code>policy.json</code> at runtime, and apps and the stack's front-page deploys install <code>waynestate/creed</code> from Packagist.</li>
 </ul>
 <h2 id="why-the-copies-began">Why the copies began<a class="docs-heading-link" aria-label="Link to this section" href="#why-the-copies-began">#</a></h2>
-<p>The copies began because CREED was not on Packagist. It is now (<code>waynestate/creed</code> 0.1.3), so each copy can become a real <code>require</code>, one consumer at a time; until a consumer switches, its copy stays.</p>
+<p>The copies began because CREED was not on Packagist. It is now (<code>waynestate/creed</code>, 0.1.6 at this writing), so each copy can become a real <code>require</code>, one consumer at a time; until a consumer switches, its copy stays.</p>
 <h2 id="generating-and-checking-the-copy">Generating and checking the copy<a class="docs-heading-link" aria-label="Link to this section" href="#generating-and-checking-the-copy">#</a></h2>
 <p>CREED owns the generator and the check:</p>
 <pre><code>php bin/export.php --namespace=Waynestate\Proctor\Creed --to=vendor/creed-copy

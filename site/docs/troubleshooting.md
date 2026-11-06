@@ -1,6 +1,6 @@
 ---
 title: "Troubleshooting | CREED docs"
-description: "The versions the reader refuses and why: unknown components, versions between listed lines, and lines that do not parse."
+description: "The failures that look alarming but are expected: a red refresh-patches run, the policy robot's merge requests and token, refresher exit codes, stale docs, and the versions the reader refuses."
 url: https://creed.apps.wayne.edu/docs/troubleshooting.html
 llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
@@ -12,7 +12,7 @@ Answers to the failures that look alarming but are expected, each with the page 
 
 ## Why did the scheduled `refresh-patches` job fail?[#](https://creed.apps.wayne.edu/docs/troubleshooting.html#why-did-the-scheduled-refresh-patches-job-fail)
 
-A scheduled `refresh-patches` failure is expected whenever upstream ships a patch. The scheduled job is check-only: when the policy changed, the tool exits 3 and the job fails on the diff. Treat the red run as a to-do, not an outage: run `php bin/refresh-patches.php`, read the diff, run `composer ci`, add a CHANGELOG line, and commit. The [Changelog](https://creed.apps.wayne.edu/docs/changelog.html) is where that line goes.
+A scheduled `refresh-patches` failure is expected whenever upstream ships a patch. The scheduled job is check-only: when the policy changed, the tool exits 3 and the job fails on the diff. Treat the red run as a to-do, not an outage. On GitLab the policy robot's Monday merge request usually carries the same patch already: review and merge that one. Otherwise run `php bin/refresh-patches.php`, read the diff, run `composer ci`, add a CHANGELOG line, and commit. The [Changelog](https://creed.apps.wayne.edu/docs/changelog.html) is where that line goes.
 
 ## Why does the `policy-bot` job print "CREED_BOT_TOKEN not set; skipping the policy robot" and stay green?[#](https://creed.apps.wayne.edu/docs/troubleshooting.html#why-does-the-policy-bot-job-print-creed-bot-token-not-set-skipping-the-policy-robot-and-stay-green)
 
@@ -20,7 +20,11 @@ That is the designed behavior when the masked `CREED_BOT_TOKEN` CI variable is n
 
 ## Why can the robot not push when `auto/policy-refresh` is protected?[#](https://creed.apps.wayne.edu/docs/troubleshooting.html#why-can-the-robot-not-push-when-auto-policy-refresh-is-protected)
 
-The branch `auto/policy-refresh` must not be protected, or the robot cannot push it. The robot commits the data allowlist on that branch and pushes it as a merge request labeled `auto-data`; a data-only run is auto-merged. Branch protection is a project setting, not a file in this repo. The [Changelog](https://creed.apps.wayne.edu/docs/changelog.html) records when the job and its schedule arrived.
+The branch `auto/policy-refresh` must not be protected, or the robot cannot push it. The robot commits `policy/policy.json` and `policy/sources.json` on that branch and force-pushes it as a merge request labeled `auto-data`. Branch protection is a project setting, not a file in this repo; [The policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html) has the whole setup.
+
+## Why did the robot's merge request not merge itself?[#](https://creed.apps.wayne.edu/docs/troubleshooting.html#why-did-the-robot-s-merge-request-not-merge-itself)
+
+Two reasons, both on purpose. A run whose refresher exited 4 (something held or refused) opens its merge request without auto-merge, so a person decides; the held or refused items are listed in the body and each has an `auto-alert` issue. And an exit 3 merge request merges only when its pipeline passes, so a red `composer ci` holds it, even when the failure has nothing to do with the policy (a fresh security advisory in `composer audit`, say). Fix the failure on `main`, then rebase the merge request or start the robot by hand on `main`; re-running the old pipeline tests the old branch again. Never commit to `auto/policy-refresh`: the next Monday overwrites it. [Reviewing what it opens](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#reviewing-what-it-opens) walks through it.
 
 ## Tests fail oddly on Windows after a Docker install[#](https://creed.apps.wayne.edu/docs/troubleshooting.html#tests-fail-oddly-on-windows-after-a-docker-install)
 
@@ -32,7 +36,7 @@ Rebuild the stale side: `composer docs` rebuilds the docs site from `docs/`, and
 
 ## What is the difference between `refresh-policy` exit 3 and exit 4?[#](https://creed.apps.wayne.edu/docs/troubleshooting.html#what-is-the-difference-between-refresh-policy-exit-3-and-exit-4)
 
-Exit 3 means something was written to `policy/policy.json` or `policy/sources.json`, including a released `loosen-fail` (the policy robot raises the alert from the report). Exit 4 means something was held or refused; nothing is committed for that run. Exit 0 means nothing worth committing, and exit 1 is a hard failure. Version 0.1.2 changed a released loosening from exit 4 to exit 3; see the [Changelog](https://creed.apps.wayne.edu/docs/changelog.html).
+Exit 3 means something was written to `policy/policy.json` or `policy/sources.json`, including a released `loosen-fail` (the policy robot raises the alert from the report). Exit 4 means something was held or refused: whatever could be written was written, the held or refused items stayed out, and the policy robot opens its merge request without auto-merge. The refresher itself never commits. Exit 0 means nothing worth committing, and exit 1 is a hard failure. Version 0.1.2 changed a released loosening from exit 4 to exit 3; see the [Changelog](https://creed.apps.wayne.edu/docs/changelog.html).
 
 ## Why does the reader throw for a version between listed lines, or one that does not parse?[#](https://creed.apps.wayne.edu/docs/troubleshooting.html#why-does-the-reader-throw-for-a-version-between-listed-lines-or-one-that-does-not-parse)
 

@@ -31,7 +31,7 @@ docker run --rm -v "${PWD}:/app" -w /app composer:2.10.3 sh -c "composer install
 docker run --rm -v "${PWD}:/app" -w /app php:8.5-cli vendor/bin/phpunit
 ```
 
-`composer ci` runs `composer validate --strict`, the tests, the policy validator, Pint, the handbook lint, PHPStan and `composer audit`. On Windows, if tests fail oddly after a Docker install, delete `vendor/` and install again.
+`composer ci` runs `composer validate --strict`, the tests, the policy validator, Pint, the handbook lint, the handbook site and agent-ready freshness checks, PHPStan, `composer audit` and the docs site freshness check. On Windows, if tests fail oddly after a Docker install, delete `vendor/` and install again.
 
 ## The docs site
 
@@ -39,16 +39,17 @@ The documentation site is built by `composer docs` and checked by `composer docs
 
 ## CI
 
-- **GitLab:** Preflight components (`php-test` on PHP 8.3, 8.4 and 8.5, `composer-audit`, and `proctor` for the `deploy/` layer), plus a `composer-ci` job. A `refresh-patches` job runs on scheduled pipelines only.
+- **GitLab:** Preflight components (`php-test` on PHP 8.3, 8.4 and 8.5, `composer-audit`, and `proctor` for the `deploy/` layer), plus a `composer-ci` job and a `wayneui-copies` job. On scheduled pipelines, `refresh-patches` (check-only) runs on a schedule without `CREED_JOB`, and `policy-bot` runs on the Monday schedule that carries `CREED_JOB=policy-bot` (and by hand from the web).
 - **GitHub:** `.github/workflows/ci.yml` calls Preflight's reusable workflow with `composer ci`, and runs `refresh-patches` weekly (Mondays) and on demand.
-- Green means `composer ci` passed on all three PHP versions on both.
+- Green means the tests passed on all three PHP versions on both, and `composer ci` passed (on all three on GitHub, once on GitLab).
 
 ## Keeping the policy current
 
 This is CREED's real maintenance job.
 
-- **Patch levels are watched automatically.** `bin/refresh-patches.php` reads php.net (PHP), Packagist (Laravel), nodejs.org (Node) and endoflife.date (a PHP cross-check and Vue lines). It updates `latest_patch` and `latest_patch_checked`, and proposes new Vue lines. In CI the scheduled job is check-only: the refresh tool exits 3 when the policy changed and the job fails on the diff. The policy robot (`bin/policy-bot.php run`) commits the data allowlist on `auto/policy-refresh` and pushes it as a merge request labeled `auto-data`, auto-merged for a data-only run; missing CI variables stop the run before any push. It never tags or releases, and support dates stay hand-edited: a person reviews each support-date edit. The branch `auto/policy-refresh` must not be protected. The schedules live in the project's CI/CD settings on nougat, not in this repo.
-- **Support dates are edited by hand.** `active_until` and `security_until` for existing lines change only when a person edits them, with the upstream source in the commit message. End days are inclusive.
+- **Patch levels are watched automatically.** `bin/refresh-patches.php` reads php.net (PHP), Packagist (Laravel), nodejs.org (Node) and endoflife.date (a PHP cross-check and Vue lines). It updates `latest_patch` and `latest_patch_checked`, and proposes new Vue lines. In CI the scheduled job is check-only: the refresh tool exits 3 when the policy changed and the job fails on the diff.
+- **The policy robot opens the change every Monday.** `bin/policy-bot.php run` runs the fuller `bin/refresh-policy.php` (dates, patches, new lines), commits `policy/policy.json` and `policy/sources.json` on `auto/policy-refresh` and pushes a merge request labeled `auto-data`. It merges itself when the refresher exited 3 and the pipeline passes; after an exit 4 (something held or refused) it waits for a person, and each held or refused item has an `auto-alert` issue. It never tags or releases. Review steps and setup: [The policy robot](guides/policy-bot.md). The branch `auto/policy-refresh` must not be protected. The schedules live in the project's CI/CD settings on nougat, not in this repo.
+- **Support dates move only through review.** The robot writes a date that moves earlier or a later `active_until`, and holds a later `security_until` until two sources or 14 days agree. A person who edits a date by hand puts the upstream source in the commit message. End days are inclusive.
 - **A red scheduled run is a to-do, not an outage:** run `php bin/refresh-patches.php`, read the diff, `composer ci`, add a CHANGELOG line, commit.
 - **After any policy change,** the copies downstream are stale until refreshed. In each consumer (PROCTOR, Rollcall, Booster), run `php <creed>/bin/export.php --namespace='Waynestate\<Project>\Creed' --to=src/Creed`, then `composer creed-copy:check` with `CREED_PATH` pointing at this checkout. ADVISOR regenerates with `content:generate`.
 - The schema is `version: 1`. Optional new fields keep it at 1; a breaking schema change needs a new version and a release of every reader. The older-reader contract is pinned by `tests/OlderReaderContractTest.php`; change the fixture only with a `schema_version` bump.

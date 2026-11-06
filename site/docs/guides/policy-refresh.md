@@ -41,7 +41,9 @@ php bin/refresh-policy.php [--dry-run] [--offline <dir>] [--policy <path>]
 
 ## Exit codes[#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#exit-codes)
 
-Exit codes: `0` nothing worth committing (always `0` with `--dry-run`); `1` hard failure; `3` something was written to `policy/policy.json` or `policy/sources.json`, including a released `loosen-fail` (the policy robot raises the alert from the report); `4` something was held or refused; nothing is committed for that run. Written changes are always written.
+Exit codes: `0` nothing worth committing (always `0` with `--dry-run`); `1` hard failure; `3` something was written to `policy/policy.json` or `policy/sources.json`, including a released `loosen-fail` (the policy robot raises the alert from the report); `4` something was held or refused. The refresher itself never commits: whatever it could write is written either way, and on exit 4 the held or refused items stay out of the file.
+
+What happens next is the [policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html)'s job: on exit 3 it opens a merge request that merges itself when its pipeline passes; on exit 4 it opens one that waits for a person, plus an `auto-alert` issue per held or refused item.
 
 `bin/refresh-patches.php` still works as before.
 

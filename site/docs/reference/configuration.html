@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Configuration | CREED docs</title>
-<meta name="description" content="The files a CREED consumer carries: policy/policy.json and policy-overrides.json with its reason and expiry.">
+<meta name="description" content="The CI variables the policy robot reads (CREED_BOT_TOKEN, CREED_JOB and GitLab&#039;s predefined ones) and the options of bin/refresh-policy.php.">
 <meta name="docs-version" content="0.1.6">
 <link rel="stylesheet" href="../../assets/wayne-ui/wayne-ui.css">
 <link rel="stylesheet" href="../../assets/docs.css">
@@ -57,11 +57,11 @@
 </tr>
 <tr>
 <td><code>CREED_JOB</code></td>
-<td>The schedule variable, set to <code>policy-bot</code> on the robot's dedicated schedule (weekly, Monday). The <code>policy-bot</code> job in <code>.gitlab-ci.yml</code> runs <code>bin/policy-bot.php run</code> on that schedule and by hand from the web; the check-only refresh-patches job skips it.</td>
+<td>A pipeline schedule variable, set to <code>policy-bot</code> on the robot's schedule (on <code>main</code>, every Monday). The <code>policy-bot</code> job in <code>.gitlab-ci.yml</code> runs <code>bin/policy-bot.php run</code> on that schedule and by hand from the web; the check-only <code>refresh-patches</code> job skips it.</td>
 </tr>
 </tbody>
 </table></div>
-<p><code>src/Bot/PolicyBot.php</code> also reads six GitLab predefined variables: <code>CI_PROJECT_ID</code>, <code>CI_SERVER_PROTOCOL</code>, <code>CI_SERVER_HOST</code>, <code>CI_SERVER_PORT</code>, <code>CI_PROJECT_PATH</code> and <code>CI_DEFAULT_BRANCH</code>. Each is a GitLab predefined variable the robot uses to find the project and default branch, nothing more. Missing CI variables stop the run before any push.</p>
+<p><code>src/Bot/PolicyBot.php</code> also reads seven GitLab predefined variables, which every GitLab job has: <code>CI_API_V4_URL</code> and <code>CI_PROJECT_ID</code> for the alert issues, and <code>CI_SERVER_PROTOCOL</code>, <code>CI_SERVER_HOST</code>, <code>CI_SERVER_PORT</code>, <code>CI_PROJECT_PATH</code> and <code>CI_DEFAULT_BRANCH</code> for the push. A real run checks the first set before it refreshes and the second before it commits; when one is missing it names it and stops with exit 1, before any push. A <code>--dry-run</code> needs none of them.</p>
 <aside class="docs-callout docs-callout--warning" role="note"><p class="docs-callout__label">Warning</p><p>The token is masked, hidden and protected, and never printed. Every line the robot prints, including runner errors and command echoes, passes through one mask function that replaces the token value with <code>[masked]</code>, so a runner error that echoes the URL back never leaks it.</p></aside>
 <h2 id="refresh-policy-options">refresh-policy options<a class="docs-heading-link" aria-label="Link to this section" href="#refresh-policy-options">#</a></h2>
 <pre><code>php bin/refresh-policy.php [--dry-run] [--offline &lt;dir&gt;] [--policy &lt;path&gt;]

@@ -48,9 +48,9 @@
 <p>Patch levels are watched automatically. <code>bin/refresh-patches.php</code> reads php.net (PHP), Packagist (Laravel), nodejs.org (Node) and endoflife.date (a PHP cross-check and Vue lines).</p>
 <h2 id="the-check-only-scheduled-job">The check-only scheduled job<a class="docs-heading-link" aria-label="Link to this section" href="#the-check-only-scheduled-job">#</a></h2>
 <p>A scheduled CI job runs the refresh and is check-only: when the policy changed, the tool exits 3 and the job fails on the diff. A red scheduled run is a to-do, not an outage: run <code>php bin/refresh-patches.php</code>, read the diff, <code>composer ci</code>, add a CHANGELOG line, commit.</p>
-<p>The committing path for the same refresh is the policy robot, covered in <a href="policy-bot.html">The policy robot</a>.</p>
-<h2 id="support-dates-stay-hand-edited">Support dates stay hand-edited<a class="docs-heading-link" aria-label="Link to this section" href="#support-dates-stay-hand-edited">#</a></h2>
-<p>Support dates stay hand-edited: a person reviews each support-date edit. <code>active_until</code> and <code>security_until</code> for existing lines change only when a person edits them, with the upstream source in the commit message. End days are inclusive.</p>
+<p>The committing path is the policy robot, covered in <a href="policy-bot.html">The policy robot</a>: it runs the fuller <code>bin/refresh-policy.php</code> every Monday and opens a merge request, so a red check-only run usually has a robot merge request waiting beside it. The robot's schedule (<code>CREED_JOB=policy-bot</code>) does not run this job.</p>
+<h2 id="support-dates">Support dates<a class="docs-heading-link" aria-label="Link to this section" href="#support-dates">#</a></h2>
+<p>This script never touches a support date. Dates move in two reviewed ways only: the <a href="policy-bot.html">policy robot</a>'s Monday merge request, where <code>bin/refresh-policy.php</code> writes a date that moves earlier or a later <code>active_until</code>, and holds a later <code>security_until</code> until it is proven; or a person's own edit, with the upstream source in the commit message. End days are inclusive.</p>
 <h2 id="related">Related<a class="docs-heading-link" aria-label="Link to this section" href="#related">#</a></h2>
 <ul>
 <li><a href="policy-refresh.html">Refreshing the policy</a></li>
@@ -61,7 +61,7 @@
     </main>
     <nav class="docs-pager" aria-label="Pages"><a class="docs-pager__link" href="../../docs/guides/support-states.html"><span class="docs-pager__dir">Previous</span><span class="docs-pager__title">Support states and the grace period</span></a><a class="docs-pager__link docs-pager__link--next" href="../../docs/guides/policy-refresh.html"><span class="docs-pager__dir">Next</span><span class="docs-pager__title">Refreshing the policy</span></a></nav>
   </div>
-  <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#what-the-refresh-does">What the refresh does</a></li><li class="docs-toc__item"><a href="#where-the-data-comes-from">Where the data comes from</a></li><li class="docs-toc__item"><a href="#the-check-only-scheduled-job">The check-only scheduled job</a></li><li class="docs-toc__item"><a href="#support-dates-stay-hand-edited">Support dates stay hand-edited</a></li><li class="docs-toc__item"><a href="#related">Related</a></li></ul></nav>
+  <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#what-the-refresh-does">What the refresh does</a></li><li class="docs-toc__item"><a href="#where-the-data-comes-from">Where the data comes from</a></li><li class="docs-toc__item"><a href="#the-check-only-scheduled-job">The check-only scheduled job</a></li><li class="docs-toc__item"><a href="#support-dates">Support dates</a></li><li class="docs-toc__item"><a href="#related">Related</a></li></ul></nav>
 </div>
 <footer class="docs-footer">
   <span>Documents CREED <span data-docs-version>0.1.6</span></span>

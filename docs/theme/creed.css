@@ -14,11 +14,19 @@
    --dk-* tokens and the rules below win without !important. The kit's
    docs.css stays byte for byte Squire's. Edit here, never there.
 
-   The front page has no dark mode, so the dark set is derived: the book's
-   own cover. Deep green cloth for the ground, cream for the text, gold foil
-   where the light page uses green (the title, the links, the focus ring).
+   The front page has no dark mode, so the dark set is derived: the same
+   book read after hours. Warm graphite stock, cream type, a pale tint of the
+   green ink for links, gold foil for the title rule, the current page and
+   focus. Green cloth only where the front page has it (spine, colophon).
 
-   Like the band, this file has one sound and commits to it.
+   Two touches of the front page's magic, both only under
+   prefers-reduced-motion: no-preference: the cover's gold ribbon marker
+   drops from the running head over the page you are reading, and each
+   callout's rubber stamp is pressed as it scrolls into view (its frame worn
+   with the front page's ink texture either way).
+
+   Like the band, this file has one sound and commits to it. Like Creed
+   Bratton, it has a second identity for after dark, and it is not green.
 
    File map: 1. fonts and tokens  2. frame and binding  3. running head
              4. sidebar and menu  5. article  6. code  7. tabs
@@ -53,7 +61,9 @@
   --c-red: #9a2a1f;            /* the inspector's red */
   --c-stamp-doc: #3c4a45;
   --c-title: var(--c-green);   /* the title page's name */
+  --c-title-rule: var(--c-ink); /* the clause's double rule under it */
   --c-current: var(--c-green); /* the bar beside the page you are on */
+  --c-shade: rgba(27, 36, 32, .2); /* the edge of a table that scrolls */
   --c-code-tint: rgba(12, 84, 73, .07);
   --c-slab: #1b2420;           /* the front page's snippet block */
   --c-slab-ink: #e9efe9;
@@ -71,6 +81,11 @@
 
   /* A whisper of paper grain. Static, no motion. */
   --c-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .35  0 0 0 0 .3  0 0 0 0 .2  0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  /* The same grain for the after-hours stock: pale specks instead of dark. */
+  --c-grain-dark: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .95  0 0 0 0 .92  0 0 0 0 .84  0 0 0 .035 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  /* Ink wear for rubber stamps, the front page's own: mottled alpha, so the
+     frame of a stamp looks pressed. Only the frame wears; the word stays crisp. */
+  --c-wear: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='120'%3E%3Cfilter id='w'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='3' seed='7'/%3E%3CfeColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  -1.9 0 0 0 1.85'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23w)'/%3E%3C/svg%3E");
 
   /* The kit's tokens, set from the palette above. */
   --dk-bg: var(--c-paper);
@@ -351,6 +366,34 @@ body::before {
   border-bottom: 1px solid var(--dk-rule);
 }
 
+/* The book's gold ribbon marker, from the front page's cover, hangs from the
+   running head over the page you are reading. Decorative, no words. Wide
+   screens only: on a phone the menu button sits there. */
+@media (min-width: 761px) {
+  .docs-article {
+    position: relative;
+  }
+
+  .docs-article::before {
+    padding-right: 2.5rem;
+  }
+
+  .docs-article::after {
+    content: "";
+    position: absolute;
+    top: calc(-2.25rem - 1px);
+    right: .25rem;
+    width: 13px;
+    height: 4.6rem;
+    background:
+      linear-gradient(90deg, rgba(0, 0, 0, .1), transparent 35%, rgba(255, 255, 255, .22) 50%, transparent 65%, rgba(0, 0, 0, .12)),
+      var(--c-gold);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 84%, 0 100%);
+    transform-origin: top;
+    pointer-events: none;
+  }
+}
+
 .docs-article h1,
 .docs-article h2,
 .docs-article h3 {
@@ -375,7 +418,7 @@ body::before {
   display: block;
   height: 0;
   margin-top: 1rem;
-  border-top: 3px double var(--dk-ink);
+  border-top: 3px double var(--c-title-rule);
 }
 
 /* Each section opens on a section mark, the way each clause does. */
@@ -598,6 +641,14 @@ body::before {
   margin: 1.5rem 0 1.75rem;
   border-top: 3px solid var(--dk-ink);
   border-bottom: 3px solid var(--dk-ink);
+  /* A table wider than the page scrolls in its frame; a soft shade on the
+     side with more to read says so. The page-colored covers ride with the
+     content and hide the shade at either end. */
+  background:
+    linear-gradient(to right, var(--dk-bg) 40%, transparent) left / 2rem 100% no-repeat local,
+    linear-gradient(to left, var(--dk-bg) 40%, transparent) right / 2rem 100% no-repeat local,
+    radial-gradient(farthest-side at 0 50%, var(--c-shade), transparent) left / .8rem 100% no-repeat scroll,
+    radial-gradient(farthest-side at 100% 50%, var(--c-shade), transparent) right / .8rem 100% no-repeat scroll;
 }
 
 .docs-article table {
@@ -681,19 +732,37 @@ body::before {
   letter-spacing: .16em;
   text-transform: uppercase;
   color: var(--c-callout);
-  border: 2px solid var(--c-callout);
+  border: 0;
   border-radius: 3px;
-  transform: rotate(-2deg);
+  position: relative;
+  --c-tilt: -2deg;
+  transform: rotate(var(--c-tilt));
+}
+
+/* The stamp's frame is its own layer, worn with the front page's ink
+   texture, so the frame looks pressed and the word stays crisp to read. */
+.docs-callout__label::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px solid currentColor;
+  border-radius: inherit;
+  -webkit-mask: var(--c-wear) 0 0 / 220px 120px;
+  mask: var(--c-wear) 0 0 / 220px 120px;
+  pointer-events: none;
 }
 
 .docs-callout--warning .docs-callout__label {
-  transform: rotate(2deg);
+  --c-tilt: 2deg;
 }
 
 /* Not yet held: the front page draws that stamp dashed. */
 .docs-callout--danger .docs-callout__label {
+  --c-tilt: -3deg;
+}
+
+.docs-callout--danger .docs-callout__label::after {
   border-style: dashed;
-  transform: rotate(-3deg);
 }
 
 .docs-callout > :last-child {
@@ -803,34 +872,42 @@ body::before {
 
 /* ---------------------------------------------------------------- 10. dark */
 
-/* Derived: the book's cover. Green cloth ground, cream text, gold foil where
-   the light page uses green. Same values in both blocks. */
+/* Derived, because the front page has no dark mode: the same code book, read
+   in the stacks after hours. Warm graphite stock under a faint grain, cream
+   type, the book's green ink thinned to a pale tint for links and section
+   marks, gold foil for the title rule, the current page and focus. Green
+   cloth stays where the front page puts it: the spine and the colophon.
+   Never a green wallpaper. Every kit --dk-* token is restated here, because
+   the kit's own dark block would otherwise win with WayneUI's dark surface.
+   Same values in both blocks. */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --c-paper-hi: #152622;
-    --c-slip: #1f2419;
-    --c-ochre: #ffcc33;
-    --c-title: #ffcc33;
+    --c-paper-hi: #23241f;
+    --c-slip: #29261a;
+    --c-ochre: #d9b65c;
+    --c-title: #f4f1ea;
+    --c-title-rule: #ffcc33;
     --c-current: #ffcc33;
-    --c-code-tint: rgba(239, 233, 218, .09);
-    --c-slab: #0a1512;
+    --c-code-tint: rgba(239, 233, 218, .08);
+    --c-slab: #10110f;
     --c-slab-ink: #e9efe9;
-    --c-slab-rule: #34463f;
-    --c-head-bg: rgba(15, 28, 25, .94);
-    --c-colophon: #08352f;
-    --c-grain: none;
+    --c-slab-rule: #3d3c35;
+    --c-head-bg: rgba(26, 27, 24, .94);
+    --c-colophon: #0c5449;
+    --c-shade: rgba(0, 0, 0, .55);
+    --c-grain: var(--c-grain-dark);
 
-    --dk-bg: #0f1c19;
+    --dk-bg: #1a1b18;
     --dk-ink: #efe9da;
-    --dk-muted: #b9c4be;
-    --dk-rule: #34463f;
-    --dk-accent: #ffcc33;
+    --dk-muted: #bdb6a6;
+    --dk-rule: #3d3c35;
+    --dk-accent: #8ccfbf;
     --dk-on-accent: #1b2420;
-    --dk-code-bg: #172925;
-    --dk-note: #b9c4be;
-    --dk-tip: #a8dccf;
+    --dk-code-bg: #23241f;
+    --dk-note: #c9c2b2;
+    --dk-tip: #8ccfbf;
     --dk-warning: #ffcc33;
-    --dk-danger: #ff8f84;
+    --dk-danger: #ff9a8c;
     --dk-focus: #ffcc33;
 
     color-scheme: dark;
@@ -838,30 +915,32 @@ body::before {
 }
 
 :root[data-theme="dark"] {
-  --c-paper-hi: #152622;
-  --c-slip: #1f2419;
-  --c-ochre: #ffcc33;
-  --c-title: #ffcc33;
+  --c-paper-hi: #23241f;
+  --c-slip: #29261a;
+  --c-ochre: #d9b65c;
+  --c-title: #f4f1ea;
+  --c-title-rule: #ffcc33;
   --c-current: #ffcc33;
-  --c-code-tint: rgba(239, 233, 218, .09);
-  --c-slab: #0a1512;
+  --c-code-tint: rgba(239, 233, 218, .08);
+  --c-slab: #10110f;
   --c-slab-ink: #e9efe9;
-  --c-slab-rule: #34463f;
-  --c-head-bg: rgba(15, 28, 25, .94);
-  --c-colophon: #08352f;
-  --c-grain: none;
+  --c-slab-rule: #3d3c35;
+  --c-head-bg: rgba(26, 27, 24, .94);
+  --c-colophon: #0c5449;
+  --c-shade: rgba(0, 0, 0, .55);
+  --c-grain: var(--c-grain-dark);
 
-  --dk-bg: #0f1c19;
+  --dk-bg: #1a1b18;
   --dk-ink: #efe9da;
-  --dk-muted: #b9c4be;
-  --dk-rule: #34463f;
-  --dk-accent: #ffcc33;
+  --dk-muted: #bdb6a6;
+  --dk-rule: #3d3c35;
+  --dk-accent: #8ccfbf;
   --dk-on-accent: #1b2420;
-  --dk-code-bg: #172925;
-  --dk-note: #b9c4be;
-  --dk-tip: #a8dccf;
+  --dk-code-bg: #23241f;
+  --dk-note: #c9c2b2;
+  --dk-tip: #8ccfbf;
   --dk-warning: #ffcc33;
-  --dk-danger: #ff8f84;
+  --dk-danger: #ff9a8c;
   --dk-focus: #ffcc33;
 
   color-scheme: dark;
@@ -1008,6 +1087,22 @@ body::before {
     animation: creed-foil-strike .6s .15s var(--c-ease-out) both;
   }
 
+  /* The ribbon drops once as the page lands, as it does under the book. */
+  .docs-article::after {
+    animation: creed-ribbon-drop .6s .45s var(--c-ease-out) both;
+  }
+
+  /* Each stamp is pressed as it comes into view: in from above, a little
+     big and askew, then down at its own tilt, like the front page's clause
+     stamps. Browsers without scroll timelines show it already pressed. */
+  @supports (animation-timeline: view()) {
+    .docs-callout__label {
+      animation: creed-stamp-press linear both;
+      animation-timeline: view();
+      animation-range: entry 10% entry 90%;
+    }
+  }
+
   .runhead__brand img {
     transition: transform .3s var(--c-ease-press);
   }
@@ -1042,6 +1137,19 @@ body::before {
 @keyframes creed-foil-strike {
   from { clip-path: inset(0 100% 0 0); }
   to { clip-path: inset(0 0 0 0); }
+}
+
+@keyframes creed-ribbon-drop {
+  from { transform: scaleY(0); }
+}
+
+/* A linear timeline with eased keyframes: most of the travel early, then
+   the press, a hair past, and back to rest. */
+@keyframes creed-stamp-press {
+  0% { opacity: 0; transform: rotate(calc(var(--c-tilt) - 10deg)) scale(1.6); }
+  55% { opacity: 1; transform: rotate(calc(var(--c-tilt) - 1deg)) scale(.96); }
+  75% { transform: rotate(var(--c-tilt)) scale(1.02); }
+  100% { opacity: 1; transform: rotate(var(--c-tilt)) scale(1); }
 }
 
 /* -------------------------------------------------------------- 13. print */

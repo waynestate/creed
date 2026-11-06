@@ -19,11 +19,11 @@ Patch levels are watched automatically. `bin/refresh-patches.php` reads php.net 
 
 A scheduled CI job runs the refresh and is check-only: when the policy changed, the tool exits 3 and the job fails on the diff. A red scheduled run is a to-do, not an outage: run `php bin/refresh-patches.php`, read the diff, `composer ci`, add a CHANGELOG line, commit.
 
-The committing path for the same refresh is the policy robot, covered in [The policy robot](policy-bot.md).
+The committing path is the policy robot, covered in [The policy robot](policy-bot.md): it runs the fuller `bin/refresh-policy.php` every Monday and opens a merge request, so a red check-only run usually has a robot merge request waiting beside it. The robot's schedule (`CREED_JOB=policy-bot`) does not run this job.
 
-## Support dates stay hand-edited
+## Support dates
 
-Support dates stay hand-edited: a person reviews each support-date edit. `active_until` and `security_until` for existing lines change only when a person edits them, with the upstream source in the commit message. End days are inclusive.
+This script never touches a support date. Dates move in two reviewed ways only: the [policy robot](policy-bot.md)'s Monday merge request, where `bin/refresh-policy.php` writes a date that moves earlier or a later `active_until`, and holds a later `security_until` until it is proven; or a person's own edit, with the upstream source in the commit message. End days are inclusive.
 
 ## Related
 

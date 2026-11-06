@@ -20,7 +20,11 @@ The front page, [`site/index.html`](https://creed.apps.wayne.edu/), is a static 
 
 ## What `composer ci` proves[#](https://creed.apps.wayne.edu/docs/reference/proof.html#what-composer-ci-proves)
 
-`composer ci` is the same command that runs on GitLab and GitHub. Green means it passed on all three PHP versions on both. It runs the reader on PHP 8.3, 8.4 and 8.5, validates `policy/policy.json` against its schema, and runs the handbook lint. It also fails when the committed docs pages go stale, so the site you are reading cannot drift from `docs/`.
+`composer ci` is the same command on GitLab and GitHub. It validates `composer.json`, runs the test suite (274 tests in 22 files on 2026-11-06), validates `policy/policy.json` and `policy/sources.json` against their schemas, checks style with Pint, lints the handbook, runs PHPStan and `composer audit`, and fails when the handbook site, the agent-ready files or the docs pages go stale, so the site you are reading cannot drift from `docs/`.
+
+Where it runs: GitHub runs `composer ci` on PHP 8.3, 8.4 and 8.5. GitLab runs the test suite on all three through Preflight's `php-test` component, and `composer ci` once on the pinned Composer image (PHP 8.5). GitLab also runs PROCTOR against the front page's `deploy/` layer (allowed to fail while its known findings stand) and the strict WayneUI copies check.
+
+The policy itself is proved every Monday: the [policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html) re-reads the upstream sources and opens a merge request when anything moved.
 
 ## The badges[#](https://creed.apps.wayne.edu/docs/reference/proof.html#the-badges)
 

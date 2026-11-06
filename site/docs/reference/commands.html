@@ -57,7 +57,7 @@
 </tr>
 <tr>
 <td><code>composer ci</code></td>
-<td>All checks, what CI runs: <code>composer validate --strict</code>, the tests, the policy validator, Pint, the handbook lint, PHPStan and <code>composer audit</code>. The same command runs on GitLab and GitHub.</td>
+<td>All checks, what CI runs, in order: <code>composer validate --strict</code>, the tests, the policy validator, Pint, the handbook lint, the handbook site and agent-ready freshness checks, PHPStan, <code>composer audit</code> and the docs site freshness check. The same command runs on GitLab and GitHub.</td>
 </tr>
 <tr>
 <td><code>composer test</code></td>
@@ -88,8 +88,20 @@
 <td>Rebuild <code>site/handbook/</code> from <code>handbook/*.md</code>.</td>
 </tr>
 <tr>
+<td><code>composer site:handbook-check</code></td>
+<td>Fail when <code>site/handbook/</code> is stale against <code>handbook/*.md</code>.</td>
+</tr>
+<tr>
 <td><code>composer site:agent-ready</code></td>
 <td>Rewrite the Markdown twins, <code>llms.txt</code>, <code>llms-full.txt</code>, <code>robots.txt</code> and <code>sitemap.xml</code> in <code>site/</code> (SQUIRE's agent-ready kit).</td>
+</tr>
+<tr>
+<td><code>composer site:agent-ready-check</code></td>
+<td>Fail when those agent-ready files are stale.</td>
+</tr>
+<tr>
+<td><code>composer analyse</code></td>
+<td>PHPStan.</td>
 </tr>
 </tbody>
 </table></div>
@@ -113,8 +125,8 @@
 <td>Refreshes <code>policy/policy.json</code> from the canonical upstream feeds: support dates, latest patches, and new version lines, with provenance recorded in <code>policy/sources.json</code>.</td>
 </tr>
 <tr>
-<td><code>php bin/policy-bot.php run</code></td>
-<td>The CREED policy robot: it keeps <code>policy/policy.json</code> current with no human in the loop. It runs <code>bin/refresh-policy.php</code> as a subprocess, reads the run report, and decides the outcome.</td>
+<td><code>php bin/policy-bot.php run [--dry-run] [--offline &lt;dir&gt;]</code></td>
+<td>The CREED policy robot: it runs <code>bin/refresh-policy.php</code>, reads the run report, commits the policy data on <code>auto/policy-refresh</code> as a merge request labeled <code>auto-data</code>, and keeps its <code>auto-alert</code> issues in line. <code>--dry-run</code> prints the plan and changes nothing. See <a href="../guides/policy-bot.html">The policy robot</a>.</td>
 </tr>
 <tr>
 <td><code>php bin/export.php</code></td>
@@ -166,11 +178,30 @@
 </tr>
 <tr>
 <td><code>4</code></td>
-<td>Something was held or refused; nothing is committed for that run. The policy robot raises an issue instead.</td>
+<td>Something was held or refused. Whatever could be written was written; the held or refused items stay out. The policy robot opens a merge request without auto-merge and an <code>auto-alert</code> issue per item.</td>
 </tr>
 </tbody>
 </table></div>
-<p>Written changes are always written.</p>
+<p>The refresher never commits; the policy robot does.</p>
+<h3 id="policy-bot-run">policy-bot run<a class="docs-heading-link" aria-label="Link to this section" href="#policy-bot-run">#</a></h3>
+<div class="docs-table" role="region" aria-label="Table" tabindex="0"><table>
+<thead>
+<tr>
+<th>Code</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0</code></td>
+<td>Every handled outcome: nothing to do, a merge request pushed (or nothing staged), the alert issues synced, or a dry run.</td>
+</tr>
+<tr>
+<td><code>1</code></td>
+<td>The refresher hard-failed or could not start, a required CI variable is missing (named in the output), a git step failed, or the alert issues could not be synced.</td>
+</tr>
+</tbody>
+</table></div>
 <h3 id="refresh-patches">refresh-patches<a class="docs-heading-link" aria-label="Link to this section" href="#refresh-patches">#</a></h3>
 <div class="docs-table" role="region" aria-label="Table" tabindex="0"><table>
 <thead>
@@ -233,7 +264,7 @@ docker run --rm -v &quot;${PWD}:/app&quot; -w /app php:8.3-cli vendor/bin/phpuni
     </main>
     <nav class="docs-pager" aria-label="Pages"><a class="docs-pager__link" href="../../docs/reference/policy-format.html"><span class="docs-pager__dir">Previous</span><span class="docs-pager__title">Policy file format</span></a><a class="docs-pager__link docs-pager__link--next" href="../../docs/reference/configuration.html"><span class="docs-pager__dir">Next</span><span class="docs-pager__title">Configuration</span></a></nav>
   </div>
-  <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#composer-scripts">Composer scripts</a></li><li class="docs-toc__item"><a href="#the-php-bin-php-tools">The php bin/*.php tools</a></li><li class="docs-toc__item"><a href="#exit-codes">Exit codes</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#refresh-policy">refresh-policy</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#refresh-patches">refresh-patches</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#export-check">export --check</a></li><li class="docs-toc__item"><a href="#with-only-docker">With only Docker</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#install-and-run-every-check">Install and run every check</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#run-the-test-suite">Run the test suite</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#validate-the-policy-against-its-schema">Validate the policy against its schema</a></li><li class="docs-toc__item"><a href="#related">Related</a></li></ul></nav>
+  <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#composer-scripts">Composer scripts</a></li><li class="docs-toc__item"><a href="#the-php-bin-php-tools">The php bin/*.php tools</a></li><li class="docs-toc__item"><a href="#exit-codes">Exit codes</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#refresh-policy">refresh-policy</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#policy-bot-run">policy-bot run</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#refresh-patches">refresh-patches</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#export-check">export --check</a></li><li class="docs-toc__item"><a href="#with-only-docker">With only Docker</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#install-and-run-every-check">Install and run every check</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#run-the-test-suite">Run the test suite</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#validate-the-policy-against-its-schema">Validate the policy against its schema</a></li><li class="docs-toc__item"><a href="#related">Related</a></li></ul></nav>
 </div>
 <footer class="docs-footer">
   <span>Documents CREED <span data-docs-version>0.1.6</span></span>

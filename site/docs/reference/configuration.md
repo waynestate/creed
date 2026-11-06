@@ -1,6 +1,6 @@
 ---
 title: "Configuration | CREED docs"
-description: "The files a CREED consumer carries: policy/policy.json and policy-overrides.json with its reason and expiry."
+description: "The CI variables the policy robot reads (CREED_BOT_TOKEN, CREED_JOB and GitLab's predefined ones) and the options of bin/refresh-policy.php."
 url: https://creed.apps.wayne.edu/docs/reference/configuration.html
 llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
@@ -15,9 +15,9 @@ This page lists the environment CREED reads and the options of `bin/refresh-poli
 | Variable | What it is |
 | --- | --- |
 | `CREED_BOT_TOKEN` | A CI/CD variable holding the project access token for the policy robot. Masked and hidden, protected, not a file. The schedule runs on `main`, which is a protected branch, so the protected variable is available there. Without the token the `policy-bot` job prints "CREED_BOT_TOKEN not set; skipping the policy robot" and stays green. |
-| `CREED_JOB` | The schedule variable, set to `policy-bot` on the robot's dedicated schedule (weekly, Monday). The `policy-bot` job in `.gitlab-ci.yml` runs `bin/policy-bot.php run` on that schedule and by hand from the web; the check-only refresh-patches job skips it. |
+| `CREED_JOB` | A pipeline schedule variable, set to `policy-bot` on the robot's schedule (on `main`, every Monday). The `policy-bot` job in `.gitlab-ci.yml` runs `bin/policy-bot.php run` on that schedule and by hand from the web; the check-only `refresh-patches` job skips it. |
 
-`src/Bot/PolicyBot.php` also reads six GitLab predefined variables: `CI_PROJECT_ID`, `CI_SERVER_PROTOCOL`, `CI_SERVER_HOST`, `CI_SERVER_PORT`, `CI_PROJECT_PATH` and `CI_DEFAULT_BRANCH`. Each is a GitLab predefined variable the robot uses to find the project and default branch, nothing more. Missing CI variables stop the run before any push.
+`src/Bot/PolicyBot.php` also reads seven GitLab predefined variables, which every GitLab job has: `CI_API_V4_URL` and `CI_PROJECT_ID` for the alert issues, and `CI_SERVER_PROTOCOL`, `CI_SERVER_HOST`, `CI_SERVER_PORT`, `CI_PROJECT_PATH` and `CI_DEFAULT_BRANCH` for the push. A real run checks the first set before it refreshes and the second before it commits; when one is missing it names it and stops with exit 1, before any push. A `--dry-run` needs none of them.
 
 Warning
 
