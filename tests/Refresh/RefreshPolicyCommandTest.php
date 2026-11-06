@@ -20,9 +20,12 @@ final class RefreshPolicyCommandTest extends TestCase
         $this->tmp = sys_get_temp_dir() . '/creed-refresh-policy-' . uniqid('', true);
         mkdir($this->tmp, 0777, true);
 
+        // Frozen with the recorded feeds: a policy refresh must not change
+        // the changes this test expects. Re-record tests/fixtures/refresh/
+        // and tests/fixtures/feeds together.
         // The real policy minus the composer minimum, which upstream already
         // calls EOL and which would keep every run at exit 4.
-        $policy = json_decode((string) file_get_contents(dirname(__DIR__, 2) . '/policy/policy.json'), false);
+        $policy = json_decode((string) file_get_contents(dirname(__DIR__) . '/fixtures/refresh/policy.json'), false);
         self::assertIsObject($policy);
         unset($policy->tools);
         file_put_contents($this->tmp . '/policy.json', json_encode($policy, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) . "\n");
