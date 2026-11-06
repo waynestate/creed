@@ -1,6 +1,6 @@
 # CREED
 
-> CREED is the Wayne State app stack's written standard: 54 numbered practices, policy.json with the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader that tells a tool what state a version is in on a given day.
+> CREED is the Wayne State app stack's written standard: 61 numbered practices, policy.json with the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader that tells a tool what state a version is in on a given day.
 
 **The standard everything rests on.** The Wayne State App Stack Code: one policy file, one reader, and an
 inspector who stamps what he finds.
@@ -24,7 +24,7 @@ Every page below is Markdown. The HTML pages send the same Markdown to a client 
 
 ## Pages
 
-- [CREED: The standard everything rests on.](https://creed.apps.wayne.edu/index.md): CREED is the Wayne State app stack's written standard: 54 numbered practices, policy.json with the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader that tells a tool what state a version is in on a given day.
+- [CREED: The standard everything rests on.](https://creed.apps.wayne.edu/index.md): CREED is the Wayne State app stack's written standard: 61 numbered practices, policy.json with the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader that tells a tool what state a version is in on a given day.
 - [Changelog | CREED docs](https://creed.apps.wayne.edu/docs/changelog.md): All notable changes to this project.
 - [Contributing | CREED docs](https://creed.apps.wayne.edu/docs/contributing.md): How to build, test and release CREED, and where its data comes from, as printed in MAINTAINING.md.
 - [Carrying CREED in another package | CREED docs](https://creed.apps.wayne.edu/docs/guides/carrying-creed.md): How PROCTOR, Booster and Rollcall carry a generated copy of the reader under their own namespace, and how bin/export.php keeps the copies in step.

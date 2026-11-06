@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Fixed: the front page tally matches BEST_PRACTICES.md again: eleven chapters, 61 practices, and the stamps recounted (Enforced 6, Checked 7, Partially 4, Documented 21, Not yet 23); the README screenshot alt text states no counts.
+- Fixed: the policy robot's nothing-staged line prints a real newline instead of a literal backslash-n, and the refresher's exit 4 comment says what the robot really does: it commits whatever else the run wrote (often nothing) and pushes the merge request without auto-merge.
 - Changed: the docs' dark mode is the code book read after hours (warm graphite stock, cream type, a pale tint of the green ink for links, gold foil for the title rule, the current page and focus) instead of a green wallpaper; every kit dark token is set by the theme. The cover's gold ribbon marks the page you are reading and each callout's stamp is pressed as it scrolls in (motion only under prefers-reduced-motion: no-preference); stamp frames wear the front page's ink texture; wide tables shade the side that scrolls.
 - Fixed: the docs and README describe the policy robot as it runs: the Monday schedule, the four outcomes, the merge request (title, label, auto-merge only after exit 3, force-pushed branch), the auto-alert issues, how to review a robot merge request, and the setup. Support dates are no longer described as hand-edited only, refresher exit 4 no longer says nothing is committed, and the composer ci lists name every step.
 - Fixed: docs name `waynestate/creed` 0.1.6 as the Packagist version, list all seven GitLab variables the robot reads, and say where each CI job runs on which PHP versions.

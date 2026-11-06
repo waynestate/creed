@@ -116,7 +116,7 @@ is inclusive, and the reader never guesses.
 <details>
 <summary><b>Read the rest of the book</b>: the contents, Table 2-1 and the errata slip, as printed on a phone</summary>
 <br>
-<div align="center"><img src="docs/readme/gallery.jpg" width="100%" alt="Three pages of the front page on a phone: the table of contents (ten chapters, 54 practices), Table 2-1 with each PHP edition's dates and state, and the errata slip of open amendments."></div>
+<div align="center"><img src="docs/readme/gallery.jpg" width="100%" alt="Three pages of the front page on a phone: the table of contents, Table 2-1 with each PHP edition's dates and state, and the errata slip of open amendments."></div>
 </details>
 
 ### Versions CREED hasn't heard of

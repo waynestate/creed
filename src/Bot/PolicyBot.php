@@ -500,7 +500,7 @@ final readonly class PolicyBot
             return 1;
         }
         if (trim($result['stdout']) === '') {
-            $this->say('nothing staged; skipping the commit and push\n');
+            $this->say("nothing staged; skipping the commit and push\n");
 
             return 0;
         }

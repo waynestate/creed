@@ -1,6 +1,6 @@
 ---
 title: "CREED: The standard everything rests on."
-description: "CREED is the Wayne State app stack's written standard: 54 numbered practices, policy.json with the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader that tells a tool what state a version is in on a given day."
+description: "CREED is the Wayne State app stack's written standard: 61 numbered practices, policy.json with the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader that tells a tool what state a version is in on a given day."
 url: https://creed.apps.wayne.edu/
 llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
@@ -24,16 +24,17 @@ These are the stack's written standards. The handbook has the practices, and `po
 
 [Inspect a version](https://creed.apps.wayne.edu/#inspection) [Read the handbook](https://creed.apps.wayne.edu/handbook/)
 
-- **Enforced**: 5
+- **Enforced**: 6
 - **Checked**: 7
-- **Documented**: 14
-- **Not yet**: 28
+- **Partially**: 4
+- **Documented**: 21
+- **Not yet**: 23
 
 Table of contents
 
-## Ten chapters, 54 practices
+## Eleven chapters, 61 practices
 
-Each practice has a reason, its sources and a stamp for how the stack holds it today. Clause numbers follow the chapters, so §2.1 is practice 11 in [BEST_PRACTICES.md](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md). This page prints the clauses people ask about most. All 54 are in that file, and the rules themselves are in [the handbook](https://creed.apps.wayne.edu/handbook/).
+Each practice has a reason, its sources and a stamp for how the stack holds it today. Clause numbers follow the chapters, so §2.1 is practice 11 in [BEST_PRACTICES.md](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md). This page prints the clauses people ask about most. All 61 are in that file, and the rules themselves are in [the handbook](https://creed.apps.wayne.edu/handbook/).
 
 1. [1 The version policy as data §1.1 to §1.10](https://creed.apps.wayne.edu/#ch-1)
 2. [2 PHP and framework versions §2.1 to §2.7](https://creed.apps.wayne.edu/#ch-2)

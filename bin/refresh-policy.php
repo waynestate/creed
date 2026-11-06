@@ -319,8 +319,9 @@ if ($dryRun) {
 }
 // A released loosen-fail is a written change (a second source or the ledger
 // agreed), so it exits 3 like any other written change; the policy robot
-// raises the alert from the report. Held and refused changes still exit 4:
-// nothing is committed for that run.
+// raises the alert from the report. Held and refused changes exit 4 instead:
+// the run is partly written, and the robot commits whatever else was written
+// (often nothing) and pushes the merge request without auto-merge.
 if ($result->held !== [] || $result->refused !== []) {
     exit(4);
 }
