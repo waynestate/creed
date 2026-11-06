@@ -46,11 +46,13 @@ Each practice has a reason, its sources and a stamp for how the stack holds it t
 8. [8 Platform and database §8.1 to §8.3](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#8-platform-and-database-second-pass)
 9. [9 Policy data §9.1 to §9.3](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#9-policy-data-second-pass)
 10. [10 Accessibility and the legal floor §10.1 to §10.3](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#10-accessibility-and-the-legal-floor-second-pass)
+11. [11 WSU developer standards §11.1 to §11.7](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#11-wsu-developer-standards-2024)
 
 ### Key to the stamps
 
 - **Enforced**: Code makes the violation impossible, or a test fails CI.
 - **Checked**: PROCTOR or CI warns or fails. The check is named.
+- **Partially**: Some of it is built or checked. The rest is written down only.
 - **Documented**: Written down only.
 - **Not yet**: A gap. We print it anyway so you know it's there.
 
@@ -299,7 +301,7 @@ Chapter 4
 
 ## Secrets and configuration
 
-None of the three practices in this chapter is held yet. Two of them are printed below, gaps and all.
+One of the three practices in this chapter is written down; the other two are gaps. One of each is printed below.
 
 ### §4.1 Keep secrets out of source control.
 
@@ -315,9 +317,9 @@ Not yet
 
 `APP_DEBUG` is `false` in production.
 
-Gap The runtime and headers chapter says "To be decided"; [HELMET](https://creed.apps.wayne.edu/#ahj-helmet)'s refusal rules are not built.
+Held by The handbook's runtime and headers and secrets chapters. [HELMET](https://creed.apps.wayne.edu/#ahj-helmet) warns when a Laravel app boots with debug on in production; no PROCTOR check reads `APP_DEBUG` yet.
 
-Not yet
+Documented
 
 **Rationale.** Debug pages expose configuration values to users.
 
@@ -391,7 +393,7 @@ Chapter 7 · Added in the second pass
 
 ## Patching and the supply chain
 
-Nine practices, one held so far. Chapters 8 to 10 (platform and database, policy data, accessibility) are all "Not yet" and are in the book.
+Nine practices, one held so far. Chapters 8 to 11 (platform and database, policy data, accessibility, and the WSU developer standards of 2024) are in the book, with their stamps in the contents.
 
 ### §7.1 Track the PHP patch release, not only the branch.
 
@@ -425,7 +427,7 @@ Referenced tools
 CREED writes the rules down. These are the other projects in the stack, and the clauses each one holds. PROCTOR, Booster and Rollcall read `policy.json` through a generated copy of the reader, and ADVISOR carries the policy and the handbook as data.
 
 - ![WayneUI logo: a rounded frame with a gold tab](https://creed.apps.wayne.edu/assets/marks/wayneui.svg)[WayneUI](https://wayneui.apps.wayne.edu/)Wayne State's design system, project 0 of the stack.This page is built on it
-- ![CREED logo: a stone arch with a gold keystone](https://creed.apps.wayne.edu/brand/creed-avatar-256.png)CREEDThe standards, with the policy file and its reader. This book.Chapters 1 to 10
+- ![CREED logo: a stone arch with a gold keystone](https://creed.apps.wayne.edu/brand/creed-avatar-256.png)CREEDThe standards, with the policy file and its reader. This book.Chapters 1 to 11
 - ![PROCTOR logo: an eye with a gold square pupil](https://creed.apps.wayne.edu/assets/marks/proctor.png)[PROCTOR](https://proctor.apps.wayne.edu/)Reads your `composer.json` and lock file and checks them against CREED.[§2.1](https://creed.apps.wayne.edu/#c-2-1) [§2.2](https://creed.apps.wayne.edu/#c-2-2) [§3.1](https://creed.apps.wayne.edu/#c-3-1) [§3.2](https://creed.apps.wayne.edu/#c-3-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§5.1](https://creed.apps.wayne.edu/#c-5-1)
 - ![Preflight logo: a runway with a gold center line](https://creed.apps.wayne.edu/assets/marks/preflight.png)[Preflight](https://preflight.apps.wayne.edu/)GitLab CI/CD components that run the checks on every push.[§1.2](https://creed.apps.wayne.edu/#c-1-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§3.6](https://creed.apps.wayne.edu/#c-3-6) [§6.6](https://creed.apps.wayne.edu/#c-6-6)
 - ![HELMET logo: a white football helmet with a gold facemask](https://creed.apps.wayne.edu/assets/marks/helmet.png)[HELMET](https://helmet.apps.wayne.edu/)Security headers and the runtime ribbon.[§2.2](https://creed.apps.wayne.edu/#c-2-2) [§4.3](https://creed.apps.wayne.edu/#c-4-3)

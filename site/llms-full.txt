@@ -313,11 +313,13 @@ Each practice has a reason, its sources and a stamp for how the stack holds it t
 8. [8 Platform and database §8.1 to §8.3](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#8-platform-and-database-second-pass)
 9. [9 Policy data §9.1 to §9.3](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#9-policy-data-second-pass)
 10. [10 Accessibility and the legal floor §10.1 to §10.3](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#10-accessibility-and-the-legal-floor-second-pass)
+11. [11 WSU developer standards §11.1 to §11.7](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#11-wsu-developer-standards-2024)
 
 #### Key to the stamps
 
 - **Enforced**: Code makes the violation impossible, or a test fails CI.
 - **Checked**: PROCTOR or CI warns or fails. The check is named.
+- **Partially**: Some of it is built or checked. The rest is written down only.
 - **Documented**: Written down only.
 - **Not yet**: A gap. We print it anyway so you know it's there.
 
@@ -566,7 +568,7 @@ Chapter 4
 
 ### Secrets and configuration
 
-None of the three practices in this chapter is held yet. Two of them are printed below, gaps and all.
+One of the three practices in this chapter is written down; the other two are gaps. One of each is printed below.
 
 #### §4.1 Keep secrets out of source control.
 
@@ -582,9 +584,9 @@ Not yet
 
 `APP_DEBUG` is `false` in production.
 
-Gap The runtime and headers chapter says "To be decided"; [HELMET](https://creed.apps.wayne.edu/#ahj-helmet)'s refusal rules are not built.
+Held by The handbook's runtime and headers and secrets chapters. [HELMET](https://creed.apps.wayne.edu/#ahj-helmet) warns when a Laravel app boots with debug on in production; no PROCTOR check reads `APP_DEBUG` yet.
 
-Not yet
+Documented
 
 **Rationale.** Debug pages expose configuration values to users.
 
@@ -658,7 +660,7 @@ Chapter 7 · Added in the second pass
 
 ### Patching and the supply chain
 
-Nine practices, one held so far. Chapters 8 to 10 (platform and database, policy data, accessibility) are all "Not yet" and are in the book.
+Nine practices, one held so far. Chapters 8 to 11 (platform and database, policy data, accessibility, and the WSU developer standards of 2024) are in the book, with their stamps in the contents.
 
 #### §7.1 Track the PHP patch release, not only the branch.
 
@@ -692,7 +694,7 @@ Referenced tools
 CREED writes the rules down. These are the other projects in the stack, and the clauses each one holds. PROCTOR, Booster and Rollcall read `policy.json` through a generated copy of the reader, and ADVISOR carries the policy and the handbook as data.
 
 - ![WayneUI logo: a rounded frame with a gold tab](https://creed.apps.wayne.edu/assets/marks/wayneui.svg)[WayneUI](https://wayneui.apps.wayne.edu/)Wayne State's design system, project 0 of the stack.This page is built on it
-- ![CREED logo: a stone arch with a gold keystone](https://creed.apps.wayne.edu/brand/creed-avatar-256.png)CREEDThe standards, with the policy file and its reader. This book.Chapters 1 to 10
+- ![CREED logo: a stone arch with a gold keystone](https://creed.apps.wayne.edu/brand/creed-avatar-256.png)CREEDThe standards, with the policy file and its reader. This book.Chapters 1 to 11
 - ![PROCTOR logo: an eye with a gold square pupil](https://creed.apps.wayne.edu/assets/marks/proctor.png)[PROCTOR](https://proctor.apps.wayne.edu/)Reads your `composer.json` and lock file and checks them against CREED.[§2.1](https://creed.apps.wayne.edu/#c-2-1) [§2.2](https://creed.apps.wayne.edu/#c-2-2) [§3.1](https://creed.apps.wayne.edu/#c-3-1) [§3.2](https://creed.apps.wayne.edu/#c-3-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§5.1](https://creed.apps.wayne.edu/#c-5-1)
 - ![Preflight logo: a runway with a gold center line](https://creed.apps.wayne.edu/assets/marks/preflight.png)[Preflight](https://preflight.apps.wayne.edu/)GitLab CI/CD components that run the checks on every push.[§1.2](https://creed.apps.wayne.edu/#c-1-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§3.6](https://creed.apps.wayne.edu/#c-3-6) [§6.6](https://creed.apps.wayne.edu/#c-6-6)
 - ![HELMET logo: a white football helmet with a gold facemask](https://creed.apps.wayne.edu/assets/marks/helmet.png)[HELMET](https://helmet.apps.wayne.edu/)Security headers and the runtime ribbon.[§2.2](https://creed.apps.wayne.edu/#c-2-2) [§4.3](https://creed.apps.wayne.edu/#c-4-3)
@@ -906,6 +908,8 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Fixed: the front page's contents and key now tell the same story as the tally. Every chapter's stamp bar is recounted from BEST_PRACTICES.md, chapter 11 (WSU developer standards) has its row, the key explains all five stamps, and the new Partially stamp has its own ink (moss, between Checked's ochre and Documented's slate), a half-dashed frame and hatched bars. §4.3 is stamped Documented as BEST_PRACTICES.md has it, and the chapter 4 and 7 introductions say so. BEST_PRACTICES.md's own key lists Partially.
+- Added: `FrontPageTallyTest` fails `composer ci` when the front page's tally, contents heading, chapter bars, clause ranges, key or reprinted clause stamps drift from BEST_PRACTICES.md.
 - Fixed: the front page tally matches BEST_PRACTICES.md again: eleven chapters, 61 practices, and the stamps recounted (Enforced 6, Checked 7, Partially 4, Documented 21, Not yet 23); the README screenshot alt text states no counts.
 - Fixed: the policy robot's nothing-staged line prints a real newline instead of a literal backslash-n, and the refresher's exit 4 comment says what the robot really does: it commits whatever else the run wrote (often nothing) and pushes the merge request without auto-merge.
 - Changed: the docs' dark mode is the code book read after hours (warm graphite stock, cream type, a pale tint of the green ink for links, gold foil for the title rule, the current page and focus) instead of a green wallpaper; every kit dark token is set by the theme. The cover's gold ribbon marks the page you are reading and each callout's stamp is pressed as it scrolls in (motion only under prefers-reduced-motion: no-preference); stamp frames wear the front page's ink texture; wide tables shade the side that scrolls.
@@ -1058,6 +1062,8 @@ This is CREED's real maintenance job.
 ### The front page and its deploy[#](https://creed.apps.wayne.edu/docs/contributing.html#the-front-page-and-its-deploy)
 
 `site/` is the static front page. It is served on Citadel at `https://creed.apps.wayne.edu/` (pre-production first) by the raw-PHP layer in `deploy/`: HELMET's headers in front, PROCTOR and this policy in the release. `deploy/` is its own Composer project, separate from the library. Most of it is generated by Squire (`deploy/.squire.json` records what), so regenerate it rather than hand-editing it. Only `deploy/public/index.php`, `deploy/public/.htaccess` and `deploy/composer.json` are written by hand. Run the parity kit with `deploy\scripts\parity.ps1` (Windows) or `deploy/scripts/parity.sh` (Linux and macOS).
+
+When a stamp in `BEST_PRACTICES.md` changes, or a practice is added, update the front page in the same commit: the tally on the title page, the contents heading, that chapter's stamp bar and clause range, and the stamp on any clause the page reprints. `FrontPageTallyTest` recounts the stamps from `BEST_PRACTICES.md` and fails `composer ci` until `site/index.html` agrees; then run `composer site:agent-ready` so `site/index.md` and `llms-full.txt` follow.
 
 ### Things that trip people up[#](https://creed.apps.wayne.edu/docs/contributing.html#things-that-trip-people-up)
 
@@ -1970,7 +1976,7 @@ The front page, [`site/index.html`](https://creed.apps.wayne.edu/), is a static 
 
 ### What `composer ci` proves[#](https://creed.apps.wayne.edu/docs/reference/proof.html#what-composer-ci-proves)
 
-`composer ci` is the same command on GitLab and GitHub. It validates `composer.json`, runs the test suite (274 tests in 22 files on 2026-11-06), validates `policy/policy.json` and `policy/sources.json` against their schemas, checks style with Pint, lints the handbook, runs PHPStan and `composer audit`, and fails when the handbook site, the agent-ready files or the docs pages go stale, so the site you are reading cannot drift from `docs/`.
+`composer ci` is the same command on GitLab and GitHub. It validates `composer.json`, runs the test suite (280 tests in 23 files on 2026-11-06), validates `policy/policy.json` and `policy/sources.json` against their schemas, checks style with Pint, lints the handbook, runs PHPStan and `composer audit`, and fails when the handbook site, the agent-ready files or the docs pages go stale, so the site you are reading cannot drift from `docs/`.
 
 Where it runs: GitHub runs `composer ci` on PHP 8.3, 8.4 and 8.5. GitLab runs the test suite on all three through Preflight's `php-test` component, and `composer ci` once on the pinned Composer image (PHP 8.5). GitLab also runs PROCTOR against the front page's `deploy/` layer (allowed to fail while its known findings stand) and the strict WayneUI copies check.
 

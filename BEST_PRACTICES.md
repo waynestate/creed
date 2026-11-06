@@ -19,6 +19,7 @@ Each practice has a reason, sources, and a tag that says how the stack holds it 
 |---|---|
 | `Enforced` | Code makes the violation impossible, or a test fails CI. |
 | `Checked` | PROCTOR or CI warns or fails. The check is named. |
+| `Partially` | Some of it is built or checked. The rest is written down only. |
 | `Documented` | Written down only. |
 | `Not yet` | A gap. |
 

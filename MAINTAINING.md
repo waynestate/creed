@@ -106,6 +106,11 @@ Squire (`deploy/.squire.json` records what), so regenerate it rather than hand-e
 `deploy/public/.htaccess` and `deploy/composer.json` are written by hand. Run the parity kit with
 `deploy\scripts\parity.ps1` (Windows) or `deploy/scripts/parity.sh` (Linux and macOS).
 
+When a stamp in `BEST_PRACTICES.md` changes, or a practice is added, update the front page in the same commit: the
+tally on the title page, the contents heading, that chapter's stamp bar and clause range, and the stamp on any clause
+the page reprints. `FrontPageTallyTest` recounts the stamps from `BEST_PRACTICES.md` and fails `composer ci` until
+`site/index.html` agrees; then run `composer site:agent-ready` so `site/index.md` and `llms-full.txt` follow.
+
 ## Things that trip people up
 
 - `composer.json` pins Pinstripe for dev; PROCTOR warns on any `dev-main` pin.
