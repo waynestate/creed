@@ -24,11 +24,11 @@ These are the stack's written standards. The handbook has the practices, and `po
 
 [Inspect a version](https://creed.apps.wayne.edu/#inspection) [Read the handbook](https://creed.apps.wayne.edu/handbook/)
 
-- **Enforced**: 6
+- **Enforced**: 7
 - **Checked**: 7
-- **Partially**: 4
-- **Documented**: 21
-- **Not yet**: 23
+- **Partially**: 8
+- **Documented**: 24
+- **Not yet**: 15
 
 Table of contents
 
@@ -307,9 +307,9 @@ One of the three practices in this chapter is written down; the other two are ga
 
 Do not commit `.env`, keys, tokens or passwords. Commit `.env.example` with placeholders. Rotate a secret that was ever exposed.
 
-Gap No handbook chapter covers secrets, and no check scans for them yet.
+Gap The handbook's secrets chapter writes the rules; no check scans for committed secrets yet.
 
-Not yet
+Documented
 
 **Rationale.** A repository is copied to many machines and outlives any one password.
 
@@ -481,9 +481,9 @@ No PHP on your machine? Docker can run the tests and the schema check.
 PowerShell, with Docker Desktop.
 
 ```
-PS> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer install --no-interaction
+PS> docker run --rm -v "${PWD}:/app" -w /app composer:2.10.3 composer install --no-interaction
 PS> docker run --rm -v "${PWD}:/app" -w /app php:8.4-cli vendor/bin/phpunit
-PS> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy
+PS> docker run --rm -v "${PWD}:/app" -w /app composer:2.10.3 composer validate-policy
 ```
 
 **macOS**
@@ -491,9 +491,9 @@ PS> docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy
 Terminal, with Docker Desktop.
 
 ```
-$ docker run --rm -v "${PWD}:/app" -w /app composer:2 composer install --no-interaction
+$ docker run --rm -v "${PWD}:/app" -w /app composer:2.10.3 composer install --no-interaction
 $ docker run --rm -v "${PWD}:/app" -w /app php:8.4-cli vendor/bin/phpunit
-$ docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy
+$ docker run --rm -v "${PWD}:/app" -w /app composer:2.10.3 composer validate-policy
 ```
 
 **Linux**
@@ -501,9 +501,9 @@ $ docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy
 Any shell, with Docker Engine.
 
 ```
-$ docker run --rm -v "${PWD}:/app" -w /app composer:2 composer install --no-interaction
+$ docker run --rm -v "${PWD}:/app" -w /app composer:2.10.3 composer install --no-interaction
 $ docker run --rm -v "${PWD}:/app" -w /app php:8.4-cli vendor/bin/phpunit
-$ docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy
+$ docker run --rm -v "${PWD}:/app" -w /app composer:2.10.3 composer validate-policy
 ```
 
 Maintainers: to pull new patch numbers from the upstream feeds, run `php bin/refresh-patches.php --dry-run` (drop `--dry-run` to write).
