@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Security: the front-page deploy layer moves to Symfony 7.4.23 (symfony/http-foundation and symfony/yaml advisories, including CVE-2026-118514).
 - Fixed: the front page no longer scrolls sideways on phones or between 861 and 941px. On phones the running head sets like the docs (name over menu, two lines of three links, not sticky); the menu now hides Errata as intended instead of Inspect; the title-page book leaves room for its tabs in a narrow column.
 - Added: per-Laravel-line `requires` (PHP range, MySQL and MariaDB minimums) in the policy, schema and reader.
 - Added: `images.docker` for PHP 8.3 to 8.5 in the policy, and a base-image rebuild rule in the versions chapter.
