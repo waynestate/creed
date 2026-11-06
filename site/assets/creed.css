@@ -94,13 +94,20 @@ img { max-width: 100%; height: auto; }
 .runhead__nav a { font-family: var(--mono); font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink); text-decoration: none; padding: .35rem 0; border-bottom: 2px solid transparent; transition: border-color .2s; }
 .runhead__nav a:hover { border-bottom-color: var(--gold); }
 @media (max-width: 900px) { .runhead__edition { display: none; } }
-@media (max-width: 560px) {
-  .runhead__inner { gap: .75rem; }
-  .runhead__nav { gap: .7rem; }
-  .runhead__nav a { font-size: .68rem; letter-spacing: .02em; }
-  .runhead__nav a:nth-child(4) { display: none; } /* Errata; the Handbook link took the front of the line */
+/* Phone: six links and the name no longer fit one line (Creed would just
+   keep walking off the edge of the page), so the head sets like the docs:
+   name over menu, the menu as a form's two ruled lines of three, and it
+   stops riding along so it never covers half the screen. Errata steps out;
+   the contents link reaches it. */
+@media (max-width: 600px) {
+  html { scroll-padding-top: 1rem; }
+  .runhead { position: static; }
+  .runhead__inner { flex-wrap: wrap; gap: 0 .75rem; }
+  .runhead__brand { min-height: 2.75rem; }
+  .runhead__nav { flex-basis: 100%; display: grid; grid-template-columns: repeat(3, auto); justify-content: space-between; gap: 0 .7rem; margin-left: 0; padding-bottom: .35rem; }
+  .runhead__nav a { font-size: .68rem; letter-spacing: .04em; }
+  .runhead__nav a[href="#errata"] { display: none; }
 }
-@media (max-width: 359px) { .runhead__brand span { display: none; } }
 
 /* -------------------------------------------------------- thumb index */
 .thumbs { display: none; }
@@ -202,7 +209,9 @@ img { max-width: 100%; height: auto; }
 .tally__item--notyet dd { color: var(--red); }
 
 /* The book on the desk. */
-.book { position: relative; width: min(100%, 340px); aspect-ratio: 3 / 4; justify-self: center; margin-right: 34px; transform: rotate(-2.5deg); transition: transform .5s var(--ease-out); }
+/* The width leaves room for the 34px margin (the page edge and the tabs),
+   so a narrow column never pushes the book off the desk. */
+.book { position: relative; width: min(100% - 34px, 340px); aspect-ratio: 3 / 4; justify-self: center; margin-right: 34px; transform: rotate(-2.5deg); transition: transform .5s var(--ease-out); }
 @media (max-width: 860px) { .book { width: min(68vw, 250px); margin: 0 auto 3.25rem; transform: rotate(-2deg) translateX(-14px); } }
 .book:hover { transform: rotate(-1deg) translateY(-4px); }
 .book__pages {
