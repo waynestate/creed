@@ -910,6 +910,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Changed: nine stale stamps re-checked against the tree (2026-11-06): practices 14, 39, 44 and 46 move to Partially, 24, 42 and 49 to Documented, 51 to Enforced, and 50 stays Partially with its pipeline fact corrected; the front page's tally, chapter bars and section 4.1 clause follow, its Docker quickstart pins composer:2.10.3 like the README, and two cross-references plus four backlog lines that contradicted the new record are fixed.
 - Added: a site accessibility gate (axe-core in Playwright, WCAG 2.2 AA, run in Docker): `scripts/a11y.sh` on Linux and macOS, `scripts/a11y.ps1` on Windows; it checks the front page, every docs page and every handbook page in light and dark at 360 and 1280 px.
 - Fixed: the refresh command's tests use a frozen policy snapshot, so the policy robot's refresh merge requests no longer fail them.
 - Fixed: the front page's contents and key now tell the same story as the tally. Every chapter's stamp bar is recounted from BEST_PRACTICES.md, chapter 11 (WSU developer standards) has its row, the key explains all five stamps, and the new Partially stamp has its own ink (moss, between Checked's ochre and Documented's slate), a half-dashed frame and hatched bars. §4.3 is stamped Documented as BEST_PRACTICES.md has it, and the chapter 4 and 7 introductions say so. BEST_PRACTICES.md's own key lists Partially.
