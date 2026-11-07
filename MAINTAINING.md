@@ -15,9 +15,10 @@ follows.
 
 ## Where it lives
 
-Development happens on nougat, the canonical repository ([enterprise-apps/creed](https://nougat.snu.gs/enterprise-apps/creed)).
-This GitHub repository and git.wayne.edu are read-only mirrors: `main` and tags are copied automatically. Changes,
-issues and merge requests go to nougat. Nobody pushes to the mirrors.
+Development happens on git.wayne.edu, the canonical repository ([enterprise-apps/creed](https://git.wayne.edu/enterprise-apps/creed)).
+GitHub ([waynestate/creed](https://github.com/waynestate/creed)) is a read-only push mirror: `main` and tags are copied
+automatically, and Packagist picks releases up from it. Changes, issues and merge requests go to git.wayne.edu; tags
+are made there, by the maintainer, with an approver. Nobody pushes to the mirror.
 
 ## Build and test
 
@@ -70,8 +71,8 @@ This is CREED's real maintenance job.
   `CREED_BOT_TOKEN` variable it prints "CREED_BOT_TOKEN not set; skipping the policy robot" and stays green.
   It never tags or releases. Review steps: `docs/guides/policy-bot.md`. The branch `auto/policy-refresh` must
   not be protected. The owner's setup (access token, `CREED_BOT_TOKEN` variable, schedule) is the numbered list
-  in "Keeping the patches fresh" in the README; the schedules live in the project's CI/CD settings on nougat,
-  not in this repo.
+   in "Keeping the patches fresh" in the README; the schedules live in the project's CI/CD settings on git.wayne.edu,
+   not in this repo.
 - **Support dates move only through review.** The robot writes a date that moves earlier or a later
   `active_until`, and holds a later `security_until` until two sources or 14 days agree; a person who edits a
   date by hand puts the upstream source in the commit message. End days are inclusive.
@@ -93,7 +94,7 @@ The older-reader contract is pinned by `tests/OlderReaderContractTest.php`; chan
    `## Unreleased`. (0.1.0 predates the heading convention, so it has none.)
 2. `composer ci` green locally, then on both pipelines for that commit.
 3. Run a secrets scan of the history and check that nothing internal (server names, people, IDs) is in the tree.
-4. Tag `X.Y.Z` (no `v`) on nougat. The mirror carries the tag to GitHub, and Packagist picks it up from there.
+4. Tag `X.Y.Z` (no `v`) on git.wayne.edu. The mirror carries the tag to GitHub, and Packagist picks it up from there.
 5. A release needs a maintainer's approval. Never move or delete a published tag.
 6. Then bump `waynestate/creed` where the stack pins it, and refresh the generated copies.
 

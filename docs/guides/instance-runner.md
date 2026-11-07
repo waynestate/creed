@@ -5,7 +5,7 @@ description: Why every product in the stack strongly recommends a git.wayne.edu 
 
 # The instance runner
 
-This page explains why every product in the stack strongly recommends a git.wayne.edu instance runner, and where CREED's code lives until one exists.
+This page explains why every product in the stack strongly recommends a git.wayne.edu instance runner, and where CREED's code lives.
 
 ## Strongly recommended: a git.wayne.edu instance runner
 
@@ -17,9 +17,9 @@ Creed Bratton, whose quality assurance work we all admire. His past is a mystery
 
 ## Where the code lives
 
-The canonical repository is on nougat: [enterprise-apps/creed](https://nougat.snu.gs/enterprise-apps/creed). git.wayne.edu and GitHub ([waynestate/creed](https://github.com/waynestate/creed)) are read-only mirrors of it. Open issues and merge requests on nougat, not on the mirrors. This moves to git.wayne.edu once it has CI runners.
+The canonical repository is [enterprise-apps/creed](https://git.wayne.edu/enterprise-apps/creed) on git.wayne.edu. Open issues and merge requests there; tags are made there, by the maintainer, with an approver. CI runs on git.wayne.edu. GitHub ([waynestate/creed](https://github.com/waynestate/creed)) is a read-only push mirror of it: nobody pushes to it, and Packagist reads from it.
 
-Creed Bratton would say the code lives wherever he last left it. Ours lives on nougat.
+Creed Bratton would say the code lives wherever he last left it. Ours lives on git.wayne.edu.
 
 ## Related
 

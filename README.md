@@ -39,9 +39,11 @@ The docs pages are bound into the same code book as the front page: the running 
 
 ## Where the code lives
 
-The canonical repository is on nougat: [enterprise-apps/creed](https://nougat.snu.gs/enterprise-apps/creed). git.wayne.edu and GitHub ([waynestate/creed](https://github.com/waynestate/creed)) are read-only mirrors of it.
-Open issues and merge requests on nougat, not on the mirrors.
-This moves to git.wayne.edu once it has CI runners. Creed Bratton would say the code lives wherever he last left it. Ours lives on nougat.
+The canonical repository is [enterprise-apps/creed](https://git.wayne.edu/enterprise-apps/creed) on git.wayne.edu: clone it over SSH as `git@git.wayne.edu:enterprise-apps/creed.git`, or over HTTPS as `https://git.wayne.edu/enterprise-apps/creed.git`. Open issues and merge requests there; tags are made there, by the maintainer, with an approver. CI runs on git.wayne.edu.
+
+GitHub ([waynestate/creed](https://github.com/waynestate/creed)) is a read-only push mirror of it: nobody pushes to it, and Packagist reads from it.
+
+Creed Bratton would say the code lives wherever he last left it. Ours lives on git.wayne.edu.
 
 No other code in the stack decides a version's state. The rules live in one
 place, and every tool reads them from here.
@@ -179,7 +181,7 @@ details.
 The `policy-bot` job in `.gitlab-ci.yml` runs the robot on the schedule that
 carries `CREED_JOB=policy-bot` and by hand from the web. Without the token the
 job prints "CREED_BOT_TOKEN not set; skipping the policy robot" and stays
-green. The setup, all on the CREED project on nougat (the canonical
+green. The setup, all on the CREED project on git.wayne.edu (the canonical
 repository):
 
 1. A project access token (Settings > Access tokens): role Maintainer
@@ -303,7 +305,7 @@ mystery. Ours is in `policy/policy.json`, where it belongs.
   <a href="https://github.com/waynestate/pinstripe" title="Pinstripe"><img src="docs/readme/cast/pinstripe.png" width="40" alt="Pinstripe"></a>
   <a href="https://github.com/waynestate/booster" title="Booster"><img src="docs/readme/cast/booster.png" width="40" alt="Booster"></a>
   <a href="https://github.com/waynestate/rollcall" title="Rollcall"><img src="docs/readme/cast/rollcall.png" width="40" alt="Rollcall"></a>
-  <a href="https://nougat.snu.gs/enterprise-apps/drawbridge" title="Drawbridge"><img src="docs/readme/cast/drawbridge.png" width="40" alt="Drawbridge"></a>
+  <a href="https://git.wayne.edu/enterprise-apps/drawbridge" title="Drawbridge"><img src="docs/readme/cast/drawbridge.png" width="40" alt="Drawbridge"></a>
   <a href="https://github.com/waynestate/advisor" title="ADVISOR"><img src="docs/readme/cast/advisor.png" width="40" alt="ADVISOR"></a>
   <a href="https://github.com/waynestate/weld" title="WELD"><img src="docs/readme/cast/weld.png" width="40" alt="WELD"></a>
 </div>
