@@ -111,9 +111,9 @@
 <li>The app and its scripts <strong class="kw kw--must">MUST</strong> run as a non-root, non-administrator user with the least access they need (WSU developer standards, 2024). No check exists yet.</li>
 <li>The web server <strong class="kw kw--must-not">MUST NOT</strong> list directory contents (WSU developer standards, 2024). No check exists yet.</li>
 <li>File permissions <strong class="kw kw--must">MUST</strong> be set per path; write access for the web server is granted only to specific files or folders, and mode <code>777</code> <strong class="kw kw--must-not">MUST NOT</strong> be used (WSU developer standards, 2024).
-A <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check for this is proposed, not built: it flags mode <code>777</code> and web-writable paths outside the allowed list.</li>
+<a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>world-writable</code> (<code>chmod 777</code> in scripts, Dockerfiles, CI and PHP).</li>
 <li>Debugging and diagnostic files, scripts, dumps and backups <strong class="kw kw--must-not">MUST NOT</strong> sit in the served folder (WSU developer standards, 2024).
-A PROCTOR check for this is proposed, not built: a scan of the served folder for <code>phpinfo.php</code>, dumps, backups, <code>.env</code> and <code>.git</code>.</li>
+PROCTOR check: <code>served-folder</code> (<code>phpinfo()</code>, dumps, backups, logs, env files and <code>adminer*.php</code> under <code>public/</code>).</li>
 <li>On failure the app degrades predictably and fails closed: an authentication error withholds access (WSU developer standards, 2024).</li>
 <li>A person is told when something fails: a monitor calls <code>/up</code> on a schedule and alerts someone (WSU developer standards, 2024).</li>
 <li>Logs are rotated or removed at a set interval; temporary files are cleaned up; uploaded files have a retention rule. Citadel rotates container logs; elsewhere the platform or the app <strong class="kw kw--must">MUST</strong> (WSU developer standards, 2024). No check exists yet.</li>
@@ -131,7 +131,7 @@ A PROCTOR check for this is proposed, not built: a scan of the served folder for
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="secrets.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 11</span><span class="hb-pager__name">Secrets and debugging</span></a><a class="hb-pager__link hb-pager__link--next" href="overrides.html" rel="next"><span class="hb-pager__dir">Next · Chapter 13</span><span class="hb-pager__name">Overrides</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/production.md"><code>handbook/production.md</code> on GitHub</a>, impression <code>2caf396</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/production.md"><code>handbook/production.md</code> on GitHub</a>, impression <code>4e14fd3</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

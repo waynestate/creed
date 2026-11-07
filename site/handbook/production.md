@@ -29,8 +29,8 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 - The app and its scripts **MUST** run as a non-root, non-administrator user with the least access they need (WSU developer standards, 2024). No check exists yet.
 - The web server **MUST NOT** list directory contents (WSU developer standards, 2024). No check exists yet.
-- File permissions **MUST** be set per path; write access for the web server is granted only to specific files or folders, and mode `777` **MUST NOT** be used (WSU developer standards, 2024). A [PROCTOR](https://proctor.apps.wayne.edu/) check for this is proposed, not built: it flags mode `777` and web-writable paths outside the allowed list.
-- Debugging and diagnostic files, scripts, dumps and backups **MUST NOT** sit in the served folder (WSU developer standards, 2024). A PROCTOR check for this is proposed, not built: a scan of the served folder for `phpinfo.php`, dumps, backups, `.env` and `.git`.
+- File permissions **MUST** be set per path; write access for the web server is granted only to specific files or folders, and mode `777` **MUST NOT** be used (WSU developer standards, 2024). [PROCTOR](https://proctor.apps.wayne.edu/) check: `world-writable` (`chmod 777` in scripts, Dockerfiles, CI and PHP).
+- Debugging and diagnostic files, scripts, dumps and backups **MUST NOT** sit in the served folder (WSU developer standards, 2024). PROCTOR check: `served-folder` (`phpinfo()`, dumps, backups, logs, env files and `adminer*.php` under `public/`).
 - On failure the app degrades predictably and fails closed: an authentication error withholds access (WSU developer standards, 2024).
 - A person is told when something fails: a monitor calls `/up` on a schedule and alerts someone (WSU developer standards, 2024).
 - Logs are rotated or removed at a set interval; temporary files are cleaned up; uploaded files have a retention rule. Citadel rotates container logs; elsewhere the platform or the app **MUST** (WSU developer standards, 2024). No check exists yet.
@@ -44,4 +44,4 @@ Production is the encore. Keep the lights on and the doors locked, and the band 
 - Every app **MUST** limit access by network address to the audience it serves, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024). No check exists yet.
 - The one named exception: the stack's own public front pages are crawlable by design (the stack's agent-ready sites decision). It is a special case for those pages, not a general exemption for public pages.
 
-Set from [`handbook/production.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/production.md), impression `2caf396`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/production.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/production.md), impression `4e14fd3`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

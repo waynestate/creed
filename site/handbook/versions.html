@@ -82,7 +82,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 1</p>
             <h1 id="page-title">Versions</h1>
-            <p class="hb-register">4 sections · 4 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 2 · <strong class="kw kw--must">MUST</strong> 2</p>
+            <p class="hb-register">4 sections · 4 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 2 · <strong class="kw kw--must">MUST</strong> 3</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -171,6 +171,10 @@ names. <code>openshift</code> and <code>coolify</code> are not filled yet.</p>
 <h2 id="node"><a class="hb-sec" href="#node">§1.3</a> Node</h2>
 <p>The policy lists even Node majors only, because even majors are the LTS lines;
 odd majors <strong class="kw kw--must-not">MUST NOT</strong> be a target and are not listed <span class="hb-cite">(the stack's version policy)</span>.</p>
+<p>An app <strong class="kw kw--must">MUST</strong> build on a Node line that has not reached end of life. PROCTOR
+check: <code>node-eol</code>. It reads <code>.nvmrc</code>, <code>.node-version</code>, <code>volta.node</code> and the
+<code>node</code> image in CI and Dockerfiles: an active line passes, a security-only line
+warns and an EOL line fails. <code>engines.node</code> and an odd major warn.</p>
 <h2 id="tool-minimums"><a class="hb-sec" href="#tool-minimums">§1.4</a> Tool minimums</h2>
 <p>The <code>tools</code> block sets a minimum version for a developer tool. Each key is a
 tool name, each value a <code>minimum</code> version. Today it holds Composer at 2.8.0.</p>
@@ -186,7 +190,7 @@ ceiling: we do not go lower, no matter how the crowd sings for more.</p>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="./"><span class="hb-pager__dir">Back to</span><span class="hb-pager__name">Contents</span></a><a class="hb-pager__link hb-pager__link--next" href="dependencies.html" rel="next"><span class="hb-pager__dir">Next · Chapter 2</span><span class="hb-pager__name">Dependencies</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/versions.md"><code>handbook/versions.md</code> on GitHub</a>, impression <code>4876356</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/versions.md"><code>handbook/versions.md</code> on GitHub</a>, impression <code>aa147fa</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

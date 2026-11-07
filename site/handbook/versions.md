@@ -10,7 +10,7 @@ Chapter 1
 
 # Versions
 
-4 sections · 4 provisions · **MUST NOT** 2 · **MUST** 2
+4 sections · 4 provisions · **MUST NOT** 2 · **MUST** 3
 
 Decided
 
@@ -46,6 +46,8 @@ A base image **MUST** be rebuilt when the policy's `latest_patch` for its branch
 
 The policy lists even Node majors only, because even majors are the LTS lines; odd majors **MUST NOT** be a target and are not listed (the stack's version policy).
 
+An app **MUST** build on a Node line that has not reached end of life. PROCTOR check: `node-eol`. It reads `.nvmrc`, `.node-version`, `volta.node` and the `node` image in CI and Dockerfiles: an active line passes, a security-only line warns and an EOL line fails. `engines.node` and an odd major warn.
+
 ## [§1.4](https://creed.apps.wayne.edu/handbook/versions.html#tool-minimums) Tool minimums
 
 The `tools` block sets a minimum version for a developer tool. Each key is a tool name, each value a `minimum` version. Today it holds Composer at 2.8.0.
@@ -59,4 +61,4 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`components.*.versions.*.latest_patch`**: set per version
 - **`components.*.versions.*.latest_patch_checked`**: set per version
 
-Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `4876356`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `aa147fa`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
