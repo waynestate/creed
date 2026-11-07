@@ -107,7 +107,7 @@ No PHP on the machine? Fine. Docker runs the suite:
 sh
 
 ```sh
-docker run --rm -v "${PWD}:/app" -w /app composer:2 composer install --no-interaction
+docker run --rm -v "${PWD}:/app" -w /app composer:2.10.3 composer install --no-interaction
 docker run --rm -v "${PWD}:/app" -w /app php:8.4-cli vendor/bin/phpunit
 docker run --rm -v "${PWD}:/app" -w /app php:8.3-cli vendor/bin/phpunit
 ```
@@ -115,7 +115,7 @@ docker run --rm -v "${PWD}:/app" -w /app php:8.3-cli vendor/bin/phpunit
 PowerShell
 
 ```powershell
-docker run --rm -v "${PWD}:/app" -w /app composer:2 composer install --no-interaction
+docker run --rm -v "${PWD}:/app" -w /app composer:2.10.3 composer install --no-interaction
 docker run --rm -v "${PWD}:/app" -w /app php:8.4-cli vendor/bin/phpunit
 docker run --rm -v "${PWD}:/app" -w /app php:8.3-cli vendor/bin/phpunit
 ```
@@ -125,13 +125,13 @@ docker run --rm -v "${PWD}:/app" -w /app php:8.3-cli vendor/bin/phpunit
 sh
 
 ```sh
-docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy
+docker run --rm -v "${PWD}:/app" -w /app composer:2.10.3 composer validate-policy
 ```
 
 PowerShell
 
 ```powershell
-docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy
+docker run --rm -v "${PWD}:/app" -w /app composer:2.10.3 composer validate-policy
 ```
 
 ## Related[#](https://creed.apps.wayne.edu/docs/reference/commands.html#related)

@@ -27,7 +27,7 @@ Tags describe the repository and design documents as they stand on 2026-10-29. P
 2026-11-02. Nine tags were re-checked against the tree on 2026-11-06 (practices 14, 24, 39, 42, 44, 46, 49, 50 and
 51). PROCTOR v0.1 is specified in
 `first-repos.md` and its checks are named below as specified. CREED's own pipeline includes the `php-test`,
-`composer-audit` and `proctor` components, pinned to Preflight 0.1.0; the `proctor` job checks `deploy/` and is
+`composer-audit` and `proctor` components, pinned to Preflight 0.1.4; the `proctor` job checks `deploy/` and is
 allowed to fail while its current findings are fixed.
 
 ## 1. The version policy as data
@@ -618,10 +618,9 @@ Sources: [Packagist: Composer 2.9.6 Perforce fixes](https://blog.packagist.com/c
 [Composer releases](https://github.com/composer/composer/releases),
 [Composer config reference](https://getcomposer.org/doc/06-config.md#audit).
 
-How the stack holds it: `Partially`. The policy records a minimum Composer version (`tools.composer.minimum`, 2.8.0),
-the README commands and CREED's own pipeline pin `composer:2.10.3`, and the pinned client turns on
-`audit.block-insecure` by default (Composer 2.9 and later). The named PROCTOR check `composer-version` is written in
-`handbook/versions.md` but not built yet.
+How the stack holds it: `Checked`. PROCTOR's `composer-version` check fails a Composer below the higher of its CVE
+floors and CREED's policy minimum (`tools.composer.minimum`, 2.8.0), naming the policy in its message. CREED's own
+pipeline runs the pinned `composer:2.10.3` image.
 
 ### 40. Treat a brand-new package version as untrusted for a short time
 

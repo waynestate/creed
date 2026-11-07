@@ -97,13 +97,13 @@ docker run --rm -v "${PWD}:/app" -w /app php:8.5-cli vendor/bin/phpunit
 No PHP on the machine? Fine. Docker runs the suite:
 
 ```sh tab="sh"
-docker run --rm -v "${PWD}:/app" -w /app composer:2 composer install --no-interaction
+docker run --rm -v "${PWD}:/app" -w /app composer:2.10.3 composer install --no-interaction
 docker run --rm -v "${PWD}:/app" -w /app php:8.4-cli vendor/bin/phpunit
 docker run --rm -v "${PWD}:/app" -w /app php:8.3-cli vendor/bin/phpunit
 ```
 
 ```powershell tab="PowerShell"
-docker run --rm -v "${PWD}:/app" -w /app composer:2 composer install --no-interaction
+docker run --rm -v "${PWD}:/app" -w /app composer:2.10.3 composer install --no-interaction
 docker run --rm -v "${PWD}:/app" -w /app php:8.4-cli vendor/bin/phpunit
 docker run --rm -v "${PWD}:/app" -w /app php:8.3-cli vendor/bin/phpunit
 ```
@@ -111,11 +111,11 @@ docker run --rm -v "${PWD}:/app" -w /app php:8.3-cli vendor/bin/phpunit
 ### Validate the policy against its schema
 
 ```sh tab="sh"
-docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy
+docker run --rm -v "${PWD}:/app" -w /app composer:2.10.3 composer validate-policy
 ```
 
 ```powershell tab="PowerShell"
-docker run --rm -v "${PWD}:/app" -w /app composer:2 composer validate-policy
+docker run --rm -v "${PWD}:/app" -w /app composer:2.10.3 composer validate-policy
 ```
 
 ## Related
