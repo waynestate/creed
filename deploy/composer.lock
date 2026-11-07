@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7ac4a740af66a592de01a49de729f132",
+    "content-hash": "ecd8a1193ae2c546bad9d695f0fd1d10",
     "packages": [
         {
             "name": "composer/semver",
@@ -1926,16 +1926,16 @@
         },
         {
             "name": "waynestate/proctor",
-            "version": "0.4.0",
+            "version": "0.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/waynestate/proctor.git",
-                "reference": "db63379a6873c7a63e0ffed60028676bea090fcc"
+                "reference": "695bfb022a5e4441939a2f4b3a2e3c27454add46"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/waynestate/proctor/zipball/db63379a6873c7a63e0ffed60028676bea090fcc",
-                "reference": "db63379a6873c7a63e0ffed60028676bea090fcc",
+                "url": "https://api.github.com/repos/waynestate/proctor/zipball/695bfb022a5e4441939a2f4b3a2e3c27454add46",
+                "reference": "695bfb022a5e4441939a2f4b3a2e3c27454add46",
                 "shasum": ""
             },
             "require": {
@@ -1948,6 +1948,7 @@
             "require-dev": {
                 "humbug/box": "4.7.1",
                 "laravel/pint": "^1.32",
+                "league/commonmark": "^2.10",
                 "phpstan/phpstan": "^2.1",
                 "phpunit/phpunit": "^11.5",
                 "waynestate/pinstripe": "^0.1"
@@ -1978,10 +1979,10 @@
             "description": "A framework-free PHP CLI that measures a PHP app against the version policy.",
             "homepage": "https://proctor.apps.wayne.edu/",
             "support": {
-                "issues": "https://nougat.snu.gs/enterprise-apps/proctor/-/issues",
-                "source": "https://nougat.snu.gs/enterprise-apps/proctor"
+                "issues": "https://git.wayne.edu/enterprise-apps/proctor/-/issues",
+                "source": "https://github.com/waynestate/proctor"
             },
-            "time": "2026-11-03T15:15:39+00:00"
+            "time": "2026-11-07T23:01:02+00:00"
         }
     ],
     "packages-dev": [],

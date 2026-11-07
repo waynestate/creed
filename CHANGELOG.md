@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Fixed: the front page's authorities table says Sourdough starts all five app shapes, from raw PHP to Inertia and Vue; it no longer says raw PHP only.
+- Changed: the front-page deploy layer pins PROCTOR ^0.7 (lock: PROCTOR 0.7.0, was 0.4.0).
+
 ## 0.1.7 (2026-11-07)
 
 - Changed: the front page's deploy layer (`deploy/`) runs Squire's kit 0.5.0 (was 0.3.4): `oracle-check.php` arrives, `scripts/release.sh` and `scripts/parity.ps1` take the new templates, and the two kit files Renovate had edited (`docker-compose.squire.yml`, `.squire/base-fallback.Dockerfile`, which it had moved to PHP 8.5) are Squire's template again, so `squire init --check` passes. The shared Renovate preset leaves kit files alone now. `site/assets/stack-env.js` takes the stack's one copy, with bindingless catch blocks.
