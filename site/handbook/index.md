@@ -12,7 +12,7 @@ The handbook · 2026 Edition
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a "Not decided here" heading.
 
-Thirteen chapters · 175 provisions · **MUST** 53 · **SHOULD** 14 · **MAY** 1
+Thirteen chapters · 175 provisions · **MUST** 52 · **SHOULD** 14 · **MAY** 1
 
 ## Contents
 
@@ -23,7 +23,7 @@ Thirteen chapters · 175 provisions · **MUST** 53 · **SHOULD** 14 · **MAY** 1
 5. [5 Databases What the stack supports · Which MySQL lines the policy lists · Grace period · Names, comments and connections · Conventions that keep 5.6 working · Avoid until the server is upgraded · Moving to 8.4 · How the stack checks it · Sources](https://creed.apps.wayne.edu/handbook/databases.html)9 sections · 25 provisions · **MUST** 4 · **SHOULD** 1 · **MAY** 1Decided
 6. [6 Runtime and headers Enforcement · Headers · Proxy trust · Sessions · Health · Errors in production · Not decided here](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html)7 sections · 15 provisions · **MUST** 2 · **SHOULD NOT** 1Decided
 7. [7 Deploy gate On Citadel · Elsewhere](https://creed.apps.wayne.edu/handbook/deploy-gate.html)2 sections · 8 provisionsDecided
-8. [8 CI](https://creed.apps.wayne.edu/handbook/ci.html)8 provisions · **MUST** 3 · **SHOULD** 1Decided
+8. [8 CI](https://creed.apps.wayne.edu/handbook/ci.html)8 provisions · **MUST** 2 · **SHOULD** 1Decided
 9. [9 Accessibility Target · Components · Checks · Not decided here](https://creed.apps.wayne.edu/handbook/accessibility.html)4 sections · 9 provisions · **MUST NOT** 1 · **SHOULD** 1Decided
 10. [10 Every OS](https://creed.apps.wayne.edu/handbook/every-os.html)5 provisions · **MUST** 1Decided
 11. [11 Secrets and debugging Credentials · Errors and debug output · Not decided here](https://creed.apps.wayne.edu/handbook/secrets.html)3 sections · 9 provisions · **MUST NOT** 4 · **MUST** 3 · **SHOULD NOT** 1Decided

@@ -1,6 +1,6 @@
 ---
 title: "The instance runner | CREED docs"
-description: "Why every product in the stack strongly recommends a git.wayne.edu instance runner while git.wayne.edu has no runners today."
+description: "Why every product in the stack still strongly recommends a git.wayne.edu instance runner, now that git.wayne.edu has one and the stack's CI runs on it."
 url: https://creed.apps.wayne.edu/docs/guides/instance-runner.html
 llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
@@ -12,7 +12,7 @@ This page explains why every product in the stack strongly recommends a git.wayn
 
 ## Strongly recommended: a git.wayne.edu instance runner[#](https://creed.apps.wayne.edu/docs/guides/instance-runner.html#strongly-recommended-a-git-wayne-edu-instance-runner)
 
-git.wayne.edu has no runners today. Every product in the stack strongly recommends a git.wayne.edu instance runner.
+git.wayne.edu now has an instance runner, and the stack's CI runs on it. Every product in the stack still strongly recommends a git.wayne.edu instance runner, so that capacity stays there.
 
 ![Creed Bratton from The Office in a dark suit and blue shirt with a wide, wild-eyed grin](https://creed.apps.wayne.edu/docs/readme/creed-bratton.gif)
 

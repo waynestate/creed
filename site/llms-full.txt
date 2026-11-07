@@ -267,8 +267,9 @@ The site carries an accessibility gate (axe-core in Playwright, WCAG 2.2 AA, run
 
 ### Strongly recommended: a git.wayne.edu instance runner
 
-git.wayne.edu has no runners today. Every product in the stack strongly
-recommends a git.wayne.edu instance runner.
+git.wayne.edu now has an instance runner, and the stack's CI runs on it.
+Every product in the stack still strongly recommends a git.wayne.edu
+instance runner, so that capacity stays there.
 
 Creed Bratton, whose quality assurance work we all admire. His past is a
 mystery. Ours is in `policy/policy.json`, where it belongs.
@@ -1177,7 +1178,7 @@ This page explains why every product in the stack strongly recommends a git.wayn
 
 ### Strongly recommended: a git.wayne.edu instance runner[#](https://creed.apps.wayne.edu/docs/guides/instance-runner.html#strongly-recommended-a-git-wayne-edu-instance-runner)
 
-git.wayne.edu has no runners today. Every product in the stack strongly recommends a git.wayne.edu instance runner.
+git.wayne.edu now has an instance runner, and the stack's CI runs on it. Every product in the stack still strongly recommends a git.wayne.edu instance runner, so that capacity stays there.
 
 ![Creed Bratton from The Office in a dark suit and blue shirt with a wide, wild-eyed grin](https://creed.apps.wayne.edu/docs/readme/creed-bratton.gif)
 
@@ -2201,7 +2202,7 @@ Chapter 8
 
 ## CI
 
-8 provisions · **MUST** 3 · **SHOULD** 1
+8 provisions · **MUST** 2 · **SHOULD** 1
 
 Decided
 
@@ -2211,12 +2212,12 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - The CI components are [Preflight](https://preflight.apps.wayne.edu/)'s: `proctor`, `php-test` and `composer-audit`, included with `include: component:` (first-repos).
 - CI judges with deterministic commands, never with a model. No gate depends on a model's opinion (the stack's rule on language models).
 - Components are pinned at a tag or SHA, never `~latest` (first-repos).
-- git.wayne.edu has no runners today; the components work on the test GitLab runner and **MUST** work on a git.wayne.edu runner when one exists (first-repos). Every product strongly recommends the instance runner.
+- The components run on the git.wayne.edu instance runner (first-repos), and every product strongly recommends the instance runner.
 - Every change lands through a merge request that another person reviews, and critical findings are addressed before merge (**SHOULD** for a one-person project: record the self-review in the merge request) (WSU developer standards, 2024).
 - Every project **MUST** have a defined, well-understood change-control process with change requests; review and approval of merge requests is change control only for simple projects, and the process **MUST** be followed strictly (WSU developer standards, 2024).
 - Known problem: the change-request procedure on Citadel is currently broken and needs fixing there; until it is fixed, record changes through reviewed merge requests and tell the Citadel team.
 
-Set from [`handbook/ci.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/ci.md), impression `29f72c6`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/ci.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/ci.md), impression `8802e0e`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2568,7 +2569,7 @@ The handbook · 2026 Edition
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a "Not decided here" heading.
 
-Thirteen chapters · 175 provisions · **MUST** 53 · **SHOULD** 14 · **MAY** 1
+Thirteen chapters · 175 provisions · **MUST** 52 · **SHOULD** 14 · **MAY** 1
 
 ### Contents
 
@@ -2579,7 +2580,7 @@ Thirteen chapters · 175 provisions · **MUST** 53 · **SHOULD** 14 · **MAY** 1
 5. [5 Databases What the stack supports · Which MySQL lines the policy lists · Grace period · Names, comments and connections · Conventions that keep 5.6 working · Avoid until the server is upgraded · Moving to 8.4 · How the stack checks it · Sources](https://creed.apps.wayne.edu/handbook/databases.html)9 sections · 25 provisions · **MUST** 4 · **SHOULD** 1 · **MAY** 1Decided
 6. [6 Runtime and headers Enforcement · Headers · Proxy trust · Sessions · Health · Errors in production · Not decided here](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html)7 sections · 15 provisions · **MUST** 2 · **SHOULD NOT** 1Decided
 7. [7 Deploy gate On Citadel · Elsewhere](https://creed.apps.wayne.edu/handbook/deploy-gate.html)2 sections · 8 provisionsDecided
-8. [8 CI](https://creed.apps.wayne.edu/handbook/ci.html)8 provisions · **MUST** 3 · **SHOULD** 1Decided
+8. [8 CI](https://creed.apps.wayne.edu/handbook/ci.html)8 provisions · **MUST** 2 · **SHOULD** 1Decided
 9. [9 Accessibility Target · Components · Checks · Not decided here](https://creed.apps.wayne.edu/handbook/accessibility.html)4 sections · 9 provisions · **MUST NOT** 1 · **SHOULD** 1Decided
 10. [10 Every OS](https://creed.apps.wayne.edu/handbook/every-os.html)5 provisions · **MUST** 1Decided
 11. [11 Secrets and debugging Credentials · Errors and debug output · Not decided here](https://creed.apps.wayne.edu/handbook/secrets.html)3 sections · 9 provisions · **MUST NOT** 4 · **MUST** 3 · **SHOULD NOT** 1Decided
