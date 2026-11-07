@@ -31,7 +31,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
   - Cross-Origin-Opener-Policy `same-origin`.
   - Strict-Transport-Security `max-age=31536000; includeSubDomains`, on HTTPS responses only.
 - Cross-Origin-Resource-Policy is off by default (the stack's runtime and headers design).
-- An app **SHOULD NOT** weaken the default Content-Security-Policy with `'unsafe-inline'` for scripts; it uses the nonce instead (the stack's runtime and headers design).
+- An app **SHOULD NOT** weaken the default Content-Security-Policy with `'unsafe-inline'` for scripts; it uses the nonce instead (the stack's runtime and headers design). No check exists yet.
 
 The headers are the setlist: the same one on every response. The HSTS encore plays only when the show is really on HTTPS.
 
@@ -52,7 +52,7 @@ The headers are the setlist: the same one on every response. The HSTS encore pla
 
 ## [§6.6](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#errors-in-production) Errors in production
 
-- PHP `display_errors` **MUST** be `Off` and `log_errors` `On` in production ([Squire](https://squire.apps.wayne.edu/)'s deploy kit ships that php.ini; HELMET neither sets nor checks it).
+- PHP `display_errors` **MUST** be `Off` and `log_errors` `On` in production ([Squire](https://squire.apps.wayne.edu/)'s deploy kit ships that php.ini; HELMET neither sets nor checks it). No check exists yet.
 - Laravel `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment.
 
 A [PROCTOR](https://proctor.apps.wayne.edu/) check for this is proposed, not built.
@@ -63,4 +63,4 @@ A [PROCTOR](https://proctor.apps.wayne.edu/) check for this is proposed, not bui
 - The Content-Security-Policy report endpoints.
 - The metrics endpoint.
 
-Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `d44b32c`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `48ebd53`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

@@ -120,16 +120,16 @@ every-OS design).</li>
 </ul>
 <h2 id="reading-the-code"><a class="hb-sec" href="#reading-the-code">§3.2</a> Reading the code</h2>
 <ul>
-<li>Comment where it helps: complex logic, areas that could improve, business rules that would otherwise be a mystery (<strong class="kw kw--should">SHOULD</strong>). Do not keep version history in comments; git is the change log (WSU developer standards, 2024).</li>
-<li>Code that no longer runs <strong class="kw kw--must">MUST</strong> be removed, not commented out; git keeps it (WSU developer standards, 2024).</li>
-<li>Variable, class and database names <strong class="kw kw--should">SHOULD</strong> be complete and descriptive; avoid ambiguous abbreviations (WSU developer standards, 2024).</li>
+<li>Comment where it helps: complex logic, areas that could improve, business rules that would otherwise be a mystery (<strong class="kw kw--should">SHOULD</strong>). Do not keep version history in comments; git is the change log (WSU developer standards, 2024). No check exists yet.</li>
+<li>Code that no longer runs <strong class="kw kw--must">MUST</strong> be removed, not commented out; git keeps it (WSU developer standards, 2024). No check exists yet.</li>
+<li>Variable, class and database names <strong class="kw kw--should">SHOULD</strong> be complete and descriptive; avoid ambiguous abbreviations (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <h2 id="source-control-and-documentation"><a class="hb-sec" href="#source-control-and-documentation">§3.3</a> Source control and documentation</h2>
 <ul>
-<li>All source is kept in git. Access to a repo <strong class="kw kw--must">MUST</strong> be removed when someone leaves the project or the university (WSU developer standards, 2024).</li>
+<li>All source is kept in git. Access to a repo <strong class="kw kw--must">MUST</strong> be removed when someone leaves the project or the university (WSU developer standards, 2024). No check exists yet.</li>
 <li>The stack's code has its primary home on nougat, with git.wayne.edu as the mirror, until a CI runner exists on git.wayne.edu; the standards name git.wayne.edu as the preferred home.</li>
 <li>Register the project in the catalog Enterprise Apps names, and keep its environments current. Stack apps also register with ROLLCALL, the stack's census (WSU developer standards, 2024).</li>
-<li>Every repo's README <strong class="kw kw--must">MUST</strong> say how to install, configure and deploy the code for local development, on every OS (see <code>every-os.md</code>), and how to update an existing deployment (WSU developer standards, 2024).</li>
+<li>Every repo's README <strong class="kw kw--must">MUST</strong> say how to install, configure and deploy the code for local development, on every OS (see <code>every-os.md</code>), and how to update an existing deployment (WSU developer standards, 2024). No check exists yet.</li>
 <li>If the Help Desk might be contacted about the project, keep an overview in the repo: what it does, who uses it, known common issues and who to call for an incident; deliver changes to the Help Desk when it changes (WSU developer standards, 2024).</li>
 </ul>
 <h2 id="static-analysis"><a class="hb-sec" href="#static-analysis">§3.4</a> Static analysis</h2>
@@ -142,7 +142,8 @@ every-OS design).</li>
 <li>PHPStan's <code>phpVersion</code> follows the policy's PHP floor <span class="hb-cite">(the stack's coding standard)</span>.</li>
 <li>Existing apps start at the highest level they pass, with a committed
 baseline that <strong class="kw kw--must-not">MUST NOT</strong> grow, then raise the level one step at a time
-<span class="hb-cite">(the stack's coding standard)</span>. Like the band says, the only way is Higher.</li>
+<span class="hb-cite">(the stack's coding standard)</span>. No check exists yet. Like the band says,
+the only way is Higher.</li>
 <li>New packages have no baseline <span class="hb-cite">(the stack's coding standard)</span>.</li>
 <li>Two reasons for level 8:
 <ul>
@@ -154,8 +155,8 @@ header code, a null bug is a security bug <span class="hb-cite">(the stack's cod
 </ul>
 <h2 id="input-and-files"><a class="hb-sec" href="#input-and-files">§3.5</a> Input and files</h2>
 <ul>
-<li>All input (forms, API calls, headers, cookies, and data read from a database you do not control) <strong class="kw kw--must">MUST</strong> be validated on the server; SQL uses bound parameters, and output is escaped for where it lands. That guards against SQL injection and cross-site scripting (WSU developer standards, 2024).</li>
-<li>Files from untrusted sources <strong class="kw kw--must">MUST</strong> be checked against the expected type, <strong class="kw kw--must-not">MUST NOT</strong> be passed to include, class-loading or reflection calls, <strong class="kw kw--must">MUST</strong> be stored outside the served folder with limited permissions, and <strong class="kw kw--must-not">MUST NOT</strong> be executable (WSU developer standards, 2024).</li>
+<li>All input (forms, API calls, headers, cookies, and data read from a database you do not control) <strong class="kw kw--must">MUST</strong> be validated on the server; SQL uses bound parameters, and output is escaped for where it lands. That guards against SQL injection and cross-site scripting (WSU developer standards, 2024). No check exists yet.</li>
+<li>Files from untrusted sources <strong class="kw kw--must">MUST</strong> be checked against the expected type, <strong class="kw kw--must-not">MUST NOT</strong> be passed to include, class-loading or reflection calls, <strong class="kw kw--must">MUST</strong> be stored outside the served folder with limited permissions, and <strong class="kw kw--must-not">MUST NOT</strong> be executable (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <h2 id="banned-patterns"><a class="hb-sec" href="#banned-patterns">§3.6</a> Banned patterns</h2>
 <p>Each ban becomes a PHPStan rule: Larastan's where it has one, <code>phpstan-disallowed-calls</code>
@@ -296,7 +297,7 @@ the stack's coding standard does not decide it.</li>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="dependencies.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 2</span><span class="hb-pager__name">Dependencies</span></a><a class="hb-pager__link hb-pager__link--next" href="auth.html" rel="next"><span class="hb-pager__dir">Next · Chapter 4</span><span class="hb-pager__name">Auth</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/code.md"><code>handbook/code.md</code> on GitHub</a>, impression <code>d943c01</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/code.md"><code>handbook/code.md</code> on GitHub</a>, impression <code>f26125d</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

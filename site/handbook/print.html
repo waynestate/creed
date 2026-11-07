@@ -287,16 +287,16 @@ every-OS design).</li>
 </ul>
 <h3 id="code--reading-the-code"><a class="hb-sec" href="#code--reading-the-code">§3.2</a> Reading the code</h3>
 <ul>
-<li>Comment where it helps: complex logic, areas that could improve, business rules that would otherwise be a mystery (<strong class="kw kw--should">SHOULD</strong>). Do not keep version history in comments; git is the change log (WSU developer standards, 2024).</li>
-<li>Code that no longer runs <strong class="kw kw--must">MUST</strong> be removed, not commented out; git keeps it (WSU developer standards, 2024).</li>
-<li>Variable, class and database names <strong class="kw kw--should">SHOULD</strong> be complete and descriptive; avoid ambiguous abbreviations (WSU developer standards, 2024).</li>
+<li>Comment where it helps: complex logic, areas that could improve, business rules that would otherwise be a mystery (<strong class="kw kw--should">SHOULD</strong>). Do not keep version history in comments; git is the change log (WSU developer standards, 2024). No check exists yet.</li>
+<li>Code that no longer runs <strong class="kw kw--must">MUST</strong> be removed, not commented out; git keeps it (WSU developer standards, 2024). No check exists yet.</li>
+<li>Variable, class and database names <strong class="kw kw--should">SHOULD</strong> be complete and descriptive; avoid ambiguous abbreviations (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <h3 id="code--source-control-and-documentation"><a class="hb-sec" href="#code--source-control-and-documentation">§3.3</a> Source control and documentation</h3>
 <ul>
-<li>All source is kept in git. Access to a repo <strong class="kw kw--must">MUST</strong> be removed when someone leaves the project or the university (WSU developer standards, 2024).</li>
+<li>All source is kept in git. Access to a repo <strong class="kw kw--must">MUST</strong> be removed when someone leaves the project or the university (WSU developer standards, 2024). No check exists yet.</li>
 <li>The stack's code has its primary home on nougat, with git.wayne.edu as the mirror, until a CI runner exists on git.wayne.edu; the standards name git.wayne.edu as the preferred home.</li>
 <li>Register the project in the catalog Enterprise Apps names, and keep its environments current. Stack apps also register with ROLLCALL, the stack's census (WSU developer standards, 2024).</li>
-<li>Every repo's README <strong class="kw kw--must">MUST</strong> say how to install, configure and deploy the code for local development, on every OS (see <code>every-os.md</code>), and how to update an existing deployment (WSU developer standards, 2024).</li>
+<li>Every repo's README <strong class="kw kw--must">MUST</strong> say how to install, configure and deploy the code for local development, on every OS (see <code>every-os.md</code>), and how to update an existing deployment (WSU developer standards, 2024). No check exists yet.</li>
 <li>If the Help Desk might be contacted about the project, keep an overview in the repo: what it does, who uses it, known common issues and who to call for an incident; deliver changes to the Help Desk when it changes (WSU developer standards, 2024).</li>
 </ul>
 <h3 id="code--static-analysis"><a class="hb-sec" href="#code--static-analysis">§3.4</a> Static analysis</h3>
@@ -309,7 +309,8 @@ every-OS design).</li>
 <li>PHPStan's <code>phpVersion</code> follows the policy's PHP floor <span class="hb-cite">(the stack's coding standard)</span>.</li>
 <li>Existing apps start at the highest level they pass, with a committed
 baseline that <strong class="kw kw--must-not">MUST NOT</strong> grow, then raise the level one step at a time
-<span class="hb-cite">(the stack's coding standard)</span>. Like the band says, the only way is Higher.</li>
+<span class="hb-cite">(the stack's coding standard)</span>. No check exists yet. Like the band says,
+the only way is Higher.</li>
 <li>New packages have no baseline <span class="hb-cite">(the stack's coding standard)</span>.</li>
 <li>Two reasons for level 8:
 <ul>
@@ -321,8 +322,8 @@ header code, a null bug is a security bug <span class="hb-cite">(the stack's cod
 </ul>
 <h3 id="code--input-and-files"><a class="hb-sec" href="#code--input-and-files">§3.5</a> Input and files</h3>
 <ul>
-<li>All input (forms, API calls, headers, cookies, and data read from a database you do not control) <strong class="kw kw--must">MUST</strong> be validated on the server; SQL uses bound parameters, and output is escaped for where it lands. That guards against SQL injection and cross-site scripting (WSU developer standards, 2024).</li>
-<li>Files from untrusted sources <strong class="kw kw--must">MUST</strong> be checked against the expected type, <strong class="kw kw--must-not">MUST NOT</strong> be passed to include, class-loading or reflection calls, <strong class="kw kw--must">MUST</strong> be stored outside the served folder with limited permissions, and <strong class="kw kw--must-not">MUST NOT</strong> be executable (WSU developer standards, 2024).</li>
+<li>All input (forms, API calls, headers, cookies, and data read from a database you do not control) <strong class="kw kw--must">MUST</strong> be validated on the server; SQL uses bound parameters, and output is escaped for where it lands. That guards against SQL injection and cross-site scripting (WSU developer standards, 2024). No check exists yet.</li>
+<li>Files from untrusted sources <strong class="kw kw--must">MUST</strong> be checked against the expected type, <strong class="kw kw--must-not">MUST NOT</strong> be passed to include, class-loading or reflection calls, <strong class="kw kw--must">MUST</strong> be stored outside the served folder with limited permissions, and <strong class="kw kw--must-not">MUST NOT</strong> be executable (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <h3 id="code--banned-patterns"><a class="hb-sec" href="#code--banned-patterns">§3.6</a> Banned patterns</h3>
 <p>Each ban becomes a PHPStan rule: Larastan's where it has one, <code>phpstan-disallowed-calls</code>
@@ -670,7 +671,7 @@ list is not checked yet.</p>
 </li>
 <li>Cross-Origin-Resource-Policy is off by default <span class="hb-cite">(the stack's runtime and headers design)</span>.</li>
 <li>An app <strong class="kw kw--should-not">SHOULD NOT</strong> weaken the default Content-Security-Policy with <code>'unsafe-inline'</code> for scripts; it uses the nonce
-instead <span class="hb-cite">(the stack's runtime and headers design)</span>.</li>
+instead <span class="hb-cite">(the stack's runtime and headers design)</span>. No check exists yet.</li>
 </ul>
 <p>The headers are the setlist: the same one on every response. The HSTS encore plays only when the show is really on
 HTTPS.</p>
@@ -696,7 +697,7 @@ design)</span>.</li>
 <h3 id="runtime-and-headers--errors-in-production"><a class="hb-sec" href="#runtime-and-headers--errors-in-production">§6.6</a> Errors in production</h3>
 <ul>
 <li>PHP <code>display_errors</code> <strong class="kw kw--must">MUST</strong> be <code>Off</code> and <code>log_errors</code> <code>On</code> in production (<a class="tool" href="https://squire.apps.wayne.edu/"><img src="../assets/marks/squire.png" alt="" width="16" height="16">Squire</a>'s deploy kit ships that php.ini;
-HELMET neither sets nor checks it).</li>
+HELMET neither sets nor checks it). No check exists yet.</li>
 <li>Laravel <code>APP_DEBUG</code> <strong class="kw kw--must">MUST</strong> be <code>false</code> in production (WSU developer standards, 2024). The Laravel adapter writes one
 warning <code>helmet.debug_enabled_in_production</code> when it is true in the production environment.</li>
 </ul>
@@ -867,16 +868,16 @@ with argument arrays, never shell strings <span class="hb-cite">(the stack's eve
 <div class="hb-rfc" role="note"><p><span class="hb-rfc__label">Key words</span> The key words <strong class="kw kw--must">MUST</strong>, <strong class="kw kw--must-not">MUST NOT</strong>, <strong class="kw kw--should">SHOULD</strong>, <strong class="kw kw--should-not">SHOULD NOT</strong> and <strong class="kw kw--may">MAY</strong> in this chapter are to be interpreted as described in <a href="https://www.rfc-editor.org/rfc/rfc2119">RFC 2119</a>.</p></div>
 <h3 id="secrets--credentials"><a class="hb-sec" href="#secrets--credentials">§11.1</a> Credentials</h3>
 <ul>
-<li>Credentials (database and service passwords, API keys, tokens) <strong class="kw kw--must-not">MUST NOT</strong> be committed to version control, because history keeps them forever. Commit <code>.env.example</code> with placeholders instead. A credential that was ever committed is treated as exposed and rotated (WSU developer standards, 2024).</li>
-<li>Credentials and sensitive data <strong class="kw kw--must">MUST</strong> live outside any folder the web server serves. Laravel's <code>public/</code> is the only served folder; raw PHP apps serve one <code>public/</code> folder the same way (WSU developer standards, 2024).</li>
+<li>Credentials (database and service passwords, API keys, tokens) <strong class="kw kw--must-not">MUST NOT</strong> be committed to version control, because history keeps them forever. Commit <code>.env.example</code> with placeholders instead. A credential that was ever committed is treated as exposed and rotated (WSU developer standards, 2024). No check exists yet.</li>
+<li>Credentials and sensitive data <strong class="kw kw--must">MUST</strong> live outside any folder the web server serves. Laravel's <code>public/</code> is the only served folder; raw PHP apps serve one <code>public/</code> folder the same way (WSU developer standards, 2024). No check exists yet.</li>
 <li>An app uses its own dedicated application ID, never a person's employee or student AccessID, to reach another server or service, with the fewest permissions the task needs (WSU developer standards, 2024).</li>
 <li>Real values come from the environment at deploy time (the Citadel dashboard or CI variables), never from a file in the repo (WSU developer standards, 2024).</li>
 </ul>
 <h3 id="secrets--errors-and-debug-output"><a class="hb-sec" href="#secrets--errors-and-debug-output">§11.2</a> Errors and debug output</h3>
 <ul>
-<li><code>APP_DEBUG</code> <strong class="kw kw--must">MUST</strong> be <code>false</code> in production (WSU developer standards, 2024).</li>
-<li>Public-facing code <strong class="kw kw--must-not">MUST NOT</strong> display default interpreter or framework error pages to the user; show a controlled message and log the detail (WSU developer standards, 2024).</li>
-<li>Logs and diagnostic output <strong class="kw kw--must-not">MUST NOT</strong> contain credentials or personally identifiable information such as Social Security numbers. That includes logged exceptions (WSU developer standards, 2024).</li>
+<li><code>APP_DEBUG</code> <strong class="kw kw--must">MUST</strong> be <code>false</code> in production (WSU developer standards, 2024). The Laravel adapter writes one warning <code>helmet.debug_enabled_in_production</code> when it is true in the production environment. A <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check for this is proposed, not built.</li>
+<li>Public-facing code <strong class="kw kw--must-not">MUST NOT</strong> display default interpreter or framework error pages to the user; show a controlled message and log the detail (WSU developer standards, 2024). No check exists yet.</li>
+<li>Logs and diagnostic output <strong class="kw kw--must-not">MUST NOT</strong> contain credentials or personally identifiable information such as Social Security numbers. That includes logged exceptions (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <p>A leaked password is a bad encore: everyone remembers it, and nobody asked for a second showing.</p>
 <h3 id="secrets--not-decided-here"><a class="hb-sec" href="#secrets--not-decided-here">§11.3</a> Not decided here</h3>
@@ -901,29 +902,29 @@ with argument arrays, never shell strings <span class="hb-cite">(the stack's eve
 <ul>
 <li>Every environment more than one person can reach follows the whole handbook; only a developer's own machine is exempt (WSU developer standards, 2024).</li>
 <li>Keep at least a pre-production and a production environment, each with its own working copy of every piece, database and supporting services included (WSU developer standards, 2024).</li>
-<li>Each deployment <strong class="kw kw--should">SHOULD</strong> be isolated from the others (one container per app), so one compromise does not become many. This holds on Citadel, OpenShift, Coolify and plain Docker (WSU developer standards, 2024).</li>
+<li>Each deployment <strong class="kw kw--should">SHOULD</strong> be isolated from the others (one container per app), so one compromise does not become many. This holds on Citadel, OpenShift, Coolify and plain Docker (WSU developer standards, 2024). No check exists yet.</li>
 <li>Decide early whether the deployment is in disaster-recovery scope, and write the decision in the README (WSU developer standards, 2024).</li>
 <li>Back up anything kept outside source control, databases included. Say in the README how to restore one app (WSU developer standards, 2024).</li>
-<li>An app <strong class="kw kw--should">SHOULD</strong> be load tested in each environment where heavy use is expected (WSU developer standards, 2024).</li>
+<li>An app <strong class="kw kw--should">SHOULD</strong> be load tested in each environment where heavy use is expected (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <h3 id="production--running-safely"><a class="hb-sec" href="#production--running-safely">§12.2</a> Running safely</h3>
 <ul>
-<li>The app and its scripts <strong class="kw kw--must">MUST</strong> run as a non-root, non-administrator user with the least access they need (WSU developer standards, 2024).</li>
-<li>The web server <strong class="kw kw--must-not">MUST NOT</strong> list directory contents (WSU developer standards, 2024).</li>
+<li>The app and its scripts <strong class="kw kw--must">MUST</strong> run as a non-root, non-administrator user with the least access they need (WSU developer standards, 2024). No check exists yet.</li>
+<li>The web server <strong class="kw kw--must-not">MUST NOT</strong> list directory contents (WSU developer standards, 2024). No check exists yet.</li>
 <li>File permissions <strong class="kw kw--must">MUST</strong> be set per path; write access for the web server is granted only to specific files or folders, and mode <code>777</code> <strong class="kw kw--must-not">MUST NOT</strong> be used (WSU developer standards, 2024).
 A <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check for this is proposed, not built: it flags mode <code>777</code> and web-writable paths outside the allowed list.</li>
 <li>Debugging and diagnostic files, scripts, dumps and backups <strong class="kw kw--must-not">MUST NOT</strong> sit in the served folder (WSU developer standards, 2024).
 A PROCTOR check for this is proposed, not built: a scan of the served folder for <code>phpinfo.php</code>, dumps, backups, <code>.env</code> and <code>.git</code>.</li>
 <li>On failure the app degrades predictably and fails closed: an authentication error withholds access (WSU developer standards, 2024).</li>
 <li>A person is told when something fails: a monitor calls <code>/up</code> on a schedule and alerts someone (WSU developer standards, 2024).</li>
-<li>Logs are rotated or removed at a set interval; temporary files are cleaned up; uploaded files have a retention rule. Citadel rotates container logs; elsewhere the platform or the app <strong class="kw kw--must">MUST</strong> (WSU developer standards, 2024).</li>
-<li>Where it is practical, an app <strong class="kw kw--should">SHOULD</strong> record an audit trail of changes to data and of successful and failed access to sensitive data (WSU developer standards, 2024).</li>
+<li>Logs are rotated or removed at a set interval; temporary files are cleaned up; uploaded files have a retention rule. Citadel rotates container logs; elsewhere the platform or the app <strong class="kw kw--must">MUST</strong> (WSU developer standards, 2024). No check exists yet.</li>
+<li>Where it is practical, an app <strong class="kw kw--should">SHOULD</strong> record an audit trail of changes to data and of successful and failed access to sensitive data (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <p>Production is the encore. Keep the lights on and the doors locked, and the band plays on.</p>
 <h3 id="production--who-can-reach-it"><a class="hb-sec" href="#production--who-can-reach-it">§12.3</a> Who can reach it</h3>
 <ul>
-<li>Every app <strong class="kw kw--must">MUST</strong> set <code>robots.txt</code> to keep spiders out unless crawling is wanted (WSU developer standards, 2024).</li>
-<li>Every app <strong class="kw kw--must">MUST</strong> limit access by network address to the audience it serves, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024).</li>
+<li>Every app <strong class="kw kw--must">MUST</strong> set <code>robots.txt</code> to keep spiders out unless crawling is wanted (WSU developer standards, 2024). No check exists yet.</li>
+<li>Every app <strong class="kw kw--must">MUST</strong> limit access by network address to the audience it serves, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024). No check exists yet.</li>
 <li>The one named exception: the stack's own public front pages are crawlable by design <span class="hb-cite">(the stack's agent-ready sites decision)</span>. It is a special case for those pages, not a general exemption for public pages.</li>
 </ul>
           </div>
@@ -953,7 +954,7 @@ override <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>25d1f1c</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>4218936</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

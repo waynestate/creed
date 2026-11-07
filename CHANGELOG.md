@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Changed: the handbook walk reaches the last five chapters (code, runtime-and-headers, secrets, production, deploy-gate): every MUST and SHOULD rule now names its point, a PROCTOR check ID, a measuring command, or the plain words "no check exists yet"; practices 29 and 32 record the completed walk and what remains, and the site's handbook pages and search index are regenerated.
 - Changed: practice 39 is stamped Checked: PROCTOR's `composer-version` check fails a Composer below the higher of its CVE floors and CREED's policy minimum (`tools.composer.minimum`, 2.8.0), and the best-practices intro now names the Preflight 0.1.4 pin CI runs; the front page's tally and chapter 7 bar follow.
 - Changed: nine stale stamps re-checked against the tree (2026-11-06): practices 14, 39, 44 and 46 move to Partially, 24, 42 and 49 to Documented, 51 to Enforced, and 50 stays Partially with its pipeline fact corrected; the front page's tally, chapter bars and section 4.1 clause follow, its Docker quickstart pins composer:2.10.3 like the README, and two cross-references plus four backlog lines that contradicted the new record are fixed.
 - Added: a site accessibility gate (axe-core in Playwright, WCAG 2.2 AA, run in Docker): `scripts/a11y.sh` on Linux and macOS, `scripts/a11y.ps1` on Windows; it checks the front page, every docs page and every handbook page in light and dark at 360 and 1280 px.

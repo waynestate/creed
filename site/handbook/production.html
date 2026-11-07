@@ -101,29 +101,29 @@
 <ul>
 <li>Every environment more than one person can reach follows the whole handbook; only a developer's own machine is exempt (WSU developer standards, 2024).</li>
 <li>Keep at least a pre-production and a production environment, each with its own working copy of every piece, database and supporting services included (WSU developer standards, 2024).</li>
-<li>Each deployment <strong class="kw kw--should">SHOULD</strong> be isolated from the others (one container per app), so one compromise does not become many. This holds on Citadel, OpenShift, Coolify and plain Docker (WSU developer standards, 2024).</li>
+<li>Each deployment <strong class="kw kw--should">SHOULD</strong> be isolated from the others (one container per app), so one compromise does not become many. This holds on Citadel, OpenShift, Coolify and plain Docker (WSU developer standards, 2024). No check exists yet.</li>
 <li>Decide early whether the deployment is in disaster-recovery scope, and write the decision in the README (WSU developer standards, 2024).</li>
 <li>Back up anything kept outside source control, databases included. Say in the README how to restore one app (WSU developer standards, 2024).</li>
-<li>An app <strong class="kw kw--should">SHOULD</strong> be load tested in each environment where heavy use is expected (WSU developer standards, 2024).</li>
+<li>An app <strong class="kw kw--should">SHOULD</strong> be load tested in each environment where heavy use is expected (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <h2 id="running-safely"><a class="hb-sec" href="#running-safely">§12.2</a> Running safely</h2>
 <ul>
-<li>The app and its scripts <strong class="kw kw--must">MUST</strong> run as a non-root, non-administrator user with the least access they need (WSU developer standards, 2024).</li>
-<li>The web server <strong class="kw kw--must-not">MUST NOT</strong> list directory contents (WSU developer standards, 2024).</li>
+<li>The app and its scripts <strong class="kw kw--must">MUST</strong> run as a non-root, non-administrator user with the least access they need (WSU developer standards, 2024). No check exists yet.</li>
+<li>The web server <strong class="kw kw--must-not">MUST NOT</strong> list directory contents (WSU developer standards, 2024). No check exists yet.</li>
 <li>File permissions <strong class="kw kw--must">MUST</strong> be set per path; write access for the web server is granted only to specific files or folders, and mode <code>777</code> <strong class="kw kw--must-not">MUST NOT</strong> be used (WSU developer standards, 2024).
 A <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check for this is proposed, not built: it flags mode <code>777</code> and web-writable paths outside the allowed list.</li>
 <li>Debugging and diagnostic files, scripts, dumps and backups <strong class="kw kw--must-not">MUST NOT</strong> sit in the served folder (WSU developer standards, 2024).
 A PROCTOR check for this is proposed, not built: a scan of the served folder for <code>phpinfo.php</code>, dumps, backups, <code>.env</code> and <code>.git</code>.</li>
 <li>On failure the app degrades predictably and fails closed: an authentication error withholds access (WSU developer standards, 2024).</li>
 <li>A person is told when something fails: a monitor calls <code>/up</code> on a schedule and alerts someone (WSU developer standards, 2024).</li>
-<li>Logs are rotated or removed at a set interval; temporary files are cleaned up; uploaded files have a retention rule. Citadel rotates container logs; elsewhere the platform or the app <strong class="kw kw--must">MUST</strong> (WSU developer standards, 2024).</li>
-<li>Where it is practical, an app <strong class="kw kw--should">SHOULD</strong> record an audit trail of changes to data and of successful and failed access to sensitive data (WSU developer standards, 2024).</li>
+<li>Logs are rotated or removed at a set interval; temporary files are cleaned up; uploaded files have a retention rule. Citadel rotates container logs; elsewhere the platform or the app <strong class="kw kw--must">MUST</strong> (WSU developer standards, 2024). No check exists yet.</li>
+<li>Where it is practical, an app <strong class="kw kw--should">SHOULD</strong> record an audit trail of changes to data and of successful and failed access to sensitive data (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <p>Production is the encore. Keep the lights on and the doors locked, and the band plays on.</p>
 <h2 id="who-can-reach-it"><a class="hb-sec" href="#who-can-reach-it">§12.3</a> Who can reach it</h2>
 <ul>
-<li>Every app <strong class="kw kw--must">MUST</strong> set <code>robots.txt</code> to keep spiders out unless crawling is wanted (WSU developer standards, 2024).</li>
-<li>Every app <strong class="kw kw--must">MUST</strong> limit access by network address to the audience it serves, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024).</li>
+<li>Every app <strong class="kw kw--must">MUST</strong> set <code>robots.txt</code> to keep spiders out unless crawling is wanted (WSU developer standards, 2024). No check exists yet.</li>
+<li>Every app <strong class="kw kw--must">MUST</strong> limit access by network address to the audience it serves, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024). No check exists yet.</li>
 <li>The one named exception: the stack's own public front pages are crawlable by design <span class="hb-cite">(the stack's agent-ready sites decision)</span>. It is a special case for those pages, not a general exemption for public pages.</li>
 </ul>
           </div>
@@ -131,7 +131,7 @@ A PROCTOR check for this is proposed, not built: a scan of the served folder for
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="secrets.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 11</span><span class="hb-pager__name">Secrets and debugging</span></a><a class="hb-pager__link hb-pager__link--next" href="overrides.html" rel="next"><span class="hb-pager__dir">Next · Chapter 13</span><span class="hb-pager__name">Overrides</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/production.md"><code>handbook/production.md</code> on GitHub</a>, impression <code>02f0f97</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/production.md"><code>handbook/production.md</code> on GitHub</a>, impression <code>2caf396</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

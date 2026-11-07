@@ -470,9 +470,10 @@ Why: a rule that nothing runs is only a wish.
 
 Sources: [OWASP ASVS](https://asvs.owasp.org/).
 
-How the stack holds it: `Partially`. The stack's enforcement design defines the five points. Rules that a PROCTOR check
-enforces now carry "PROCTOR check: `id`" in the handbook (versions, dependencies, auth, databases, ci, every-os,
-overrides). The chapters do not yet tag each rule with its enforcement point.
+How the stack holds it: `Partially`. Every rule in the handbook now names its point: the PROCTOR check that enforces
+it, the command that measures it, or the plain words "no check exists yet". What remains: the checks behind the
+"no check exists yet" tags, and a guard that fails when a rule loses its tag; the handbook lint checks RFC 2119
+wording only.
 
 ## 6. Writing the handbook
 
@@ -507,9 +508,9 @@ Why: a standard is a command that fails, not a sentence in a README.
 
 Sources: [OWASP ASVS](https://asvs.owasp.org/) (requirements written to be verified).
 
-How the stack holds it: `Partially`. The handbook chapters on versions, dependencies, auth, databases, ci, every-os and
-overrides name the PROCTOR check beside each rule a check enforces. Rules no check covers are left without an ID.
-The code, runtime-and-headers and remaining chapters have not been walked yet.
+How the stack holds it: `Partially`. Every handbook chapter now names, beside each rule, the PROCTOR check that
+enforces it, the command that measures it, or the plain words "no check exists yet". What remains: the checks behind
+those tags, and a mechanical guard that keeps every rule named; the handbook lint checks RFC 2119 wording only.
 
 ### 33. Judge with deterministic checks only
 

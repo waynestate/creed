@@ -910,6 +910,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Changed: the handbook walk reaches the last five chapters (code, runtime-and-headers, secrets, production, deploy-gate): every MUST and SHOULD rule now names its point, a PROCTOR check ID, a measuring command, or the plain words "no check exists yet"; practices 29 and 32 record the completed walk and what remains, and the site's handbook pages and search index are regenerated.
 - Changed: practice 39 is stamped Checked: PROCTOR's `composer-version` check fails a Composer below the higher of its CVE floors and CREED's policy minimum (`tools.composer.minimum`, 2.8.0), and the best-practices intro now names the Preflight 0.1.4 pin CI runs; the front page's tally and chapter 7 bar follow.
 - Changed: nine stale stamps re-checked against the tree (2026-11-06): practices 14, 39, 44 and 46 move to Partially, 24, 42 and 49 to Documented, 51 to Enforced, and 50 stays Partially with its pipeline fact corrected; the front page's tally, chapter bars and section 4.1 clause follow, its Docker quickstart pins composer:2.10.3 like the README, and two cross-references plus four backlog lines that contradicted the new record are fixed.
 - Added: a site accessibility gate (axe-core in Playwright, WCAG 2.2 AA, run in Docker): `scripts/a11y.sh` on Linux and macOS, `scripts/a11y.ps1` on Windows; it checks the front page, every docs page and every handbook page in light and dark at 360 and 1280 px.
@@ -2235,16 +2236,16 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 ### [§3.2](https://creed.apps.wayne.edu/handbook/code.html#reading-the-code) Reading the code
 
-- Comment where it helps: complex logic, areas that could improve, business rules that would otherwise be a mystery (**SHOULD**). Do not keep version history in comments; git is the change log (WSU developer standards, 2024).
-- Code that no longer runs **MUST** be removed, not commented out; git keeps it (WSU developer standards, 2024).
-- Variable, class and database names **SHOULD** be complete and descriptive; avoid ambiguous abbreviations (WSU developer standards, 2024).
+- Comment where it helps: complex logic, areas that could improve, business rules that would otherwise be a mystery (**SHOULD**). Do not keep version history in comments; git is the change log (WSU developer standards, 2024). No check exists yet.
+- Code that no longer runs **MUST** be removed, not commented out; git keeps it (WSU developer standards, 2024). No check exists yet.
+- Variable, class and database names **SHOULD** be complete and descriptive; avoid ambiguous abbreviations (WSU developer standards, 2024). No check exists yet.
 
 ### [§3.3](https://creed.apps.wayne.edu/handbook/code.html#source-control-and-documentation) Source control and documentation
 
-- All source is kept in git. Access to a repo **MUST** be removed when someone leaves the project or the university (WSU developer standards, 2024).
+- All source is kept in git. Access to a repo **MUST** be removed when someone leaves the project or the university (WSU developer standards, 2024). No check exists yet.
 - The stack's code has its primary home on nougat, with git.wayne.edu as the mirror, until a CI runner exists on git.wayne.edu; the standards name git.wayne.edu as the preferred home.
 - Register the project in the catalog Enterprise Apps names, and keep its environments current. Stack apps also register with ROLLCALL, the stack's census (WSU developer standards, 2024).
-- Every repo's README **MUST** say how to install, configure and deploy the code for local development, on every OS (see `every-os.md`), and how to update an existing deployment (WSU developer standards, 2024).
+- Every repo's README **MUST** say how to install, configure and deploy the code for local development, on every OS (see `every-os.md`), and how to update an existing deployment (WSU developer standards, 2024). No check exists yet.
 - If the Help Desk might be contacted about the project, keep an overview in the repo: what it does, who uses it, known common issues and who to call for an incident; deliver changes to the Help Desk when it changes (WSU developer standards, 2024).
 
 ### [§3.4](https://creed.apps.wayne.edu/handbook/code.html#static-analysis) Static analysis
@@ -2253,7 +2254,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - Larastan loads only where Laravel is present (the stack's coding standard).
 - Every inline ignore carries an identifier and a reason; configs set `reportIgnoresWithoutComments` (the stack's coding standard).
 - PHPStan's `phpVersion` follows the policy's PHP floor (the stack's coding standard).
-- Existing apps start at the highest level they pass, with a committed baseline that **MUST NOT** grow, then raise the level one step at a time (the stack's coding standard). Like the band says, the only way is Higher.
+- Existing apps start at the highest level they pass, with a committed baseline that **MUST NOT** grow, then raise the level one step at a time (the stack's coding standard). No check exists yet. Like the band says, the only way is Higher.
 - New packages have no baseline (the stack's coding standard).
 - Two reasons for level 8:
   - The starters begin clean, so new apps pass from day one (the stack's coding standard).
@@ -2261,8 +2262,8 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 ### [§3.5](https://creed.apps.wayne.edu/handbook/code.html#input-and-files) Input and files
 
-- All input (forms, API calls, headers, cookies, and data read from a database you do not control) **MUST** be validated on the server; SQL uses bound parameters, and output is escaped for where it lands. That guards against SQL injection and cross-site scripting (WSU developer standards, 2024).
-- Files from untrusted sources **MUST** be checked against the expected type, **MUST NOT** be passed to include, class-loading or reflection calls, **MUST** be stored outside the served folder with limited permissions, and **MUST NOT** be executable (WSU developer standards, 2024).
+- All input (forms, API calls, headers, cookies, and data read from a database you do not control) **MUST** be validated on the server; SQL uses bound parameters, and output is escaped for where it lands. That guards against SQL injection and cross-site scripting (WSU developer standards, 2024). No check exists yet.
+- Files from untrusted sources **MUST** be checked against the expected type, **MUST NOT** be passed to include, class-loading or reflection calls, **MUST** be stored outside the served folder with limited permissions, and **MUST NOT** be executable (WSU developer standards, 2024). No check exists yet.
 
 ### [§3.6](https://creed.apps.wayne.edu/handbook/code.html#banned-patterns) Banned patterns
 
@@ -2343,7 +2344,7 @@ Table 3-1
 - GitLab Code Quality: [https://docs.gitlab.com/ci/testing/code_quality/](https://docs.gitlab.com/ci/testing/code_quality/)
 - OWASP ASVS: [https://asvs.owasp.org/](https://asvs.owasp.org/)
 
-Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `d943c01`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `f26125d`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2632,31 +2633,31 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 - Every environment more than one person can reach follows the whole handbook; only a developer's own machine is exempt (WSU developer standards, 2024).
 - Keep at least a pre-production and a production environment, each with its own working copy of every piece, database and supporting services included (WSU developer standards, 2024).
-- Each deployment **SHOULD** be isolated from the others (one container per app), so one compromise does not become many. This holds on Citadel, OpenShift, Coolify and plain Docker (WSU developer standards, 2024).
+- Each deployment **SHOULD** be isolated from the others (one container per app), so one compromise does not become many. This holds on Citadel, OpenShift, Coolify and plain Docker (WSU developer standards, 2024). No check exists yet.
 - Decide early whether the deployment is in disaster-recovery scope, and write the decision in the README (WSU developer standards, 2024).
 - Back up anything kept outside source control, databases included. Say in the README how to restore one app (WSU developer standards, 2024).
-- An app **SHOULD** be load tested in each environment where heavy use is expected (WSU developer standards, 2024).
+- An app **SHOULD** be load tested in each environment where heavy use is expected (WSU developer standards, 2024). No check exists yet.
 
 ### [§12.2](https://creed.apps.wayne.edu/handbook/production.html#running-safely) Running safely
 
-- The app and its scripts **MUST** run as a non-root, non-administrator user with the least access they need (WSU developer standards, 2024).
-- The web server **MUST NOT** list directory contents (WSU developer standards, 2024).
+- The app and its scripts **MUST** run as a non-root, non-administrator user with the least access they need (WSU developer standards, 2024). No check exists yet.
+- The web server **MUST NOT** list directory contents (WSU developer standards, 2024). No check exists yet.
 - File permissions **MUST** be set per path; write access for the web server is granted only to specific files or folders, and mode `777` **MUST NOT** be used (WSU developer standards, 2024). A [PROCTOR](https://proctor.apps.wayne.edu/) check for this is proposed, not built: it flags mode `777` and web-writable paths outside the allowed list.
 - Debugging and diagnostic files, scripts, dumps and backups **MUST NOT** sit in the served folder (WSU developer standards, 2024). A PROCTOR check for this is proposed, not built: a scan of the served folder for `phpinfo.php`, dumps, backups, `.env` and `.git`.
 - On failure the app degrades predictably and fails closed: an authentication error withholds access (WSU developer standards, 2024).
 - A person is told when something fails: a monitor calls `/up` on a schedule and alerts someone (WSU developer standards, 2024).
-- Logs are rotated or removed at a set interval; temporary files are cleaned up; uploaded files have a retention rule. Citadel rotates container logs; elsewhere the platform or the app **MUST** (WSU developer standards, 2024).
-- Where it is practical, an app **SHOULD** record an audit trail of changes to data and of successful and failed access to sensitive data (WSU developer standards, 2024).
+- Logs are rotated or removed at a set interval; temporary files are cleaned up; uploaded files have a retention rule. Citadel rotates container logs; elsewhere the platform or the app **MUST** (WSU developer standards, 2024). No check exists yet.
+- Where it is practical, an app **SHOULD** record an audit trail of changes to data and of successful and failed access to sensitive data (WSU developer standards, 2024). No check exists yet.
 
 Production is the encore. Keep the lights on and the doors locked, and the band plays on.
 
 ### [§12.3](https://creed.apps.wayne.edu/handbook/production.html#who-can-reach-it) Who can reach it
 
-- Every app **MUST** set `robots.txt` to keep spiders out unless crawling is wanted (WSU developer standards, 2024).
-- Every app **MUST** limit access by network address to the audience it serves, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024).
+- Every app **MUST** set `robots.txt` to keep spiders out unless crawling is wanted (WSU developer standards, 2024). No check exists yet.
+- Every app **MUST** limit access by network address to the audience it serves, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024). No check exists yet.
 - The one named exception: the stack's own public front pages are crawlable by design (the stack's agent-ready sites decision). It is a special case for those pages, not a general exemption for public pages.
 
-Set from [`handbook/production.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/production.md), impression `02f0f97`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/production.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/production.md), impression `2caf396`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2687,7 +2688,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
   - Cross-Origin-Opener-Policy `same-origin`.
   - Strict-Transport-Security `max-age=31536000; includeSubDomains`, on HTTPS responses only.
 - Cross-Origin-Resource-Policy is off by default (the stack's runtime and headers design).
-- An app **SHOULD NOT** weaken the default Content-Security-Policy with `'unsafe-inline'` for scripts; it uses the nonce instead (the stack's runtime and headers design).
+- An app **SHOULD NOT** weaken the default Content-Security-Policy with `'unsafe-inline'` for scripts; it uses the nonce instead (the stack's runtime and headers design). No check exists yet.
 
 The headers are the setlist: the same one on every response. The HSTS encore plays only when the show is really on HTTPS.
 
@@ -2708,7 +2709,7 @@ The headers are the setlist: the same one on every response. The HSTS encore pla
 
 ### [§6.6](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#errors-in-production) Errors in production
 
-- PHP `display_errors` **MUST** be `Off` and `log_errors` `On` in production ([Squire](https://squire.apps.wayne.edu/)'s deploy kit ships that php.ini; HELMET neither sets nor checks it).
+- PHP `display_errors` **MUST** be `Off` and `log_errors` `On` in production ([Squire](https://squire.apps.wayne.edu/)'s deploy kit ships that php.ini; HELMET neither sets nor checks it). No check exists yet.
 - Laravel `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment.
 
 A [PROCTOR](https://proctor.apps.wayne.edu/) check for this is proposed, not built.
@@ -2719,7 +2720,7 @@ A [PROCTOR](https://proctor.apps.wayne.edu/) check for this is proposed, not bui
 - The Content-Security-Policy report endpoints.
 - The metrics endpoint.
 
-Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `d44b32c`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `48ebd53`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2737,16 +2738,16 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 ### [§11.1](https://creed.apps.wayne.edu/handbook/secrets.html#credentials) Credentials
 
-- Credentials (database and service passwords, API keys, tokens) **MUST NOT** be committed to version control, because history keeps them forever. Commit `.env.example` with placeholders instead. A credential that was ever committed is treated as exposed and rotated (WSU developer standards, 2024).
-- Credentials and sensitive data **MUST** live outside any folder the web server serves. Laravel's `public/` is the only served folder; raw PHP apps serve one `public/` folder the same way (WSU developer standards, 2024).
+- Credentials (database and service passwords, API keys, tokens) **MUST NOT** be committed to version control, because history keeps them forever. Commit `.env.example` with placeholders instead. A credential that was ever committed is treated as exposed and rotated (WSU developer standards, 2024). No check exists yet.
+- Credentials and sensitive data **MUST** live outside any folder the web server serves. Laravel's `public/` is the only served folder; raw PHP apps serve one `public/` folder the same way (WSU developer standards, 2024). No check exists yet.
 - An app uses its own dedicated application ID, never a person's employee or student AccessID, to reach another server or service, with the fewest permissions the task needs (WSU developer standards, 2024).
 - Real values come from the environment at deploy time (the Citadel dashboard or CI variables), never from a file in the repo (WSU developer standards, 2024).
 
 ### [§11.2](https://creed.apps.wayne.edu/handbook/secrets.html#errors-and-debug-output) Errors and debug output
 
-- `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024).
-- Public-facing code **MUST NOT** display default interpreter or framework error pages to the user; show a controlled message and log the detail (WSU developer standards, 2024).
-- Logs and diagnostic output **MUST NOT** contain credentials or personally identifiable information such as Social Security numbers. That includes logged exceptions (WSU developer standards, 2024).
+- `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment. A [PROCTOR](https://proctor.apps.wayne.edu/) check for this is proposed, not built.
+- Public-facing code **MUST NOT** display default interpreter or framework error pages to the user; show a controlled message and log the detail (WSU developer standards, 2024). No check exists yet.
+- Logs and diagnostic output **MUST NOT** contain credentials or personally identifiable information such as Social Security numbers. That includes logged exceptions (WSU developer standards, 2024). No check exists yet.
 
 A leaked password is a bad encore: everyone remembers it, and nobody asked for a second showing.
 
@@ -2754,7 +2755,7 @@ A leaked password is a bad encore: everyone remembers it, and nobody asked for a
 
 - The [HELMET](https://helmet.apps.wayne.edu/) header rules and runtime refusals are written in `runtime-and-headers.md`.
 
-Set from [`handbook/secrets.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/secrets.md), impression `605c722`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/secrets.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/secrets.md), impression `7975dfa`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
