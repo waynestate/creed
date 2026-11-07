@@ -43,6 +43,9 @@
       <article class="docs-article"><!-- Generated from CHANGELOG.md by bin/docs-site.php. Edit CHANGELOG.md, not this file. -->
 <h1 id="changelog">Changelog<a class="docs-heading-link" aria-label="Link to this section" href="#changelog">#</a></h1>
 <h2 id="unreleased">Unreleased<a class="docs-heading-link" aria-label="Link to this section" href="#unreleased">#</a></h2>
+<ul>
+<li>Changed: CI caches Composer downloads per lock file (<code>.composer-cache</code>, keyed on <code>composer.lock</code> and <code>deploy/composer.lock</code>), so a pipeline stops fetching every package from Packagist on every run. Images already come through the Dependency Proxy.</li>
+</ul>
 <h2 id="0-1-7-2026-11-07">0.1.7 (2026-11-07)<a class="docs-heading-link" aria-label="Link to this section" href="#0-1-7-2026-11-07">#</a></h2>
 <ul>
 <li>Changed: the front page's deploy layer (<code>deploy/</code>) runs Squire's kit 0.5.0 (was 0.3.4): <code>oracle-check.php</code> arrives, <code>scripts/release.sh</code> and <code>scripts/parity.ps1</code> take the new templates, and the two kit files Renovate had edited (<code>docker-compose.squire.yml</code>, <code>.squire/base-fallback.Dockerfile</code>, which it had moved to PHP 8.5) are Squire's template again, so <code>squire init --check</code> passes. The shared Renovate preset leaves kit files alone now. <code>site/assets/stack-env.js</code> takes the stack's one copy, with bindingless catch blocks.</li>

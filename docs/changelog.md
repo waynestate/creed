@@ -9,6 +9,8 @@ description: All notable changes to this project.
 
 ## Unreleased
 
+- Changed: CI caches Composer downloads per lock file (`.composer-cache`, keyed on `composer.lock` and `deploy/composer.lock`), so a pipeline stops fetching every package from Packagist on every run. Images already come through the Dependency Proxy.
+
 ## 0.1.7 (2026-11-07)
 
 - Changed: the front page's deploy layer (`deploy/`) runs Squire's kit 0.5.0 (was 0.3.4): `oracle-check.php` arrives, `scripts/release.sh` and `scripts/parity.ps1` take the new templates, and the two kit files Renovate had edited (`docker-compose.squire.yml`, `.squire/base-fallback.Dockerfile`, which it had moved to PHP 8.5) are Squire's template again, so `squire init --check` passes. The shared Renovate preset leaves kit files alone now. `site/assets/stack-env.js` takes the stack's one copy, with bindingless catch blocks.

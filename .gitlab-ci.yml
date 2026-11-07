@@ -21,13 +21,28 @@ include:
       allow_failure: true
 
  
+# Dependency caching: images already come through the Dependency Proxy, and
+# every job that installs packages extends a cache keyed on its lock files,
+# so a pipeline downloads only what changed instead of everything, every run.
+variables:
+  COMPOSER_CACHE_DIR: "$CI_PROJECT_DIR/.cache/composer"
+
+.composer-cache:
+  cache:
+    key:
+      files: [composer.lock, deploy/composer.lock]
+      prefix: composer
+    paths: [.cache/composer/]
+
 wayneui-copies:
+  extends: .composer-cache
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/composer:2.10.3
   script:
     - composer install --working-dir=deploy --no-interaction --no-progress --prefer-dist
     - deploy/vendor/bin/proctor check --path=. --policy=deploy/vendor/waynestate/creed/policy/policy.json
 
 composer-ci:
+  extends: .composer-cache
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/composer:2.10.3
   script:
     - composer install --no-interaction --no-progress --prefer-dist
@@ -40,6 +55,7 @@ composer-ci:
 # robot's schedule (CREED_JOB=policy-bot), so a robot pipeline runs only the
 # robot and today's check-only schedules run only this job.
 refresh-patches:
+  extends: .composer-cache
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/composer:2.10.3
   rules:
     - if: '$CI_PIPELINE_SOURCE == "schedule" && $CREED_JOB != "policy-bot"'
@@ -57,6 +73,7 @@ refresh-patches:
 # CREED_BOT_TOKEN variable first: without it the job prints a notice and
 # exits 0, so it stays green until the owner creates the token.
 policy-bot:
+  extends: .composer-cache
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/composer:2.10.3
   variables:
     GIT_DEPTH: "0"
