@@ -85,7 +85,7 @@
 <h2 id="when-a-source-is-down">When a source is down<a class="docs-heading-link" aria-label="Link to this section" href="#when-a-source-is-down">#</a></h2>
 <p>A source that is down, slow or returns something unreadable changes nothing: its fields keep their last good value. A line missing from a feed is never removed. Where a first-party source and endoflife.date disagree, the first party wins and the disagreement is reported.</p>
 <h2 id="running-the-refresher">Running the refresher<a class="docs-heading-link" aria-label="Link to this section" href="#running-the-refresher">#</a></h2>
-<pre><code>php bin/refresh-policy.php [--dry-run] [--offline &lt;dir&gt;] [--policy &lt;path&gt;]
+<pre tabindex="0"><code>php bin/refresh-policy.php [--dry-run] [--offline &lt;dir&gt;] [--policy &lt;path&gt;]
     [--sources &lt;path&gt;] [--report &lt;file&gt;] [--today YYYY-MM-DD] [--touch]
 </code></pre>
 <p><code>--report</code> writes JSON with <code>changes</code>, <code>held</code>, <code>refused</code>, <code>disagreements</code> and <code>source_errors</code>. <code>--touch</code> sets <code>refreshed_on</code> to today even when nothing else changed (the weekly heartbeat). <code>policy/sources.json</code> records, per value, which source said it, and the first and last day it was seen.</p>

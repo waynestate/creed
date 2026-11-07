@@ -135,7 +135,7 @@
 <aside class="docs-callout docs-callout--warning" role="note"><p class="docs-callout__label">Warning</p><p>Every line the robot prints, including git's own errors and the command echoes, passes through one mask that replaces the token with <code>[masked]</code>, and the token travels only in the push URL and the <code>PRIVATE-TOKEN</code> header. Still: keep the variable masked, and rotate the token if a job log ever shows it.</p></aside>
 <h2 id="trying-it-without-gitlab">Trying it without GitLab<a class="docs-heading-link" aria-label="Link to this section" href="#trying-it-without-gitlab">#</a></h2>
 <p>A dry run needs no token and changes nothing. It prints the outcome it would choose, the files it would commit, the merge request title and body, and the alert issues it would open:</p>
-<pre><code>php bin/policy-bot.php run --dry-run
+<pre tabindex="0"><code>php bin/policy-bot.php run --dry-run
 php bin/policy-bot.php run --dry-run --offline tests/fixtures/feeds
 </code></pre>
 <p><code>--offline</code> reads saved feeds instead of fetching them; <code>tests/fixtures/feeds/</code> carries a full set. Creed Bratton ran a dry run once, at the quarry. Nobody asked what it printed.</p>

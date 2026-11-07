@@ -46,7 +46,7 @@
 <p>CREED requires PHP <code>^8.3</code>. Its <code>composer.json</code> says so, and pins the platform to <code>8.3.0</code> so installs resolve against that floor. The reader is framework-free, so nothing else is required at runtime.</p>
 <h2 id="install-1">Install<a class="docs-heading-link" aria-label="Link to this section" href="#install-1">#</a></h2>
 <p>Add the package to your project:</p>
-<pre><code class="language-sh">composer require waynestate/creed
+<pre tabindex="0"><code class="language-sh">composer require waynestate/creed
 </code></pre>
 <h3 id="develop-on-it">Develop on it<a class="docs-heading-link" aria-label="Link to this section" href="#develop-on-it">#</a></h3>
 <p>The same commands work in PowerShell and sh:</p>
@@ -55,13 +55,13 @@
 <li>Linux and macOS (sh): the very same three commands, <code>composer install</code>, <code>composer ci</code>, <code>composer test</code>.</li>
 </ul>
 <p>With only Docker (the same line works in PowerShell and sh):</p>
-<pre><code class="language-sh">docker run --rm -v &quot;${PWD}:/app&quot; -w /app composer:2.10.3 sh -c &quot;composer install --no-interaction &amp;&amp; composer ci&quot;
+<pre tabindex="0"><code class="language-sh">docker run --rm -v &quot;${PWD}:/app&quot; -w /app composer:2.10.3 sh -c &quot;composer install --no-interaction &amp;&amp; composer ci&quot;
 docker run --rm -v &quot;${PWD}:/app&quot; -w /app php:8.5-cli vendor/bin/phpunit
 </code></pre>
 <p>The whole band fits in three commands, and nobody needs a solo.</p>
 <h2 id="verify">Verify<a class="docs-heading-link" aria-label="Link to this section" href="#verify">#</a></h2>
 <p>Load the bundled policy and ask it what state a version is in:</p>
-<pre><code class="language-php">use Waynestate\Creed\Policy;
+<pre tabindex="0"><code class="language-php">use Waynestate\Creed\Policy;
 use Waynestate\Creed\State;
 
 $policy = Policy::bundled();

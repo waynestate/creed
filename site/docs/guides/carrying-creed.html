@@ -52,7 +52,7 @@
 <p>The copies began because CREED was not on Packagist. It is now (<code>waynestate/creed</code>, 0.1.6 at this writing), so each copy can become a real <code>require</code>, one consumer at a time; until a consumer switches, its copy stays.</p>
 <h2 id="generating-and-checking-the-copy">Generating and checking the copy<a class="docs-heading-link" aria-label="Link to this section" href="#generating-and-checking-the-copy">#</a></h2>
 <p>CREED owns the generator and the check:</p>
-<pre><code>php bin/export.php --namespace=Waynestate\Proctor\Creed --to=vendor/creed-copy
+<pre tabindex="0"><code>php bin/export.php --namespace=Waynestate\Proctor\Creed --to=vendor/creed-copy
 php bin/export.php --check --namespace=Waynestate\Proctor\Creed --to=vendor/creed-copy
 </code></pre>
 <p>The copy is the reader with the namespace rewritten and <code>bundled()</code> repointed at its own <code>policy.json</code>; <code>--check</code> fails when the copy drifts from the source. Creed Bratton would have a form for this.</p>

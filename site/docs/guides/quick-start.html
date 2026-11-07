@@ -46,12 +46,12 @@
 <ol>
 <li>
 <p><strong>Require it.</strong> Add CREED to your project.</p>
-<pre><code class="language-sh">composer require waynestate/creed
+<pre tabindex="0"><code class="language-sh">composer require waynestate/creed
 </code></pre>
 </li>
 <li>
 <p><strong>Load the bundled policy.</strong> The package ships its policy file, and <code>Policy::bundled()</code> loads it.</p>
-<pre><code class="language-php">use Waynestate\Creed\Policy;
+<pre tabindex="0"><code class="language-php">use Waynestate\Creed\Policy;
 
 $policy = Policy::bundled();
 </code></pre>
@@ -59,7 +59,7 @@ $policy = Policy::bundled();
 </li>
 <li>
 <p><strong>Ask <code>stateOf</code>.</strong> What state is PHP 8.2 in, on this date?</p>
-<pre><code class="language-php">use Waynestate\Creed\State;
+<pre tabindex="0"><code class="language-php">use Waynestate\Creed\State;
 
 $state = $policy-&gt;stateOf('php', '8.2', new DateTimeImmutable('2026-10-27'));
 // State::Security
@@ -68,7 +68,7 @@ $state = $policy-&gt;stateOf('php', '8.2', new DateTimeImmutable('2026-10-27'));
 </li>
 <li>
 <p><strong>Ask <code>oldestSupported</code>.</strong> What is the oldest PHP an app may declare?</p>
-<pre><code class="language-php">$floor = $policy-&gt;oldestSupported('php', new DateTimeImmutable('2026-10-27'));
+<pre tabindex="0"><code class="language-php">$floor = $policy-&gt;oldestSupported('php', new DateTimeImmutable('2026-10-27'));
 // '8.2'
 </code></pre>
 <p>Expected result: <code>'8.2'</code>, the lowest version still Active or Security.</p>
