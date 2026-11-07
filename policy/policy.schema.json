@@ -164,6 +164,14 @@
             ],
             "additionalProperties": false,
             "properties": {
+                "abandoned_packages": {
+                    "type": "string",
+                    "enum": [
+                        "ignore",
+                        "report",
+                        "fail"
+                    ]
+                },
                 "audit_severity_threshold": {
                     "type": "string"
                 },
