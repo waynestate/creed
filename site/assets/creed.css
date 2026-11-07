@@ -537,6 +537,9 @@ img { max-width: 100%; height: auto; }
 .ahj__name .new { font-style: normal; font-family: var(--mono); font-size: .62rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ochre); border: 1px solid currentColor; padding: 0 .3rem; border-radius: 2px; vertical-align: .25em; margin-left: .3rem; }
 .ahj__role { color: var(--ink-2); }
 .ahj__cites { font-family: var(--mono); font-size: .8rem; color: var(--ink-2); display: flex; flex-wrap: wrap; gap: .2rem .5rem; justify-content: flex-end; text-align: right; }
+/* WCAG 2.5.8: at 320 px these clause numbers are the small targets, so each
+   link keeps a 24 px floor, the text riding in the middle of it. */
+.ahj__cites a { display: inline-block; min-inline-size: 24px; min-block-size: 24px; padding-block: .175rem; }
 .ahj__row--this { background: rgba(12, 84, 73, .06); }
 @media (max-width: 820px) {
   .ahj__row { grid-template-columns: 2.75rem minmax(0, 1fr); gap: .15rem 1rem; align-items: start; }

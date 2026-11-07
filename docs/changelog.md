@@ -9,6 +9,7 @@ description: All notable changes to this project.
 
 ## Unreleased
 
+- Fixed: the front page's citation links (the clause numbers beside each stack part in the authorities table) are at least 24 px wide and tall, meeting the WCAG 2.5.8 target size at 320 px in light and dark.
 - Changed: Practices 14, 15 and 21 move to Checked: PROCTOR's laravel-php, laravel-eol and composer-audit abandoned checks enforce them.
 - Changed: the handbook walk reaches the last five chapters (code, runtime-and-headers, secrets, production, deploy-gate): every MUST and SHOULD rule now names its point, a PROCTOR check ID, a measuring command, or the plain words "no check exists yet"; practices 29 and 32 record the completed walk and what remains, and the site's handbook pages and search index are regenerated.
 - Changed: practice 39 is stamped Checked: PROCTOR's `composer-version` check fails a Composer below the higher of its CVE floors and CREED's policy minimum (`tools.composer.minimum`, 2.8.0), and the best-practices intro now names the Preflight 0.1.4 pin CI runs; the front page's tally and chapter 7 bar follow.
