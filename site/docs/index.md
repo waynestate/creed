@@ -44,7 +44,7 @@ $floor = $policy->oldestSupported('php', new DateTimeImmutable('2026-10-27'));
 - [Reader API](https://creed.apps.wayne.edu/docs/reference/api.html): every public member of the reader, one line each.
 - [Handbook](https://creed.apps.wayne.edu/docs/guides/handbook.html): the rules, chapter by chapter.
 
-Status: version 0.1.6, MIT license.
+Status: version 0.1.7, MIT license.
 
 Agents: fetch [https://creed.apps.wayne.edu/llms.txt](https://creed.apps.wayne.edu/llms.txt).
 
