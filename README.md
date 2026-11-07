@@ -277,8 +277,9 @@ The site carries an accessibility gate (axe-core in Playwright, WCAG 2.2 AA, run
 
 ## Strongly recommended: a git.wayne.edu instance runner
 
-git.wayne.edu has no runners today. Every product in the stack strongly
-recommends a git.wayne.edu instance runner.
+git.wayne.edu now has an instance runner, and the stack's CI runs on it.
+Every product in the stack still strongly recommends a git.wayne.edu
+instance runner, so that capacity stays there.
 
 ![Creed Bratton from The Office in a dark suit and blue shirt with a wide, wild-eyed grin](docs/readme/creed-bratton.gif)
 

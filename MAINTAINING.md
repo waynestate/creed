@@ -71,8 +71,8 @@ This is CREED's real maintenance job.
   `CREED_BOT_TOKEN` variable it prints "CREED_BOT_TOKEN not set; skipping the policy robot" and stays green.
   It never tags or releases. Review steps: `docs/guides/policy-bot.md`. The branch `auto/policy-refresh` must
   not be protected. The owner's setup (access token, `CREED_BOT_TOKEN` variable, schedule) is the numbered list
-   in "Keeping the patches fresh" in the README; the schedules live in the project's CI/CD settings on git.wayne.edu,
-   not in this repo.
+  in "Keeping the patches fresh" in the README; the schedules live in the project's CI/CD settings on git.wayne.edu,
+  not in this repo.
 - **Support dates move only through review.** The robot writes a date that moves earlier or a later
   `active_until`, and holds a later `security_until` until two sources or 14 days agree; a person who edits a
   date by hand puts the upstream source in the commit message. End days are inclusive.
