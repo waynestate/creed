@@ -213,6 +213,12 @@ ceiling: we do not go lower, no matter how the crowd sings for more.</p>
 policy)</span>. PROCTOR check: <code>lock-committed</code>.</li>
 <li><code>composer audit</code> <strong class="kw kw--must">MUST</strong> report no advisories at or above the policy's severity
 threshold <span class="hb-cite">(the stack's version policy)</span>. PROCTOR check: <code>composer-audit</code>.</li>
+</ul>
+<p>CREED's <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json" title="rules.abandoned_packages in policy.json"><code>abandoned_packages</code></a> rule is <code>fail</code>, matching Composer's default since
+2.7, so <code>composer audit</code> fails on an abandoned package. An app that has to keep
+one replaces it or records an override with a reason; PROCTOR's
+<code>composer-audit</code> check applies the same setting.</p>
+<ul>
 <li><code>composer.json</code> <code>require.php</code> <strong class="kw kw--must-not">MUST NOT</strong> allow an EOL version as its lowest
 bound <span class="hb-cite">(the stack's version policy)</span>. PROCTOR check: <code>php-floor</code>.</li>
 <li>Apps <strong class="kw kw--should">SHOULD</strong> set a Composer cooldown of 3 days, once Composer 2.11 is stable
@@ -253,6 +259,7 @@ private-packages decision).</li>
 <p>PROCTOR's <code>repo-url-credentials</code>, <code>package-sources</code> and
 <code>internal-vendor-shadowing</code> checks enforce rules 1, 2 and 4 (warning first),
 and <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s publish job enforces rule 5.</p>
+<div class="hb-policy" role="note"><p class="hb-policy__title">In <a href="https://github.com/waynestate/creed/blob/main/policy/policy.json"><code>policy.json</code></a></p><dl><div><dt><code>rules.abandoned_packages</code></dt><dd><code>&quot;fail&quot;</code></dd></div></dl></div>
           </div>
       </article>
       <article class="hb-chapter hb-chapter--book" id="code" aria-labelledby="code-title">
@@ -946,7 +953,7 @@ override <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>ab98925</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>25d1f1c</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

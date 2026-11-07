@@ -19,6 +19,9 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - No `dev-master`, `dev-*` or `*` constraints on runtime dependencies (the stack's version policy). [PROCTOR](https://proctor.apps.wayne.edu/) check: `unbounded-constraints`.
 - A lock file is required and **MUST** be committed (the stack's version policy). PROCTOR check: `lock-committed`.
 - `composer audit` **MUST** report no advisories at or above the policy's severity threshold (the stack's version policy). PROCTOR check: `composer-audit`.
+
+CREED's [`abandoned_packages`](https://github.com/waynestate/creed/blob/main/policy/policy.json) rule is `fail`, matching Composer's default since 2.7, so `composer audit` fails on an abandoned package. An app that has to keep one replaces it or records an override with a reason; PROCTOR's `composer-audit` check applies the same setting.
+
 - `composer.json` `require.php` **MUST NOT** allow an EOL version as its lowest bound (the stack's version policy). PROCTOR check: `php-floor`.
 - Apps **SHOULD** set a Composer cooldown of 3 days, once Composer 2.11 is stable and in the base images; until then no cooldown is set (the stack's dependency decision, 2026-11-03). A PROCTOR check for a missing cooldown is planned, not built.
 - Every project is a framework-free core plus thin adapters. `composer.json` requires only `php` and PSR packages; Laravel, Inertia and Vue are `suggest` (the stack's core-plus-adapters design).
@@ -37,4 +40,8 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 PROCTOR's `repo-url-credentials`, `package-sources` and `internal-vendor-shadowing` checks enforce rules 1, 2 and 4 (warning first), and [Preflight](https://preflight.apps.wayne.edu/)'s publish job enforces rule 5.
 
-Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `4a4e1d8`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.json)
+
+- **`rules.abandoned_packages`**: `"fail"`
+
+Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `218c65c`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
