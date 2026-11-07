@@ -25,10 +25,10 @@ These are the stack's written standards. The handbook has the practices, and `po
 [Inspect a version](https://creed.apps.wayne.edu/#inspection) [Read the handbook](https://creed.apps.wayne.edu/handbook/)
 
 - **Enforced**: 7
-- **Checked**: 11
-- **Partially**: 6
-- **Documented**: 24
-- **Not yet**: 13
+- **Checked**: 14
+- **Partially**: 9
+- **Documented**: 22
+- **Not yet**: 9
 
 Table of contents
 
@@ -235,9 +235,9 @@ Checked
 
 Build front ends on a Node line that has not reached end of life: 22, 24 and 26. Node 20 reached end of life on 2026-04-30.
 
-Gap The dates are in `policy.json`; no check reads an app's Node version yet.
+Held by The dates are in `policy.json`. PROCTOR main's `proctor/node-eol` reads the Node version an app pins in `.nvmrc`, `volta.node`, CI and Dockerfiles, and grades it through the policy: an active line passes, a security-only line warns and an EOL line fails.
 
-Not yet
+Checked
 
 **Rationale.** Build tools run with your credentials and your source.
 
@@ -301,15 +301,15 @@ Chapter 4
 
 ## Secrets and configuration
 
-One of the three practices in this chapter is written down; the other two are gaps. One of each is printed below.
+Of the three practices in this chapter, one is checked, one is partly checked and one is written down only. The last two are printed below.
 
 ### §4.1 Keep secrets out of source control.
 
 Do not commit `.env`, keys, tokens or passwords. Commit `.env.example` with placeholders. Rotate a secret that was ever exposed.
 
-Gap The handbook's secrets chapter writes the rules; no check scans for committed secrets yet.
+Gap The handbook's secrets chapter writes the rules. PROCTOR main warns on a committed `.env` or `APP_KEY` (`proctor/app-key`) and on a token in a package source URL (`proctor/repo-url-credentials`); no general secret scan exists yet.
 
-Documented
+Partially
 
 **Rationale.** A repository is copied to many machines and outlives any one password.
 
@@ -393,7 +393,7 @@ Chapter 7 · Added in the second pass
 
 ## Patching and the supply chain
 
-Nine practices, one held so far. Chapters 8 to 11 (platform and database, policy data, accessibility, and the WSU developer standards of 2024) are in the book, with their stamps in the contents.
+Nine practices, two checked so far. Chapters 8 to 11 (platform and database, policy data, accessibility, and the WSU developer standards of 2024) are in the book, with their stamps in the contents.
 
 ### §7.1 Track the PHP patch release, not only the branch.
 
@@ -428,7 +428,7 @@ CREED writes the rules down. These are the other projects in the stack, and the 
 
 - ![WayneUI logo: a rounded frame with a gold tab](https://creed.apps.wayne.edu/assets/marks/wayneui.svg)[WayneUI](https://wayneui.apps.wayne.edu/)Wayne State's design system, project 0 of the stack.This page is built on it
 - ![CREED logo: a stone arch with a gold keystone](https://creed.apps.wayne.edu/brand/creed-avatar-256.png)CREEDThe standards, with the policy file and its reader. This book.Chapters 1 to 11
-- ![PROCTOR logo: an eye with a gold square pupil](https://creed.apps.wayne.edu/assets/marks/proctor.png)[PROCTOR](https://proctor.apps.wayne.edu/)Reads your `composer.json` and lock file and checks them against CREED.[§2.1](https://creed.apps.wayne.edu/#c-2-1) [§2.2](https://creed.apps.wayne.edu/#c-2-2) [§3.1](https://creed.apps.wayne.edu/#c-3-1) [§3.2](https://creed.apps.wayne.edu/#c-3-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§5.1](https://creed.apps.wayne.edu/#c-5-1)
+- ![PROCTOR logo: an eye with a gold square pupil](https://creed.apps.wayne.edu/assets/marks/proctor.png)[PROCTOR](https://proctor.apps.wayne.edu/)Reads your `composer.json`, lock file and repository and checks them against CREED.[§2.1](https://creed.apps.wayne.edu/#c-2-1) [§2.2](https://creed.apps.wayne.edu/#c-2-2) [§2.5](https://creed.apps.wayne.edu/#c-2-5) [§2.6](https://creed.apps.wayne.edu/#c-2-6) [§3.1](https://creed.apps.wayne.edu/#c-3-1) [§3.2](https://creed.apps.wayne.edu/#c-3-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§4.1](https://creed.apps.wayne.edu/#c-4-1) [§5.1](https://creed.apps.wayne.edu/#c-5-1)
 - ![Preflight logo: a runway with a gold center line](https://creed.apps.wayne.edu/assets/marks/preflight.png)[Preflight](https://preflight.apps.wayne.edu/)GitLab CI/CD components that run the checks on every push.[§1.2](https://creed.apps.wayne.edu/#c-1-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§3.6](https://creed.apps.wayne.edu/#c-3-6) [§6.6](https://creed.apps.wayne.edu/#c-6-6)
 - ![HELMET logo: a white football helmet with a gold facemask](https://creed.apps.wayne.edu/assets/marks/helmet.png)[HELMET](https://helmet.apps.wayne.edu/)Security headers and the runtime ribbon.[§2.2](https://creed.apps.wayne.edu/#c-2-2) [§4.3](https://creed.apps.wayne.edu/#c-4-3)
 - ![Rollcall logo: an open register with gold ticks](https://creed.apps.wayne.edu/assets/marks/rollcall.png)[Rollcall](https://rollcall.apps.wayne.edu/) *new*Scans the apps and reports which PHP, Laravel and sign-in package each one runs.[§5.1](https://creed.apps.wayne.edu/#c-5-1)

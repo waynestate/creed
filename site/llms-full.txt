@@ -294,10 +294,10 @@ These are the stack's written standards. The handbook has the practices, and `po
 [Inspect a version](https://creed.apps.wayne.edu/#inspection) [Read the handbook](https://creed.apps.wayne.edu/handbook/)
 
 - **Enforced**: 7
-- **Checked**: 11
-- **Partially**: 6
-- **Documented**: 24
-- **Not yet**: 13
+- **Checked**: 14
+- **Partially**: 9
+- **Documented**: 22
+- **Not yet**: 9
 
 Table of contents
 
@@ -504,9 +504,9 @@ Checked
 
 Build front ends on a Node line that has not reached end of life: 22, 24 and 26. Node 20 reached end of life on 2026-04-30.
 
-Gap The dates are in `policy.json`; no check reads an app's Node version yet.
+Held by The dates are in `policy.json`. PROCTOR main's `proctor/node-eol` reads the Node version an app pins in `.nvmrc`, `volta.node`, CI and Dockerfiles, and grades it through the policy: an active line passes, a security-only line warns and an EOL line fails.
 
-Not yet
+Checked
 
 **Rationale.** Build tools run with your credentials and your source.
 
@@ -570,15 +570,15 @@ Chapter 4
 
 ### Secrets and configuration
 
-One of the three practices in this chapter is written down; the other two are gaps. One of each is printed below.
+Of the three practices in this chapter, one is checked, one is partly checked and one is written down only. The last two are printed below.
 
 #### §4.1 Keep secrets out of source control.
 
 Do not commit `.env`, keys, tokens or passwords. Commit `.env.example` with placeholders. Rotate a secret that was ever exposed.
 
-Gap The handbook's secrets chapter writes the rules; no check scans for committed secrets yet.
+Gap The handbook's secrets chapter writes the rules. PROCTOR main warns on a committed `.env` or `APP_KEY` (`proctor/app-key`) and on a token in a package source URL (`proctor/repo-url-credentials`); no general secret scan exists yet.
 
-Documented
+Partially
 
 **Rationale.** A repository is copied to many machines and outlives any one password.
 
@@ -662,7 +662,7 @@ Chapter 7 · Added in the second pass
 
 ### Patching and the supply chain
 
-Nine practices, one held so far. Chapters 8 to 11 (platform and database, policy data, accessibility, and the WSU developer standards of 2024) are in the book, with their stamps in the contents.
+Nine practices, two checked so far. Chapters 8 to 11 (platform and database, policy data, accessibility, and the WSU developer standards of 2024) are in the book, with their stamps in the contents.
 
 #### §7.1 Track the PHP patch release, not only the branch.
 
@@ -697,7 +697,7 @@ CREED writes the rules down. These are the other projects in the stack, and the 
 
 - ![WayneUI logo: a rounded frame with a gold tab](https://creed.apps.wayne.edu/assets/marks/wayneui.svg)[WayneUI](https://wayneui.apps.wayne.edu/)Wayne State's design system, project 0 of the stack.This page is built on it
 - ![CREED logo: a stone arch with a gold keystone](https://creed.apps.wayne.edu/brand/creed-avatar-256.png)CREEDThe standards, with the policy file and its reader. This book.Chapters 1 to 11
-- ![PROCTOR logo: an eye with a gold square pupil](https://creed.apps.wayne.edu/assets/marks/proctor.png)[PROCTOR](https://proctor.apps.wayne.edu/)Reads your `composer.json` and lock file and checks them against CREED.[§2.1](https://creed.apps.wayne.edu/#c-2-1) [§2.2](https://creed.apps.wayne.edu/#c-2-2) [§3.1](https://creed.apps.wayne.edu/#c-3-1) [§3.2](https://creed.apps.wayne.edu/#c-3-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§5.1](https://creed.apps.wayne.edu/#c-5-1)
+- ![PROCTOR logo: an eye with a gold square pupil](https://creed.apps.wayne.edu/assets/marks/proctor.png)[PROCTOR](https://proctor.apps.wayne.edu/)Reads your `composer.json`, lock file and repository and checks them against CREED.[§2.1](https://creed.apps.wayne.edu/#c-2-1) [§2.2](https://creed.apps.wayne.edu/#c-2-2) [§2.5](https://creed.apps.wayne.edu/#c-2-5) [§2.6](https://creed.apps.wayne.edu/#c-2-6) [§3.1](https://creed.apps.wayne.edu/#c-3-1) [§3.2](https://creed.apps.wayne.edu/#c-3-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§4.1](https://creed.apps.wayne.edu/#c-4-1) [§5.1](https://creed.apps.wayne.edu/#c-5-1)
 - ![Preflight logo: a runway with a gold center line](https://creed.apps.wayne.edu/assets/marks/preflight.png)[Preflight](https://preflight.apps.wayne.edu/)GitLab CI/CD components that run the checks on every push.[§1.2](https://creed.apps.wayne.edu/#c-1-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§3.6](https://creed.apps.wayne.edu/#c-3-6) [§6.6](https://creed.apps.wayne.edu/#c-6-6)
 - ![HELMET logo: a white football helmet with a gold facemask](https://creed.apps.wayne.edu/assets/marks/helmet.png)[HELMET](https://helmet.apps.wayne.edu/)Security headers and the runtime ribbon.[§2.2](https://creed.apps.wayne.edu/#c-2-2) [§4.3](https://creed.apps.wayne.edu/#c-4-3)
 - ![Rollcall logo: an open register with gold ticks](https://creed.apps.wayne.edu/assets/marks/rollcall.png)[Rollcall](https://rollcall.apps.wayne.edu/) *new*Scans the apps and reports which PHP, Laravel and sign-in package each one runs.[§5.1](https://creed.apps.wayne.edu/#c-5-1)
@@ -910,6 +910,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Changed: practices 16, 25 and 43 move to Checked, and 59 moves from Not yet to Partially, held by five new checks on PROCTOR main: `node-eol` (the Node line an app pins), `env-outside-config`, `app-key` (a committed `.env` or `APP_KEY`, and the cookie session driver), `served-folder` and `world-writable`. Practices 24 and 55 move from Documented to Partially for the same checks. The tally is now Enforced 7, Checked 14, Partially 9, Documented 22, Not yet 9; the front page's chapter bars and clauses 2.6 and 4.1, the backlog, and the handbook's versions, code, secrets and production chapters name the checks, and the secrets chapter gains an `APP_KEY` rule (rotate a leaked key, no cookie sessions).
 - Fixed: the front page's citation links (the clause numbers beside each stack part in the authorities table) are at least 24 px wide and tall, meeting the WCAG 2.5.8 target size at 320 px in light and dark.
 - Changed: Practices 14, 15 and 21 move to Checked: PROCTOR's laravel-php, laravel-eol and composer-audit abandoned checks enforce them.
 - Changed: the handbook walk reaches the last five chapters (code, runtime-and-headers, secrets, production, deploy-gate): every MUST and SHOULD rule now names its point, a PROCTOR check ID, a measuring command, or the plain words "no check exists yet"; practices 29 and 32 record the completed walk and what remains, and the site's handbook pages and search index are regenerated.
@@ -2271,7 +2272,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowed-calls` for plain bans, and a custom rule only when neither fits.
 
-- `env()` only in `config/` files, from Larastan's `NoEnvCallsOutsideOfConfig` rule. Planned.
+- `env()` only in `config/` files, from Larastan's `NoEnvCallsOutsideOfConfig` rule. [PROCTOR](https://proctor.apps.wayne.edu/) check: `env-outside-config` (a warning per call); the PHPStan rule is planned.
 - No disabled TLS verification, such as `withoutVerifying()` or `CURLOPT_SSL_VERIFYPEER` set to false (OWASP ASVS). Planned.
 - No SQL built by joining strings; use bindings (OWASP SQL Injection Prevention Cheat Sheet). Planned.
 - No debug leftovers or dynamic code, from `phpstan-disallowed-calls`. Planned.
@@ -2295,7 +2296,7 @@ Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowe
 
 - Pint, PHPStan, Rector dry-runs and ESLint run in CI through [Preflight](https://preflight.apps.wayne.edu/) components, not in the deploy gate (the stack's coding standard). The Preflight components are Planned.
 - New rules arrive as warnings and become errors on a stated date, the same staging as PHP versions (the stack's enforcement design).
-- [PROCTOR](https://proctor.apps.wayne.edu/) reports whether an app uses the presets (the stack's coding standard). The PROCTOR report is Planned.
+- PROCTOR reports whether an app uses the presets (the stack's coding standard). The PROCTOR report is Planned.
 
 ### [§3.10](https://creed.apps.wayne.edu/handbook/code.html#which-preset-enforces-each-rule) Which preset enforces each rule
 
@@ -2346,7 +2347,7 @@ Table 3-1
 - GitLab Code Quality: [https://docs.gitlab.com/ci/testing/code_quality/](https://docs.gitlab.com/ci/testing/code_quality/)
 - OWASP ASVS: [https://asvs.owasp.org/](https://asvs.owasp.org/)
 
-Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `f26125d`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `b795852`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2564,11 +2565,11 @@ The handbook · 2026 Edition
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a "Not decided here" heading.
 
-Thirteen chapters · 174 provisions · **MUST** 50 · **SHOULD** 13 · **MAY** 1
+Thirteen chapters · 175 provisions · **MUST** 53 · **SHOULD** 14 · **MAY** 1
 
 ### Contents
 
-1. [1 Versions Latest patches · Base images · Node · Tool minimums](https://creed.apps.wayne.edu/handbook/versions.html)4 sections · 4 provisions · **MUST NOT** 2 · **MUST** 2Decided
+1. [1 Versions Latest patches · Base images · Node · Tool minimums](https://creed.apps.wayne.edu/handbook/versions.html)4 sections · 4 provisions · **MUST NOT** 2 · **MUST** 3Decided
 2. [2 Dependencies Private packages](https://creed.apps.wayne.edu/handbook/dependencies.html)1 section · 15 provisions · **MUST NOT** 4 · **MUST** 6 · **SHOULD NOT** 1 · **SHOULD** 3Decided
 3. [3 Code PHP style · Reading the code · Source control and documentation · Static analysis · Input and files · Banned patterns · Vue and JavaScript · Security analysis · How it is enforced · Which preset enforces each rule · Not adopted · To be decided · Sources](https://creed.apps.wayne.edu/handbook/code.html)13 sections · 43 provisions · **MUST NOT** 3 · **MUST** 6 · **SHOULD** 2Partly decided
 4. [4 Auth](https://creed.apps.wayne.edu/handbook/auth.html)12 provisions · **MUST** 3Partly decided
@@ -2578,7 +2579,7 @@ Thirteen chapters · 174 provisions · **MUST** 50 · **SHOULD** 13 · **MAY** 1
 8. [8 CI](https://creed.apps.wayne.edu/handbook/ci.html)8 provisions · **MUST** 3 · **SHOULD** 1Decided
 9. [9 Accessibility Target · Components · Checks · Not decided here](https://creed.apps.wayne.edu/handbook/accessibility.html)4 sections · 9 provisions · **MUST NOT** 1 · **SHOULD** 1Decided
 10. [10 Every OS](https://creed.apps.wayne.edu/handbook/every-os.html)5 provisions · **MUST** 1Decided
-11. [11 Secrets and debugging Credentials · Errors and debug output · Not decided here](https://creed.apps.wayne.edu/handbook/secrets.html)3 sections · 8 provisions · **MUST NOT** 3 · **MUST** 2Decided
+11. [11 Secrets and debugging Credentials · Errors and debug output · Not decided here](https://creed.apps.wayne.edu/handbook/secrets.html)3 sections · 9 provisions · **MUST NOT** 4 · **MUST** 3 · **SHOULD NOT** 1Decided
 12. [12 Production Environments · Running safely · Who can reach it](https://creed.apps.wayne.edu/handbook/production.html)3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 5 · **SHOULD** 3Decided
 13. [13 Overrides](https://creed.apps.wayne.edu/handbook/overrides.html)5 provisionsDecided
 
@@ -2644,8 +2645,8 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 - The app and its scripts **MUST** run as a non-root, non-administrator user with the least access they need (WSU developer standards, 2024). No check exists yet.
 - The web server **MUST NOT** list directory contents (WSU developer standards, 2024). No check exists yet.
-- File permissions **MUST** be set per path; write access for the web server is granted only to specific files or folders, and mode `777` **MUST NOT** be used (WSU developer standards, 2024). A [PROCTOR](https://proctor.apps.wayne.edu/) check for this is proposed, not built: it flags mode `777` and web-writable paths outside the allowed list.
-- Debugging and diagnostic files, scripts, dumps and backups **MUST NOT** sit in the served folder (WSU developer standards, 2024). A PROCTOR check for this is proposed, not built: a scan of the served folder for `phpinfo.php`, dumps, backups, `.env` and `.git`.
+- File permissions **MUST** be set per path; write access for the web server is granted only to specific files or folders, and mode `777` **MUST NOT** be used (WSU developer standards, 2024). [PROCTOR](https://proctor.apps.wayne.edu/) check: `world-writable` (`chmod 777` in scripts, Dockerfiles, CI and PHP).
+- Debugging and diagnostic files, scripts, dumps and backups **MUST NOT** sit in the served folder (WSU developer standards, 2024). PROCTOR check: `served-folder` (`phpinfo()`, dumps, backups, logs, env files and `adminer*.php` under `public/`).
 - On failure the app degrades predictably and fails closed: an authentication error withholds access (WSU developer standards, 2024).
 - A person is told when something fails: a monitor calls `/up` on a schedule and alerts someone (WSU developer standards, 2024).
 - Logs are rotated or removed at a set interval; temporary files are cleaned up; uploaded files have a retention rule. Citadel rotates container logs; elsewhere the platform or the app **MUST** (WSU developer standards, 2024). No check exists yet.
@@ -2659,7 +2660,7 @@ Production is the encore. Keep the lights on and the doors locked, and the band 
 - Every app **MUST** limit access by network address to the audience it serves, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024). No check exists yet.
 - The one named exception: the stack's own public front pages are crawlable by design (the stack's agent-ready sites decision). It is a special case for those pages, not a general exemption for public pages.
 
-Set from [`handbook/production.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/production.md), impression `2caf396`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/production.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/production.md), impression `4e14fd3`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2732,7 +2733,7 @@ Chapter 11
 
 ## Secrets and debugging
 
-3 sections · 8 provisions · **MUST NOT** 3 · **MUST** 2
+3 sections · 9 provisions · **MUST NOT** 4 · **MUST** 3 · **SHOULD NOT** 1
 
 Decided
 
@@ -2740,14 +2741,15 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 ### [§11.1](https://creed.apps.wayne.edu/handbook/secrets.html#credentials) Credentials
 
-- Credentials (database and service passwords, API keys, tokens) **MUST NOT** be committed to version control, because history keeps them forever. Commit `.env.example` with placeholders instead. A credential that was ever committed is treated as exposed and rotated (WSU developer standards, 2024). No check exists yet.
-- Credentials and sensitive data **MUST** live outside any folder the web server serves. Laravel's `public/` is the only served folder; raw PHP apps serve one `public/` folder the same way (WSU developer standards, 2024). No check exists yet.
+- Credentials (database and service passwords, API keys, tokens) **MUST NOT** be committed to version control, because history keeps them forever. Commit `.env.example` with placeholders instead. A credential that was ever committed is treated as exposed and rotated (WSU developer standards, 2024). [PROCTOR](https://proctor.apps.wayne.edu/) checks: `app-key` (a committed `.env` or `APP_KEY`) and `repo-url-credentials` (a token in a package source URL); no general secret scan exists yet.
+- Credentials and sensitive data **MUST** live outside any folder the web server serves. Laravel's `public/` is the only served folder; raw PHP apps serve one `public/` folder the same way (WSU developer standards, 2024). PROCTOR check: `served-folder` (dumps, backups, logs and env files in `public/`).
+- The Laravel `APP_KEY` is a credential: whoever holds it can forge encrypted payloads, which can mean code execution. It **MUST NOT** be committed, a key that leaked **MUST** be rotated with `php artisan key:generate` on every environment that used it, and the session driver **SHOULD NOT** be `cookie`, which seals every session with the key (GitGuardian, exploiting public APP_KEY leaks). PROCTOR check: `app-key`.
 - An app uses its own dedicated application ID, never a person's employee or student AccessID, to reach another server or service, with the fewest permissions the task needs (WSU developer standards, 2024).
 - Real values come from the environment at deploy time (the Citadel dashboard or CI variables), never from a file in the repo (WSU developer standards, 2024).
 
 ### [§11.2](https://creed.apps.wayne.edu/handbook/secrets.html#errors-and-debug-output) Errors and debug output
 
-- `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment. A [PROCTOR](https://proctor.apps.wayne.edu/) check for this is proposed, not built.
+- `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment. A PROCTOR check for this is proposed, not built.
 - Public-facing code **MUST NOT** display default interpreter or framework error pages to the user; show a controlled message and log the detail (WSU developer standards, 2024). No check exists yet.
 - Logs and diagnostic output **MUST NOT** contain credentials or personally identifiable information such as Social Security numbers. That includes logged exceptions (WSU developer standards, 2024). No check exists yet.
 
@@ -2757,7 +2759,7 @@ A leaked password is a bad encore: everyone remembers it, and nobody asked for a
 
 - The [HELMET](https://helmet.apps.wayne.edu/) header rules and runtime refusals are written in `runtime-and-headers.md`.
 
-Set from [`handbook/secrets.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/secrets.md), impression `7975dfa`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/secrets.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/secrets.md), impression `0c8f1e9`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2767,7 +2769,7 @@ Chapter 1
 
 ## Versions
 
-4 sections · 4 provisions · **MUST NOT** 2 · **MUST** 2
+4 sections · 4 provisions · **MUST NOT** 2 · **MUST** 3
 
 Decided
 
@@ -2803,6 +2805,8 @@ A base image **MUST** be rebuilt when the policy's `latest_patch` for its branch
 
 The policy lists even Node majors only, because even majors are the LTS lines; odd majors **MUST NOT** be a target and are not listed (the stack's version policy).
 
+An app **MUST** build on a Node line that has not reached end of life. PROCTOR check: `node-eol`. It reads `.nvmrc`, `.node-version`, `volta.node` and the `node` image in CI and Dockerfiles: an active line passes, a security-only line warns and an EOL line fails. `engines.node` and an odd major warn.
+
 ### [§1.4](https://creed.apps.wayne.edu/handbook/versions.html#tool-minimums) Tool minimums
 
 The `tools` block sets a minimum version for a developer tool. Each key is a tool name, each value a `minimum` version. Today it holds Composer at 2.8.0.
@@ -2816,4 +2820,4 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`components.*.versions.*.latest_patch`**: set per version
 - **`components.*.versions.*.latest_patch_checked`**: set per version
 
-Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `4876356`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `aa147fa`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
