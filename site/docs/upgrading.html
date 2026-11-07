@@ -47,7 +47,7 @@
 <li>Move the lines under <code>## Unreleased</code> in <code>CHANGELOG.md</code> to a new <code>## X.Y.Z (YYYY-MM-DD)</code> heading, leaving an empty <code>## Unreleased</code>. (0.1.0 predates the heading convention, so it has none.)</li>
 <li><code>composer ci</code> green locally, then on both pipelines for that commit.</li>
 <li>Run a secrets scan of the history and check that nothing internal (server names, people, IDs) is in the tree.</li>
-<li>Tag <code>X.Y.Z</code> (no <code>v</code>) on nougat. The mirror carries the tag to GitHub, and Packagist picks it up from there.</li>
+<li>Tag <code>X.Y.Z</code> (no <code>v</code>) on git.wayne.edu. The mirror carries the tag to GitHub, and Packagist picks it up from there.</li>
 <li>A release needs a maintainer's approval. Never move or delete a published tag.</li>
 <li>Then bump <code>waynestate/creed</code> where the stack pins it, and refresh the generated copies.</li>
 </ol>
@@ -86,7 +86,7 @@
 </div>
 <footer class="docs-footer">
   <span>Documents CREED <span data-docs-version>0.1.6</span></span>
-  <span><a rel="noopener" href="https://nougat.snu.gs/enterprise-apps/creed">Source</a> Mirrors: <a rel="noopener" href="https://git.wayne.edu/enterprise-apps/creed">git.wayne.edu</a> <a rel="noopener" href="https://github.com/waynestate/creed">GitHub</a> <a href="upgrading.md">Markdown</a></span>
+  <span><a rel="noopener" href="https://github.com/waynestate/creed">Source</a> Mirrors: <a rel="noopener" href="https://git.wayne.edu/enterprise-apps/creed">git.wayne.edu</a> <a href="upgrading.md">Markdown</a></span>
 </footer>
 </body>
 </html>

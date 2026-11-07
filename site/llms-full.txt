@@ -8,7 +8,7 @@ The README and the Markdown twin of every page, joined. The index is https://cre
 
 ## README
 
-Source: https://nougat.snu.gs/enterprise-apps/creed/blob/HEAD/README.md
+Source: https://github.com/waynestate/creed/blob/HEAD/README.md
 
 ## CREED
 
@@ -19,8 +19,8 @@ inspector who stamps what he finds.
 
 Checks: `composer ci` (the same command runs on GitLab and GitHub).
 
-Front page: [`site/index.html`](https://nougat.snu.gs/enterprise-apps/creed/blob/HEAD/site/index.html), a static page you can open in a browser or serve from `site/`.
-On Citadel it is served by the raw-PHP deploy layer in [`deploy/`](https://nougat.snu.gs/enterprise-apps/creed/blob/HEAD/deploy/): a Squire kit whose front controller serves `site/` behind HELMET's security headers. For local development, keep serving `site/` directly.
+Front page: [`site/index.html`](https://github.com/waynestate/creed/blob/HEAD/site/index.html), a static page you can open in a browser or serve from `site/`.
+On Citadel it is served by the raw-PHP deploy layer in [`deploy/`](https://github.com/waynestate/creed/blob/HEAD/deploy/): a Squire kit whose front controller serves `site/` behind HELMET's security headers. For local development, keep serving `site/` directly.
 
 One command, two clouds, zero excuses. Higher.
 
@@ -32,15 +32,17 @@ every tool needs: what state is this version in, on this date?
 
 ### Documentation
 
-The documentation site lives at [`site/docs/index.html`](https://nougat.snu.gs/enterprise-apps/creed/blob/HEAD/site/docs/index.html) and deploys to [https://creed.apps.wayne.edu/docs/](https://creed.apps.wayne.edu/docs/). It is built from `docs/` by Squire's shared docs builder, and `composer ci` fails when the committed pages go stale. Creed Bratton keeps his records in a filing cabinet nobody can find; ours are in `docs/`, where anyone can.
+The documentation site lives at [`site/docs/index.html`](https://github.com/waynestate/creed/blob/HEAD/site/docs/index.html) and deploys to [https://creed.apps.wayne.edu/docs/](https://creed.apps.wayne.edu/docs/). It is built from `docs/` by Squire's shared docs builder, and `composer ci` fails when the committed pages go stale. Creed Bratton keeps his records in a filing cabinet nobody can find; ours are in `docs/`, where anyone can.
 
 The docs pages are bound into the same code book as the front page: the running head and main menu, the cream stock and green cloth spine, Source Serif and IBM Plex Mono, stamped callouts and the green colophon. Dark mode is the same book read after hours (warm graphite, cream type, gold foil), never a green wallpaper. The cover's gold ribbon marks the page you are reading, and each callout's stamp is pressed as it scrolls in, for readers who allow motion. That look lives in two files, `docs/_header.html` and `docs/theme/creed.css`, named by the `theme` key in `docs/docs.json`; edit those, never the kit's `site/assets/docs.css`.
 
 ### Where the code lives
 
-The canonical repository is on nougat: [enterprise-apps/creed](https://nougat.snu.gs/enterprise-apps/creed). git.wayne.edu and GitHub ([waynestate/creed](https://github.com/waynestate/creed)) are read-only mirrors of it.
-Open issues and merge requests on nougat, not on the mirrors.
-This moves to git.wayne.edu once it has CI runners. Creed Bratton would say the code lives wherever he last left it. Ours lives on nougat.
+The canonical repository is [enterprise-apps/creed](https://git.wayne.edu/enterprise-apps/creed) on git.wayne.edu: clone it over SSH as `git@git.wayne.edu:enterprise-apps/creed.git`, or over HTTPS as `https://git.wayne.edu/enterprise-apps/creed.git`. Open issues and merge requests there; tags are made there, by the maintainer, with an approver. CI runs on git.wayne.edu.
+
+GitHub ([waynestate/creed](https://github.com/waynestate/creed)) is a read-only push mirror of it: nobody pushes to it, and Packagist reads from it.
+
+Creed Bratton would say the code lives wherever he last left it. Ours lives on git.wayne.edu.
 
 No other code in the stack decides a version's state. The rules live in one
 place, and every tool reads them from here.
@@ -138,7 +140,7 @@ site, [proof.apps.wayne.edu/creed](https://proof.apps.wayne.edu/creed/), behind 
 
 ### The handbook
 
-The rules, chapter by chapter, live in [`handbook/`](https://nougat.snu.gs/enterprise-apps/creed/blob/HEAD/handbook/README.md).
+The rules, chapter by chapter, live in [`handbook/`](https://github.com/waynestate/creed/blob/HEAD/handbook/README.md).
 
 ### Keeping the patches fresh
 
@@ -169,7 +171,7 @@ details.
 The `policy-bot` job in `.gitlab-ci.yml` runs the robot on the schedule that
 carries `CREED_JOB=policy-bot` and by hand from the web. Without the token the
 job prints "CREED_BOT_TOKEN not set; skipping the policy robot" and stays
-green. The setup, all on the CREED project on nougat (the canonical
+green. The setup, all on the CREED project on git.wayne.edu (the canonical
 repository):
 
 1. A project access token (Settings > Access tokens): role Maintainer
@@ -245,7 +247,7 @@ Creed Bratton would have a form for this.
 
 ### Tests
 
-Maintainers: how to build, test and release this project, and where its data comes from, is in [MAINTAINING.md](https://nougat.snu.gs/enterprise-apps/creed/blob/HEAD/MAINTAINING.md).
+Maintainers: how to build, test and release this project, and where its data comes from, is in [MAINTAINING.md](https://github.com/waynestate/creed/blob/HEAD/MAINTAINING.md).
 
 No PHP on the machine? Fine. Docker runs the suite:
 
@@ -910,6 +912,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Changed: The canonical repository is git.wayne.edu (ADR-0021); docs, links and package metadata no longer point at the archived nougat copy.
 - Changed: practices 16, 25 and 43 move to Checked, and 59 moves from Not yet to Partially, held by five new checks on PROCTOR main: `node-eol` (the Node line an app pins), `env-outside-config`, `app-key` (a committed `.env` or `APP_KEY`, and the cookie session driver), `served-folder` and `world-writable`. Practices 24 and 55 move from Documented to Partially for the same checks. The tally is now Enforced 7, Checked 14, Partially 9, Documented 22, Not yet 9; the front page's chapter bars and clauses 2.6 and 4.1, the backlog, and the handbook's versions, code, secrets and production chapters name the checks, and the secrets chapter gains an `APP_KEY` rule (rotate a leaked key, no cookie sessions).
 - Fixed: the front page's citation links (the clause numbers beside each stack part in the authorities table) are at least 24 px wide and tall, meeting the WCAG 2.5.8 target size at 320 px in light and dark.
 - Changed: Practices 14, 15 and 21 move to Checked: PROCTOR's laravel-php, laravel-eol and composer-audit abandoned checks enforce them.
@@ -1016,7 +1019,7 @@ This page tells you how to build, test and release CREED, and how its policy dat
 
 ### Where the code lives[#](https://creed.apps.wayne.edu/docs/contributing.html#where-the-code-lives)
 
-Development happens on nougat, the canonical repository ([enterprise-apps/creed](https://nougat.snu.gs/enterprise-apps/creed)). This GitHub repository and git.wayne.edu are read-only mirrors: `main` and tags are copied automatically. Changes, issues and merge requests go to nougat. Nobody pushes to the mirrors.
+Development happens on git.wayne.edu, the canonical repository ([enterprise-apps/creed](https://git.wayne.edu/enterprise-apps/creed)). GitHub ([waynestate/creed](https://github.com/waynestate/creed)) is a read-only push mirror: `main` and tags are copied automatically, and Packagist picks releases up from it. Changes, issues and merge requests go to git.wayne.edu; tags are made there, by the maintainer, with an approver. Nobody pushes to the mirror.
 
 ### Build and test[#](https://creed.apps.wayne.edu/docs/contributing.html#build-and-test)
 
@@ -1055,7 +1058,7 @@ The documentation site is built by `composer docs` and checked by `composer docs
 This is CREED's real maintenance job.
 
 - **Patch levels are watched automatically.** `bin/refresh-patches.php` reads php.net (PHP), Packagist (Laravel), nodejs.org (Node) and endoflife.date (a PHP cross-check and Vue lines). It updates `latest_patch` and `latest_patch_checked`, and proposes new Vue lines. In CI the scheduled job is check-only: the refresh tool exits 3 when the policy changed and the job fails on the diff.
-- **The policy robot opens the change every Monday.** `bin/policy-bot.php run` runs the fuller `bin/refresh-policy.php` (dates, patches, new lines), commits `policy/policy.json` and `policy/sources.json` on `auto/policy-refresh` and pushes a merge request labeled `auto-data`. It merges itself when the refresher exited 3 and the pipeline passes; after an exit 4 (something held or refused) it waits for a person, and each held or refused item has an `auto-alert` issue. It never tags or releases. Review steps and setup: [The policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html). The branch `auto/policy-refresh` must not be protected. The schedules live in the project's CI/CD settings on nougat, not in this repo.
+- **The policy robot opens the change every Monday.** `bin/policy-bot.php run` runs the fuller `bin/refresh-policy.php` (dates, patches, new lines), commits `policy/policy.json` and `policy/sources.json` on `auto/policy-refresh` and pushes a merge request labeled `auto-data`. It merges itself when the refresher exited 3 and the pipeline passes; after an exit 4 (something held or refused) it waits for a person, and each held or refused item has an `auto-alert` issue. It never tags or releases. Review steps and setup: [The policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html). The branch `auto/policy-refresh` must not be protected. The schedules live in the project's CI/CD settings on git.wayne.edu, not in this repo.
 - **Support dates move only through review.** The robot writes a date that moves earlier or a later `active_until`, and holds a later `security_until` until two sources or 14 days agree. A person who edits a date by hand puts the upstream source in the commit message. End days are inclusive.
 - **A red scheduled run is a to-do, not an outage:** run `php bin/refresh-patches.php`, read the diff, `composer ci`, add a CHANGELOG line, commit.
 - **After any policy change,** the copies downstream are stale until refreshed. In each consumer (PROCTOR, Rollcall, Booster), run `php <creed>/bin/export.php --namespace='Waynestate\<Project>\Creed' --to=src/Creed`, then `composer creed-copy:check` with `CREED_PATH` pointing at this checkout. ADVISOR regenerates with `content:generate`.
@@ -1066,7 +1069,7 @@ This is CREED's real maintenance job.
 1. Move the lines under `## Unreleased` in `CHANGELOG.md` to a new `## X.Y.Z (YYYY-MM-DD)` heading, leaving an empty `## Unreleased`. (0.1.0 predates the heading convention, so it has none.)
 2. `composer ci` green locally, then on both pipelines for that commit.
 3. Run a secrets scan of the history and check that nothing internal (server names, people, IDs) is in the tree.
-4. Tag `X.Y.Z` (no `v`) on nougat. The mirror carries the tag to GitHub, and Packagist picks it up from there.
+4. Tag `X.Y.Z` (no `v`) on git.wayne.edu. The mirror carries the tag to GitHub, and Packagist picks it up from there.
 5. A release needs a maintainer's approval. Never move or delete a published tag.
 6. Then bump `waynestate/creed` where the stack pins it, and refresh the generated copies.
 
@@ -1170,7 +1173,7 @@ Source: https://creed.apps.wayne.edu/docs/guides/instance-runner.html
 
 ## The instance runner[#](https://creed.apps.wayne.edu/docs/guides/instance-runner.html#the-instance-runner)
 
-This page explains why every product in the stack strongly recommends a git.wayne.edu instance runner, and where CREED's code lives until one exists.
+This page explains why every product in the stack strongly recommends a git.wayne.edu instance runner, and where CREED's code lives.
 
 ### Strongly recommended: a git.wayne.edu instance runner[#](https://creed.apps.wayne.edu/docs/guides/instance-runner.html#strongly-recommended-a-git-wayne-edu-instance-runner)
 
@@ -1182,9 +1185,9 @@ Creed Bratton, whose quality assurance work we all admire. His past is a mystery
 
 ### Where the code lives[#](https://creed.apps.wayne.edu/docs/guides/instance-runner.html#where-the-code-lives)
 
-The canonical repository is on nougat: [enterprise-apps/creed](https://nougat.snu.gs/enterprise-apps/creed). git.wayne.edu and GitHub ([waynestate/creed](https://github.com/waynestate/creed)) are read-only mirrors of it. Open issues and merge requests on nougat, not on the mirrors. This moves to git.wayne.edu once it has CI runners.
+The canonical repository is [enterprise-apps/creed](https://git.wayne.edu/enterprise-apps/creed) on git.wayne.edu. Open issues and merge requests there; tags are made there, by the maintainer, with an approver. CI runs on git.wayne.edu. GitHub ([waynestate/creed](https://github.com/waynestate/creed)) is a read-only push mirror of it: nobody pushes to it, and Packagist reads from it.
 
-Creed Bratton would say the code lives wherever he last left it. Ours lives on nougat.
+Creed Bratton would say the code lives wherever he last left it. Ours lives on git.wayne.edu.
 
 ### Related[#](https://creed.apps.wayne.edu/docs/guides/instance-runner.html#related)
 
@@ -2073,7 +2076,7 @@ How CREED versions are cut, what each release changed that a consumer notices, a
 1. Move the lines under `## Unreleased` in `CHANGELOG.md` to a new `## X.Y.Z (YYYY-MM-DD)` heading, leaving an empty `## Unreleased`. (0.1.0 predates the heading convention, so it has none.)
 2. `composer ci` green locally, then on both pipelines for that commit.
 3. Run a secrets scan of the history and check that nothing internal (server names, people, IDs) is in the tree.
-4. Tag `X.Y.Z` (no `v`) on nougat. The mirror carries the tag to GitHub, and Packagist picks it up from there.
+4. Tag `X.Y.Z` (no `v`) on git.wayne.edu. The mirror carries the tag to GitHub, and Packagist picks it up from there.
 5. A release needs a maintainer's approval. Never move or delete a published tag.
 6. Then bump `waynestate/creed` where the stack pins it, and refresh the generated copies.
 
@@ -2246,7 +2249,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 ### [§3.3](https://creed.apps.wayne.edu/handbook/code.html#source-control-and-documentation) Source control and documentation
 
 - All source is kept in git. Access to a repo **MUST** be removed when someone leaves the project or the university (WSU developer standards, 2024). No check exists yet.
-- The stack's code has its primary home on nougat, with git.wayne.edu as the mirror, until a CI runner exists on git.wayne.edu; the standards name git.wayne.edu as the preferred home.
+- The stack's code has its primary home on git.wayne.edu; the standards name git.wayne.edu as the preferred home.
 - Register the project in the catalog Enterprise Apps names, and keep its environments current. Stack apps also register with ROLLCALL, the stack's census (WSU developer standards, 2024).
 - Every repo's README **MUST** say how to install, configure and deploy the code for local development, on every OS (see `every-os.md`), and how to update an existing deployment (WSU developer standards, 2024). No check exists yet.
 - If the Help Desk might be contacted about the project, keep an overview in the repo: what it does, who uses it, known common issues and who to call for an incident; deliver changes to the Help Desk when it changes (WSU developer standards, 2024).
@@ -2347,7 +2350,7 @@ Table 3-1
 - GitLab Code Quality: [https://docs.gitlab.com/ci/testing/code_quality/](https://docs.gitlab.com/ci/testing/code_quality/)
 - OWASP ASVS: [https://asvs.owasp.org/](https://asvs.owasp.org/)
 
-Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `b795852`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `fd2d47b`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 

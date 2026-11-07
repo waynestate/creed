@@ -10,6 +10,7 @@ generator: Squire agent-ready
 
 ## Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Changed: The canonical repository is git.wayne.edu (ADR-0021); docs, links and package metadata no longer point at the archived nougat copy.
 - Changed: practices 16, 25 and 43 move to Checked, and 59 moves from Not yet to Partially, held by five new checks on PROCTOR main: `node-eol` (the Node line an app pins), `env-outside-config`, `app-key` (a committed `.env` or `APP_KEY`, and the cookie session driver), `served-folder` and `world-writable`. Practices 24 and 55 move from Documented to Partially for the same checks. The tally is now Enforced 7, Checked 14, Partially 9, Documented 22, Not yet 9; the front page's chapter bars and clauses 2.6 and 4.1, the backlog, and the handbook's versions, code, secrets and production chapters name the checks, and the secrets chapter gains an `APP_KEY` rule (rotate a leaked key, no cookie sessions).
 - Fixed: the front page's citation links (the clause numbers beside each stack part in the authorities table) are at least 24 px wide and tall, meeting the WCAG 2.5.8 target size at 320 px in light and dark.
 - Changed: Practices 14, 15 and 21 move to Checked: PROCTOR's laravel-php, laravel-eol and composer-audit abandoned checks enforce them.

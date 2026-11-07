@@ -12,7 +12,7 @@ This page tells you how to build, test and release CREED, and how its policy dat
 
 ## Where the code lives[#](https://creed.apps.wayne.edu/docs/contributing.html#where-the-code-lives)
 
-Development happens on nougat, the canonical repository ([enterprise-apps/creed](https://nougat.snu.gs/enterprise-apps/creed)). This GitHub repository and git.wayne.edu are read-only mirrors: `main` and tags are copied automatically. Changes, issues and merge requests go to nougat. Nobody pushes to the mirrors.
+Development happens on git.wayne.edu, the canonical repository ([enterprise-apps/creed](https://git.wayne.edu/enterprise-apps/creed)). GitHub ([waynestate/creed](https://github.com/waynestate/creed)) is a read-only push mirror: `main` and tags are copied automatically, and Packagist picks releases up from it. Changes, issues and merge requests go to git.wayne.edu; tags are made there, by the maintainer, with an approver. Nobody pushes to the mirror.
 
 ## Build and test[#](https://creed.apps.wayne.edu/docs/contributing.html#build-and-test)
 
@@ -51,7 +51,7 @@ The documentation site is built by `composer docs` and checked by `composer docs
 This is CREED's real maintenance job.
 
 - **Patch levels are watched automatically.** `bin/refresh-patches.php` reads php.net (PHP), Packagist (Laravel), nodejs.org (Node) and endoflife.date (a PHP cross-check and Vue lines). It updates `latest_patch` and `latest_patch_checked`, and proposes new Vue lines. In CI the scheduled job is check-only: the refresh tool exits 3 when the policy changed and the job fails on the diff.
-- **The policy robot opens the change every Monday.** `bin/policy-bot.php run` runs the fuller `bin/refresh-policy.php` (dates, patches, new lines), commits `policy/policy.json` and `policy/sources.json` on `auto/policy-refresh` and pushes a merge request labeled `auto-data`. It merges itself when the refresher exited 3 and the pipeline passes; after an exit 4 (something held or refused) it waits for a person, and each held or refused item has an `auto-alert` issue. It never tags or releases. Review steps and setup: [The policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html). The branch `auto/policy-refresh` must not be protected. The schedules live in the project's CI/CD settings on nougat, not in this repo.
+- **The policy robot opens the change every Monday.** `bin/policy-bot.php run` runs the fuller `bin/refresh-policy.php` (dates, patches, new lines), commits `policy/policy.json` and `policy/sources.json` on `auto/policy-refresh` and pushes a merge request labeled `auto-data`. It merges itself when the refresher exited 3 and the pipeline passes; after an exit 4 (something held or refused) it waits for a person, and each held or refused item has an `auto-alert` issue. It never tags or releases. Review steps and setup: [The policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html). The branch `auto/policy-refresh` must not be protected. The schedules live in the project's CI/CD settings on git.wayne.edu, not in this repo.
 - **Support dates move only through review.** The robot writes a date that moves earlier or a later `active_until`, and holds a later `security_until` until two sources or 14 days agree. A person who edits a date by hand puts the upstream source in the commit message. End days are inclusive.
 - **A red scheduled run is a to-do, not an outage:** run `php bin/refresh-patches.php`, read the diff, `composer ci`, add a CHANGELOG line, commit.
 - **After any policy change,** the copies downstream are stale until refreshed. In each consumer (PROCTOR, Rollcall, Booster), run `php <creed>/bin/export.php --namespace='Waynestate\<Project>\Creed' --to=src/Creed`, then `composer creed-copy:check` with `CREED_PATH` pointing at this checkout. ADVISOR regenerates with `content:generate`.
@@ -62,7 +62,7 @@ This is CREED's real maintenance job.
 1. Move the lines under `## Unreleased` in `CHANGELOG.md` to a new `## X.Y.Z (YYYY-MM-DD)` heading, leaving an empty `## Unreleased`. (0.1.0 predates the heading convention, so it has none.)
 2. `composer ci` green locally, then on both pipelines for that commit.
 3. Run a secrets scan of the history and check that nothing internal (server names, people, IDs) is in the tree.
-4. Tag `X.Y.Z` (no `v`) on nougat. The mirror carries the tag to GitHub, and Packagist picks it up from there.
+4. Tag `X.Y.Z` (no `v`) on git.wayne.edu. The mirror carries the tag to GitHub, and Packagist picks it up from there.
 5. A release needs a maintainer's approval. Never move or delete a published tag.
 6. Then bump `waynestate/creed` where the stack pins it, and refresh the generated copies.
 
