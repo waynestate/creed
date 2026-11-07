@@ -249,9 +249,10 @@ Why: an app that cannot move PHP also cannot move Laravel, and the reverse.
 
 Sources: [Laravel release notes](https://laravel.com/docs/13.x/releases).
 
-How the stack holds it: `Partially`. `policy.json` records the PHP range each Laravel release supports (Laravel 10 to
-13), and the reader exposes it through `phpRange()`; `tests/PolicyRequiresTest.php` pins the values. No check compares
-an app's pair with the policy yet.
+How the stack holds it: `Checked`. `policy.json` records the PHP range each Laravel release supports (Laravel 10 to
+13), and the reader exposes it through `phpRange()`; `tests/PolicyRequiresTest.php` pins the values. PROCTOR main's
+`proctor/laravel-php` reads the app's `require.php` and its locked `laravel/framework`, and fails when the PHP
+constraint allows no PHP in the policy's range for that Laravel release, or allows PHP below the release's floor.
 
 ### 15. Run a Laravel release that still gets security fixes
 
@@ -262,10 +263,11 @@ Why: an EOL framework is the largest unpatched surface in a typical app.
 
 Sources: [Laravel release notes](https://laravel.com/docs/13.x/releases).
 
-How the stack holds it: `Not yet`. The reader can classify Laravel 10, 11, 12 and 13 (second pass: 13 was added after
+How the stack holds it: `Checked`. The reader can classify Laravel 10, 11, 12 and 13 (second pass: 13 was added after
 the first pass). PROCTOR `unpatched` reads `laravel/framework` from `composer.lock` and warns when the locked patch
-trails the policy's `latest_patch`, but no check fails an app whose framework line is EOL; the planned deploy gate
-will. A supported branch is not enough on its own: see practice 38 for the October 2026 Laravel advisory.
+trails the policy's `latest_patch`; PROCTOR main's `proctor/laravel-eol` classifies the locked Laravel line through
+the policy, where an active line passes, a security-only line warns and an EOL line fails. A supported branch is not
+enough on its own: see practice 38 for the October 2026 Laravel advisory.
 
 ### 16. Use a Node release that is in LTS or maintenance
 
@@ -358,7 +360,8 @@ legacy keys keep
 working only while the matching `policy` section is absent. So the stack should write down which Composer version its CI
 uses, and which of the two config styles it follows.
 
-How the stack holds it: `Not yet`. `policy.json` rules have no abandoned-package setting.
+How the stack holds it: `Checked`. The policy's `rules.abandoned_packages` is `fail` (see `handbook/dependencies.md`),
+and PROCTOR main's `proctor/composer-audit/abandoned` applies it.
 
 ### 22. Keep the core free of framework dependencies
 

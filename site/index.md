@@ -25,10 +25,10 @@ These are the stack's written standards. The handbook has the practices, and `po
 [Inspect a version](https://creed.apps.wayne.edu/#inspection) [Read the handbook](https://creed.apps.wayne.edu/handbook/)
 
 - **Enforced**: 7
-- **Checked**: 8
-- **Partially**: 7
+- **Checked**: 11
+- **Partially**: 6
 - **Documented**: 24
-- **Not yet**: 15
+- **Not yet**: 13
 
 Table of contents
 
@@ -225,9 +225,9 @@ From `policy/policy.json`, schema version 1, patches checked 2026-10-28 and 2026
 
 Laravel gives bug fixes for 18 months and security fixes for two years. Laravel 11 and older are EOL. Laravel 12 gets security fixes until 2027-02-24; Laravel 13 until 2028-03-17.
 
-Gap The reader can classify 10 to 13. PROCTOR `unpatched` reads `laravel/framework` from `composer.lock` and warns when the locked patch trails the policy's `latest_patch`, but no check fails an app whose framework line is EOL; the planned deploy gate will.
+Held by The reader can classify 10 to 13. PROCTOR `unpatched` reads `laravel/framework` from `composer.lock` and warns when the locked patch trails the policy's `latest_patch`; PROCTOR main's `proctor/laravel-eol` classifies the locked Laravel line through the policy, where an active line passes, a security-only line warns and an EOL line fails.
 
-Not yet
+Checked
 
 **Rationale.** An EOL framework is the largest unpatched surface in a typical app.
 

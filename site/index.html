@@ -123,10 +123,10 @@
 
         <dl class="tally" aria-label="How the 61 practices are held today">
           <div class="tally__item tally__item--enforced"><dt>Enforced</dt><dd>7</dd></div>
-          <div class="tally__item tally__item--checked"><dt>Checked</dt><dd>8</dd></div>
-          <div class="tally__item tally__item--partially"><dt>Partially</dt><dd>7</dd></div>
+          <div class="tally__item tally__item--checked"><dt>Checked</dt><dd>11</dd></div>
+          <div class="tally__item tally__item--partially"><dt>Partially</dt><dd>6</dd></div>
           <div class="tally__item tally__item--documented"><dt>Documented</dt><dd>24</dd></div>
-          <div class="tally__item tally__item--notyet"><dt>Not yet</dt><dd>15</dd></div>
+          <div class="tally__item tally__item--notyet"><dt>Not yet</dt><dd>13</dd></div>
         </dl>
       </div>
 
@@ -167,8 +167,8 @@
 
       <ol class="toc" data-reveal>
         <li><a href="#ch-1"><span class="toc__no">1</span><span class="toc__name">The version policy as data</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§1.1 to §1.10</span></a><span class="toc__bar" role="img" aria-label="6 enforced, 1 partially, 2 documented, 1 not yet"><i class="e" style="--n:6"></i><i class="p" style="--n:1"></i><i class="d" style="--n:2"></i><i class="n" style="--n:1"></i></span></li>
-        <li><a href="#ch-2"><span class="toc__no">2</span><span class="toc__name">PHP and framework versions</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§2.1 to §2.7</span></a><span class="toc__bar" role="img" aria-label="2 checked, 1 partially, 1 documented, 3 not yet"><i class="c" style="--n:2"></i><i class="p" style="--n:1"></i><i class="d" style="--n:1"></i><i class="n" style="--n:3"></i></span></li>
-        <li><a href="#ch-3"><span class="toc__no">3</span><span class="toc__name">Dependencies</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§3.1 to §3.6</span></a><span class="toc__bar" role="img" aria-label="3 checked, 2 documented, 1 not yet"><i class="c" style="--n:3"></i><i class="d" style="--n:2"></i><i class="n" style="--n:1"></i></span></li>
+        <li><a href="#ch-2"><span class="toc__no">2</span><span class="toc__name">PHP and framework versions</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§2.1 to §2.7</span></a><span class="toc__bar" role="img" aria-label="4 checked, 1 documented, 2 not yet"><i class="c" style="--n:4"></i><i class="d" style="--n:1"></i><i class="n" style="--n:2"></i></span></li>
+        <li><a href="#ch-3"><span class="toc__no">3</span><span class="toc__name">Dependencies</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§3.1 to §3.6</span></a><span class="toc__bar" role="img" aria-label="4 checked, 2 documented"><i class="c" style="--n:4"></i><i class="d" style="--n:2"></i></span></li>
         <li><a href="#ch-4"><span class="toc__no">4</span><span class="toc__name">Secrets and configuration</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§4.1 to §4.3</span></a><span class="toc__bar" role="img" aria-label="2 documented, 1 not yet"><i class="d" style="--n:2"></i><i class="n" style="--n:1"></i></span></li>
         <li><a href="#ch-5"><span class="toc__no">5</span><span class="toc__name">Overrides and rollout</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§5.1 to §5.3</span></a><span class="toc__bar" role="img" aria-label="1 checked, 1 partially, 1 documented"><i class="c" style="--n:1"></i><i class="p" style="--n:1"></i><i class="d" style="--n:1"></i></span></li>
         <li><a href="#ch-6"><span class="toc__no">6</span><span class="toc__name">Writing the handbook</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§6.1 to §6.7</span></a><span class="toc__bar" role="img" aria-label="1 checked, 1 partially, 5 documented"><i class="c" style="--n:1"></i><i class="p" style="--n:1"></i><i class="d" style="--n:5"></i></span></li>
@@ -440,9 +440,9 @@
         <div class="clause__body">
           <h3 class="clause__title"><span class="clause__sec">§2.5</span> Run a Laravel release that still gets security fixes.</h3>
           <p>Laravel gives bug fixes for 18 months and security fixes for two years. Laravel 11 and older are EOL. Laravel 12 gets security fixes until 2027-02-24; Laravel 13 until 2028-03-17.</p>
-          <p class="xref"><span class="xref__label">Gap</span> The reader can classify 10 to 13. PROCTOR <code>unpatched</code> reads <code>laravel/framework</code> from <code>composer.lock</code> and warns when the locked patch trails the policy's <code>latest_patch</code>, but no check fails an app whose framework line is EOL; the planned deploy gate will.</p>
+          <p class="xref"><span class="xref__label">Held by</span> The reader can classify 10 to 13. PROCTOR <code>unpatched</code> reads <code>laravel/framework</code> from <code>composer.lock</code> and warns when the locked patch trails the policy's <code>latest_patch</code>; PROCTOR main's <code>proctor/laravel-eol</code> classifies the locked Laravel line through the policy, where an active line passes, a security-only line warns and an EOL line fails.</p>
         </div>
-        <span class="stamp stamp--notyet">Not yet</span>
+        <span class="stamp stamp--checked">Checked</span>
         <aside class="margin-note"><b>Rationale.</b> An EOL framework is the largest unpatched surface in a typical app.</aside>
       </div>
 
