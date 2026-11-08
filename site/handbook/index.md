@@ -12,7 +12,7 @@ The handbook · 2026 Edition
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a "Not decided here" heading.
 
-Thirteen chapters · 179 provisions · **MUST** 55 · **SHOULD** 15 · **MAY** 1
+Thirteen chapters · 180 provisions · **MUST** 55 · **SHOULD** 15 · **MAY** 1
 
 ## Contents
 
@@ -28,7 +28,7 @@ Thirteen chapters · 179 provisions · **MUST** 55 · **SHOULD** 15 · **MAY** 1
 10. [10 Every OS](https://creed.apps.wayne.edu/handbook/every-os.html)5 provisions · **MUST** 1Decided
 11. [11 Secrets and debugging Credentials · Errors and debug output · Not decided here](https://creed.apps.wayne.edu/handbook/secrets.html)3 sections · 9 provisions · **MUST NOT** 4 · **MUST** 3 · **SHOULD NOT** 1Decided
 12. [12 Production Environments · Running safely · Who can reach it](https://creed.apps.wayne.edu/handbook/production.html)3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 5 · **SHOULD** 3Decided
-13. [13 Overrides](https://creed.apps.wayne.edu/handbook/overrides.html)5 provisionsDecided
+13. [13 Overrides](https://creed.apps.wayne.edu/handbook/overrides.html)6 provisionsDecided
 
 ## How to read this book
 

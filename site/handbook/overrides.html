@@ -82,7 +82,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 13</p>
             <h1 id="page-title">Overrides</h1>
-            <p class="hb-register">5 provisions</p>
+            <p class="hb-register">6 provisions</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -95,6 +95,9 @@
 <span class="hb-cite">(the stack's version policy)</span>. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>overrides</code>.</li>
 <li>Check prints every override on every run, and Fleet lists them <span class="hb-cite">(the stack's version policy)</span>.</li>
 <li>An expired override is a failure <span class="hb-cite">(first-repos)</span>. PROCTOR check: <code>overrides</code>.</li>
+<li>An override runs at most <code>rules.override_max_days</code> days past today (90
+in the policy). A longer one is a failure and does not apply.
+PROCTOR check: <code>overrides</code>.</li>
 <li>On the Citadel side, overrides are held by Citadel admins, per app and per
 rule, with an expiry, a reason and an approver. There is no permanent
 override <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
@@ -104,7 +107,7 @@ override <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="production.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 12</span><span class="hb-pager__name">Production</span></a><a class="hb-pager__link hb-pager__link--next" href="print.html"><span class="hb-pager__dir">End of the book</span><span class="hb-pager__name">The whole book on one page</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/overrides.md"><code>handbook/overrides.md</code> on GitHub</a>, impression <code>b516d2c</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/overrides.md"><code>handbook/overrides.md</code> on GitHub</a>, impression <code>2c42365</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

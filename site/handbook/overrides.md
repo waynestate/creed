@@ -10,7 +10,7 @@ Chapter 13
 
 # Overrides
 
-5 provisions
+6 provisions
 
 Decided
 
@@ -20,6 +20,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - An app keeps a `policy-overrides.json` with an expiry date and a reason (the stack's version policy). [PROCTOR](https://proctor.apps.wayne.edu/) check: `overrides`.
 - Check prints every override on every run, and Fleet lists them (the stack's version policy).
 - An expired override is a failure (first-repos). PROCTOR check: `overrides`.
+- An override runs at most `rules.override_max_days` days past today (90 in the policy). A longer one is a failure and does not apply. PROCTOR check: `overrides`.
 - On the Citadel side, overrides are held by Citadel admins, per app and per rule, with an expiry, a reason and an approver. There is no permanent override (the stack's deploy-gate decision).
 
-Set from [`handbook/overrides.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/overrides.md), impression `b516d2c`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/overrides.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/overrides.md), impression `2c42365`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

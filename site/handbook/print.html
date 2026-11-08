@@ -981,7 +981,7 @@ PROCTOR check: <code>served-folder</code> (<code>phpinfo()</code>, dumps, backup
           <div>
             <p class="chap-head__kicker">Chapter 13</p>
             <h2 id="overrides-title" class="hb-book__title">Overrides</h2>
-            <p class="hb-register">5 provisions</p>
+            <p class="hb-register">6 provisions</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -993,6 +993,9 @@ PROCTOR check: <code>served-folder</code> (<code>phpinfo()</code>, dumps, backup
 <span class="hb-cite">(the stack's version policy)</span>. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>overrides</code>.</li>
 <li>Check prints every override on every run, and Fleet lists them <span class="hb-cite">(the stack's version policy)</span>.</li>
 <li>An expired override is a failure <span class="hb-cite">(first-repos)</span>. PROCTOR check: <code>overrides</code>.</li>
+<li>An override runs at most <code>rules.override_max_days</code> days past today (90
+in the policy). A longer one is a failure and does not apply.
+PROCTOR check: <code>overrides</code>.</li>
 <li>On the Citadel side, overrides are held by Citadel admins, per app and per
 rule, with an expiry, a reason and an approver. There is no permanent
 override <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
@@ -1000,7 +1003,7 @@ override <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>9268154</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>4c2a523</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

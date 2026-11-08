@@ -924,6 +924,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Added: `rules.override_max_days` (90) in the policy and its schema, and the overrides chapter says an override may run at most that long.
 - Fixed: the docs menu closes with Escape and hands focus back to its button (docs kit synced from Squire).
 - Changed: the deploy layer requires PROCTOR ^0.8 (locked 0.8.0).
 - Changed: the GitLab pipeline pins every Preflight component to 0.3.0 (was 0.2.0). From 0.3.0 each component adds the Dependency Proxy prefix itself (`image_prefix`), so the `php-test`, `composer-audit` and `proctor` `image:` inputs are plain image names with the same tags and digests; CREED's own jobs keep the prefix. The GitHub workflow stays on 0.1.4. Best practices 23 and 42, the intro, the front page's clause 3.6 and the handbook's accessibility, code and secrets chapters name 0.3.0, and practice 23 and clause 3.6 say PROCTOR main's `preflight-pinned` accepts a full release tag as well as a commit SHA.
@@ -2619,7 +2620,7 @@ The handbook · 2026 Edition
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a "Not decided here" heading.
 
-Thirteen chapters · 179 provisions · **MUST** 55 · **SHOULD** 15 · **MAY** 1
+Thirteen chapters · 180 provisions · **MUST** 55 · **SHOULD** 15 · **MAY** 1
 
 ### Contents
 
@@ -2635,7 +2636,7 @@ Thirteen chapters · 179 provisions · **MUST** 55 · **SHOULD** 15 · **MAY** 1
 10. [10 Every OS](https://creed.apps.wayne.edu/handbook/every-os.html)5 provisions · **MUST** 1Decided
 11. [11 Secrets and debugging Credentials · Errors and debug output · Not decided here](https://creed.apps.wayne.edu/handbook/secrets.html)3 sections · 9 provisions · **MUST NOT** 4 · **MUST** 3 · **SHOULD NOT** 1Decided
 12. [12 Production Environments · Running safely · Who can reach it](https://creed.apps.wayne.edu/handbook/production.html)3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 5 · **SHOULD** 3Decided
-13. [13 Overrides](https://creed.apps.wayne.edu/handbook/overrides.html)5 provisionsDecided
+13. [13 Overrides](https://creed.apps.wayne.edu/handbook/overrides.html)6 provisionsDecided
 
 ### How to read this book
 
@@ -2658,7 +2659,7 @@ Chapter 13
 
 ## Overrides
 
-5 provisions
+6 provisions
 
 Decided
 
@@ -2668,9 +2669,10 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - An app keeps a `policy-overrides.json` with an expiry date and a reason (the stack's version policy). [PROCTOR](https://proctor.apps.wayne.edu/) check: `overrides`.
 - Check prints every override on every run, and Fleet lists them (the stack's version policy).
 - An expired override is a failure (first-repos). PROCTOR check: `overrides`.
+- An override runs at most `rules.override_max_days` days past today (90 in the policy). A longer one is a failure and does not apply. PROCTOR check: `overrides`.
 - On the Citadel side, overrides are held by Citadel admins, per app and per rule, with an expiry, a reason and an approver. There is no permanent override (the stack's deploy-gate decision).
 
-Set from [`handbook/overrides.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/overrides.md), impression `b516d2c`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/overrides.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/overrides.md), impression `2c42365`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
