@@ -59,10 +59,10 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowed-calls` for plain bans, and a custom rule only when neither fits.
 
-- `env()` only in `config/` files, from Larastan's `NoEnvCallsOutsideOfConfig` rule. [PROCTOR](https://proctor.apps.wayne.edu/) check: `env-outside-config` (a warning per call); the PHPStan rule is planned.
-- No disabled TLS verification, such as `withoutVerifying()` or `CURLOPT_SSL_VERIFYPEER` set to false (OWASP ASVS). Planned.
+- `env()` only in `config/` files, from Larastan's `NoEnvCallsOutsideOfConfig` rule. [PROCTOR](https://proctor.apps.wayne.edu/) check: `env-outside-config` (a warning per call); [Pinstripe](https://pinstripe.apps.wayne.edu/)'s Laravel cut turns Larastan's rule on (`noEnvCallsOutsideOfConfig`, Pinstripe 0.1.4).
+- No disabled TLS verification, such as `withoutVerifying()` or `CURLOPT_SSL_VERIFYPEER` set to false (OWASP ASVS). `withoutVerifying()` is banned by `pinstripe.banned.withoutVerifying` (Pinstripe 0.2.0); `CURLOPT_SSL_VERIFYPEER` set to false is still Planned.
 - No SQL built by joining strings; use bindings (OWASP SQL Injection Prevention Cheat Sheet). Planned.
-- No debug leftovers or dynamic code, from `phpstan-disallowed-calls`. Planned.
+- No debug leftovers or dynamic code: `eval()`, `extract()`, `var_dump()`, `dd()` and `dump()`. `phpstan-disallowed-calls` bans them as `pinstripe.banned.eval`, `pinstripe.banned.extract`, `pinstripe.banned.varDump`, `pinstripe.banned.dd` and `pinstripe.banned.dump` (Pinstripe 0.2.0, [https://pinstripe.apps.wayne.edu/docs/reference/banned-calls.html](https://pinstripe.apps.wayne.edu/docs/reference/banned-calls.html)).
 
 ## [§3.7](https://creed.apps.wayne.edu/handbook/code.html#vue-and-javascript) Vue and JavaScript
 
@@ -91,14 +91,14 @@ Table 3-1
 
 | Rule | Preset file | Status |
 | --- | --- | --- |
-| PHP style, Laravel apps | `pint/laravel.json` | Planned |
-| PHP style, raw PHP apps and stack packages | `pint/per.json` | Planned |
-| Static analysis, level 8 | `phpstan/base.neon` | Planned |
-| Static analysis, raw apps | `phpstan/raw.neon` | Planned |
-| Static analysis, Laravel apps | `phpstan/laravel.neon` | Planned |
-| Banned patterns | to be decided (a [Pinstripe](https://pinstripe.apps.wayne.edu/) PHPStan config) | Planned |
-| Vue and JavaScript | the ESLint package (name to be decided) | Planned |
-| Security analysis | to be decided | Planned |
+| PHP style, Laravel apps | `pint/laravel.json` | Built (Pinstripe 0.1.4) |
+| PHP style, raw PHP apps and stack packages | `pint/per.json` | Built (Pinstripe 0.1.4) |
+| Static analysis, level 8 | `phpstan/base.neon` | Built (Pinstripe 0.1.4) |
+| Static analysis, raw apps | `phpstan/raw.neon` | Built (Pinstripe 0.1.4) |
+| Static analysis, Laravel apps | `phpstan/laravel.neon` | Built (Pinstripe 0.1.4) |
+| Banned patterns | `phpstan/disallowed.neon` | Built (Pinstripe 0.2.0) |
+| Vue and JavaScript | `eslint/javascript.js` and `eslint/typescript.js` (npm `@waynestate/pinstripe`) | Built (Pinstripe 0.1.4) |
+| Security analysis | `phpstan/laravel.neon` (the env rule) and `phpstan/disallowed.neon` (the banned calls) are built; the Psalm taint pilot is not yet | Planned |
 
 ## [§3.11](https://creed.apps.wayne.edu/handbook/code.html#not-adopted) Not adopted
 
@@ -134,4 +134,4 @@ Table 3-1
 - GitLab Code Quality: [https://docs.gitlab.com/ci/testing/code_quality/](https://docs.gitlab.com/ci/testing/code_quality/)
 - OWASP ASVS: [https://asvs.owasp.org/](https://asvs.owasp.org/)
 
-Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `9c6f34a`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `d47eabd`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

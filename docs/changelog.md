@@ -9,6 +9,7 @@ description: All notable changes to this project.
 
 ## Unreleased
 
+- Changed: the code handbook names what Pinstripe enforces (presets from 0.1.4, the env rule, and the banned calls in Pinstripe 0.2.0 with their `pinstripe.banned.*` identifiers) instead of calling every rule Planned.
 - Docs: BEST_PRACTICES.md practices 41 (front-end install options, now Partially: Squire's release install and the npm cooldown are built) and 45 (CI host, now Documented: the instances run GitLab 19.5.1 CE) carry their true status.
 - Added: `rules.override_self_approval` (`warn`; `warn` or `fail`) in the policy and its schema, `Policy::overrideSelfApproval()` in the reader (`warn` when the key is absent), and the overrides chapter says an override is approved by someone who did not write it, with the merge request as the control and PROCTOR's `override-approver` check as the tripwire.
 - Changed: the deploy layer runs Squire's kit 0.7.1 (was 0.6.0): `.squire/php.ini` no longer sets the deprecated `session.sid_*` lines, web requests get a `disable_functions` list and Apache hardening (`.squire/php-web.ini`, `.squire/apache-hardening.conf`), and opcache gets production settings with `SQUIRE_OPCACHE_VALIDATE` as the one switch.

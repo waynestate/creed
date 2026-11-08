@@ -164,13 +164,21 @@ for plain bans, and a custom rule only when neither fits.</p>
 <ul>
 <li><code>env()</code> only in <code>config/</code> files, from Larastan's
 <code>NoEnvCallsOutsideOfConfig</code> rule. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>env-outside-config</code>
-(a warning per call); the PHPStan rule is planned.</li>
+(a warning per call); <a class="tool" href="https://pinstripe.apps.wayne.edu/"><img src="../assets/marks/pinstripe.png" alt="" width="16" height="16">Pinstripe</a>'s Laravel cut turns Larastan's rule on
+(<code>noEnvCallsOutsideOfConfig</code>, Pinstripe 0.1.4).</li>
 <li>No disabled TLS verification, such as <code>withoutVerifying()</code> or
-<code>CURLOPT_SSL_VERIFYPEER</code> set to false (OWASP ASVS). Planned.</li>
+<code>CURLOPT_SSL_VERIFYPEER</code> set to false (OWASP ASVS).
+<code>withoutVerifying()</code> is banned by <code>pinstripe.banned.withoutVerifying</code>
+(Pinstripe 0.2.0); <code>CURLOPT_SSL_VERIFYPEER</code> set to false is still
+Planned.</li>
 <li>No SQL built by joining strings; use bindings (OWASP SQL Injection
 Prevention Cheat Sheet). Planned.</li>
-<li>No debug leftovers or dynamic code, from <code>phpstan-disallowed-calls</code>.
-Planned.</li>
+<li>No debug leftovers or dynamic code: <code>eval()</code>, <code>extract()</code>, <code>var_dump()</code>,
+<code>dd()</code> and <code>dump()</code>. <code>phpstan-disallowed-calls</code> bans them as
+<code>pinstripe.banned.eval</code>, <code>pinstripe.banned.extract</code>,
+<code>pinstripe.banned.varDump</code>, <code>pinstripe.banned.dd</code> and
+<code>pinstripe.banned.dump</code> (Pinstripe 0.2.0,
+<a href="https://pinstripe.apps.wayne.edu/docs/reference/banned-calls.html">https://pinstripe.apps.wayne.edu/docs/reference/banned-calls.html</a>).</li>
 </ul>
 <h2 id="vue-and-javascript"><a class="hb-sec" href="#vue-and-javascript">§3.7</a> Vue and JavaScript</h2>
 <ul>
@@ -214,41 +222,41 @@ report is Planned.</li>
 <tr>
 <td>PHP style, Laravel apps</td>
 <td><code>pint/laravel.json</code></td>
-<td><span class="st st--planned">Planned</span></td>
+<td>Built (Pinstripe 0.1.4)</td>
 </tr>
 <tr>
 <td>PHP style, raw PHP apps and stack packages</td>
 <td><code>pint/per.json</code></td>
-<td><span class="st st--planned">Planned</span></td>
+<td>Built (Pinstripe 0.1.4)</td>
 </tr>
 <tr>
 <td>Static analysis, level 8</td>
 <td><code>phpstan/base.neon</code></td>
-<td><span class="st st--planned">Planned</span></td>
+<td>Built (Pinstripe 0.1.4)</td>
 </tr>
 <tr>
 <td>Static analysis, raw apps</td>
 <td><code>phpstan/raw.neon</code></td>
-<td><span class="st st--planned">Planned</span></td>
+<td>Built (Pinstripe 0.1.4)</td>
 </tr>
 <tr>
 <td>Static analysis, Laravel apps</td>
 <td><code>phpstan/laravel.neon</code></td>
-<td><span class="st st--planned">Planned</span></td>
+<td>Built (Pinstripe 0.1.4)</td>
 </tr>
 <tr>
 <td>Banned patterns</td>
-<td>to be decided (a <a class="tool" href="https://pinstripe.apps.wayne.edu/"><img src="../assets/marks/pinstripe.png" alt="" width="16" height="16">Pinstripe</a> PHPStan config)</td>
-<td><span class="st st--planned">Planned</span></td>
+<td><code>phpstan/disallowed.neon</code></td>
+<td>Built (Pinstripe 0.2.0)</td>
 </tr>
 <tr>
 <td>Vue and JavaScript</td>
-<td>the ESLint package (name to be decided)</td>
-<td><span class="st st--planned">Planned</span></td>
+<td><code>eslint/javascript.js</code> and <code>eslint/typescript.js</code> (npm <code>@waynestate/pinstripe</code>)</td>
+<td>Built (Pinstripe 0.1.4)</td>
 </tr>
 <tr>
 <td>Security analysis</td>
-<td><span class="st st--planned">to be decided</span></td>
+<td><code>phpstan/laravel.neon</code> (the env rule) and <code>phpstan/disallowed.neon</code> (the banned calls) are built; the Psalm taint pilot is not yet</td>
 <td><span class="st st--planned">Planned</span></td>
 </tr>
 </tbody>
@@ -299,7 +307,7 @@ the stack's coding standard does not decide it.</li>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="dependencies.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 2</span><span class="hb-pager__name">Dependencies</span></a><a class="hb-pager__link hb-pager__link--next" href="auth.html" rel="next"><span class="hb-pager__dir">Next · Chapter 4</span><span class="hb-pager__name">Auth</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/code.md"><code>handbook/code.md</code> on GitHub</a>, impression <code>9c6f34a</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/code.md"><code>handbook/code.md</code> on GitHub</a>, impression <code>d47eabd</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 
