@@ -126,7 +126,7 @@
 </tr>
 <tr>
 <td><code>php bin/policy-bot.php run [--dry-run] [--offline &lt;dir&gt;]</code></td>
-<td>The CREED policy robot: it runs <code>bin/refresh-policy.php</code>, reads the run report, commits the policy data on <code>auto/policy-refresh</code> as a merge request labeled <code>auto-data</code>, and keeps its <code>auto-alert</code> issues in line. <code>--dry-run</code> prints the plan and changes nothing. See <a href="../guides/policy-bot.html">The policy robot</a>.</td>
+<td>The CREED policy robot: it runs <code>bin/refresh-policy.php</code>, reads the run report, commits the policy data, runs <code>composer ci</code>, pushes straight to <code>main</code> with the job token when that passes (or opens <code>auto/policy-refresh</code> as a merge request labeled <code>auto-data</code> when it fails), and keeps its <code>auto-alert</code> issues in line. <code>--dry-run</code> prints the plan and changes nothing. See <a href="../guides/policy-bot.html">The policy robot</a>.</td>
 </tr>
 <tr>
 <td><code>php bin/export.php</code></td>
@@ -178,7 +178,7 @@
 </tr>
 <tr>
 <td><code>4</code></td>
-<td>Something was held or refused. Whatever could be written was written; the held or refused items stay out. The policy robot opens a merge request without auto-merge and an <code>auto-alert</code> issue per item.</td>
+<td>Something was held or refused. Whatever could be written was written; the held or refused items stay out. The policy robot runs the gate on whatever was written, the same as for exit 3, and opens an <code>auto-alert</code> issue per held or refused item.</td>
 </tr>
 </tbody>
 </table></div>
@@ -194,11 +194,11 @@
 <tbody>
 <tr>
 <td><code>0</code></td>
-<td>Every handled outcome: nothing to do, a merge request pushed (or nothing staged), the alert issues synced, or a dry run.</td>
+<td>Every handled outcome: nothing to do, the gate passed and the refresh was pushed to <code>main</code> (or nothing staged), the alert issues synced, or a dry run.</td>
 </tr>
 <tr>
 <td><code>1</code></td>
-<td>The refresher hard-failed or could not start, a required CI variable is missing (named in the output), a git step failed, or the alert issues could not be synced.</td>
+<td>The refresher hard-failed or could not start, a required CI variable is missing (named in the output), the pipeline is not on the default branch, a git step or the push failed, the gate failed (the refresh went to <code>auto/policy-refresh</code> as a merge request), or the alert issues could not be synced. After a failed gate or push the alert issues still sync first.</td>
 </tr>
 </tbody>
 </table></div>

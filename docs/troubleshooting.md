@@ -1,6 +1,6 @@
 ---
 title: Troubleshooting
-description: The failures that look alarming but are expected: a red refresh-patches run, the policy robot's merge requests and token, refresher exit codes, stale docs, and the versions the reader refuses.
+description: The failures that look alarming but are expected: a red refresh-patches run, the policy robot's red gate, fallback merge request and token, refresher exit codes, stale docs, and the versions the reader refuses.
 ---
 
 # Troubleshooting
@@ -9,7 +9,7 @@ Answers to the failures that look alarming but are expected, each with the page 
 
 ## Why did the scheduled `refresh-patches` job fail?
 
-A scheduled `refresh-patches` failure is expected whenever upstream ships a patch. The scheduled job is check-only: when the policy changed, the tool exits 3 and the job fails on the diff. Treat the red run as a to-do, not an outage. On GitLab the policy robot's Monday merge request usually carries the same patch already: review and merge that one. Otherwise run `php bin/refresh-patches.php`, read the diff, run `composer ci`, add a CHANGELOG line, and commit. The [Changelog](changelog.md) is where that line goes.
+A scheduled `refresh-patches` failure is expected whenever upstream ships a patch. The scheduled job is check-only: when the policy changed, the tool exits 3 and the job fails on the diff. Treat the red run as a to-do, not an outage. On GitLab the policy robot's Monday run usually lands the same patch on `main` by itself (or, in a red week, carries it in its fallback merge request): check `main` first. Otherwise run `php bin/refresh-patches.php`, read the diff, run `composer ci`, add a CHANGELOG line, and commit. The [Changelog](changelog.md) is where that line goes.
 
 ## Why does the `policy-bot` job print "CREED_BOT_TOKEN not set; skipping the policy robot" and stay green?
 
@@ -17,11 +17,11 @@ That is the designed behavior when the masked `CREED_BOT_TOKEN` CI variable is n
 
 ## Why can the robot not push when `auto/policy-refresh` is protected?
 
-The branch `auto/policy-refresh` must not be protected, or the robot cannot push it. The robot commits `policy/policy.json` and `policy/sources.json` on that branch and force-pushes it as a merge request labeled `auto-data`. Branch protection is a project setting, not a file in this repo; [The policy robot](guides/policy-bot.md) has the whole setup.
+The branch `auto/policy-refresh` must not be protected, or the robot cannot push it. It is the red-week fallback: when `composer ci` fails on the refresh, the robot force-pushes the commit there as a merge request labeled `auto-data`. A green week pushes to `main` with the job token instead, which needs "Allow Git push requests to the repository" (CI/CD > Job token permissions) and a schedule owner who may push to the protected `main`. Branch protection is a project setting, not a file in this repo; [The policy robot](guides/policy-bot.md) has the whole setup.
 
-## Why did the robot's merge request not merge itself?
+## Why did the robot open a merge request instead of pushing to `main`?
 
-Two reasons, both on purpose. A run whose refresher exited 4 (something held or refused) opens its merge request without auto-merge, so a person decides; the held or refused items are listed in the body and each has an `auto-alert` issue. And an exit 3 merge request merges only when its pipeline passes, so a red `composer ci` holds it, even when the failure has nothing to do with the policy (a fresh security advisory in `composer audit`, say). Fix the failure on `main`, then rebase the merge request or start the robot by hand on `main`; re-running the old pipeline tests the old branch again. Never commit to `auto/policy-refresh`: the next Monday overwrites it. [Reviewing what it opens](guides/policy-bot.md#reviewing-what-it-opens) walks through it.
+Because the gate went red, on purpose. The robot runs `composer ci` on its refresh in its own job, and only a green gate pushes straight to `main`. A red one force-pushes the commit to `auto/policy-refresh` as a merge request labeled `auto-data` and fails the job, so the schedule owner gets mail. The failure may have nothing to do with the policy (a fresh security advisory in `composer audit`, say). Read the failed job, fix the failure on `main`, then start the robot by hand on `main`: a green gate pushes the refresh itself, and the stale merge request can be closed. Held and refused items are in the body and each still has an `auto-alert` issue, red or green. Never commit to `auto/policy-refresh`: the next red run overwrites it. [Reviewing what it does](guides/policy-bot.md#reviewing-what-it-does) walks through it.
 
 ## Tests fail oddly on Windows after a Docker install
 
@@ -33,7 +33,7 @@ Rebuild the stale side: `composer docs` rebuilds the docs site from `docs/`, and
 
 ## What is the difference between `refresh-policy` exit 3 and exit 4?
 
-Exit 3 means something was written to `policy/policy.json` or `policy/sources.json`, including a released `loosen-fail` (the policy robot raises the alert from the report). Exit 4 means something was held or refused: whatever could be written was written, the held or refused items stayed out, and the policy robot opens its merge request without auto-merge. The refresher itself never commits. Exit 0 means nothing worth committing, and exit 1 is a hard failure. Version 0.1.2 changed a released loosening from exit 4 to exit 3; see the [Changelog](changelog.md).
+Exit 3 means something was written to `policy/policy.json` or `policy/sources.json`, including a released `loosen-fail` (the policy robot raises the alert from the report). Exit 4 means something was held or refused: whatever could be written was written, the held or refused items stayed out, and the policy robot runs its gate on whatever was written, as for exit 3, with an `auto-alert` issue per held or refused item. The refresher itself never commits. Exit 0 means nothing worth committing, and exit 1 is a hard failure. Version 0.1.2 changed a released loosening from exit 4 to exit 3; see the [Changelog](changelog.md).
 
 ## Why does the reader throw for a version between listed lines, or one that does not parse?
 

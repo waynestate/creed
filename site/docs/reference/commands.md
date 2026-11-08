@@ -40,7 +40,7 @@ The whole band fits in three commands, and nobody needs a solo.
 | --- | --- |
 | `php bin/refresh-patches.php` | Refreshes the `latest_patch` and `latest_patch_checked` fields of the PHP, Laravel, and Node versions in `policy/policy.json` from the upstream feeds, and proposes new Vue lines from endoflife.date. |
 | `php bin/refresh-policy.php` | Refreshes `policy/policy.json` from the canonical upstream feeds: support dates, latest patches, and new version lines, with provenance recorded in `policy/sources.json`. |
-| `php bin/policy-bot.php run [--dry-run] [--offline <dir>]` | The CREED policy robot: it runs `bin/refresh-policy.php`, reads the run report, commits the policy data on `auto/policy-refresh` as a merge request labeled `auto-data`, and keeps its `auto-alert` issues in line. `--dry-run` prints the plan and changes nothing. See [The policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html). |
+| `php bin/policy-bot.php run [--dry-run] [--offline <dir>]` | The CREED policy robot: it runs `bin/refresh-policy.php`, reads the run report, commits the policy data, runs `composer ci`, pushes straight to `main` with the job token when that passes (or opens `auto/policy-refresh` as a merge request labeled `auto-data` when it fails), and keeps its `auto-alert` issues in line. `--dry-run` prints the plan and changes nothing. See [The policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html). |
 | `php bin/export.php` | Exports a namespace-prefixed copy of the CREED reader for a consumer package to carry under its own namespace, so two tools in one app never fight over a class name. |
 | `php bin/validate-policy.php` | Validates `policy/policy.json` against `policy/policy.schema.json`, and validates `policy/sources.json` against `policy/sources.schema.json` when present. |
 | `php bin/lint-handbook.php` | Lints the CREED handbook for RFC 2119 discipline. |
@@ -57,7 +57,7 @@ The whole band fits in three commands, and nobody needs a solo.
 | `0` | Nothing worth committing was written (and always `0` with `--dry-run`). |
 | `1` | A hard failure: unreadable policy, unwritable file, bad option. |
 | `3` | Something was written to `policy/policy.json` or `policy/sources.json`: tighten, neutral or loosen-warning changes, a loosen-fail released on proof (still reported as an alert by the policy robot), a first sighting in `policy/sources.json`, or a `--touch` heartbeat. |
-| `4` | Something was held or refused. Whatever could be written was written; the held or refused items stay out. The policy robot opens a merge request without auto-merge and an `auto-alert` issue per item. |
+| `4` | Something was held or refused. Whatever could be written was written; the held or refused items stay out. The policy robot runs the gate on whatever was written, the same as for exit 3, and opens an `auto-alert` issue per held or refused item. |
 
 The refresher never commits; the policy robot does.
 
@@ -65,8 +65,8 @@ The refresher never commits; the policy robot does.
 
 | Code | Meaning |
 | --- | --- |
-| `0` | Every handled outcome: nothing to do, a merge request pushed (or nothing staged), the alert issues synced, or a dry run. |
-| `1` | The refresher hard-failed or could not start, a required CI variable is missing (named in the output), a git step failed, or the alert issues could not be synced. |
+| `0` | Every handled outcome: nothing to do, the gate passed and the refresh was pushed to `main` (or nothing staged), the alert issues synced, or a dry run. |
+| `1` | The refresher hard-failed or could not start, a required CI variable is missing (named in the output), the pipeline is not on the default branch, a git step or the push failed, the gate failed (the refresh went to `auto/policy-refresh` as a merge request), or the alert issues could not be synced. After a failed gate or push the alert issues still sync first. |
 
 ### refresh-patches[#](https://creed.apps.wayne.edu/docs/reference/commands.html#refresh-patches)
 

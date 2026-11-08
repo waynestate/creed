@@ -64,15 +64,19 @@ This is CREED's real maintenance job.
   `latest_patch_checked`, and proposes new Vue lines. In CI the scheduled job is check-only: the refresh tool
   exits 3 when the policy changed and the job fails on the diff. The policy robot (`bin/policy-bot.php run`)
   runs the fuller `bin/refresh-policy.php` every Monday, commits `policy/policy.json` and `policy/sources.json`
-  on `auto/policy-refresh` and pushes a merge request labeled `auto-data`: it merges itself after a refresher
-  exit 3 once the pipeline passes, and waits for a person after an exit 4 (held or refused items, each with an
-  `auto-alert` issue). Missing CI variables stop the run before any push. The `policy-bot` job in
-  `.gitlab-ci.yml` runs it on the schedule carrying `CREED_JOB=policy-bot` and by hand; without the masked
-  `CREED_BOT_TOKEN` variable it prints "CREED_BOT_TOKEN not set; skipping the policy robot" and stays green.
-  It never tags or releases. Review steps: `docs/guides/policy-bot.md`. The branch `auto/policy-refresh` must
-  not be protected. The owner's setup (access token, `CREED_BOT_TOKEN` variable, schedule) is the numbered list
-  in "Keeping the patches fresh" in the README; the schedules live in the project's CI/CD settings on git.wayne.edu,
-  not in this repo.
+  on main's commit and runs `composer ci` in its own job. Green: it pushes straight to `main` with the CI job
+  token; GitLab starts no new pipeline for that push and nobody merges by hand. Red: it opens or updates
+  `auto/policy-refresh` as a merge request labeled `auto-data` for a person, and the job fails, so the schedule
+  owner gets mail. Held and refused items get an `auto-alert` issue every run, red or green. Missing CI
+  variables stop the run before any push. The `policy-bot` job in `.gitlab-ci.yml` runs it on `main` only, on
+  the schedule carrying `CREED_JOB=policy-bot` and by hand; without the masked `CREED_BOT_TOKEN` variable it
+  prints "CREED_BOT_TOKEN not set; skipping the policy robot" and stays green. That token is only for the alert
+  issues (scope `api`; `write_repository` is no longer needed). It never tags or releases. Review steps:
+  `docs/guides/policy-bot.md`. The project setting "Allow Git push requests to the repository" (CI/CD > Job
+  token permissions) must be on, the schedule owner must be allowed to push to the protected `main` (Maintainer
+  or above), and `auto/policy-refresh` must stay unprotected for the fallback. The owner's setup (access token,
+  `CREED_BOT_TOKEN` variable, schedule, job token setting) is the numbered list in "Keeping the patches fresh"
+  in the README; the schedules live in the project's CI/CD settings on git.wayne.edu, not in this repo.
 - **Support dates move only through review.** The robot writes a date that moves earlier or a later
   `active_until`, and holds a later `security_until` until two sources or 14 days agree; a person who edits a
   date by hand puts the upstream source in the commit message. End days are inclusive.

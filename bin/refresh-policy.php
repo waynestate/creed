@@ -321,7 +321,7 @@ if ($dryRun) {
 // agreed), so it exits 3 like any other written change; the policy robot
 // raises the alert from the report. Held and refused changes exit 4 instead:
 // the run is partly written, and the robot commits whatever else was written
-// (often nothing) and pushes the merge request without auto-merge.
+// (often nothing) and runs the gate on it, the same as for exit 3.
 if ($result->held !== [] || $result->refused !== []) {
     exit(4);
 }
