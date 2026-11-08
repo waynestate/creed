@@ -16,7 +16,8 @@ declare(strict_types=1);
  * When it fails it pushes auto/policy-refresh as a merge request for
  * review instead and exits 1. A pipeline on any other branch never pushes.
  *
- * After a handled real run the robot also brings its alert issues in line
+ * After a handled real run (a red gate and a failed push included) the
+ * robot also brings its alert issues in line
  * with the report: one open GitLab issue per alert key (held, refused,
  * disagreement, upcoming end of life), labeled auto-alert. A key that is
  * still present gets a note; a key that is gone closes its issue. The
@@ -27,9 +28,9 @@ declare(strict_types=1);
  *   php bin/policy-bot.php run [--dry-run] [--offline <dir>]
  *
  *   run  One scheduled refresh: run the refresher, commit the data
- *        allowlist and run composer ci. Green: push to main, then sync
- *        the alert issues. Red: push auto/policy-refresh as a merge
- *        request and stop. --dry-run prints the decided outcome, the
+ *        allowlist and run composer ci. Green: push to main. Red: push
+ *        auto/policy-refresh as a merge request. Either way (and after a
+ *        failed push too) sync the alert issues. --dry-run prints the decided outcome, the
  *        planned files, the merge request title and body, and the alert
  *        issues it would open, and changes nothing. --offline <dir> reads
  *        the feeds from <dir> instead of fetching them

@@ -6,6 +6,7 @@ namespace Waynestate\Creed\Tests\Bot;
 
 use PHPUnit\Framework\Attributes\Test;
 use RuntimeException;
+use stdClass;
 use Waynestate\Creed\Bot\CommandRunner;
 use Waynestate\Creed\Bot\PolicyBot;
 
@@ -109,6 +110,40 @@ final class PolicyBotRunTest extends TestCase
         );
         self::assertSame('https://gitlab-ci-token:job-token-456@git.example.com:443/waynestate/creed.git', $push[count($push) - 2]);
         self::assertSame('HEAD:refs/heads/auto/policy-refresh', $push[count($push) - 1]);
+    }
+
+    #[Test]
+    public function aRedGateStillSyncsTheAlerts(): void
+    {
+        $this->ciEnvironment();
+        [$bot, $runner, $transport] = $this->makeBotWithAlertScript([4], [$this->report(held: [$this->heldItem()])]);
+        $runner->git['diff'] = ['status' => 0, 'stdout' => "policy/policy.json\n", 'stderr' => ''];
+        $runner->gate = ['status' => 2, 'stdout' => '', 'stderr' => ''];
+
+        [$exit, $out] = $this->capture($bot, static fn(PolicyBot $b): int => $b->run());
+
+        self::assertSame(1, $exit, $out);
+        self::assertStringContainsString('the gate failed (exit 2)', $out);
+        self::assertStringContainsString('opened [auto-alert] held:php:8.3:security_until', $out);
+        self::assertSame(['GET', 'POST'], array_column($transport->calls, 'method'));
+        self::assertStringEndsWith('/projects/42/issues', $transport->calls[1]['url']);
+    }
+
+    #[Test]
+    public function aFailedPushStillSyncsTheAlerts(): void
+    {
+        $this->ciEnvironment();
+        [$bot, $runner, $transport] = $this->makeBotWithAlertScript([4], [$this->report(held: [$this->heldItem()])]);
+        $runner->git['diff'] = ['status' => 0, 'stdout' => "policy/policy.json\n", 'stderr' => ''];
+        $runner->git['push'] = ['status' => 1, 'stdout' => '', 'stderr' => ''];
+
+        [$exit, $out] = $this->capture($bot, static fn(PolicyBot $b): int => $b->run());
+
+        self::assertSame(1, $exit, $out);
+        self::assertStringContainsString('git push failed (exit 1); the robot stops here', $out);
+        self::assertStringContainsString('opened [auto-alert] held:php:8.3:security_until', $out);
+        self::assertSame(['GET', 'POST'], array_column($transport->calls, 'method'));
+        self::assertStringEndsWith('/projects/42/issues', $transport->calls[1]['url']);
     }
 
     #[Test]
@@ -423,6 +458,45 @@ final class PolicyBotRunTest extends TestCase
 
         self::assertSame(0, $exit, $out);
         self::assertStringContainsString('hello from the refresher', $out);
+    }
+
+    /**
+     * The robot with an alert transport scripted for one new key: the
+     * open-issues lookup finds none, the create returns iid 11.
+     *
+     * @param list<int> $exits
+     * @param list<object|null> $reports
+     *
+     * @return array{0: PolicyBot, 1: FakeRunner, 2: FakeTransport}
+     */
+    private function makeBotWithAlertScript(array $exits, array $reports): array
+    {
+        $fake = new FakeRunner($exits, $reports);
+        $transport = new FakeTransport([
+            ['status' => 200, 'body' => []],
+            ['status' => 201, 'body' => ['iid' => 11]],
+        ]);
+        $bot = new PolicyBot(
+            repoRoot: $this->repoRoot,
+            runner: new CommandRunner($fake(...)),
+            alerts: $this->makeAlerts($transport),
+        );
+
+        return [$bot, $fake, $transport];
+    }
+
+    /**
+     * One held item: upstream extended support past the policy.
+     */
+    private function heldItem(): stdClass
+    {
+        return $this->changeItem([
+            'field' => 'security_until',
+            'old' => '2026-12-31',
+            'new' => '2027-12-31',
+            'class' => 'loosen-fail',
+            'reason' => 'upstream extended support past the policy; confirm before writing',
+        ]);
     }
 
     /**

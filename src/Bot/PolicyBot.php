@@ -47,7 +47,8 @@ use stdClass;
  * then prints the decided outcome, the planned files, the merge request
  * title and body, and touches nothing.
  *
- * After a handled real run the robot also brings its alert issues in line
+ * After a handled real run (a red gate and a failed push included) the
+ * robot also brings its alert issues in line
  * with the report: one open GitLab issue per alert key (held, refused,
  * disagreement, upcoming end of life), labeled auto-alert. A key that is
  * still present gets a note on its existing issue; a key that is gone
@@ -142,9 +143,15 @@ final readonly class PolicyBot
      *
      * @param string|null $offlineDir feed directory for the refresher, or null to fetch
      *
+     * The alert issues sync after every handled outcome. When the commit
+     * step fails after the report was read (a red gate, a failed push, a
+     * missing push variable), they still sync from that report and the
+     * run still returns 1. A refresher hard failure or an unknown refresher
+     * exit code has no usable report and does not sync.
+     *
      * @return int 0 on every handled outcome, 1 on a hard failure, a red
-     *         gate (the refresh went to a merge request instead), or when
-     *         the alert channel cannot be reached
+     *         gate (the refresh went to a merge request instead), a failed
+     *         commit or push, or when the alert channel cannot be reached
      */
     public function run(?string $offlineDir = null): int
     {
@@ -195,6 +202,13 @@ final readonly class PolicyBot
 
             $exit = $this->decide($status, $report);
             if ($exit !== 0) {
+                // A red gate or a failed push still owes the alert issues:
+                // a red week is exactly when someone needs the held and
+                // refused alerts. The run stays 1 whatever the sync says.
+                if ($status === 3 || $status === 4) {
+                    $this->alertSync($report);
+                }
+
                 return $exit;
             }
 
