@@ -893,10 +893,12 @@ WayneUI's own gate is outside CREED and was not reviewed in this pass.
 
 Sources: [GitLab accessibility testing](https://docs.gitlab.com/ci/testing/accessibility_testing/).
 
-How the stack holds it: `Checked`. Preflight 0.2.0's `a11y` component opens the app's pages in Chromium (Playwright),
-in light and dark at 320 and 1280 px, runs axe-core and fails the pipeline on any violation (WCAG 2.0 and 2.1 A and AA
-by default; add `wcag22aa` for practice 54). It is axe-core, not GitLab's Pa11y job. CREED runs the same kind of gate
-on its own site with `scripts/a11y.sh` and `scripts/a11y.ps1`, by hand, not in its pipeline.
+How the stack holds it: `Checked`. Preflight 0.3.1's `a11y` component opens the app's pages in Chromium (Playwright),
+in light and dark at 320 and 1280 px, runs axe-core and fails the pipeline on any violation; CREED's pipeline pins
+the component to that tag and asks it for WCAG 2.2 AA (practice 54). It is axe-core, not GitLab's Pa11y job. CREED
+runs that same checker on its own site: `scripts/a11y.sh` and `scripts/a11y.ps1` drive the copy vendored in
+`tools/a11y/check.mjs`, pinned to the same Preflight tag by `tests/A11yCheckerPinTest.php`, so a page that passes
+locally passes CI.
 
 ### 54. Aim at WCAG 2.2 AA
 
