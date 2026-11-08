@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Docs: BEST_PRACTICES.md practices 41 (front-end install options, now Partially: Squire's release install and the npm cooldown are built) and 45 (CI host, now Documented: the instances run GitLab 19.5.1 CE) carry their true status.
 - Changed: the deploy layer runs Squire's kit 0.7.1 (was 0.6.0): `.squire/php.ini` no longer sets the deprecated `session.sid_*` lines, web requests get a `disable_functions` list and Apache hardening (`.squire/php-web.ini`, `.squire/apache-hardening.conf`), and opcache gets production settings with `SQUIRE_OPCACHE_VALIDATE` as the one switch.
 - Docs: BEST_PRACTICES and the handbook name the Preflight release in use (0.3.1, was 0.2.0 or 0.3.0 in six places) and HELMET 1.0 for the CORP default.
 - Changed: the front page deploy layer requires HELMET ^1.0 (lock at 1.0.1, was 0.4.0), like the rest of the stack; its shared front controller already runs on HELMET 1.0 in Squire, Sourdough and Pinstripe.
