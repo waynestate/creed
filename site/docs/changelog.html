@@ -44,6 +44,7 @@
 <h1 id="changelog">Changelog<a class="docs-heading-link" aria-label="Link to this section" href="#changelog">#</a></h1>
 <h2 id="unreleased">Unreleased<a class="docs-heading-link" aria-label="Link to this section" href="#unreleased">#</a></h2>
 <ul>
+<li>Changed: CI caches Composer and npm downloads under a fixed key, so a lock change downloads only what changed (D-072).</li>
 <li>Added: a <code>gate</code> block in the policy (<code>default_stage</code>, per-check <code>stages</code> with dates; ships empty) and <code>Policy::gateStage()</code>, so PROCTOR's gate can stage a rule as report, warn or block (ADR-0006 item 4, D-071).</li>
 <li>Added: <code>Policy::overrideMaxDays()</code> reads <code>rules.override_max_days</code> (90 when absent; anything but a positive integer throws), so PROCTOR's exported reader can enforce the override cap.</li>
 <li>Added: <code>rules.override_max_days</code> (90) in the policy and its schema, and the overrides chapter says an override may run at most that long.</li>
