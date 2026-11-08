@@ -305,10 +305,10 @@ These are the stack's written standards. The handbook has the practices, and `po
 [Inspect a version](https://creed.apps.wayne.edu/#inspection) [Read the handbook](https://creed.apps.wayne.edu/handbook/)
 
 - **Enforced**: 7
-- **Checked**: 14
-- **Partially**: 9
-- **Documented**: 22
-- **Not yet**: 9
+- **Checked**: 16
+- **Partially**: 11
+- **Documented**: 20
+- **Not yet**: 7
 
 Table of contents
 
@@ -525,9 +525,9 @@ Checked
 
 MySQL 8.4 LTS has Premier support to 2029-04-30 and Extended to 2032-04-30. MySQL 8.0 ended on 2026-04-30 and is past CREED's 90-day grace since 2026-07-29.
 
-Gap Nothing checks it, and the platform's own MySQL timeline is still an open question.
+Gap [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `mysql-eol` grades the MySQL an app names and warns, never fails, until the platform offers a supported MySQL. The platform's own MySQL timeline is still an open question.
 
-Not yet
+Partially
 
 **Rationale.** A database that no longer gets fixes holds everything above it back.
 
@@ -569,11 +569,11 @@ Checked
 
 #### §3.6 Pin CI components to a tag or SHA.
 
-Include shared CI components at a tag or a full commit SHA, never `~latest`. CREED's own pipeline pins both of its components to a SHA.
+Include shared CI components at a tag or a full commit SHA, never `~latest`. CREED's own pipeline pins its three Preflight components to the 0.2.0 tag.
 
-Held by `ci.md`; components from [Preflight](https://creed.apps.wayne.edu/#ahj-preflight). No check scans other repos.
+Gap `ci.md` writes the rule. [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `preflight-pinned` warns when a [Preflight](https://creed.apps.wayne.edu/#ahj-preflight) include is not pinned to a full commit SHA; components from anywhere else are not checked.
 
-Documented
+Partially
 
 **Rationale.** A moving reference lets an upstream change weaken your pipeline without a commit in your repo.
 
@@ -587,7 +587,7 @@ Of the three practices in this chapter, one is checked, one is partly checked an
 
 Do not commit `.env`, keys, tokens or passwords. Commit `.env.example` with placeholders. Rotate a secret that was ever exposed.
 
-Gap The handbook's secrets chapter writes the rules. PROCTOR main warns on a committed `.env` or `APP_KEY` (`proctor/app-key`) and on a token in a package source URL (`proctor/repo-url-credentials`); no general secret scan exists yet.
+Gap The handbook's secrets chapter writes the rules. PROCTOR main warns on a committed `.env` or `APP_KEY` (`proctor/app-key`) and on a token in a package source URL (`proctor/repo-url-credentials`). [Preflight](https://creed.apps.wayne.edu/#ahj-preflight) `secret-detection` runs Gitleaks and fails a pipeline on a committed secret; rotation stays a process.
 
 Partially
 
@@ -637,7 +637,7 @@ The rules for writing CREED itself. Mostly: link the decision, and don't let a g
 
 #### §6.1 Cite the decision behind every rule.
 
-Each handbook rule links to the ADR that decided it. Where nothing is decided, the chapter says "To be decided" and states no rule.
+Each handbook rule links to the ADR that decided it. Where nothing is decided, the chapter lists the point under "Not decided here" and states no rule.
 
 Documented
 
@@ -655,7 +655,9 @@ Documented
 
 Scripts ship as a `.ps1` and `.sh` pair, or as one PHP command. Every repo carries `.gitattributes` with `* text=auto eol=lf`.
 
-Documented
+Gap [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `crlf-deploy-script` fails a deploy script with Windows line endings. Nothing reads `.gitattributes` or other server files yet.
+
+Partially
 
 **Rationale.** Developers work on all three, and the servers need LF.
 
@@ -693,12 +695,12 @@ The questions the 2026 edition hasn't answered. Each one names the clause it aff
 
 | No. | Clause | Erratum or amendment | Status |
 | --- | --- | --- | --- |
-| E-4 | §9.3 | Strict or tolerant schema: can an older tool still read a newer policy that only added a field? A test with an old schema and reader decides. | Open |
-| E-5 | §9.1 | Node 27 and later have no Maintenance phase on the new yearly schedule, so how `active_until` is derived needs a new rule. | Open |
-| E-6 | Ch. 10 | The accessibility chapter: aim at WCAG 2.2 AA, after confirming which legal dates apply. To be decided. | Open |
-| E-7 | Handbook | Runtime and headers: no rules until a decision lands with HELMET. The auth chapter still has the gateway's key distribution, and the SAML library if a SAML driver is built, to decide. | Open |
+| E-4 | §9.3 | Strict or tolerant schema: settled 2026-11-03. Strict where the file is published, tolerant where it is read, and a frozen older-reader test holds it. | Settled |
+| E-5 | §9.1 | Node 27 and later have no Maintenance phase: settled 2026-11-03. The policy lists even Node majors only, so no new `active_until` rule is needed. | Settled |
+| E-6 | Ch. 10 | The accessibility chapter aims at WCAG 2.2 AA. Which ADA Title II dates apply to a given WSU unit is for counsel and the accessibility office. | Open |
+| E-7 | Handbook | Runtime and headers: the Cross-Origin-Resource-Policy default, the CSP report endpoints and the metrics endpoint. Auth: the gateway's key distribution and rotation, and the SAML library if a SAML driver is built. | Open |
 
-The full backlog, 37 items, is at the end of [BEST_PRACTICES.md](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#gaps-for-the-backlog).
+The full backlog, 42 items, is at the end of [BEST_PRACTICES.md](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#gaps-for-the-backlog).
 
 Referenced tools
 
@@ -921,6 +923,9 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Changed: every best-practice stamp, count and named file was re-checked against this tree, PROCTOR main, Preflight 0.2.0, HELMET and Rollcall on 2026-11-08. Practice 8 moves to Checked (the policy robot's first refresh landed on main), 53 to Checked (Preflight's `a11y` component), and 17, 23 and 34 to Partially (PROCTOR's `mysql-eol`, `preflight-pinned` and `crlf-deploy-script`). The tally is now Enforced 7, Checked 16, Partially 11, Documented 20, Not yet 7. Fixed with them: the Preflight pin (0.2.0, three components, at a tag), Preflight's `secret-detection` and `a11y` components where the text said none existed (practices 24, 41, 53, 55 and the handbook's secrets, accessibility and code chapters), the instance runner that is now in place (practice 36), and ten backlog items that had moved (seven done, three partly done). The front page's errata foot counts 42 backlog items (was 37), E-4 and E-5 show as settled, and a test now keeps the backlog count in step.
+- Changed: the policy robot's docs (handbook versions chapter, patch refresh guide, proof page, practice 7) say it pushes a green refresh to main and opens a merge request only when its gate is red.
+- Added: a test keeps public pages free of app counts (D-063): proof results stay on the private proof site, and public copy uses percentages and trends.
 - Changed: the policy robot runs `composer ci` on the refreshed data in its own job and, when that passes, pushes the refresh straight to main with the CI job token (no merge request to merge by hand); a red gate pushes `auto/policy-refresh` as a merge request for review instead. The bot token is now only for the alert issues.
 - Added: `policy.json` records session lifetimes (`sessions.sesame`: idle 120 and absolute 720 minutes; `sessions.gateway`: idle 3600 and session 28800 seconds).
 - Docs: the handbook and two command descriptions write Rollcall and Squire as words, not in capitals.
@@ -1237,7 +1242,7 @@ Patch levels are watched automatically. `bin/refresh-patches.php` reads php.net 
 
 A scheduled CI job runs the refresh and is check-only: when the policy changed, the tool exits 3 and the job fails on the diff. A red scheduled run is a to-do, not an outage: run `php bin/refresh-patches.php`, read the diff, `composer ci`, add a CHANGELOG line, commit.
 
-The committing path is the policy robot, covered in [The policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html): it runs the fuller `bin/refresh-policy.php` every Monday and opens a merge request, so a red check-only run usually has a robot merge request waiting beside it. The robot's schedule (`CREED_JOB=policy-bot`) does not run this job.
+The committing path is the policy robot, covered in [The policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html): it runs the fuller `bin/refresh-policy.php` every Monday, pushes the refresh to `main` when its `composer ci` gate is green, and opens a merge request only when the gate is red, so a red check-only run is usually fixed by the robot's next Monday push, or has a robot merge request waiting beside it. The robot's schedule (`CREED_JOB=policy-bot`) does not run this job.
 
 ### Support dates[#](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html#support-dates)
 
@@ -2018,17 +2023,19 @@ This page shows where CREED proves itself against real Wayne State applications 
 
 Proof runs against real Wayne State applications are on a private site, [proof.apps.wayne.edu/creed](https://proof.apps.wayne.edu/creed/), behind a Wayne State employee sign-in.
 
+Public pages never count or name the applications. When CREED's public copy speaks about the proof, it uses percentages and trends, such as "about nine in ten scanned apps", and nothing that points at an app or a team. `tests/PublicProofCopyTest.php` fails `composer ci` when a public page states an app count.
+
 Note
 
 The front page, [`site/index.html`](https://creed.apps.wayne.edu/), is a static page you can open in a browser or serve from `site/`. On Citadel it is served by the raw-PHP deploy layer in `deploy/`: a Squire kit whose front controller serves `site/` behind HELMET's security headers. For local development, keep serving `site/` directly.
 
 ### What `composer ci` proves[#](https://creed.apps.wayne.edu/docs/reference/proof.html#what-composer-ci-proves)
 
-`composer ci` is the same command on GitLab and GitHub. It validates `composer.json`, runs the test suite (280 tests in 23 files on 2026-11-06), validates `policy/policy.json` and `policy/sources.json` against their schemas, checks style with Pint, lints the handbook, runs PHPStan and `composer audit`, and fails when the handbook site, the agent-ready files or the docs pages go stale, so the site you are reading cannot drift from `docs/`.
+`composer ci` is the same command on GitLab and GitHub. It validates `composer.json`, runs the test suite (294 tests in 25 files on 2026-11-08), validates `policy/policy.json` and `policy/sources.json` against their schemas, checks style with Pint, lints the handbook, runs PHPStan and `composer audit`, and fails when the handbook site, the agent-ready files or the docs pages go stale, so the site you are reading cannot drift from `docs/`.
 
 Where it runs: GitHub runs `composer ci` on PHP 8.3, 8.4 and 8.5. GitLab runs the test suite on all three through Preflight's `php-test` component, and `composer ci` once on the pinned Composer image (PHP 8.5). GitLab also runs PROCTOR against the front page's `deploy/` layer (allowed to fail while its known findings stand) and the strict WayneUI copies check.
 
-The policy itself is proved every Monday: the [policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html) re-reads the upstream sources and opens a merge request when anything moved.
+The policy itself is proved every Monday: the [policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html) re-reads the upstream sources and, when anything moved, pushes the refresh to `main` if `composer ci` is green, or opens a merge request for a person if it is red.
 
 ### The badges[#](https://creed.apps.wayne.edu/docs/reference/proof.html#the-badges)
 
@@ -2189,14 +2196,14 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 - An automated accessibility check **SHOULD** run in CI on the app's key pages. GitLab's accessibility testing uses Pa11y and is available on every self-managed tier (the stack's accessibility design).
 - An automated tool catches regressions; it is not proof of conformance, and it never replaces a manual keyboard and screen reader pass before launch (the stack's accessibility design).
-- [Preflight](https://preflight.apps.wayne.edu/) has no accessibility component yet (not built yet).
+- [Preflight](https://preflight.apps.wayne.edu/)'s `a11y` component (0.2.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core in light and dark at 320 and 1280 px, and fails the pipeline on any violation. Add `wcag22aa` to its tags for the WCAG 2.2 AA target above.
 
 ### [§9.4](https://creed.apps.wayne.edu/handbook/accessibility.html#not-decided-here) Not decided here
 
 - Whether and when the ADA Title II web rule applies to a given WSU unit. The rule applies WCAG 2.1 AA to public entities on dates that depend on the entity's size; the answer is for WSU's counsel and accessibility office, and this chapter does not decide it.
 - Which pages need a manual audit.
 
-Set from [`handbook/accessibility.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/accessibility.md), impression `977069b`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/accessibility.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/accessibility.md), impression `b4d8956`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2331,7 +2338,7 @@ Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowe
 
 ### [§3.9](https://creed.apps.wayne.edu/handbook/code.html#how-it-is-enforced) How it is enforced
 
-- Pint, PHPStan, Rector dry-runs and ESLint run in CI through [Preflight](https://preflight.apps.wayne.edu/) components, not in the deploy gate (the stack's coding standard). The Preflight components are Planned.
+- Pint, PHPStan, Rector dry-runs and ESLint run in CI through [Preflight](https://preflight.apps.wayne.edu/) components, not in the deploy gate (the stack's coding standard). Preflight 0.2.0 ships the `pint`, `phpstan` and `eslint` components; a Rector dry-run component is Planned.
 - New rules arrive as warnings and become errors on a stated date, the same staging as PHP versions (the stack's enforcement design).
 - PROCTOR reports whether an app uses the presets (the stack's coding standard). The PROCTOR report is Planned.
 
@@ -2384,7 +2391,7 @@ Table 3-1
 - GitLab Code Quality: [https://docs.gitlab.com/ci/testing/code_quality/](https://docs.gitlab.com/ci/testing/code_quality/)
 - OWASP ASVS: [https://asvs.owasp.org/](https://asvs.owasp.org/)
 
-Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `7f0a68f`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `202bccd`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2778,7 +2785,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 ### [§11.1](https://creed.apps.wayne.edu/handbook/secrets.html#credentials) Credentials
 
-- Credentials (database and service passwords, API keys, tokens) **MUST NOT** be committed to version control, because history keeps them forever. Commit `.env.example` with placeholders instead. A credential that was ever committed is treated as exposed and rotated (WSU developer standards, 2024). [PROCTOR](https://proctor.apps.wayne.edu/) checks: `app-key` (a committed `.env` or `APP_KEY`) and `repo-url-credentials` (a token in a package source URL); no general secret scan exists yet.
+- Credentials (database and service passwords, API keys, tokens) **MUST NOT** be committed to version control, because history keeps them forever. Commit `.env.example` with placeholders instead. A credential that was ever committed is treated as exposed and rotated (WSU developer standards, 2024). [PROCTOR](https://proctor.apps.wayne.edu/) checks: `app-key` (a committed `.env` or `APP_KEY`) and `repo-url-credentials` (a token in a package source URL). The general secret scan is [Preflight](https://preflight.apps.wayne.edu/)'s `secret-detection` component (0.2.0), which runs Gitleaks over the tree and fails the pipeline on a match.
 - Credentials and sensitive data **MUST** live outside any folder the web server serves. Laravel's `public/` is the only served folder; raw PHP apps serve one `public/` folder the same way (WSU developer standards, 2024). PROCTOR check: `served-folder` (dumps, backups, logs and env files in `public/`).
 - The Laravel `APP_KEY` is a credential: whoever holds it can forge encrypted payloads, which can mean code execution. It **MUST NOT** be committed, a key that leaked **MUST** be rotated with `php artisan key:generate` on every environment that used it, and the session driver **SHOULD NOT** be `cookie`, which seals every session with the key (GitGuardian, exploiting public APP_KEY leaks). PROCTOR check: `app-key`.
 - An app uses its own dedicated application ID, never a person's employee or student AccessID, to reach another server or service, with the fewest permissions the task needs (WSU developer standards, 2024).
@@ -2796,7 +2803,7 @@ A leaked password is a bad encore: everyone remembers it, and nobody asked for a
 
 - The [HELMET](https://helmet.apps.wayne.edu/) header rules and runtime refusals are written in `runtime-and-headers.md`.
 
-Set from [`handbook/secrets.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/secrets.md), impression `0c8f1e9`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/secrets.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/secrets.md), impression `6bb2086`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2834,7 +2841,7 @@ Each version can also carry a [`latest_patch`](https://github.com/waynestate/cre
 
 ### [§1.2](https://creed.apps.wayne.edu/handbook/versions.html#base-images) Base images
 
-A base image **MUST** be rebuilt when the policy's `latest_patch` for its branch changes; the policy robot opens that change, so an image never sits behind the patch level the policy records (the stack's version policy). Every such change to `latest_patch` is a rebuild. An image **MUST NOT** be pinned to a branch the policy marks EOL (the stack's version policy).
+A base image **MUST** be rebuilt when the policy's `latest_patch` for its branch changes. The policy robot lands that change itself: it pushes the refresh to `main` when its `composer ci` gate is green, and opens a merge request for a person only when the gate is red. So an image never sits behind the patch level the policy records (the stack's version policy). Every such change to `latest_patch` is a rebuild. An image **MUST NOT** be pinned to a branch the policy marks EOL (the stack's version policy).
 
 `images.docker` names the official image for a plain Docker target. Citadel names its own images, so `images.citadel` stays unset until Citadel publishes names. `openshift` and `coolify` are not filled yet.
 
@@ -2857,4 +2864,4 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`components.*.versions.*.latest_patch`**: set per version
 - **`components.*.versions.*.latest_patch_checked`**: set per version
 
-Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `aa147fa`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `a620495`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

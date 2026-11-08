@@ -25,10 +25,10 @@ These are the stack's written standards. The handbook has the practices, and `po
 [Inspect a version](https://creed.apps.wayne.edu/#inspection) [Read the handbook](https://creed.apps.wayne.edu/handbook/)
 
 - **Enforced**: 7
-- **Checked**: 14
-- **Partially**: 9
-- **Documented**: 22
-- **Not yet**: 9
+- **Checked**: 16
+- **Partially**: 11
+- **Documented**: 20
+- **Not yet**: 7
 
 Table of contents
 
@@ -245,9 +245,9 @@ Checked
 
 MySQL 8.4 LTS has Premier support to 2029-04-30 and Extended to 2032-04-30. MySQL 8.0 ended on 2026-04-30 and is past CREED's 90-day grace since 2026-07-29.
 
-Gap Nothing checks it, and the platform's own MySQL timeline is still an open question.
+Gap [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `mysql-eol` grades the MySQL an app names and warns, never fails, until the platform offers a supported MySQL. The platform's own MySQL timeline is still an open question.
 
-Not yet
+Partially
 
 **Rationale.** A database that no longer gets fixes holds everything above it back.
 
@@ -289,11 +289,11 @@ Checked
 
 ### §3.6 Pin CI components to a tag or SHA.
 
-Include shared CI components at a tag or a full commit SHA, never `~latest`. CREED's own pipeline pins both of its components to a SHA.
+Include shared CI components at a tag or a full commit SHA, never `~latest`. CREED's own pipeline pins its three Preflight components to the 0.2.0 tag.
 
-Held by `ci.md`; components from [Preflight](https://creed.apps.wayne.edu/#ahj-preflight). No check scans other repos.
+Gap `ci.md` writes the rule. [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `preflight-pinned` warns when a [Preflight](https://creed.apps.wayne.edu/#ahj-preflight) include is not pinned to a full commit SHA; components from anywhere else are not checked.
 
-Documented
+Partially
 
 **Rationale.** A moving reference lets an upstream change weaken your pipeline without a commit in your repo.
 
@@ -307,7 +307,7 @@ Of the three practices in this chapter, one is checked, one is partly checked an
 
 Do not commit `.env`, keys, tokens or passwords. Commit `.env.example` with placeholders. Rotate a secret that was ever exposed.
 
-Gap The handbook's secrets chapter writes the rules. PROCTOR main warns on a committed `.env` or `APP_KEY` (`proctor/app-key`) and on a token in a package source URL (`proctor/repo-url-credentials`); no general secret scan exists yet.
+Gap The handbook's secrets chapter writes the rules. PROCTOR main warns on a committed `.env` or `APP_KEY` (`proctor/app-key`) and on a token in a package source URL (`proctor/repo-url-credentials`). [Preflight](https://creed.apps.wayne.edu/#ahj-preflight) `secret-detection` runs Gitleaks and fails a pipeline on a committed secret; rotation stays a process.
 
 Partially
 
@@ -357,7 +357,7 @@ The rules for writing CREED itself. Mostly: link the decision, and don't let a g
 
 ### §6.1 Cite the decision behind every rule.
 
-Each handbook rule links to the ADR that decided it. Where nothing is decided, the chapter says "To be decided" and states no rule.
+Each handbook rule links to the ADR that decided it. Where nothing is decided, the chapter lists the point under "Not decided here" and states no rule.
 
 Documented
 
@@ -375,7 +375,9 @@ Documented
 
 Scripts ship as a `.ps1` and `.sh` pair, or as one PHP command. Every repo carries `.gitattributes` with `* text=auto eol=lf`.
 
-Documented
+Gap [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `crlf-deploy-script` fails a deploy script with Windows line endings. Nothing reads `.gitattributes` or other server files yet.
+
+Partially
 
 **Rationale.** Developers work on all three, and the servers need LF.
 
@@ -413,12 +415,12 @@ The questions the 2026 edition hasn't answered. Each one names the clause it aff
 
 | No. | Clause | Erratum or amendment | Status |
 | --- | --- | --- | --- |
-| E-4 | §9.3 | Strict or tolerant schema: can an older tool still read a newer policy that only added a field? A test with an old schema and reader decides. | Open |
-| E-5 | §9.1 | Node 27 and later have no Maintenance phase on the new yearly schedule, so how `active_until` is derived needs a new rule. | Open |
-| E-6 | Ch. 10 | The accessibility chapter: aim at WCAG 2.2 AA, after confirming which legal dates apply. To be decided. | Open |
-| E-7 | Handbook | Runtime and headers: no rules until a decision lands with HELMET. The auth chapter still has the gateway's key distribution, and the SAML library if a SAML driver is built, to decide. | Open |
+| E-4 | §9.3 | Strict or tolerant schema: settled 2026-11-03. Strict where the file is published, tolerant where it is read, and a frozen older-reader test holds it. | Settled |
+| E-5 | §9.1 | Node 27 and later have no Maintenance phase: settled 2026-11-03. The policy lists even Node majors only, so no new `active_until` rule is needed. | Settled |
+| E-6 | Ch. 10 | The accessibility chapter aims at WCAG 2.2 AA. Which ADA Title II dates apply to a given WSU unit is for counsel and the accessibility office. | Open |
+| E-7 | Handbook | Runtime and headers: the Cross-Origin-Resource-Policy default, the CSP report endpoints and the metrics endpoint. Auth: the gateway's key distribution and rotation, and the SAML library if a SAML driver is built. | Open |
 
-The full backlog, 37 items, is at the end of [BEST_PRACTICES.md](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#gaps-for-the-backlog).
+The full backlog, 42 items, is at the end of [BEST_PRACTICES.md](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#gaps-for-the-backlog).
 
 Referenced tools
 

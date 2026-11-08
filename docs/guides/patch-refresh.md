@@ -19,7 +19,7 @@ Patch levels are watched automatically. `bin/refresh-patches.php` reads php.net 
 
 A scheduled CI job runs the refresh and is check-only: when the policy changed, the tool exits 3 and the job fails on the diff. A red scheduled run is a to-do, not an outage: run `php bin/refresh-patches.php`, read the diff, `composer ci`, add a CHANGELOG line, commit.
 
-The committing path is the policy robot, covered in [The policy robot](policy-bot.md): it runs the fuller `bin/refresh-policy.php` every Monday and opens a merge request, so a red check-only run usually has a robot merge request waiting beside it. The robot's schedule (`CREED_JOB=policy-bot`) does not run this job.
+The committing path is the policy robot, covered in [The policy robot](policy-bot.md): it runs the fuller `bin/refresh-policy.php` every Monday, pushes the refresh to `main` when its `composer ci` gate is green, and opens a merge request only when the gate is red, so a red check-only run is usually fixed by the robot's next Monday push, or has a robot merge request waiting beside it. The robot's schedule (`CREED_JOB=policy-bot`) does not run this job.
 
 ## Support dates
 

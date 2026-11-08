@@ -38,7 +38,7 @@ Each version can also carry a [`latest_patch`](https://github.com/waynestate/cre
 
 ## [§1.2](https://creed.apps.wayne.edu/handbook/versions.html#base-images) Base images
 
-A base image **MUST** be rebuilt when the policy's `latest_patch` for its branch changes; the policy robot opens that change, so an image never sits behind the patch level the policy records (the stack's version policy). Every such change to `latest_patch` is a rebuild. An image **MUST NOT** be pinned to a branch the policy marks EOL (the stack's version policy).
+A base image **MUST** be rebuilt when the policy's `latest_patch` for its branch changes. The policy robot lands that change itself: it pushes the refresh to `main` when its `composer ci` gate is green, and opens a merge request for a person only when the gate is red. So an image never sits behind the patch level the policy records (the stack's version policy). Every such change to `latest_patch` is a rebuild. An image **MUST NOT** be pinned to a branch the policy marks EOL (the stack's version policy).
 
 `images.docker` names the official image for a plain Docker target. Citadel names its own images, so `images.citadel` stays unset until Citadel publishes names. `openshift` and `coolify` are not filled yet.
 
@@ -61,4 +61,4 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`components.*.versions.*.latest_patch`**: set per version
 - **`components.*.versions.*.latest_patch_checked`**: set per version
 
-Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `aa147fa`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `a620495`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

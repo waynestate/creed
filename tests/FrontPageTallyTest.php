@@ -134,6 +134,16 @@ final class FrontPageTallyTest extends TestCase
         }
     }
 
+    #[Test]
+    public function theErrataFootCountsTheBacklog(): void
+    {
+        $text = (string) file_get_contents(self::PRACTICES);
+        $section = preg_match('/^## Gaps for the backlog\R(.*?)^## /ms', $text, $m) === 1 ? $m[1] : '';
+        $items = preg_match_all('/^\d+\. /m', $section);
+        self::assertGreaterThan(0, $items, 'The backlog has no numbered items.');
+        self::assertStringContainsString("The full backlog, {$items} items, is at", self::front(), 'The errata foot states the wrong backlog count.');
+    }
+
     /**
      * Stamp tags per chapter, in practice order: [chapter number => list of tags].
      *

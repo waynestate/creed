@@ -161,8 +161,10 @@ never fails the run. Run it with <code>--dry-run</code> to preview, or <code>--o
 to test against saved feeds.</p>
 <h2 id="base-images"><a class="hb-sec" href="#base-images">§1.2</a> Base images</h2>
 <p>A base image <strong class="kw kw--must">MUST</strong> be rebuilt when the policy's <code>latest_patch</code> for its branch
-changes; the policy robot opens that change, so an image never sits behind the
-patch level the policy records <span class="hb-cite">(the stack's version policy)</span>. Every such change
+changes. The policy robot lands that change itself: it pushes the refresh to
+<code>main</code> when its <code>composer ci</code> gate is green, and opens a merge request for a
+person only when the gate is red. So an image never sits behind the patch
+level the policy records <span class="hb-cite">(the stack's version policy)</span>. Every such change
 to <code>latest_patch</code> is a rebuild. An image <strong class="kw kw--must-not">MUST NOT</strong> be pinned to a branch the
 policy marks EOL <span class="hb-cite">(the stack's version policy)</span>.</p>
 <p><code>images.docker</code> names the official image for a plain Docker target. Citadel
@@ -190,7 +192,7 @@ ceiling: we do not go lower, no matter how the crowd sings for more.</p>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="./"><span class="hb-pager__dir">Back to</span><span class="hb-pager__name">Contents</span></a><a class="hb-pager__link hb-pager__link--next" href="dependencies.html" rel="next"><span class="hb-pager__dir">Next · Chapter 2</span><span class="hb-pager__name">Dependencies</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/versions.md"><code>handbook/versions.md</code> on GitHub</a>, impression <code>aa147fa</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/versions.md"><code>handbook/versions.md</code> on GitHub</a>, impression <code>a620495</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

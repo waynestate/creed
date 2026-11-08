@@ -172,8 +172,10 @@ never fails the run. Run it with <code>--dry-run</code> to preview, or <code>--o
 to test against saved feeds.</p>
 <h3 id="versions--base-images"><a class="hb-sec" href="#versions--base-images">§1.2</a> Base images</h3>
 <p>A base image <strong class="kw kw--must">MUST</strong> be rebuilt when the policy's <code>latest_patch</code> for its branch
-changes; the policy robot opens that change, so an image never sits behind the
-patch level the policy records <span class="hb-cite">(the stack's version policy)</span>. Every such change
+changes. The policy robot lands that change itself: it pushes the refresh to
+<code>main</code> when its <code>composer ci</code> gate is green, and opens a merge request for a
+person only when the gate is red. So an image never sits behind the patch
+level the policy records <span class="hb-cite">(the stack's version policy)</span>. Every such change
 to <code>latest_patch</code> is a rebuild. An image <strong class="kw kw--must-not">MUST NOT</strong> be pinned to a branch the
 policy marks EOL <span class="hb-cite">(the stack's version policy)</span>.</p>
 <p><code>images.docker</code> names the official image for a plain Docker target. Citadel
@@ -364,8 +366,9 @@ and a Psalm taint-analysis pilot on one app <span class="hb-cite">(the stack's c
 <h3 id="code--how-it-is-enforced"><a class="hb-sec" href="#code--how-it-is-enforced">§3.9</a> How it is enforced</h3>
 <ul>
 <li>Pint, PHPStan, Rector dry-runs and ESLint run in CI through <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>
-components, not in the deploy gate <span class="hb-cite">(the stack's coding standard)</span>. The Preflight components
-are Planned.</li>
+components, not in the deploy gate <span class="hb-cite">(the stack's coding standard)</span>. Preflight 0.2.0
+ships the <code>pint</code>, <code>phpstan</code> and <code>eslint</code> components; a Rector dry-run component
+is Planned.</li>
 <li>New rules arrive as warnings and become errors on a stated date, the same
 staging as PHP versions <span class="hb-cite">(the stack's enforcement design)</span>.</li>
 <li>PROCTOR reports whether an app uses the presets <span class="hb-cite">(the stack's coding standard)</span>. The PROCTOR
@@ -818,7 +821,9 @@ checked by WayneUI's own runnable accessibility gate <span class="hb-cite">(the 
 and is available on every self-managed tier <span class="hb-cite">(the stack's accessibility design)</span>.</li>
 <li>An automated tool catches regressions; it is not proof of conformance, and it never replaces a manual keyboard and
 screen reader pass before launch <span class="hb-cite">(the stack's accessibility design)</span>.</li>
-<li><a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a> has no accessibility component yet (not built yet).</li>
+<li><a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s <code>a11y</code> component (0.2.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core
+in light and dark at 320 and 1280 px, and fails the pipeline on any violation. Add <code>wcag22aa</code> to its tags for the
+WCAG 2.2 AA target above.</li>
 </ul>
 <h3 id="accessibility--not-decided-here"><a class="hb-sec" href="#accessibility--not-decided-here">§9.4</a> Not decided here</h3>
 <ul>
@@ -872,7 +877,7 @@ with argument arrays, never shell strings <span class="hb-cite">(the stack's eve
 <div class="hb-rfc" role="note"><p><span class="hb-rfc__label">Key words</span> The key words <strong class="kw kw--must">MUST</strong>, <strong class="kw kw--must-not">MUST NOT</strong>, <strong class="kw kw--should">SHOULD</strong>, <strong class="kw kw--should-not">SHOULD NOT</strong> and <strong class="kw kw--may">MAY</strong> in this chapter are to be interpreted as described in <a href="https://www.rfc-editor.org/rfc/rfc2119">RFC 2119</a>.</p></div>
 <h3 id="secrets--credentials"><a class="hb-sec" href="#secrets--credentials">§11.1</a> Credentials</h3>
 <ul>
-<li>Credentials (database and service passwords, API keys, tokens) <strong class="kw kw--must-not">MUST NOT</strong> be committed to version control, because history keeps them forever. Commit <code>.env.example</code> with placeholders instead. A credential that was ever committed is treated as exposed and rotated (WSU developer standards, 2024). <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> checks: <code>app-key</code> (a committed <code>.env</code> or <code>APP_KEY</code>) and <code>repo-url-credentials</code> (a token in a package source URL); no general secret scan exists yet.</li>
+<li>Credentials (database and service passwords, API keys, tokens) <strong class="kw kw--must-not">MUST NOT</strong> be committed to version control, because history keeps them forever. Commit <code>.env.example</code> with placeholders instead. A credential that was ever committed is treated as exposed and rotated (WSU developer standards, 2024). <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> checks: <code>app-key</code> (a committed <code>.env</code> or <code>APP_KEY</code>) and <code>repo-url-credentials</code> (a token in a package source URL). The general secret scan is <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s <code>secret-detection</code> component (0.2.0), which runs Gitleaks over the tree and fails the pipeline on a match.</li>
 <li>Credentials and sensitive data <strong class="kw kw--must">MUST</strong> live outside any folder the web server serves. Laravel's <code>public/</code> is the only served folder; raw PHP apps serve one <code>public/</code> folder the same way (WSU developer standards, 2024). PROCTOR check: <code>served-folder</code> (dumps, backups, logs and env files in <code>public/</code>).</li>
 <li>The Laravel <code>APP_KEY</code> is a credential: whoever holds it can forge encrypted payloads, which can mean code execution. It <strong class="kw kw--must-not">MUST NOT</strong> be committed, a key that leaked <strong class="kw kw--must">MUST</strong> be rotated with <code>php artisan key:generate</code> on every environment that used it, and the session driver <strong class="kw kw--should-not">SHOULD NOT</strong> be <code>cookie</code>, which seals every session with the key (GitGuardian, exploiting public APP_KEY leaks). PROCTOR check: <code>app-key</code>.</li>
 <li>An app uses its own dedicated application ID, never a person's employee or student AccessID, to reach another server or service, with the fewest permissions the task needs (WSU developer standards, 2024).</li>
@@ -959,7 +964,7 @@ override <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>48933e3</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>023fd4a</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 
