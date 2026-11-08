@@ -2,7 +2,7 @@
 
 ## Unreleased
 
-- Added: `rules.override_max_days` (90) in the policy and its schema, and the overrides chapter says an override may run at most that long.
+- Added: `Policy::overrideMaxDays()` reads `rules.override_max_days` (90 when absent; anything but a positive integer throws), so PROCTOR's exported reader can enforce the override cap.
 - Fixed: the docs menu closes with Escape and hands focus back to its button (docs kit synced from Squire).
 - Changed: the deploy layer requires PROCTOR ^0.8 (locked 0.8.0).
 - Changed: the GitLab pipeline pins every Preflight component to 0.3.0 (was 0.2.0). From 0.3.0 each component adds the Dependency Proxy prefix itself (`image_prefix`), so the `php-test`, `composer-audit` and `proctor` `image:` inputs are plain image names with the same tags and digests; CREED's own jobs keep the prefix. The GitHub workflow stays on 0.1.4. Best practices 23 and 42, the intro, the front page's clause 3.6 and the handbook's accessibility, code and secrets chapters name 0.3.0, and practice 23 and clause 3.6 say PROCTOR main's `preflight-pinned` accepts a full release tag as well as a commit SHA.
