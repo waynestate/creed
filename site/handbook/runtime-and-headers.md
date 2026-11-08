@@ -10,7 +10,7 @@ Chapter 6
 
 # Runtime and headers
 
-8 sections · 17 provisions · **MUST NOT** 1 · **MUST** 2 · **SHOULD NOT** 1
+8 sections · 16 provisions · **MUST NOT** 1 · **MUST** 2 · **SHOULD NOT** 1
 
 Decided
 
@@ -30,7 +30,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
   - Permissions-Policy, with camera, geolocation, microphone, payment and usb denied by default.
   - Cross-Origin-Opener-Policy `same-origin`.
   - Strict-Transport-Security `max-age=31536000; includeSubDomains`, on HTTPS responses only.
-- Cross-Origin-Resource-Policy is off by default (the stack's runtime and headers design).
+- Cross-Origin-Resource-Policy is off by default and opt-in, because a blanket `same-site` can break an app whose assets are read cross-origin (the stack's runtime and headers design). HELMET 1.0.0 ships that default: `corp` (raw PHP) or `HELMET_CORP` (Laravel) set to `same-site`, `same-origin` or `cross-origin` sends it.
 - An app **SHOULD NOT** weaken the default Content-Security-Policy with `'unsafe-inline'` for scripts; it uses the nonce instead (the stack's runtime and headers design). No check exists yet.
 
 The headers are the setlist: the same one on every response. The HSTS encore plays only when the show is really on HTTPS.
@@ -65,7 +65,6 @@ A PROCTOR check for this is proposed, not built.
 
 ## [§6.8](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#not-decided-here) Not decided here
 
-- The Cross-Origin-Resource-Policy default.
 - The Content-Security-Policy report endpoints.
 
-Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `0c1d993`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `cee49c0`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

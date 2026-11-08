@@ -26,9 +26,10 @@ Each practice has a reason, sources, and a tag that says how the stack holds it 
 Tags describe the repository and design documents as they stand on 2026-10-29. Practices 55 to 61 were added on
 2026-11-02. Nine tags were re-checked against the tree on 2026-11-06 (practices 14, 24, 39, 42, 44, 46, 49, 50 and
 51). On 2026-11-08 every tag, count and named file was re-checked against this tree, PROCTOR main, Preflight 0.2.0,
-HELMET main and Rollcall main, and five tags moved (practices 8, 17, 23, 34 and 53). PROCTOR v0.1 is specified in
+HELMET main and Rollcall main, and five tags moved (practices 8, 17, 23, 34 and 53). Later that day the pin moved to
+Preflight 0.3.0, and the practices that name it (23 and 42) were re-read against 0.3.0. PROCTOR v0.1 is specified in
 `first-repos.md` and its checks are named below as specified. CREED's own pipeline includes the `php-test`,
-`composer-audit` and `proctor` components, pinned to Preflight 0.2.0; the `proctor` job checks `deploy/` and is
+`composer-audit` and `proctor` components, pinned to Preflight 0.3.0; the `proctor` job checks `deploy/` and is
 allowed to fail while its current findings are fixed.
 
 ## 1. The version policy as data
@@ -399,9 +400,9 @@ commit SHA, which it calls preferred, or to a release tag; it says to avoid `~la
 stack's own, from the first-repos design.
 
 How the stack holds it: `Partially`. `ci.md` states it, and CREED's `.gitlab-ci.yml` pins its three Preflight
-components (`php-test`, `composer-audit` and `proctor`) to the 0.2.0 tag. PROCTOR main's `proctor/preflight-pinned`
-warns when an app includes a Preflight component at anything but a full commit SHA, which is stricter than this
-practice (a tag warns too). Components from anywhere else are not checked.
+components (`php-test`, `composer-audit` and `proctor`) to the 0.3.0 tag. PROCTOR main's `proctor/preflight-pinned`
+warns when an app includes a Preflight component at a branch, `~latest`, a partial version such as `0.3` or no ref; a
+full release tag (such as `@0.3.0`) or a full commit SHA passes. Components from anywhere else are not checked.
 
 ## 4. Secrets and configuration
 
@@ -711,7 +712,7 @@ Sources: [GitLab dependency scanning](https://docs.gitlab.com/user/application_s
 How the stack holds it: `Documented`. The rule is written in `handbook/code.md`: the stack's GitLab instances run the
 Free tier, so nothing relies on GitLab SAST. The tier of git.wayne.edu was not checked. The three components CREED
 uses run PHPUnit (`php-test`), `composer audit` (`composer-audit`) and PROCTOR (`proctor`), not a GitLab scanner
-(their Preflight 0.2.0 templates were read on 2026-11-08), so they fit it.
+(their Preflight 0.3.0 templates were read on 2026-11-08), so they fit it.
 
 ### 43. Treat `APP_KEY` as a code-execution key
 

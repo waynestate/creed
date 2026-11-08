@@ -289,9 +289,9 @@ Checked
 
 ### §3.6 Pin CI components to a tag or SHA.
 
-Include shared CI components at a tag or a full commit SHA, never `~latest`. CREED's own pipeline pins its three Preflight components to the 0.2.0 tag.
+Include shared CI components at a tag or a full commit SHA, never `~latest`. CREED's own pipeline pins its three Preflight components to the 0.3.0 tag.
 
-Gap `ci.md` writes the rule. [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `preflight-pinned` warns when a [Preflight](https://creed.apps.wayne.edu/#ahj-preflight) include is not pinned to a full commit SHA; components from anywhere else are not checked.
+Gap `ci.md` writes the rule. [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `preflight-pinned` warns when a [Preflight](https://creed.apps.wayne.edu/#ahj-preflight) include is not pinned to a full release tag or a commit SHA; components from anywhere else are not checked.
 
 Partially
 
@@ -418,7 +418,7 @@ The questions the 2026 edition hasn't answered. Each one names the clause it aff
 | E-4 | §9.3 | Strict or tolerant schema: settled 2026-11-03. Strict where the file is published, tolerant where it is read, and a frozen older-reader test holds it. | Settled |
 | E-5 | §9.1 | Node 27 and later have no Maintenance phase: settled 2026-11-03. The policy lists even Node majors only, so no new `active_until` rule is needed. | Settled |
 | E-6 | Ch. 10 | The accessibility chapter aims at WCAG 2.2 AA. Which ADA Title II dates apply to a given WSU unit is for counsel and the accessibility office. | Open |
-| E-7 | Handbook | Runtime and headers: the Cross-Origin-Resource-Policy default and the CSP report endpoints. | Open |
+| E-7 | Handbook | Runtime and headers: the CSP report endpoints. The Cross-Origin-Resource-Policy default is settled as opt-in: HELMET 1.0.0 sends no header until the app sets one. | Open |
 | E-8 | Handbook | Gateway keys, SAML and metrics: settled 2026-11-07 and 2026-11-08. Apps read one key set file holding the current and the next key, rotated every 12 months; the `saml` driver is built on `onelogin/php-saml`; metrics speak Prometheus and stay off by default. | Settled |
 
 The full backlog, 42 items, is at the end of [BEST_PRACTICES.md](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#gaps-for-the-backlog).

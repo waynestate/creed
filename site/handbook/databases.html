@@ -82,7 +82,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 5</p>
             <h1 id="page-title">Databases</h1>
-            <p class="hb-register">9 sections · 25 provisions · <strong class="kw kw--must">MUST</strong> 4 · <strong class="kw kw--should">SHOULD</strong> 1 · <strong class="kw kw--may">MAY</strong> 1</p>
+            <p class="hb-register">9 sections · 26 provisions · <strong class="kw kw--must">MUST</strong> 4 · <strong class="kw kw--should">SHOULD</strong> 1 · <strong class="kw kw--may">MAY</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -125,9 +125,16 @@ MySQL 8.4 and later the default authentication plugin is
 <h2 id="grace-period"><a class="hb-sec" href="#grace-period">§5.3</a> Grace period</h2>
 <p>An app <strong class="kw kw--may">MAY</strong> stay on a database version for 90 days after it leaves support, the
 policy's <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json" title="rules.eol_grace_days in policy.json"><code>eol_grace_days</code></a>; the version is <code>Eol</code> through that window and
-<code>EolGraceExpired</code> the day after, when the gate fails with no override. The
-window is a bridge for the upgrade, not a second support window: the fix is
-still the upgrade.</p>
+<code>EolGraceExpired</code> the day after. The window is a bridge for the upgrade, not a
+second support window: the fix is still the upgrade.</p>
+<ul>
+<li>For MySQL and MariaDB the check warns and does not fail yet. While Citadel's
+shared server runs 5.6, an app has no supported MySQL to move to there, so a
+security-only, <code>Eol</code> or <code>EolGraceExpired</code> version warns, and still says to
+move to 8.4 or later. It starts failing past the window when Citadel offers a
+supported MySQL <span class="hb-cite">(the stack's MySQL gate decision)</span>. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>mysql-eol</code>
+(on PROCTOR main, due in 0.8.0).</li>
+</ul>
 <h2 id="names-comments-and-connections"><a class="hb-sec" href="#names-comments-and-connections">§5.4</a> Names, comments and connections</h2>
 <ul>
 <li>Table and column names are descriptive. Add table and column comments (Laravel's <code>-&gt;comment()</code>) where the database supports them, to say what an element is for (<strong class="kw kw--should">SHOULD</strong>) (WSU developer standards, 2024).</li>
@@ -137,7 +144,7 @@ still the upgrade.</p>
 <ul>
 <li>Set <code>Schema::defaultStringLength(191)</code> in <code>AppServiceProvider::boot()</code>,
 before any migration runs. 5.6 caps an indexed <code>utf8mb4</code> column at 767
-bytes, which is 191 characters. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>mysql56</code>.</li>
+bytes, which is 191 characters. PROCTOR check: <code>mysql56</code>.</li>
 <li>Keep <code>utf8mb4</code> and <code>utf8mb4_unicode_ci</code>, the defaults. Never use an
 8.0-only collation such as <code>utf8mb4_0900_ai_ci</code> (not yet confirmed on a
 5.6 server).</li>
@@ -238,7 +245,7 @@ list is not checked yet.</p>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="auth.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 4</span><span class="hb-pager__name">Auth</span></a><a class="hb-pager__link hb-pager__link--next" href="runtime-and-headers.html" rel="next"><span class="hb-pager__dir">Next · Chapter 6</span><span class="hb-pager__name">Runtime and headers</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/databases.md"><code>handbook/databases.md</code> on GitHub</a>, impression <code>10e8473</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/databases.md"><code>handbook/databases.md</code> on GitHub</a>, impression <code>8e1a91e</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

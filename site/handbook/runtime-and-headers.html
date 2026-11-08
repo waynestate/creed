@@ -82,7 +82,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 6</p>
             <h1 id="page-title">Runtime and headers</h1>
-            <p class="hb-register">8 sections · 17 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 2 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1</p>
+            <p class="hb-register">8 sections · 16 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 2 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -121,7 +121,9 @@
 <li>Strict-Transport-Security <code>max-age=31536000; includeSubDomains</code>, on HTTPS responses only.</li>
 </ul>
 </li>
-<li>Cross-Origin-Resource-Policy is off by default <span class="hb-cite">(the stack's runtime and headers design)</span>.</li>
+<li>Cross-Origin-Resource-Policy is off by default and opt-in, because a blanket <code>same-site</code> can break an app whose
+assets are read cross-origin <span class="hb-cite">(the stack's runtime and headers design)</span>. HELMET 1.0.0 ships that default: <code>corp</code> (raw
+PHP) or <code>HELMET_CORP</code> (Laravel) set to <code>same-site</code>, <code>same-origin</code> or <code>cross-origin</code> sends it.</li>
 <li>An app <strong class="kw kw--should-not">SHOULD NOT</strong> weaken the default Content-Security-Policy with <code>'unsafe-inline'</code> for scripts; it uses the nonce
 instead <span class="hb-cite">(the stack's runtime and headers design)</span>. No check exists yet.</li>
 </ul>
@@ -169,7 +171,6 @@ warning <code>helmet.debug_enabled_in_production</code> when it is true in the p
 <p>A PROCTOR check for this is proposed, not built.</p>
 <h2 id="not-decided-here"><a class="hb-sec" href="#not-decided-here">§6.8</a> Not decided here</h2>
 <ul>
-<li>The Cross-Origin-Resource-Policy default.</li>
 <li>The Content-Security-Policy report endpoints.</li>
 </ul>
           </div>
@@ -177,7 +178,7 @@ warning <code>helmet.debug_enabled_in_production</code> when it is true in the p
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="databases.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 5</span><span class="hb-pager__name">Databases</span></a><a class="hb-pager__link hb-pager__link--next" href="deploy-gate.html" rel="next"><span class="hb-pager__dir">Next · Chapter 7</span><span class="hb-pager__name">Deploy gate</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md"><code>handbook/runtime-and-headers.md</code> on GitHub</a>, impression <code>0c1d993</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md"><code>handbook/runtime-and-headers.md</code> on GitHub</a>, impression <code>cee49c0</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

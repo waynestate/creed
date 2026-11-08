@@ -514,8 +514,8 @@
       <div class="clause" id="c-3-6" data-reveal>
         <div class="clause__body">
           <h3 class="clause__title"><span class="clause__sec">§3.6</span> Pin CI components to a tag or SHA.</h3>
-          <p>Include shared CI components at a tag or a full commit SHA, never <code>~latest</code>. CREED's own pipeline pins its three Preflight components to the 0.2.0 tag.</p>
-          <p class="xref"><span class="xref__label">Gap</span> <code>ci.md</code> writes the rule. <a class="tool" href="#ahj-proctor"><img src="assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> <code>preflight-pinned</code> warns when a <a class="tool" href="#ahj-preflight"><img src="assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a> include is not pinned to a full commit SHA; components from anywhere else are not checked.</p>
+          <p>Include shared CI components at a tag or a full commit SHA, never <code>~latest</code>. CREED's own pipeline pins its three Preflight components to the 0.3.0 tag.</p>
+          <p class="xref"><span class="xref__label">Gap</span> <code>ci.md</code> writes the rule. <a class="tool" href="#ahj-proctor"><img src="assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> <code>preflight-pinned</code> warns when a <a class="tool" href="#ahj-preflight"><img src="assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a> include is not pinned to a full release tag or a commit SHA; components from anywhere else are not checked.</p>
         </div>
         <span class="stamp stamp--partially">Partially</span>
         <aside class="margin-note"><b>Rationale.</b> A moving reference lets an upstream change weaken your pipeline without a commit in your repo.</aside>
@@ -688,7 +688,7 @@
               <tr><th scope="row">E-4</th><td>§9.3</td><td>Strict or tolerant schema: settled 2026-11-03. Strict where the file is published, tolerant where it is read, and a frozen older-reader test holds it.</td><td><span class="settled">Settled</span></td></tr>
               <tr><th scope="row">E-5</th><td>§9.1</td><td>Node 27 and later have no Maintenance phase: settled 2026-11-03. The policy lists even Node majors only, so no new <code>active_until</code> rule is needed.</td><td><span class="settled">Settled</span></td></tr>
               <tr><th scope="row">E-6</th><td>Ch. 10</td><td>The accessibility chapter aims at WCAG 2.2 AA. Which ADA Title II dates apply to a given WSU unit is for counsel and the accessibility office.</td><td><span class="open">Open</span></td></tr>
-              <tr><th scope="row">E-7</th><td>Handbook</td><td>Runtime and headers: the Cross-Origin-Resource-Policy default and the CSP report endpoints.</td><td><span class="open">Open</span></td></tr>
+              <tr><th scope="row">E-7</th><td>Handbook</td><td>Runtime and headers: the CSP report endpoints. The Cross-Origin-Resource-Policy default is settled as opt-in: HELMET 1.0.0 sends no header until the app sets one.</td><td><span class="open">Open</span></td></tr>
               <tr><th scope="row">E-8</th><td>Handbook</td><td>Gateway keys, SAML and metrics: settled 2026-11-07 and 2026-11-08. Apps read one key set file holding the current and the next key, rotated every 12 months; the <code>saml</code> driver is built on <code>onelogin/php-saml</code>; metrics speak Prometheus and stay off by default.</td><td><span class="settled">Settled</span></td></tr>
             </tbody>
           </table>

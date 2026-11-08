@@ -10,7 +10,7 @@ Chapter 5
 
 # Databases
 
-9 sections · 25 provisions · **MUST** 4 · **SHOULD** 1 · **MAY** 1
+9 sections · 26 provisions · **MUST** 4 · **SHOULD** 1 · **MAY** 1
 
 Decided
 
@@ -26,7 +26,9 @@ The policy lists the LTS lines, 8.4 and 9.7, for current use. It keeps the older
 
 ## [§5.3](https://creed.apps.wayne.edu/handbook/databases.html#grace-period) Grace period
 
-An app **MAY** stay on a database version for 90 days after it leaves support, the policy's [`eol_grace_days`](https://github.com/waynestate/creed/blob/main/policy/policy.json); the version is `Eol` through that window and `EolGraceExpired` the day after, when the gate fails with no override. The window is a bridge for the upgrade, not a second support window: the fix is still the upgrade.
+An app **MAY** stay on a database version for 90 days after it leaves support, the policy's [`eol_grace_days`](https://github.com/waynestate/creed/blob/main/policy/policy.json); the version is `Eol` through that window and `EolGraceExpired` the day after. The window is a bridge for the upgrade, not a second support window: the fix is still the upgrade.
+
+- For MySQL and MariaDB the check warns and does not fail yet. While Citadel's shared server runs 5.6, an app has no supported MySQL to move to there, so a security-only, `Eol` or `EolGraceExpired` version warns, and still says to move to 8.4 or later. It starts failing past the window when Citadel offers a supported MySQL (the stack's MySQL gate decision). [PROCTOR](https://proctor.apps.wayne.edu/) check: `mysql-eol` (on PROCTOR main, due in 0.8.0).
 
 ## [§5.4](https://creed.apps.wayne.edu/handbook/databases.html#names-comments-and-connections) Names, comments and connections
 
@@ -35,7 +37,7 @@ An app **MAY** stay on a database version for 90 days after it leaves support, t
 
 ## [§5.5](https://creed.apps.wayne.edu/handbook/databases.html#conventions-that-keep-5-6-working) Conventions that keep 5.6 working
 
-- Set `Schema::defaultStringLength(191)` in `AppServiceProvider::boot()`, before any migration runs. 5.6 caps an indexed `utf8mb4` column at 767 bytes, which is 191 characters. [PROCTOR](https://proctor.apps.wayne.edu/) check: `mysql56`.
+- Set `Schema::defaultStringLength(191)` in `AppServiceProvider::boot()`, before any migration runs. 5.6 caps an indexed `utf8mb4` column at 767 bytes, which is 191 characters. PROCTOR check: `mysql56`.
 - Keep `utf8mb4` and `utf8mb4_unicode_ci`, the defaults. Never use an 8.0-only collation such as `utf8mb4_0900_ai_ci` (not yet confirmed on a 5.6 server).
 - Store JSON as `text` or `longText`, with Eloquent `array` or `json` casts, and filter in PHP. 5.6 has no JSON column type. PROCTOR check: `mysql56`.
 - Leave `use_upsert_alias` unset, so `upsert()` uses `VALUES()`. The row alias that setting switches to needs MySQL 8.0.19.
@@ -107,4 +109,4 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`rules.eol_grace_days`**: `90`
 - **`components.*.versions.*.security_until`**: set per version
 
-Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `10e8473`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `8e1a91e`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
