@@ -11,7 +11,7 @@ use RuntimeException;
  * argv names refresh-policy.php pop the next scripted exit code and write
  * the next report to the requested --report path. Git calls return the
  * scripted result for their subcommand, or success with empty streams.
- * Every call is recorded; any other call throws, so a test can never
+ * Composer calls (the gate) return $gate. Every call is recorded; any other call throws, so a test can never
  * silently run a real command.
  */
 final class FakeRunner
@@ -31,12 +31,20 @@ final class FakeRunner
 
     /**
      * Scripted results for git subcommands, keyed by the subcommand word
-     * (checkout, add, diff, commit, push). Unscripted subcommands succeed
+     * (add, diff, commit, push). Unscripted subcommands succeed
      * with empty streams, so a test scripts only what it cares about.
      *
      * @var array<string, array{status: int, stdout: string, stderr: string}>
      */
     public array $git = [];
+
+    /**
+     * The scripted result for the gate (any call whose argv[0] is
+     * composer). Green by default.
+     *
+     * @var array{status: int, stdout: string, stderr: string}
+     */
+    public array $gate = ['status' => 0, 'stdout' => '', 'stderr' => ''];
 
     private int $call = 0;
 
@@ -60,6 +68,9 @@ final class FakeRunner
         $this->calls[] = $argv;
         $joined = implode(' ', $argv);
         if (!str_contains($joined, 'refresh-policy.php')) {
+            if (($argv[0] ?? '') === 'composer') {
+                return $this->gate;
+            }
             if (($argv[0] ?? '') === 'git') {
                 // The subcommand is the first argument after "git" that is
                 // not an option, so "git -c x=y commit" keys under commit.

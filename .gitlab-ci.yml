@@ -64,22 +64,26 @@ refresh-patches:
     - php bin/refresh-patches.php
     - git diff --exit-code policy/policy.json
 
-# The policy robot (bin/policy-bot.php run) is the committing path: it
-# commits the data allowlist on auto/policy-refresh and pushes it as a
-# merge request labeled auto-data, auto-merged for a data-only run. It runs
-# on the dedicated schedule (the one carrying CREED_JOB=policy-bot) and by
-# hand from the web. GIT_DEPTH "0" fetches the full history, because the
-# robot force-pushes its branch. The single script step checks the masked
-# CREED_BOT_TOKEN variable first: without it the job prints a notice and
-# exits 0, so it stays green until the owner creates the token.
+# The policy robot (bin/policy-bot.php run) is the committing path. It
+# commits the data allowlist on the checked-out main commit and runs
+# composer ci in this same job. Green: it pushes the commit straight to main
+# with CI_JOB_TOKEN (GitLab starts no new pipeline for a job-token push, and
+# this job already ran the gate). Red: it pushes auto/policy-refresh as a
+# merge request labeled auto-data for a person to review, and the job fails.
+# It runs on the dedicated schedule (the one carrying CREED_JOB=policy-bot)
+# and by hand from the web, on the default branch only. GIT_DEPTH "0"
+# fetches the full history, because the robot pushes its commit back. The
+# single script step checks the masked CREED_BOT_TOKEN variable first (the
+# alert issues need it): without it the job prints a notice and exits 0, so
+# it stays green until the owner creates the token.
 policy-bot:
   extends: .composer-cache
   image: ${CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX}/composer:2.10.3
   variables:
     GIT_DEPTH: "0"
   rules:
-    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CREED_JOB == "policy-bot"'
-    - if: '$CI_PIPELINE_SOURCE == "web"'
+    - if: '$CI_PIPELINE_SOURCE == "schedule" && $CREED_JOB == "policy-bot" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+    - if: '$CI_PIPELINE_SOURCE == "web" && $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
   script: |
     set -eu
     if [ -z "${CREED_BOT_TOKEN:-}" ]; then echo "CREED_BOT_TOKEN not set; skipping the policy robot"; exit 0; fi

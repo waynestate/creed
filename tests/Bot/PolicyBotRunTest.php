@@ -44,7 +44,7 @@ final class PolicyBotRunTest extends TestCase
     }
 
     #[Test]
-    public function writtenChangesCommitAndPushWithAutoMerge(): void
+    public function writtenChangesPassTheGateAndPushToMain(): void
     {
         $this->ciEnvironment();
         [$bot, $runner] = $this->makeBot([3], [$this->report(changes: [$this->changeItem()])]);
@@ -54,17 +54,48 @@ final class PolicyBotRunTest extends TestCase
 
         self::assertSame(0, $exit, $out);
         self::assertStringContainsString("changes written; the commit plan:\n  policy/policy.json\n  policy/sources.json\n", $out);
-        self::assertStringContainsString('- php 8.3: latest_patch 8.3.35 -> 8.3.36 [neutral]', $out);
-        self::assertStringContainsString('merge request title: policy: refresh from upstream sources', $out);
+        self::assertStringContainsString('running the gate: composer ci', $out);
+        // No merge request on a green gate, so no title or body either.
+        self::assertStringNotContainsString('merge request title:', $out);
+        self::assertStringContainsString('the gate passed; pushed the refresh to main', $out);
 
         $git = $this->gitCalls($runner);
-        self::assertSame(['checkout', '-B', 'auto/policy-refresh'], $git['checkout']);
+        self::assertArrayNotHasKey('checkout', $git);
         self::assertSame(['add', 'policy/policy.json', 'policy/sources.json'], $git['add']);
         self::assertSame(
             ['-c', 'user.name=CREED policy bot', '-c', 'user.email=policy-bot@noreply.invalid', 'commit', '-m', 'policy: refresh from upstream sources'],
             $git['commit'],
         );
-        $push = $git['push'];
+        self::assertSame(
+            ['push', 'https://gitlab-ci-token:job-token-456@git.example.com:443/waynestate/creed.git', 'HEAD:refs/heads/main'],
+            $git['push'],
+        );
+
+        // The gate sits between the commit and the push.
+        $commitAt = $this->callIndex($runner, 'git', 'commit');
+        $gateAt = array_search(['composer', 'ci'], $runner->calls, true);
+        $pushAt = $this->callIndex($runner, 'git', 'push');
+        self::assertIsInt($gateAt);
+        self::assertGreaterThan($commitAt, $gateAt);
+        self::assertGreaterThan($gateAt, $pushAt);
+    }
+
+    #[Test]
+    public function aRedGateFallsBackToAMergeRequest(): void
+    {
+        $this->ciEnvironment();
+        [$bot, $runner] = $this->makeBot([3], [$this->report(changes: [$this->changeItem()])]);
+        $runner->git['diff'] = ['status' => 0, 'stdout' => "policy/policy.json\n", 'stderr' => ''];
+        $runner->gate = ['status' => 2, 'stdout' => '', 'stderr' => ''];
+
+        [$exit, $out] = $this->capture($bot, static fn(PolicyBot $b): int => $b->run());
+
+        self::assertSame(1, $exit, $out);
+        self::assertStringContainsString('the gate failed (exit 2)', $out);
+        self::assertStringContainsString('merge request title: policy: refresh from upstream sources', $out);
+        self::assertStringContainsString('- php 8.3: latest_patch 8.3.35 -> 8.3.36 [neutral]', $out);
+
+        $push = $this->gitCalls($runner)['push'];
         self::assertSame(['push', '--force'], array_slice($push, 0, 2));
         self::assertSame(
             [
@@ -73,16 +104,32 @@ final class PolicyBotRunTest extends TestCase
                 'merge_request.remove_source_branch',
                 'merge_request.label=auto-data',
                 'merge_request.title=policy: refresh from upstream sources',
-                'merge_request.auto_merge',
             ],
             $this->pushOptions($push),
         );
-        self::assertSame('https://oauth2:test-token-123@git.example.com:443/waynestate/creed.git', $push[count($push) - 2]);
+        self::assertSame('https://gitlab-ci-token:job-token-456@git.example.com:443/waynestate/creed.git', $push[count($push) - 2]);
         self::assertSame('HEAD:refs/heads/auto/policy-refresh', $push[count($push) - 1]);
     }
 
     #[Test]
-    public function heldChangesPushWithoutAutoMerge(): void
+    public function aBranchPipelineNeverPushes(): void
+    {
+        $this->ciEnvironment(['CI_COMMIT_BRANCH' => 'feature/x']);
+        [$bot, $runner] = $this->makeBot([3], [$this->report(changes: [$this->changeItem()])]);
+        $runner->git['diff'] = ['status' => 0, 'stdout' => "policy/policy.json\n", 'stderr' => ''];
+
+        [$exit, $out] = $this->capture($bot, static fn(PolicyBot $b): int => $b->run());
+
+        self::assertSame(1, $exit, $out);
+        self::assertStringContainsString('the robot pushes only from main; this pipeline runs on feature/x', $out);
+        $git = $this->gitCalls($runner);
+        self::assertArrayNotHasKey('commit', $git);
+        self::assertArrayNotHasKey('push', $git);
+        self::assertSame([], $git);
+    }
+
+    #[Test]
+    public function heldChangesPassTheGateAndPushToMain(): void
     {
         $this->ciEnvironment();
         [$bot, $runner] = $this->makeBot([4], [$this->report(held: [$this->changeItem([
@@ -100,12 +147,15 @@ final class PolicyBotRunTest extends TestCase
         self::assertStringContainsString('the refresher held or refused some changes; committing what was written', $out);
         self::assertStringContainsString('held php 8.3: security_until 2026-12-31 -> 2027-12-31 [loosen-fail]: upstream extended support past the policy; confirm before writing', $out);
 
+        self::assertStringContainsString('the gate passed; pushed the refresh to main', $out);
+
         $git = $this->gitCalls($runner);
-        self::assertSame(['checkout', '-B', 'auto/policy-refresh'], $git['checkout']);
+        self::assertArrayNotHasKey('checkout', $git);
         self::assertArrayHasKey('commit', $git);
-        self::assertArrayHasKey('push', $git);
-        self::assertContains('merge_request.create', $this->pushOptions($git['push']));
-        self::assertNotContains('merge_request.auto_merge', $this->pushOptions($git['push']));
+        self::assertSame(
+            ['push', 'https://gitlab-ci-token:job-token-456@git.example.com:443/waynestate/creed.git', 'HEAD:refs/heads/main'],
+            $git['push'],
+        );
     }
 
     #[Test]
@@ -215,8 +265,8 @@ final class PolicyBotRunTest extends TestCase
         // A fake runner that echoes the push URL back in an error; the
         // printed output must not contain the token.
         $token = 'super-secret-push-token';
-        $url = "https://oauth2:{$token}@git.example.com:443/waynestate/creed.git";
-        $this->ciEnvironment(['CREED_BOT_TOKEN' => $token]);
+        $url = "https://gitlab-ci-token:{$token}@git.example.com:443/waynestate/creed.git";
+        $this->ciEnvironment(['CI_JOB_TOKEN' => $token]);
         $fake = new FakeRunner([3], [$this->report(changes: [$this->changeItem()])]);
         $fake->git['diff'] = ['status' => 0, 'stdout' => "policy/policy.json\n", 'stderr' => ''];
         $fake->git['push'] = [
@@ -373,5 +423,19 @@ final class PolicyBotRunTest extends TestCase
 
         self::assertSame(0, $exit, $out);
         self::assertStringContainsString('hello from the refresher', $out);
+    }
+
+    /**
+     * The index in $runner->calls of the first call whose argv starts with
+     * $tool and names $sub, or a test failure when there is none.
+     */
+    private function callIndex(FakeRunner $runner, string $tool, string $sub): int
+    {
+        foreach ($runner->calls as $i => $argv) {
+            if (($argv[0] ?? '') === $tool && in_array($sub, $argv, true)) {
+                return $i;
+            }
+        }
+        self::fail("no {$tool} {$sub} call was recorded");
     }
 }

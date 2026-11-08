@@ -6,30 +6,40 @@ declare(strict_types=1);
  * The CREED policy robot: it keeps policy/policy.json current with no
  * human in the loop. It runs bin/refresh-policy.php as a subprocess,
  * reads the run report, and decides the outcome: nothing to do, a commit
- * of the data allowlist pushed as a merge request (auto-merged on exit 3),
- * or a hard failure. A weekly heartbeat re-runs the refresher with
- * --touch when refreshed_on is 7 or more days old.
+ * of the data allowlist that must pass the gate, or a hard failure. A
+ * weekly heartbeat re-runs the refresher with --touch when refreshed_on
+ * is 7 or more days old.
+ *
+ * The gate: the robot commits on the checked-out main commit and runs
+ * composer ci in the same job. When that passes it pushes the commit
+ * straight to main with CI_JOB_TOKEN (no merge request to merge by hand).
+ * When it fails it pushes auto/policy-refresh as a merge request for
+ * review instead and exits 1. A pipeline on any other branch never pushes.
  *
  * After a handled real run the robot also brings its alert issues in line
  * with the report: one open GitLab issue per alert key (held, refused,
- * disagreement, upcoming end of life), labelled auto-alert. A key that is
+ * disagreement, upcoming end of life), labeled auto-alert. A key that is
  * still present gets a note; a key that is gone closes its issue. The
- * client is built from CI_API_V4_URL, CI_PROJECT_ID and CREED_BOT_TOKEN.
+ * client is built from CI_API_V4_URL, CI_PROJECT_ID and CREED_BOT_TOKEN;
+ * the bot token is for the alert issues only.
  *
  * Usage:
  *   php bin/policy-bot.php run [--dry-run] [--offline <dir>]
  *
- *   run  One scheduled refresh: run the refresher, then commit the data
- *        allowlist on auto/policy-refresh and push it with merge request
- *        options, then sync the alert issues. --dry-run prints the decided
- *        outcome, the planned files, the merge request title and body, and
- *        the alert issues it would open, and changes nothing. --offline
- *        <dir> reads the feeds from <dir> instead of fetching them
+ *   run  One scheduled refresh: run the refresher, commit the data
+ *        allowlist and run composer ci. Green: push to main, then sync
+ *        the alert issues. Red: push auto/policy-refresh as a merge
+ *        request and stop. --dry-run prints the decided outcome, the
+ *        planned files, the merge request title and body, and the alert
+ *        issues it would open, and changes nothing. --offline <dir> reads
+ *        the feeds from <dir> instead of fetching them
  *        (tests/fixtures/feeds/ carries a full set).
  *
  * Exit codes:
- *   run  0 on every handled outcome (nothing to do, commit plan, alert),
- *        1 when the refresher hard-fails or cannot start, or when the
+ *   run  0 on every handled outcome (nothing to do, a green push to main,
+ *        commit plan, alert), 1 when the refresher hard-fails or cannot
+ *        start, when the gate fails (the refresh went to a merge request),
+ *        when the pipeline is not on the default branch, or when the
  *        alert environment (CI_API_V4_URL, CI_PROJECT_ID, CREED_BOT_TOKEN)
  *        is incomplete
  */

@@ -20,21 +20,28 @@ use stdClass;
  *        exit 0  nothing worth committing was written: the robot checks the
  *                weekly heartbeat (below) and otherwise does nothing
  *        exit 3  changes were written: the robot commits the data allowlist
- *                on the refresh branch and pushes it with merge request
- *                options, including auto-merge
+ *                and runs the gate (below)
  *        exit 4  a change was held or refused: the robot commits whatever
- *                was written (often nothing) and pushes without auto-merge
+ *                was written (often nothing) and runs the gate the same way
  *        exit 1  a hard failure: the robot stops with exit 1
+ *
+ * The gate: the robot commits on the checked-out main commit (it pushes
+ * only from the default branch), then runs composer ci in the same job.
+ * Green: it pushes the commit straight to main with the CI job token, no
+ * force and no merge request. Red: it force-pushes the commit to
+ * auto/policy-refresh as a merge request for review (never auto-merged)
+ * and exits 1, so the scheduled pipeline goes red and someone looks.
  *
  * The weekly heartbeat: after an exit 0, if refreshed_on in
  * policy/policy.json is 7 or more days before today, the robot runs the
  * refresher again with --touch and treats that result like a normal run.
  *
- * The push goes to a token URL built from the CI_SERVER_* environment
- * variables, with the token from CREED_BOT_TOKEN. Every line the robot
- * prints, including runner errors and command echoes, passes through one
- * mask function that replaces the token value with [masked], so a runner
- * error that echoes the URL back never leaks it.
+ * The push goes to a gitlab-ci-token URL built from the CI_SERVER_*
+ * environment variables, with the token from CI_JOB_TOKEN. Every line the
+ * robot prints, including runner errors and command echoes, passes through
+ * one mask function that replaces the CI_JOB_TOKEN and CREED_BOT_TOKEN
+ * values with [masked], so a runner error that echoes the URL back never
+ * leaks either.
  *
  * With --dry-run the refresher writes nothing and always exits 0; the robot
  * then prints the decided outcome, the planned files, the merge request
@@ -42,10 +49,11 @@ use stdClass;
  *
  * After a handled real run the robot also brings its alert issues in line
  * with the report: one open GitLab issue per alert key (held, refused,
- * disagreement, upcoming end of life), labelled auto-alert. A key that is
+ * disagreement, upcoming end of life), labeled auto-alert. A key that is
  * still present gets a note on its existing issue; a key that is gone
  * closes its issue. The client is injected by the tests or built from the
- * CI_API_V4_URL, CI_PROJECT_ID and CREED_BOT_TOKEN environment variables;
+ * CI_API_V4_URL, CI_PROJECT_ID and CREED_BOT_TOKEN environment variables
+ * (the bot token is for these issues only, never the push);
  * a dry run only prints what it would open and never calls the API.
  */
 final readonly class PolicyBot
@@ -67,15 +75,10 @@ final readonly class PolicyBot
     ];
 
     /**
-     * The branch the refresh commit lands on, pushed with merge request
-     * options.
+     * The fallback branch: a refresh that fails the gate lands here,
+     * pushed with merge request options for a person to review.
      */
     public const BRANCH = 'auto/policy-refresh';
-
-    /**
-     * The push option that auto-merges the merge request; exit 3 only.
-     */
-    public const AUTO_MERGE_OPTION = 'merge_request.auto_merge';
 
     /**
      * The committer identity for the refresh commit, passed with -c flags
@@ -104,7 +107,8 @@ final readonly class PolicyBot
         'CI_SERVER_PORT',
         'CI_PROJECT_PATH',
         'CI_DEFAULT_BRANCH',
-        'CREED_BOT_TOKEN',
+        'CI_COMMIT_BRANCH',
+        'CI_JOB_TOKEN',
     ];
 
     /**
@@ -138,7 +142,8 @@ final readonly class PolicyBot
      *
      * @param string|null $offlineDir feed directory for the refresher, or null to fetch
      *
-     * @return int 0 on every handled outcome, 1 on a hard failure or when
+     * @return int 0 on every handled outcome, 1 on a hard failure, a red
+     *         gate (the refresh went to a merge request instead), or when
      *         the alert channel cannot be reached
      */
     public function run(?string $offlineDir = null): int
@@ -324,8 +329,8 @@ final readonly class PolicyBot
     {
         return match ($exit) {
             0 => $this->nothingToDo(),
-            3 => $this->commitAndPush($report, autoMerge: true),
-            4 => $this->commitAndPush($report, autoMerge: false),
+            3 => $this->commitAndPush($report, held: false),
+            4 => $this->commitAndPush($report, held: true),
             default => $this->unexpectedExit($exit),
         };
     }
@@ -455,16 +460,19 @@ final readonly class PolicyBot
     }
 
     /**
-     * Changes were written (exit 3) or partly written (exit 4): commit the
-     * data allowlist on the refresh branch and push it with merge request
-     * options. Exit 3 auto-merges; exit 4 does not.
+     * Changes were written (exit 3) or partly written (exit 4, held says
+     * which, for the intro line only): commit the data allowlist on the
+     * checked-out main commit, run composer ci, then push straight to main
+     * when it passes, or push the fallback branch as a merge request (and
+     * exit 1) when it does not. A pipeline on any other branch never
+     * commits or pushes.
      */
-    private function commitAndPush(object $report, bool $autoMerge): int
+    private function commitAndPush(object $report, bool $held): int
     {
-        if ($autoMerge) {
-            $this->say("changes written; the commit plan:\n");
-        } else {
+        if ($held) {
             $this->say("the refresher held or refused some changes; committing what was written\n");
+        } else {
+            $this->say("changes written; the commit plan:\n");
         }
         foreach ($this->plannedFiles() as $file) {
             $this->say("  {$file}\n");
@@ -479,9 +487,10 @@ final readonly class PolicyBot
             return 1;
         }
 
-        $result = $this->runGit(['checkout', '-B', self::BRANCH]);
-        if ($result['status'] !== 0) {
-            $this->say("git checkout failed (exit {$result['status']}); the robot stops here\n");
+        $defaultBranch = (string) getenv('CI_DEFAULT_BRANCH');
+        $commitBranch = (string) getenv('CI_COMMIT_BRANCH');
+        if ($commitBranch !== $defaultBranch) {
+            $this->say("the robot pushes only from {$defaultBranch}; this pipeline runs on {$commitBranch}\n");
 
             return 1;
         }
@@ -520,8 +529,26 @@ final readonly class PolicyBot
             return 1;
         }
 
+        $gate = $this->runGate();
+        if ($gate === 0) {
+            // Green: straight to main, no force. A main that moved under us
+            // makes this push fail, which is the right answer.
+            $result = $this->runGit(['push', $this->pushUrl(), 'HEAD:refs/heads/' . $defaultBranch]);
+            if ($result['status'] !== 0) {
+                $this->say("git push failed (exit {$result['status']}); the robot stops here\n");
+
+                return 1;
+            }
+            $this->say("the gate passed; pushed the refresh to {$defaultBranch}\n");
+
+            return 0;
+        }
+
+        // Red: a person reviews it. The branch is the robot's own, so a
+        // force-push only replaces last week's failed attempt.
+        $this->say("the gate failed (exit {$gate}); pushing " . self::BRANCH . " as a merge request for review\n");
         $args = ['push', '--force'];
-        foreach ($this->pushOptions($autoMerge) as $option) {
+        foreach ($this->pushOptions() as $option) {
             $args[] = '-o';
             $args[] = $option;
         }
@@ -537,7 +564,36 @@ final readonly class PolicyBot
 
         $this->printMergeRequest($report);
 
-        return 0;
+        return 1;
+    }
+
+    /**
+     * Run composer ci on the committed refresh, echoed and replayed through
+     * the same mask as runGit. A command that cannot start counts as a
+     * failed gate with status 1.
+     */
+    private function runGate(): int
+    {
+        $argv = ['composer', 'ci'];
+        $this->say("running the gate: composer ci\n");
+        $this->say('$ ' . implode(' ', $argv) . "\n");
+
+        try {
+            $result = $this->runner->run($argv);
+        } catch (CommandException $e) {
+            $this->err('composer could not start: ' . $e->getMessage() . "\n");
+
+            return 1;
+        }
+
+        if ($result['stdout'] !== '') {
+            $this->say($result['stdout']);
+        }
+        if ($result['stderr'] !== '') {
+            $this->err($result['stderr']);
+        }
+
+        return $result['status'];
     }
 
     /**
@@ -573,13 +629,13 @@ final readonly class PolicyBot
     }
 
     /**
-     * The token push URL, built from the CI environment. Only called after
-     * missingEnvironment() came back empty.
+     * The job-token push URL, built from the CI environment. Only called
+     * after missingEnvironment() came back empty.
      */
     private function pushUrl(): string
     {
         return sprintf(
-            '%s://oauth2:%s@%s:%s/%s.git',
+            '%s://gitlab-ci-token:%s@%s:%s/%s.git',
             (string) getenv('CI_SERVER_PROTOCOL'),
             $this->token(),
             (string) getenv('CI_SERVER_HOST'),
@@ -589,24 +645,20 @@ final readonly class PolicyBot
     }
 
     /**
-     * The push options, one per -o flag. Auto-merge is an exit 3 thing.
+     * The merge request options for the fallback push after a red gate,
+     * one per -o flag. Never auto-merge: a red gate needs a person.
      *
      * @return list<string>
      */
-    private function pushOptions(bool $autoMerge): array
+    private function pushOptions(): array
     {
-        $options = [
+        return [
             'merge_request.create',
             'merge_request.target=' . (string) getenv('CI_DEFAULT_BRANCH'),
             'merge_request.remove_source_branch',
             'merge_request.label=auto-data',
             'merge_request.title=' . self::MR_TITLE,
         ];
-        if ($autoMerge) {
-            $options[] = self::AUTO_MERGE_OPTION;
-        }
-
-        return $options;
     }
 
     /**
@@ -629,24 +681,30 @@ final readonly class PolicyBot
     }
 
     /**
-     * The push token from CREED_BOT_TOKEN, or '' when unset.
+     * The push token from CI_JOB_TOKEN, or '' when unset. The bot token
+     * (CREED_BOT_TOKEN) is for the alert issues only.
      */
     private function token(): string
     {
-        $token = getenv('CREED_BOT_TOKEN');
+        $token = getenv('CI_JOB_TOKEN');
 
         return $token === false ? '' : (string) $token;
     }
 
     /**
-     * The one mask every printed line passes through: the token value
-     * becomes [masked]. An empty token masks nothing.
+     * The one mask every printed line passes through: the CI_JOB_TOKEN and
+     * CREED_BOT_TOKEN values become [masked]. An empty one masks nothing.
      */
     private function mask(string $line): string
     {
-        $token = $this->token();
+        foreach (['CI_JOB_TOKEN', 'CREED_BOT_TOKEN'] as $name) {
+            $token = getenv($name);
+            if ($token !== false && $token !== '') {
+                $line = str_replace((string) $token, '[masked]', $line);
+            }
+        }
 
-        return $token === '' ? $line : str_replace($token, '[masked]', $line);
+        return $line;
     }
 
     /**

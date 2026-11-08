@@ -9,6 +9,7 @@ description: All notable changes to this project.
 
 ## Unreleased
 
+- Changed: the policy robot runs `composer ci` on the refreshed data in its own job and, when that passes, pushes the refresh straight to main with the CI job token (no merge request to merge by hand); a red gate pushes `auto/policy-refresh` as a merge request for review instead. The bot token is now only for the alert issues.
 - Added: `policy.json` records session lifetimes (`sessions.sesame`: idle 120 and absolute 720 minutes; `sessions.gateway`: idle 3600 and session 28800 seconds).
 - Docs: the handbook and two command descriptions write Rollcall and Squire as words, not in capitals.
 - Fixed: the pipeline's PROCTOR jobs no longer pass `--policy`, which PROCTOR 0.7 refuses in CI; PROCTOR checks against the CREED policy it bundles.
