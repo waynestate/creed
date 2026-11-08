@@ -309,9 +309,9 @@ These are the stack's written standards. The handbook has the practices, and `po
 
 - **Enforced**: 7
 - **Checked**: 16
-- **Partially**: 12
-- **Documented**: 21
-- **Not yet**: 5
+- **Partially**: 11
+- **Documented**: 20
+- **Not yet**: 7
 
 Table of contents
 
@@ -927,7 +927,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
-- Docs: BEST_PRACTICES.md practices 41 (front-end install options, now Partially: Squire's release install and the npm cooldown are built) and 45 (CI host, now Documented: the instances run GitLab 19.5.1 CE) carry their true status.
+- Added: `rules.override_self_approval` (`warn`; `warn` or `fail`) in the policy and its schema, `Policy::overrideSelfApproval()` in the reader (`warn` when the key is absent), and the overrides chapter says an override is approved by someone who did not write it, with the merge request as the control and PROCTOR's `override-approver` check as the tripwire.
 - Changed: the deploy layer runs Squire's kit 0.7.1 (was 0.6.0): `.squire/php.ini` no longer sets the deprecated `session.sid_*` lines, web requests get a `disable_functions` list and Apache hardening (`.squire/php-web.ini`, `.squire/apache-hardening.conf`), and opcache gets production settings with `SQUIRE_OPCACHE_VALIDATE` as the one switch.
 - Docs: BEST_PRACTICES and the handbook name the Preflight release in use (0.3.1, was 0.2.0 or 0.3.0 in six places) and HELMET 1.0 for the CORP default.
 - Changed: the front page deploy layer requires HELMET ^1.0 (lock at 1.0.1, was 0.4.0), like the rest of the stack; its shared front controller already runs on HELMET 1.0 in Squire, Sourdough and Pinstripe.
@@ -2640,7 +2640,7 @@ The handbook · 2026 Edition
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a "Not decided here" heading.
 
-Thirteen chapters · 180 provisions · **MUST** 55 · **SHOULD** 15 · **MAY** 1
+Thirteen chapters · 181 provisions · **MUST** 56 · **SHOULD** 15 · **MAY** 1
 
 ### Contents
 
@@ -2656,7 +2656,7 @@ Thirteen chapters · 180 provisions · **MUST** 55 · **SHOULD** 15 · **MAY** 1
 10. [10 Every OS](https://creed.apps.wayne.edu/handbook/every-os.html)5 provisions · **MUST** 1Decided
 11. [11 Secrets and debugging Credentials · Errors and debug output · Not decided here](https://creed.apps.wayne.edu/handbook/secrets.html)3 sections · 9 provisions · **MUST NOT** 4 · **MUST** 3 · **SHOULD NOT** 1Decided
 12. [12 Production Environments · Running safely · Who can reach it](https://creed.apps.wayne.edu/handbook/production.html)3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 5 · **SHOULD** 3Decided
-13. [13 Overrides](https://creed.apps.wayne.edu/handbook/overrides.html)6 provisionsDecided
+13. [13 Overrides](https://creed.apps.wayne.edu/handbook/overrides.html)7 provisions · **MUST** 1Decided
 
 ### How to read this book
 
@@ -2679,7 +2679,7 @@ Chapter 13
 
 ## Overrides
 
-6 provisions
+7 provisions · **MUST** 1
 
 Decided
 
@@ -2690,9 +2690,10 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - Check prints every override on every run, and Fleet lists them (the stack's version policy).
 - An expired override is a failure (first-repos). PROCTOR check: `overrides`.
 - An override runs at most `rules.override_max_days` days past today (90 in the policy). A longer one is a failure and does not apply. PROCTOR check: `overrides`.
+- An override **MUST** be approved by someone who did not write it. The merge request that adds or changes `policy-overrides.json` is the human control: the person named in `approved_by` approves it. In CI, PROCTOR compares `approved_by` with who git says wrote the entry and warns (or fails, per `rules.override_self_approval`, `warn` in the policy) on a match, or when it cannot read who did. PROCTOR check: `override-approver`.
 - On the Citadel side, overrides are held by Citadel admins, per app and per rule, with an expiry, a reason and an approver. There is no permanent override (the stack's deploy-gate decision).
 
-Set from [`handbook/overrides.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/overrides.md), impression `2c42365`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/overrides.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/overrides.md), impression `2df7e03`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 

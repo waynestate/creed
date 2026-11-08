@@ -44,7 +44,7 @@
 <h1 id="changelog">Changelog<a class="docs-heading-link" aria-label="Link to this section" href="#changelog">#</a></h1>
 <h2 id="unreleased">Unreleased<a class="docs-heading-link" aria-label="Link to this section" href="#unreleased">#</a></h2>
 <ul>
-<li>Docs: BEST_PRACTICES.md practices 41 (front-end install options, now Partially: Squire's release install and the npm cooldown are built) and 45 (CI host, now Documented: the instances run GitLab 19.5.1 CE) carry their true status.</li>
+<li>Added: <code>rules.override_self_approval</code> (<code>warn</code>; <code>warn</code> or <code>fail</code>) in the policy and its schema, <code>Policy::overrideSelfApproval()</code> in the reader (<code>warn</code> when the key is absent), and the overrides chapter says an override is approved by someone who did not write it, with the merge request as the control and PROCTOR's <code>override-approver</code> check as the tripwire.</li>
 <li>Changed: the deploy layer runs Squire's kit 0.7.1 (was 0.6.0): <code>.squire/php.ini</code> no longer sets the deprecated <code>session.sid_*</code> lines, web requests get a <code>disable_functions</code> list and Apache hardening (<code>.squire/php-web.ini</code>, <code>.squire/apache-hardening.conf</code>), and opcache gets production settings with <code>SQUIRE_OPCACHE_VALIDATE</code> as the one switch.</li>
 <li>Docs: BEST_PRACTICES and the handbook name the Preflight release in use (0.3.1, was 0.2.0 or 0.3.0 in six places) and HELMET 1.0 for the CORP default.</li>
 <li>Changed: the front page deploy layer requires HELMET ^1.0 (lock at 1.0.1, was 0.4.0), like the rest of the stack; its shared front controller already runs on HELMET 1.0 in Squire, Sourdough and Pinstripe.</li>

@@ -403,6 +403,28 @@ final class Policy
         return $value;
     }
 
+    /**
+     * What PROCTOR's override-approver check does with a self-approved
+     * override, and with one whose author it cannot read: warn or fail.
+     *
+     * From the rules block; 'warn' when the key is absent, so a policy
+     * shaped before the rule existed reports a self-approval without
+     * failing the run.
+     *
+     * @throws InvalidArgumentException when the value is neither warn nor
+     *                                  fail
+     */
+    public function overrideSelfApproval(): string
+    {
+        $value = $this->rules['override_self_approval'] ?? 'warn';
+        if ($value !== 'warn' && $value !== 'fail') {
+            throw new InvalidArgumentException(
+                'Policy rules carry an invalid "override_self_approval" value: ' . var_export($value, true) . '; expected "warn" or "fail".',
+            );
+        }
+        return $value;
+    }
+
     /** The three deploy-gate stages, weakest first (ADR-0006 item 4). */
     public const GATE_STAGES = ['report', 'warn', 'block'];
 

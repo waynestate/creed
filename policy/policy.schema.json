@@ -241,6 +241,14 @@
                     "type": "integer",
                     "minimum": 1,
                     "description": "Longest an override may run, in days past the day PROCTOR runs. A longer override fails the overrides check."
+                },
+                "override_self_approval": {
+                    "type": "string",
+                    "enum": [
+                        "warn",
+                        "fail"
+                    ],
+                    "description": "What PROCTOR's override-approver check does when an override's approved_by names someone who wrote the entry, or when it cannot read who did: warn or fail. warn when the key is absent."
                 }
             }
         },
