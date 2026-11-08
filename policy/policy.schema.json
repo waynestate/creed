@@ -236,6 +236,11 @@
                 "eol_grace_days": {
                     "type": "integer",
                     "minimum": 0
+                },
+                "override_max_days": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "Longest an override may run, in days past the day PROCTOR runs. A longer override fails the overrides check."
                 }
             }
         }
