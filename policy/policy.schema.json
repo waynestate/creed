@@ -243,6 +243,55 @@
                     "description": "Longest an override may run, in days past the day PROCTOR runs. A longer override fails the overrides check."
                 }
             }
+        },
+        "gate": {
+            "type": "object",
+            "description": "Deploy-gate stages per PROCTOR check (ADR-0006 item 4). The entry with the latest `from` on or before the run date wins; a check with no entry uses `default_stage`.",
+            "additionalProperties": false,
+            "properties": {
+                "default_stage": {
+                    "type": "string",
+                    "enum": [
+                        "report",
+                        "warn",
+                        "block"
+                    ],
+                    "description": "The stage a check runs at when no entry in `stages` applies yet."
+                },
+                "stages": {
+                    "type": "object",
+                    "propertyNames": {
+                        "pattern": "^[a-z0-9-]+$"
+                    },
+                    "additionalProperties": {
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                            "type": "object",
+                            "required": [
+                                "stage",
+                                "from"
+                            ],
+                            "additionalProperties": false,
+                            "properties": {
+                                "stage": {
+                                    "type": "string",
+                                    "enum": [
+                                        "report",
+                                        "warn",
+                                        "block"
+                                    ]
+                                },
+                                "from": {
+                                    "type": "string",
+                                    "format": "date",
+                                    "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 }
