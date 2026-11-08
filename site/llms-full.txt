@@ -913,6 +913,10 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Docs: the handbook writes Rollcall as a word, not in capitals.
+- Fixed: the pipeline's PROCTOR jobs no longer pass `--policy`, which PROCTOR 0.7 refuses in CI; PROCTOR checks against the CREED policy it bundles.
+- Changed: the GitLab pipeline pins the Preflight components to 0.2.0 (was 0.1.4).
+- Changed: the front page's deploy layer (`deploy/`) runs Squire's kit 0.6.0 (was 0.5.0): `scripts/release.sh` asks PROCTOR's deploy gate for a go or no-go on each release (a report, not a stop, unless `SQUIRE_PROCTOR=enforce`), and `.env.squire.example` lists the new setting. The layer pins HELMET `^0.4` (locked 0.4.0).
 - Fixed: the front page's authorities table says Sourdough starts all five app shapes, from raw PHP to Inertia and Vue; it no longer says raw PHP only.
 - Changed: the front-page deploy layer pins PROCTOR ^0.7 (lock: PROCTOR 0.7.0, was 0.4.0).
 - Changed: CI caches Composer downloads per lock file (`.composer-cache`, keyed on `composer.lock` and `deploy/composer.lock`), so a pipeline stops fetching every package from Packagist on every run. Images already come through the Dependency Proxy.
@@ -2258,7 +2262,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 - All source is kept in git. Access to a repo **MUST** be removed when someone leaves the project or the university (WSU developer standards, 2024). No check exists yet.
 - The stack's code has its primary home on git.wayne.edu; the standards name git.wayne.edu as the preferred home.
-- Register the project in the catalog Enterprise Apps names, and keep its environments current. Stack apps also register with ROLLCALL, the stack's census (WSU developer standards, 2024).
+- Register the project in the catalog Enterprise Apps names, and keep its environments current. Stack apps also register with [Rollcall](https://rollcall.apps.wayne.edu/), the stack's census (WSU developer standards, 2024).
 - Every repo's README **MUST** say how to install, configure and deploy the code for local development, on every OS (see `every-os.md`), and how to update an existing deployment (WSU developer standards, 2024). No check exists yet.
 - If the Help Desk might be contacted about the project, keep an overview in the repo: what it does, who uses it, known common issues and who to call for an incident; deliver changes to the Help Desk when it changes (WSU developer standards, 2024).
 
@@ -2358,7 +2362,7 @@ Table 3-1
 - GitLab Code Quality: [https://docs.gitlab.com/ci/testing/code_quality/](https://docs.gitlab.com/ci/testing/code_quality/)
 - OWASP ASVS: [https://asvs.owasp.org/](https://asvs.owasp.org/)
 
-Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `fd2d47b`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `7f0a68f`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 

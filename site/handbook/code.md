@@ -34,7 +34,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 - All source is kept in git. Access to a repo **MUST** be removed when someone leaves the project or the university (WSU developer standards, 2024). No check exists yet.
 - The stack's code has its primary home on git.wayne.edu; the standards name git.wayne.edu as the preferred home.
-- Register the project in the catalog Enterprise Apps names, and keep its environments current. Stack apps also register with ROLLCALL, the stack's census (WSU developer standards, 2024).
+- Register the project in the catalog Enterprise Apps names, and keep its environments current. Stack apps also register with [Rollcall](https://rollcall.apps.wayne.edu/), the stack's census (WSU developer standards, 2024).
 - Every repo's README **MUST** say how to install, configure and deploy the code for local development, on every OS (see `every-os.md`), and how to update an existing deployment (WSU developer standards, 2024). No check exists yet.
 - If the Help Desk might be contacted about the project, keep an overview in the repo: what it does, who uses it, known common issues and who to call for an incident; deliver changes to the Help Desk when it changes (WSU developer standards, 2024).
 
@@ -134,4 +134,4 @@ Table 3-1
 - GitLab Code Quality: [https://docs.gitlab.com/ci/testing/code_quality/](https://docs.gitlab.com/ci/testing/code_quality/)
 - OWASP ASVS: [https://asvs.owasp.org/](https://asvs.owasp.org/)
 
-Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `fd2d47b`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `7f0a68f`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
