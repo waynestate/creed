@@ -11,6 +11,9 @@
 *.bat text eol=crlf
 *.cmd text eol=crlf
 
+# The vendored Preflight a11y checker stays LF; tests/A11yCheckerPinTest.php pins its bytes.
+tools/a11y/check.mjs text eol=lf
+
 # Not part of the package.
 /tests            export-ignore
 /handbook         export-ignore
