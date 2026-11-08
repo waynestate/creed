@@ -10,6 +10,7 @@ generator: Squire agent-ready
 
 ## Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Docs: BEST_PRACTICES and the handbook name the Preflight release in use (0.3.1, was 0.2.0 or 0.3.0 in six places) and HELMET 1.0 for the CORP default.
 - Changed: the front page deploy layer requires HELMET ^1.0 (lock at 1.0.1, was 0.4.0), like the rest of the stack; its shared front controller already runs on HELMET 1.0 in Squire, Sourdough and Pinstripe.
 - Local a11y scripts now run Preflight's checker (vendored in tools/a11y/check.mjs at the same tag as CI), checking every page in light and dark at 320 and 1280 px.
 - Added: CI runs Preflight's a11y component (0.3.1) on site/, every page in light and dark at 320 and 1280 px with the WCAG 1.4.10 reflow check, blocking.
