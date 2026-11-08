@@ -155,6 +155,58 @@
                 }
             }
         },
+        "sessions": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "sesame": {
+                    "type": "object",
+                    "required": [
+                        "idle_minutes",
+                        "absolute_minutes",
+                        "source"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                        "idle_minutes": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "absolute_minutes": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "source": {
+                            "type": "string",
+                            "minLength": 1
+                        }
+                    }
+                },
+                "gateway": {
+                    "type": "object",
+                    "required": [
+                        "idle_seconds",
+                        "session_seconds",
+                        "source"
+                    ],
+                    "additionalProperties": false,
+                    "properties": {
+                        "idle_seconds": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "session_seconds": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "source": {
+                            "type": "string",
+                            "minLength": 1
+                        }
+                    }
+                }
+            }
+        },
         "rules": {
             "type": "object",
             "required": [

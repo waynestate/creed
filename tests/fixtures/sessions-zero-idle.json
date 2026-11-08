@@ -1,0 +1,32 @@
+{
+    "schema_version": 1,
+    "components": {
+        "php": {
+            "versions": {
+                "8.3": {
+                    "security_until": "2027-12-31"
+                }
+            }
+        }
+    },
+    "sessions": {
+        "sesame": {
+            "idle_minutes": 0,
+            "absolute_minutes": 720,
+            "source": "src/Config.php"
+        },
+        "gateway": {
+            "idle_seconds": 3600,
+            "session_seconds": 28800,
+            "source": "src/Config/ConfigLoader.php"
+        }
+    },
+    "rules": {
+        "audit_severity_threshold": "high",
+        "banned_constraints": [
+            "dev-*",
+            "*"
+        ],
+        "eol_grace_days": 90
+    }
+}

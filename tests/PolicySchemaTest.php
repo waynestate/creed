@@ -72,6 +72,23 @@ final class PolicySchemaTest extends TestCase
         self::assertSame([], $errors, 'A version entry marked current must validate.');
     }
 
+    #[Test]
+    public function bundledPolicyRecordsSessionLifetimes(): void
+    {
+        $policy = json_decode((string) file_get_contents(dirname(__DIR__) . '/policy/policy.json'), true);
+
+        self::assertIsArray($policy['sessions'] ?? null, 'The bundled policy must carry a sessions block.');
+
+        foreach (['idle_minutes', 'absolute_minutes'] as $key) {
+            self::assertIsInt($policy['sessions']['sesame'][$key] ?? null, "sessions.sesame.{$key} must be an integer.");
+            self::assertGreaterThan(0, $policy['sessions']['sesame'][$key], "sessions.sesame.{$key} must be greater than 0.");
+        }
+        foreach (['idle_seconds', 'session_seconds'] as $key) {
+            self::assertIsInt($policy['sessions']['gateway'][$key] ?? null, "sessions.gateway.{$key} must be an integer.");
+            self::assertGreaterThan(0, $policy['sessions']['gateway'][$key], "sessions.gateway.{$key} must be greater than 0.");
+        }
+    }
+
     /**
      * @return array<string, array{0: string}>
      */
@@ -86,6 +103,7 @@ final class PolicySchemaTest extends TestCase
             'empty string inside images' => [__DIR__ . '/fixtures/images-empty-value.json'],
             'tool minimum not a full version' => [__DIR__ . '/fixtures/tools-bad-minimum.json'],
             'unknown key inside a tool' => [__DIR__ . '/fixtures/tools-unknown-key.json'],
+            'zero idle_minutes inside sessions' => [__DIR__ . '/fixtures/sessions-zero-idle.json'],
             'current line with security_until' => [__DIR__ . '/fixtures/current-with-security-until.json'],
             'neither current nor security_until' => [__DIR__ . '/fixtures/no-security-until.json'],
         ];

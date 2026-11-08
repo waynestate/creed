@@ -74,6 +74,11 @@
 <td>Maps tool names to a minimum version each. Optional.</td>
 </tr>
 <tr>
+<td><code>sessions</code></td>
+<td>object</td>
+<td>Records the session lifetimes the stack sets elsewhere: SESAME in minutes (<code>sesame.idle_minutes</code>, <code>sesame.absolute_minutes</code>) and the Drawbridge gateway in seconds (<code>gateway.idle_seconds</code>, <code>gateway.session_seconds</code>), each entry carrying a <code>source</code> that names the file in that repo where the default is set. Optional.</td>
+</tr>
+<tr>
 <td><code>rules</code></td>
 <td>object</td>
 <td>The rules every check runs against. Required.</td>

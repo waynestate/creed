@@ -44,6 +44,7 @@
 <h1 id="changelog">Changelog<a class="docs-heading-link" aria-label="Link to this section" href="#changelog">#</a></h1>
 <h2 id="unreleased">Unreleased<a class="docs-heading-link" aria-label="Link to this section" href="#unreleased">#</a></h2>
 <ul>
+<li>Added: <code>policy.json</code> records session lifetimes (<code>sessions.sesame</code>: idle 120 and absolute 720 minutes; <code>sessions.gateway</code>: idle 3600 and session 28800 seconds).</li>
 <li>Docs: the handbook writes Rollcall as a word, not in capitals.</li>
 <li>Fixed: the pipeline's PROCTOR jobs no longer pass <code>--policy</code>, which PROCTOR 0.7 refuses in CI; PROCTOR checks against the CREED policy it bundles.</li>
 <li>Changed: the GitLab pipeline pins the Preflight components to 0.2.0 (was 0.1.4).</li>
