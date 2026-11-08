@@ -44,6 +44,7 @@
 <h1 id="changelog">Changelog<a class="docs-heading-link" aria-label="Link to this section" href="#changelog">#</a></h1>
 <h2 id="unreleased">Unreleased<a class="docs-heading-link" aria-label="Link to this section" href="#unreleased">#</a></h2>
 <ul>
+<li>Changed: the deploy layer runs Squire's kit 0.7.1 (was 0.6.0): <code>.squire/php.ini</code> no longer sets the deprecated <code>session.sid_*</code> lines, web requests get a <code>disable_functions</code> list and Apache hardening (<code>.squire/php-web.ini</code>, <code>.squire/apache-hardening.conf</code>), and opcache gets production settings with <code>SQUIRE_OPCACHE_VALIDATE</code> as the one switch.</li>
 <li>Docs: BEST_PRACTICES and the handbook name the Preflight release in use (0.3.1, was 0.2.0 or 0.3.0 in six places) and HELMET 1.0 for the CORP default.</li>
 <li>Changed: the front page deploy layer requires HELMET ^1.0 (lock at 1.0.1, was 0.4.0), like the rest of the stack; its shared front controller already runs on HELMET 1.0 in Squire, Sourdough and Pinstripe.</li>
 <li>Local a11y scripts now run Preflight's checker (vendored in tools/a11y/check.mjs at the same tag as CI), checking every page in light and dark at 320 and 1280 px.</li>
