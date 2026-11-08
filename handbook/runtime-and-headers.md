@@ -44,6 +44,19 @@ HTTPS.
 
 - `/up` is the health endpoint HELMET answers for raw PHP apps (the stack's runtime and headers design).
 
+## Metrics
+
+- HELMET's metrics endpoint speaks the Prometheus text format and is off by default. It stays off until a Prometheus
+  server scrapes the app; then the app turns it on with `HELMET_METRICS_ENABLED=true` (the stack's metrics decision).
+  HELMET: with neither `HELMET_METRICS_TOKEN` nor `HELMET_METRICS_ALLOW` set, the endpoint answers 404 and logs a
+  warning.
+- The scrape token MUST NOT be committed. On Citadel it goes in the app's `.env` through Citadel's configuration files
+  step, which writes the file at deploy time (the stack's metrics decision). PROCTOR check: `app-key`
+  (`proctor/app-key/committed-env` flags a committed `.env`).
+- On Citadel, request counts use the `sqlite` store for now (`HELMET_METRICS_STORAGE=sqlite`, with
+  `HELMET_METRICS_SQLITE_PATH` on a file in the app's writable storage); the final store is picked when the stack's
+  Prometheus server exists (the stack's metrics decision). Documented only.
+
 ## Errors in production
 
 - PHP `display_errors` MUST be `Off` and `log_errors` `On` in production (Squire's deploy kit ships that php.ini;
@@ -57,4 +70,3 @@ A PROCTOR check for this is proposed, not built.
 
 - The Cross-Origin-Resource-Policy default.
 - The Content-Security-Policy report endpoints.
-- The metrics endpoint.

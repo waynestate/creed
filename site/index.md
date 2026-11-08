@@ -418,7 +418,8 @@ The questions the 2026 edition hasn't answered. Each one names the clause it aff
 | E-4 | §9.3 | Strict or tolerant schema: settled 2026-11-03. Strict where the file is published, tolerant where it is read, and a frozen older-reader test holds it. | Settled |
 | E-5 | §9.1 | Node 27 and later have no Maintenance phase: settled 2026-11-03. The policy lists even Node majors only, so no new `active_until` rule is needed. | Settled |
 | E-6 | Ch. 10 | The accessibility chapter aims at WCAG 2.2 AA. Which ADA Title II dates apply to a given WSU unit is for counsel and the accessibility office. | Open |
-| E-7 | Handbook | Runtime and headers: the Cross-Origin-Resource-Policy default, the CSP report endpoints and the metrics endpoint. Auth: the gateway's key distribution and rotation, and the SAML library if a SAML driver is built. | Open |
+| E-7 | Handbook | Runtime and headers: the Cross-Origin-Resource-Policy default and the CSP report endpoints. | Open |
+| E-8 | Handbook | Gateway keys, SAML and metrics: settled 2026-11-07 and 2026-11-08. Apps read one key set file holding the current and the next key, rotated every 12 months; the `saml` driver is built on `onelogin/php-saml`; metrics speak Prometheus and stay off by default. | Settled |
 
 The full backlog, 42 items, is at the end of [BEST_PRACTICES.md](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#gaps-for-the-backlog).
 
@@ -441,7 +442,7 @@ CREED writes the rules down. These are the other projects in the stack, and the 
 - ![Booster logo: a syringe with rocket fins and a gold flame](https://creed.apps.wayne.edu/assets/marks/booster.png)[Booster](https://booster.apps.wayne.edu/) *new*Upgrades PHP and Laravel one version at a time.Gets you off a Grace expired row
 - ![ADVISOR logo: a speech bubble with a gold compass needle](https://creed.apps.wayne.edu/assets/marks/advisor.png)[ADVISOR](https://advisor.apps.wayne.edu/) *new*An MCP server your agent can ask about the rules and dates.Explains; never gates (§6.4)
 - ![Squire logo: a satchel with a gold buckle](https://creed.apps.wayne.edu/assets/marks/squire.png)[Squire](https://squire.apps.wayne.edu/) *new*Carries the release to Citadel. This page deploys with it.The deploy gate, proposed
-- ![Drawbridge logo: a castle tower with its bridge down on a gold chain](https://creed.apps.wayne.edu/assets/marks/drawbridge.png)[Drawbridge](https://drawbridge.apps.wayne.edu/) *new*The Citadel sign-in gateway.Erratum E-7
+- ![Drawbridge logo: a castle tower with its bridge down on a gold chain](https://creed.apps.wayne.edu/assets/marks/drawbridge.png)[Drawbridge](https://drawbridge.apps.wayne.edu/) *new*The Citadel sign-in gateway.Erratum E-8
 
 Appendix A
 

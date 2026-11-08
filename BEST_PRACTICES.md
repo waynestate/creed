@@ -1127,7 +1127,8 @@ Added from the WSU developer standards (2026-11-02):
 39. Partly done: PROCTOR main's `world-writable` warns on `chmod 777` in scripts and PHP; web-writable paths outside an
     allowed list need the running container (practice 59).
 40. Done: a committed-secret scan in Preflight, the `secret-detection` component (0.2.0); extends items 10 and 25 and practice 55.
-41. Whether idle sessions get a stated time limit (practice 57).
+41. Done: `policy.json` records the idle limits (`sessions`), and the handbook's auth chapter states them and points at
+    the policy (practice 57).
 42. Deferred past 1.0: a schema version 2 with `platform_components` per target. It would be a breaking schema change and nothing needs it yet.
 
 ## Sources

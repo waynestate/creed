@@ -475,9 +475,9 @@ the stack's coding standard does not decide it.</li>
           <div>
             <p class="chap-head__kicker">Chapter 4</p>
             <h2 id="auth-title" class="hb-book__title">Auth</h2>
-            <p class="hb-register">12 provisions · <strong class="kw kw--must">MUST</strong> 3</p>
+            <p class="hb-register">14 provisions · <strong class="kw kw--must">MUST</strong> 5 · <strong class="kw kw--should">SHOULD</strong> 1</p>
           </div>
-          <span class="stamp stamp--checked hb-status">Partly decided</span>
+          <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
         <div class="hb-prose hb-prose--book">
 <div class="hb-rfc" role="note"><p><span class="hb-rfc__label">Key words</span> The key words <strong class="kw kw--must">MUST</strong>, <strong class="kw kw--must-not">MUST NOT</strong>, <strong class="kw kw--should">SHOULD</strong>, <strong class="kw kw--should-not">SHOULD NOT</strong> and <strong class="kw kw--may">MAY</strong> in this chapter are to be interpreted as described in <a href="https://www.rfc-editor.org/rfc/rfc2119">RFC 2119</a>.</p></div>
@@ -490,18 +490,34 @@ verified identity and leaves the session to the app <span class="hb-cite">(the s
 <li>The <code>gateway</code> driver accepts only a signed assertion, never a bare header:
 user, attributes, issued-at, audience, an expiry of 60 seconds or less, and
 a signature the gateway and app share <span class="hb-cite">(the stack's auth design)</span>.</li>
-<li>Drivers: <code>cas</code> (the default today), <code>gateway</code>, <code>oidc</code>, <code>oauth2</code>, <code>saml</code> (not
-built yet), and <code>fake</code> for local development and tests <span class="hb-cite">(the stack's auth design)</span>.</li>
+<li>Drivers: <code>cas</code> (the default today), <code>gateway</code>, <code>oidc</code>, <code>oauth2</code>, <code>saml</code>
+(opt-in), and <code>fake</code> for local development and tests <span class="hb-cite">(the stack's auth design)</span>.</li>
 <li>Non-EOL PHP only, with no exceptions <span class="hb-cite">(the stack's auth design)</span>.
 <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>php-floor</code>.</li>
-<li class="hb-tbd">To be decided: the gateway's key distribution and rotation, and the SAML
-library choice if a <code>saml</code> driver is built <span class="hb-cite">(the stack's auth design)</span>.</li>
+<li>The gateway's public keys reach apps as one key set file (JWKS) that holds
+the current key and the next one. <a class="tool" href="https://drawbridge.apps.wayne.edu/"><img src="../assets/marks/drawbridge.png" alt="" width="16" height="16">Drawbridge</a> writes it (<code>keys:jwks</code>),
+Playbook carries WSU's copy (public keys only), and the app points <a class="tool" href="https://sesame.apps.wayne.edu/"><img src="../assets/marks/sesame.png" alt="" width="16" height="16">SESAME</a>'s
+<code>gateway.jwks_file</code> (<code>SESAME_GATEWAY_JWKS_FILE</code>) at it. An app <strong class="kw kw--should">SHOULD</strong> read
+that file rather than copy keys into config values, and the <code>gateway</code> driver
+never fetches keys over the network at sign-in <span class="hb-cite">(the stack's signing-key
+decision)</span>.
+SESAME config: the file is checked at boot, and a missing file, private key
+material or a repeated <code>kid</code> stops the app.</li>
+<li>The gateway's signing key <strong class="kw kw--must">MUST</strong> be rotated every 12 months, and at once when
+a private key could have been exposed. A retired key <strong class="kw kw--must">MUST</strong> stay in the key set
+for at least 5 minutes after the switch, so assertions signed just before it
+still verify <span class="hb-cite">(the stack's signing-key decision)</span>. No check exists yet. Still
+open: where the private keys live on Citadel and who runs the yearly
+rotation.</li>
+<li>The <code>saml</code> driver is built on <code>onelogin/php-saml</code>, is opt-in, sets no
+default WSU identity provider, and requires the provider to sign its
+assertions <span class="hb-cite">(the stack's SAML decision)</span>. SESAME config: the <code>saml</code> block.</li>
 <li>API and other stateless requests are authenticated with signed, short-lived bearer tokens in an <code>Authorization</code> header, verified on every request. A token is signed, not merely encrypted; JSON Web Tokens are a good fit (WSU developer standards, 2024).</li>
 <li>Authentication is checked before any content is shown or any script function runs, on every request. Deny by default: routes are protected unless listed as public, and an unauthenticated person is sent to sign in (WSU developer standards, 2024).</li>
 <li>When authentication or an authorization lookup fails, the result is fail closed: access is withheld (WSU developer standards, 2024).</li>
 <li>Administrative access <strong class="kw kw--must">MUST</strong> be limited to named users or roles, and access that is due to end is revoked on a regular schedule (WSU developer standards, 2024).</li>
 <li>Access that is due to end when a person's status changes (for example an ended employment) <strong class="kw kw--must">MUST</strong> be removed by an automated process, not by memory (WSU developer standards, 2024).</li>
-<li>Idle sessions <strong class="kw kw--must">MUST</strong> time out after a configurable period of inactivity. The stack sets no number yet; Laravel's default session lifetime applies until it does (WSU developer standards, 2024).</li>
+<li>Idle sessions <strong class="kw kw--must">MUST</strong> time out after a configurable period of inactivity (WSU developer standards, 2024). The stack's numbers are in <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json"><code>policy/policy.json</code></a>, under <code>sessions</code>, which is the source for them: SESAME signs a user out after 120 minutes idle and 720 minutes in all (<code>sessions.sesame</code>), and Drawbridge after 3600 seconds idle and 28800 seconds in all (<code>sessions.gateway</code>). SESAME config: <code>session.idle_minutes</code> (<code>SESAME_SESSION_IDLE_MINUTES</code>) and <code>session.absolute_minutes</code> (<code>SESAME_SESSION_ABSOLUTE_MINUTES</code>), with those defaults. An app that does not use SESAME sets its own idle limit; that is documented only.</li>
 </ul>
           </div>
       </article>
@@ -652,7 +668,7 @@ list is not checked yet.</p>
           <div>
             <p class="chap-head__kicker">Chapter 6</p>
             <h2 id="runtime-and-headers-title" class="hb-book__title">Runtime and headers</h2>
-            <p class="hb-register">7 sections · 15 provisions · <strong class="kw kw--must">MUST</strong> 2 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1</p>
+            <p class="hb-register">8 sections · 17 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 2 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -702,19 +718,31 @@ design)</span>.</li>
 <ul>
 <li><code>/up</code> is the health endpoint HELMET answers for raw PHP apps <span class="hb-cite">(the stack's runtime and headers design)</span>.</li>
 </ul>
-<h3 id="runtime-and-headers--errors-in-production"><a class="hb-sec" href="#runtime-and-headers--errors-in-production">§6.6</a> Errors in production</h3>
+<h3 id="runtime-and-headers--metrics"><a class="hb-sec" href="#runtime-and-headers--metrics">§6.6</a> Metrics</h3>
+<ul>
+<li>HELMET's metrics endpoint speaks the Prometheus text format and is off by default. It stays off until a Prometheus
+server scrapes the app; then the app turns it on with <code>HELMET_METRICS_ENABLED=true</code> <span class="hb-cite">(the stack's metrics decision)</span>.
+HELMET: with neither <code>HELMET_METRICS_TOKEN</code> nor <code>HELMET_METRICS_ALLOW</code> set, the endpoint answers 404 and logs a
+warning.</li>
+<li>The scrape token <strong class="kw kw--must-not">MUST NOT</strong> be committed. On Citadel it goes in the app's <code>.env</code> through Citadel's configuration files
+step, which writes the file at deploy time <span class="hb-cite">(the stack's metrics decision)</span>. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>app-key</code>
+(<code>proctor/app-key/committed-env</code> flags a committed <code>.env</code>).</li>
+<li>On Citadel, request counts use the <code>sqlite</code> store for now (<code>HELMET_METRICS_STORAGE=sqlite</code>, with
+<code>HELMET_METRICS_SQLITE_PATH</code> on a file in the app's writable storage); the final store is picked when the stack's
+Prometheus server exists <span class="hb-cite">(the stack's metrics decision)</span>. Documented only.</li>
+</ul>
+<h3 id="runtime-and-headers--errors-in-production"><a class="hb-sec" href="#runtime-and-headers--errors-in-production">§6.7</a> Errors in production</h3>
 <ul>
 <li>PHP <code>display_errors</code> <strong class="kw kw--must">MUST</strong> be <code>Off</code> and <code>log_errors</code> <code>On</code> in production (<a class="tool" href="https://squire.apps.wayne.edu/"><img src="../assets/marks/squire.png" alt="" width="16" height="16">Squire</a>'s deploy kit ships that php.ini;
 HELMET neither sets nor checks it). No check exists yet.</li>
 <li>Laravel <code>APP_DEBUG</code> <strong class="kw kw--must">MUST</strong> be <code>false</code> in production (WSU developer standards, 2024). The Laravel adapter writes one
 warning <code>helmet.debug_enabled_in_production</code> when it is true in the production environment.</li>
 </ul>
-<p>A <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check for this is proposed, not built.</p>
-<h3 id="runtime-and-headers--not-decided-here"><a class="hb-sec" href="#runtime-and-headers--not-decided-here">§6.7</a> Not decided here</h3>
+<p>A PROCTOR check for this is proposed, not built.</p>
+<h3 id="runtime-and-headers--not-decided-here"><a class="hb-sec" href="#runtime-and-headers--not-decided-here">§6.8</a> Not decided here</h3>
 <ul>
 <li>The Cross-Origin-Resource-Policy default.</li>
 <li>The Content-Security-Policy report endpoints.</li>
-<li>The metrics endpoint.</li>
 </ul>
           </div>
       </article>
@@ -964,7 +992,7 @@ override <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>023fd4a</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>051dcf8</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

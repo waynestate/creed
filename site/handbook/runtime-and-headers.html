@@ -62,7 +62,7 @@
       <li><a href="code.html"><span class="hb-nav__no">3</span><span class="hb-nav__name">Code</span></a></li>
       <li><a href="auth.html"><span class="hb-nav__no">4</span><span class="hb-nav__name">Auth</span></a></li>
       <li><a href="databases.html"><span class="hb-nav__no">5</span><span class="hb-nav__name">Databases</span></a></li>
-      <li class="is-here"><a href="runtime-and-headers.html" aria-current="page"><span class="hb-nav__no">6</span><span class="hb-nav__name">Runtime and headers</span></a><ol class="hb-nav__sub"><li><a href="#enforcement" data-toc="enforcement">Enforcement</a></li><li><a href="#headers" data-toc="headers">Headers</a></li><li><a href="#proxy-trust" data-toc="proxy-trust">Proxy trust</a></li><li><a href="#sessions" data-toc="sessions">Sessions</a></li><li><a href="#health" data-toc="health">Health</a></li><li><a href="#errors-in-production" data-toc="errors-in-production">Errors in production</a></li><li><a href="#not-decided-here" data-toc="not-decided-here">Not decided here</a></li></ol></li>
+      <li class="is-here"><a href="runtime-and-headers.html" aria-current="page"><span class="hb-nav__no">6</span><span class="hb-nav__name">Runtime and headers</span></a><ol class="hb-nav__sub"><li><a href="#enforcement" data-toc="enforcement">Enforcement</a></li><li><a href="#headers" data-toc="headers">Headers</a></li><li><a href="#proxy-trust" data-toc="proxy-trust">Proxy trust</a></li><li><a href="#sessions" data-toc="sessions">Sessions</a></li><li><a href="#health" data-toc="health">Health</a></li><li><a href="#metrics" data-toc="metrics">Metrics</a></li><li><a href="#errors-in-production" data-toc="errors-in-production">Errors in production</a></li><li><a href="#not-decided-here" data-toc="not-decided-here">Not decided here</a></li></ol></li>
       <li><a href="deploy-gate.html"><span class="hb-nav__no">7</span><span class="hb-nav__name">Deploy gate</span></a></li>
       <li><a href="ci.html"><span class="hb-nav__no">8</span><span class="hb-nav__name">CI</span></a></li>
       <li><a href="accessibility.html"><span class="hb-nav__no">9</span><span class="hb-nav__name">Accessibility</span></a></li>
@@ -82,7 +82,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 6</p>
             <h1 id="page-title">Runtime and headers</h1>
-            <p class="hb-register">7 sections · 15 provisions · <strong class="kw kw--must">MUST</strong> 2 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1</p>
+            <p class="hb-register">8 sections · 17 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 2 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -95,8 +95,9 @@
             <li class="hb-toc__l2"><a href="#proxy-trust" data-toc="proxy-trust"><span class="hb-toc__no">6.3</span> Proxy trust</a></li>
             <li class="hb-toc__l2"><a href="#sessions" data-toc="sessions"><span class="hb-toc__no">6.4</span> Sessions</a></li>
             <li class="hb-toc__l2"><a href="#health" data-toc="health"><span class="hb-toc__no">6.5</span> Health</a></li>
-            <li class="hb-toc__l2"><a href="#errors-in-production" data-toc="errors-in-production"><span class="hb-toc__no">6.6</span> Errors in production</a></li>
-            <li class="hb-toc__l2"><a href="#not-decided-here" data-toc="not-decided-here"><span class="hb-toc__no">6.7</span> Not decided here</a></li>
+            <li class="hb-toc__l2"><a href="#metrics" data-toc="metrics"><span class="hb-toc__no">6.6</span> Metrics</a></li>
+            <li class="hb-toc__l2"><a href="#errors-in-production" data-toc="errors-in-production"><span class="hb-toc__no">6.7</span> Errors in production</a></li>
+            <li class="hb-toc__l2"><a href="#not-decided-here" data-toc="not-decided-here"><span class="hb-toc__no">6.8</span> Not decided here</a></li>
         </ol>
       </nav>
           <div class="hb-prose" data-hb-prose>
@@ -145,26 +146,38 @@ design)</span>.</li>
 <ul>
 <li><code>/up</code> is the health endpoint HELMET answers for raw PHP apps <span class="hb-cite">(the stack's runtime and headers design)</span>.</li>
 </ul>
-<h2 id="errors-in-production"><a class="hb-sec" href="#errors-in-production">§6.6</a> Errors in production</h2>
+<h2 id="metrics"><a class="hb-sec" href="#metrics">§6.6</a> Metrics</h2>
+<ul>
+<li>HELMET's metrics endpoint speaks the Prometheus text format and is off by default. It stays off until a Prometheus
+server scrapes the app; then the app turns it on with <code>HELMET_METRICS_ENABLED=true</code> <span class="hb-cite">(the stack's metrics decision)</span>.
+HELMET: with neither <code>HELMET_METRICS_TOKEN</code> nor <code>HELMET_METRICS_ALLOW</code> set, the endpoint answers 404 and logs a
+warning.</li>
+<li>The scrape token <strong class="kw kw--must-not">MUST NOT</strong> be committed. On Citadel it goes in the app's <code>.env</code> through Citadel's configuration files
+step, which writes the file at deploy time <span class="hb-cite">(the stack's metrics decision)</span>. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>app-key</code>
+(<code>proctor/app-key/committed-env</code> flags a committed <code>.env</code>).</li>
+<li>On Citadel, request counts use the <code>sqlite</code> store for now (<code>HELMET_METRICS_STORAGE=sqlite</code>, with
+<code>HELMET_METRICS_SQLITE_PATH</code> on a file in the app's writable storage); the final store is picked when the stack's
+Prometheus server exists <span class="hb-cite">(the stack's metrics decision)</span>. Documented only.</li>
+</ul>
+<h2 id="errors-in-production"><a class="hb-sec" href="#errors-in-production">§6.7</a> Errors in production</h2>
 <ul>
 <li>PHP <code>display_errors</code> <strong class="kw kw--must">MUST</strong> be <code>Off</code> and <code>log_errors</code> <code>On</code> in production (<a class="tool" href="https://squire.apps.wayne.edu/"><img src="../assets/marks/squire.png" alt="" width="16" height="16">Squire</a>'s deploy kit ships that php.ini;
 HELMET neither sets nor checks it). No check exists yet.</li>
 <li>Laravel <code>APP_DEBUG</code> <strong class="kw kw--must">MUST</strong> be <code>false</code> in production (WSU developer standards, 2024). The Laravel adapter writes one
 warning <code>helmet.debug_enabled_in_production</code> when it is true in the production environment.</li>
 </ul>
-<p>A <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check for this is proposed, not built.</p>
-<h2 id="not-decided-here"><a class="hb-sec" href="#not-decided-here">§6.7</a> Not decided here</h2>
+<p>A PROCTOR check for this is proposed, not built.</p>
+<h2 id="not-decided-here"><a class="hb-sec" href="#not-decided-here">§6.8</a> Not decided here</h2>
 <ul>
 <li>The Cross-Origin-Resource-Policy default.</li>
 <li>The Content-Security-Policy report endpoints.</li>
-<li>The metrics endpoint.</li>
 </ul>
           </div>
         </div>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="databases.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 5</span><span class="hb-pager__name">Databases</span></a><a class="hb-pager__link hb-pager__link--next" href="deploy-gate.html" rel="next"><span class="hb-pager__dir">Next · Chapter 7</span><span class="hb-pager__name">Deploy gate</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md"><code>handbook/runtime-and-headers.md</code> on GitHub</a>, impression <code>48ebd53</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md"><code>handbook/runtime-and-headers.md</code> on GitHub</a>, impression <code>0c1d993</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

@@ -698,7 +698,8 @@ The questions the 2026 edition hasn't answered. Each one names the clause it aff
 | E-4 | §9.3 | Strict or tolerant schema: settled 2026-11-03. Strict where the file is published, tolerant where it is read, and a frozen older-reader test holds it. | Settled |
 | E-5 | §9.1 | Node 27 and later have no Maintenance phase: settled 2026-11-03. The policy lists even Node majors only, so no new `active_until` rule is needed. | Settled |
 | E-6 | Ch. 10 | The accessibility chapter aims at WCAG 2.2 AA. Which ADA Title II dates apply to a given WSU unit is for counsel and the accessibility office. | Open |
-| E-7 | Handbook | Runtime and headers: the Cross-Origin-Resource-Policy default, the CSP report endpoints and the metrics endpoint. Auth: the gateway's key distribution and rotation, and the SAML library if a SAML driver is built. | Open |
+| E-7 | Handbook | Runtime and headers: the Cross-Origin-Resource-Policy default and the CSP report endpoints. | Open |
+| E-8 | Handbook | Gateway keys, SAML and metrics: settled 2026-11-07 and 2026-11-08. Apps read one key set file holding the current and the next key, rotated every 12 months; the `saml` driver is built on `onelogin/php-saml`; metrics speak Prometheus and stay off by default. | Settled |
 
 The full backlog, 42 items, is at the end of [BEST_PRACTICES.md](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#gaps-for-the-backlog).
 
@@ -721,7 +722,7 @@ CREED writes the rules down. These are the other projects in the stack, and the 
 - ![Booster logo: a syringe with rocket fins and a gold flame](https://creed.apps.wayne.edu/assets/marks/booster.png)[Booster](https://booster.apps.wayne.edu/) *new*Upgrades PHP and Laravel one version at a time.Gets you off a Grace expired row
 - ![ADVISOR logo: a speech bubble with a gold compass needle](https://creed.apps.wayne.edu/assets/marks/advisor.png)[ADVISOR](https://advisor.apps.wayne.edu/) *new*An MCP server your agent can ask about the rules and dates.Explains; never gates (§6.4)
 - ![Squire logo: a satchel with a gold buckle](https://creed.apps.wayne.edu/assets/marks/squire.png)[Squire](https://squire.apps.wayne.edu/) *new*Carries the release to Citadel. This page deploys with it.The deploy gate, proposed
-- ![Drawbridge logo: a castle tower with its bridge down on a gold chain](https://creed.apps.wayne.edu/assets/marks/drawbridge.png)[Drawbridge](https://drawbridge.apps.wayne.edu/) *new*The Citadel sign-in gateway.Erratum E-7
+- ![Drawbridge logo: a castle tower with its bridge down on a gold chain](https://creed.apps.wayne.edu/assets/marks/drawbridge.png)[Drawbridge](https://drawbridge.apps.wayne.edu/) *new*The Citadel sign-in gateway.Erratum E-8
 
 Appendix A
 
@@ -923,6 +924,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Changed: the handbook catches up with three recorded decisions. The auth chapter states how the gateway's keys reach apps (one key set file with the current and the next key, read through SESAME's `gateway.jwks_file`, carried by Playbook) and how often they rotate (every 12 months, a retired key kept 5 minutes), says the `saml` driver is built on `onelogin/php-saml`, and takes the idle limits from `policy.json`'s `sessions` block (SESAME 120 minutes idle, 720 in all) instead of saying the stack sets none. The runtime and headers chapter gains a Metrics section (Prometheus format, off by default, the token never committed, the `sqlite` store on Citadel for now). The front page's erratum E-7 keeps only what is still open (the Cross-Origin-Resource-Policy default and the CSP report endpoints), the new E-8 shows the rest as settled, and backlog item 41 is done.
 - Changed: every best-practice stamp, count and named file was re-checked against this tree, PROCTOR main, Preflight 0.2.0, HELMET and Rollcall on 2026-11-08. Practice 8 moves to Checked (the policy robot's first refresh landed on main), 53 to Checked (Preflight's `a11y` component), and 17, 23 and 34 to Partially (PROCTOR's `mysql-eol`, `preflight-pinned` and `crlf-deploy-script`). The tally is now Enforced 7, Checked 16, Partially 11, Documented 20, Not yet 7. Fixed with them: the Preflight pin (0.2.0, three components, at a tag), Preflight's `secret-detection` and `a11y` components where the text said none existed (practices 24, 41, 53, 55 and the handbook's secrets, accessibility and code chapters), the instance runner that is now in place (practice 36), and ten backlog items that had moved (seven done, three partly done). The front page's errata foot counts 42 backlog items (was 37), E-4 and E-5 show as settled, and a test now keeps the backlog count in step.
 - Changed: the policy robot's docs (handbook versions chapter, patch refresh guide, proof page, practice 7) say it pushes a green refresh to main and opens a merge request only when its gate is red.
 - Added: a test keeps public pages free of app counts (D-063): proof results stay on the private proof site, and public copy uses percentages and trends.
@@ -2213,26 +2215,28 @@ Chapter 4
 
 ## Auth
 
-12 provisions · **MUST** 3
+14 provisions · **MUST** 5 · **SHOULD** 1
 
-Partly decided
+Decided
 
 Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and **MAY** in this chapter are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
 - One protocol-neutral library, named for what it does, not how. It returns a verified identity and leaves the session to the app (the stack's auth design).
 - The app always owns its session. Every driver ends in the app's `findOrImportUser(identity)`, and the protocol never holds the session (the stack's auth design).
 - The `gateway` driver accepts only a signed assertion, never a bare header: user, attributes, issued-at, audience, an expiry of 60 seconds or less, and a signature the gateway and app share (the stack's auth design).
-- Drivers: `cas` (the default today), `gateway`, `oidc`, `oauth2`, `saml` (not built yet), and `fake` for local development and tests (the stack's auth design).
+- Drivers: `cas` (the default today), `gateway`, `oidc`, `oauth2`, `saml` (opt-in), and `fake` for local development and tests (the stack's auth design).
 - Non-EOL PHP only, with no exceptions (the stack's auth design). [PROCTOR](https://proctor.apps.wayne.edu/) check: `php-floor`.
-- To be decided: the gateway's key distribution and rotation, and the SAML library choice if a `saml` driver is built (the stack's auth design).
+- The gateway's public keys reach apps as one key set file (JWKS) that holds the current key and the next one. [Drawbridge](https://drawbridge.apps.wayne.edu/) writes it (`keys:jwks`), Playbook carries WSU's copy (public keys only), and the app points [SESAME](https://sesame.apps.wayne.edu/)'s `gateway.jwks_file` (`SESAME_GATEWAY_JWKS_FILE`) at it. An app **SHOULD** read that file rather than copy keys into config values, and the `gateway` driver never fetches keys over the network at sign-in (the stack's signing-key decision). SESAME config: the file is checked at boot, and a missing file, private key material or a repeated `kid` stops the app.
+- The gateway's signing key **MUST** be rotated every 12 months, and at once when a private key could have been exposed. A retired key **MUST** stay in the key set for at least 5 minutes after the switch, so assertions signed just before it still verify (the stack's signing-key decision). No check exists yet. Still open: where the private keys live on Citadel and who runs the yearly rotation.
+- The `saml` driver is built on `onelogin/php-saml`, is opt-in, sets no default WSU identity provider, and requires the provider to sign its assertions (the stack's SAML decision). SESAME config: the `saml` block.
 - API and other stateless requests are authenticated with signed, short-lived bearer tokens in an `Authorization` header, verified on every request. A token is signed, not merely encrypted; JSON Web Tokens are a good fit (WSU developer standards, 2024).
 - Authentication is checked before any content is shown or any script function runs, on every request. Deny by default: routes are protected unless listed as public, and an unauthenticated person is sent to sign in (WSU developer standards, 2024).
 - When authentication or an authorization lookup fails, the result is fail closed: access is withheld (WSU developer standards, 2024).
 - Administrative access **MUST** be limited to named users or roles, and access that is due to end is revoked on a regular schedule (WSU developer standards, 2024).
 - Access that is due to end when a person's status changes (for example an ended employment) **MUST** be removed by an automated process, not by memory (WSU developer standards, 2024).
-- Idle sessions **MUST** time out after a configurable period of inactivity. The stack sets no number yet; Laravel's default session lifetime applies until it does (WSU developer standards, 2024).
+- Idle sessions **MUST** time out after a configurable period of inactivity (WSU developer standards, 2024). The stack's numbers are in [`policy/policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.json), under `sessions`, which is the source for them: SESAME signs a user out after 120 minutes idle and 720 minutes in all (`sessions.sesame`), and Drawbridge after 3600 seconds idle and 28800 seconds in all (`sessions.gateway`). SESAME config: `session.idle_minutes` (`SESAME_SESSION_IDLE_MINUTES`) and `session.absolute_minutes` (`SESAME_SESSION_ABSOLUTE_MINUTES`), with those defaults. An app that does not use SESAME sets its own idle limit; that is documented only.
 
-Set from [`handbook/auth.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/auth.md), impression `5b8bf9e`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/auth.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/auth.md), impression `bcedfd8`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2609,16 +2613,16 @@ The handbook · 2026 Edition
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a "Not decided here" heading.
 
-Thirteen chapters · 175 provisions · **MUST** 52 · **SHOULD** 14 · **MAY** 1
+Thirteen chapters · 179 provisions · **MUST** 55 · **SHOULD** 15 · **MAY** 1
 
 ### Contents
 
 1. [1 Versions Latest patches · Base images · Node · Tool minimums](https://creed.apps.wayne.edu/handbook/versions.html)4 sections · 4 provisions · **MUST NOT** 2 · **MUST** 3Decided
 2. [2 Dependencies Private packages](https://creed.apps.wayne.edu/handbook/dependencies.html)1 section · 15 provisions · **MUST NOT** 4 · **MUST** 6 · **SHOULD NOT** 1 · **SHOULD** 3Decided
 3. [3 Code PHP style · Reading the code · Source control and documentation · Static analysis · Input and files · Banned patterns · Vue and JavaScript · Security analysis · How it is enforced · Which preset enforces each rule · Not adopted · To be decided · Sources](https://creed.apps.wayne.edu/handbook/code.html)13 sections · 43 provisions · **MUST NOT** 3 · **MUST** 6 · **SHOULD** 2Partly decided
-4. [4 Auth](https://creed.apps.wayne.edu/handbook/auth.html)12 provisions · **MUST** 3Partly decided
+4. [4 Auth](https://creed.apps.wayne.edu/handbook/auth.html)14 provisions · **MUST** 5 · **SHOULD** 1Decided
 5. [5 Databases What the stack supports · Which MySQL lines the policy lists · Grace period · Names, comments and connections · Conventions that keep 5.6 working · Avoid until the server is upgraded · Moving to 8.4 · How the stack checks it · Sources](https://creed.apps.wayne.edu/handbook/databases.html)9 sections · 25 provisions · **MUST** 4 · **SHOULD** 1 · **MAY** 1Decided
-6. [6 Runtime and headers Enforcement · Headers · Proxy trust · Sessions · Health · Errors in production · Not decided here](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html)7 sections · 15 provisions · **MUST** 2 · **SHOULD NOT** 1Decided
+6. [6 Runtime and headers Enforcement · Headers · Proxy trust · Sessions · Health · Metrics · Errors in production · Not decided here](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html)8 sections · 17 provisions · **MUST NOT** 1 · **MUST** 2 · **SHOULD NOT** 1Decided
 7. [7 Deploy gate On Citadel · Elsewhere](https://creed.apps.wayne.edu/handbook/deploy-gate.html)2 sections · 8 provisionsDecided
 8. [8 CI](https://creed.apps.wayne.edu/handbook/ci.html)8 provisions · **MUST** 2 · **SHOULD** 1Decided
 9. [9 Accessibility Target · Components · Checks · Not decided here](https://creed.apps.wayne.edu/handbook/accessibility.html)4 sections · 9 provisions · **MUST NOT** 1 · **SHOULD** 1Decided
@@ -2714,7 +2718,7 @@ Chapter 6
 
 ## Runtime and headers
 
-7 sections · 15 provisions · **MUST** 2 · **SHOULD NOT** 1
+8 sections · 17 provisions · **MUST NOT** 1 · **MUST** 2 · **SHOULD NOT** 1
 
 Decided
 
@@ -2754,20 +2758,25 @@ The headers are the setlist: the same one on every response. The HSTS encore pla
 
 - `/up` is the health endpoint HELMET answers for raw PHP apps (the stack's runtime and headers design).
 
-### [§6.6](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#errors-in-production) Errors in production
+### [§6.6](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#metrics) Metrics
+
+- HELMET's metrics endpoint speaks the Prometheus text format and is off by default. It stays off until a Prometheus server scrapes the app; then the app turns it on with `HELMET_METRICS_ENABLED=true` (the stack's metrics decision). HELMET: with neither `HELMET_METRICS_TOKEN` nor `HELMET_METRICS_ALLOW` set, the endpoint answers 404 and logs a warning.
+- The scrape token **MUST NOT** be committed. On Citadel it goes in the app's `.env` through Citadel's configuration files step, which writes the file at deploy time (the stack's metrics decision). [PROCTOR](https://proctor.apps.wayne.edu/) check: `app-key` (`proctor/app-key/committed-env` flags a committed `.env`).
+- On Citadel, request counts use the `sqlite` store for now (`HELMET_METRICS_STORAGE=sqlite`, with `HELMET_METRICS_SQLITE_PATH` on a file in the app's writable storage); the final store is picked when the stack's Prometheus server exists (the stack's metrics decision). Documented only.
+
+### [§6.7](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#errors-in-production) Errors in production
 
 - PHP `display_errors` **MUST** be `Off` and `log_errors` `On` in production ([Squire](https://squire.apps.wayne.edu/)'s deploy kit ships that php.ini; HELMET neither sets nor checks it). No check exists yet.
 - Laravel `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment.
 
-A [PROCTOR](https://proctor.apps.wayne.edu/) check for this is proposed, not built.
+A PROCTOR check for this is proposed, not built.
 
-### [§6.7](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#not-decided-here) Not decided here
+### [§6.8](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#not-decided-here) Not decided here
 
 - The Cross-Origin-Resource-Policy default.
 - The Content-Security-Policy report endpoints.
-- The metrics endpoint.
 
-Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `48ebd53`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `0c1d993`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 

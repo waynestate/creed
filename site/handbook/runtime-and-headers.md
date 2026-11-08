@@ -10,7 +10,7 @@ Chapter 6
 
 # Runtime and headers
 
-7 sections · 15 provisions · **MUST** 2 · **SHOULD NOT** 1
+8 sections · 17 provisions · **MUST NOT** 1 · **MUST** 2 · **SHOULD NOT** 1
 
 Decided
 
@@ -50,17 +50,22 @@ The headers are the setlist: the same one on every response. The HSTS encore pla
 
 - `/up` is the health endpoint HELMET answers for raw PHP apps (the stack's runtime and headers design).
 
-## [§6.6](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#errors-in-production) Errors in production
+## [§6.6](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#metrics) Metrics
+
+- HELMET's metrics endpoint speaks the Prometheus text format and is off by default. It stays off until a Prometheus server scrapes the app; then the app turns it on with `HELMET_METRICS_ENABLED=true` (the stack's metrics decision). HELMET: with neither `HELMET_METRICS_TOKEN` nor `HELMET_METRICS_ALLOW` set, the endpoint answers 404 and logs a warning.
+- The scrape token **MUST NOT** be committed. On Citadel it goes in the app's `.env` through Citadel's configuration files step, which writes the file at deploy time (the stack's metrics decision). [PROCTOR](https://proctor.apps.wayne.edu/) check: `app-key` (`proctor/app-key/committed-env` flags a committed `.env`).
+- On Citadel, request counts use the `sqlite` store for now (`HELMET_METRICS_STORAGE=sqlite`, with `HELMET_METRICS_SQLITE_PATH` on a file in the app's writable storage); the final store is picked when the stack's Prometheus server exists (the stack's metrics decision). Documented only.
+
+## [§6.7](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#errors-in-production) Errors in production
 
 - PHP `display_errors` **MUST** be `Off` and `log_errors` `On` in production ([Squire](https://squire.apps.wayne.edu/)'s deploy kit ships that php.ini; HELMET neither sets nor checks it). No check exists yet.
 - Laravel `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment.
 
-A [PROCTOR](https://proctor.apps.wayne.edu/) check for this is proposed, not built.
+A PROCTOR check for this is proposed, not built.
 
-## [§6.7](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#not-decided-here) Not decided here
+## [§6.8](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#not-decided-here) Not decided here
 
 - The Cross-Origin-Resource-Policy default.
 - The Content-Security-Policy report endpoints.
-- The metrics endpoint.
 
-Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `48ebd53`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `0c1d993`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
