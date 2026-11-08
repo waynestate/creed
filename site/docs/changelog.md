@@ -10,6 +10,7 @@ generator: Squire agent-ready
 
 ## Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Fixed: the docs menu closes with Escape and hands focus back to its button (docs kit synced from Squire).
 - Changed: the deploy layer requires PROCTOR ^0.8 (locked 0.8.0).
 - Changed: the GitLab pipeline pins every Preflight component to 0.3.0 (was 0.2.0). From 0.3.0 each component adds the Dependency Proxy prefix itself (`image_prefix`), so the `php-test`, `composer-audit` and `proctor` `image:` inputs are plain image names with the same tags and digests; CREED's own jobs keep the prefix. The GitHub workflow stays on 0.1.4. Best practices 23 and 42, the intro, the front page's clause 3.6 and the handbook's accessibility, code and secrets chapters name 0.3.0, and practice 23 and clause 3.6 say PROCTOR main's `preflight-pinned` accepts a full release tag as well as a commit SHA.
 - Changed: the handbook catches up with two more decisions. The databases chapter's grace period says PROCTOR's `mysql-eol` warns and does not fail until Citadel offers a supported MySQL (D-053), and the runtime and headers chapter says the Cross-Origin-Resource-Policy default is settled as opt-in (HELMET 1.0.0 sends no header until the app sets one), so it leaves "Not decided here" and the front page's erratum E-7 keeps only the CSP report endpoints.
