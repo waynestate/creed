@@ -9,6 +9,7 @@ description: All notable changes to this project.
 
 ## Unreleased
 
+- Changed: the GitLab pipeline pins the Preflight components to 0.2.0 (was 0.1.4).
 - Changed: the front page's deploy layer (`deploy/`) runs Squire's kit 0.6.0 (was 0.5.0): `scripts/release.sh` asks PROCTOR's deploy gate for a go or no-go on each release (a report, not a stop, unless `SQUIRE_PROCTOR=enforce`), and `.env.squire.example` lists the new setting. The layer pins HELMET `^0.4` (locked 0.4.0).
 - Fixed: the front page's authorities table says Sourdough starts all five app shapes, from raw PHP to Inertia and Vue; it no longer says raw PHP only.
 - Changed: the front-page deploy layer pins PROCTOR ^0.7 (lock: PROCTOR 0.7.0, was 0.4.0).
