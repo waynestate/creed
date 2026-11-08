@@ -10,6 +10,7 @@ generator: Squire agent-ready
 
 ## Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Changed: CI pins the Preflight components to 0.3.1 (fixed cache keys, and caches saved even when a job fails; D-072).
 - Changed: CI saves its Composer and npm caches even when a job fails, so a retry after a dropped download fetches only what is missing (D-072).
 - Changed: CI caches Composer and npm downloads under a fixed key, so a lock change downloads only what changed (D-072).
 - Added: a `gate` block in the policy (`default_stage`, per-check `stages` with dates; ships empty) and `Policy::gateStage()`, so PROCTOR's gate can stage a rule as report, warn or block (ADR-0006 item 4, D-071).
