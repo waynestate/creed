@@ -108,7 +108,11 @@ an expired override is blocked <span class="hb-cite">(the stack's deploy-gate de
 <li>It ratchets: a deploy that doesn't make things worse always passes
 <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
 <li>Each rule moves through stages, <code>report</code>, <code>warn</code>, <code>block</code>, with dates in
-<code>policy.json</code> <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
+<code>policy.json</code> <span class="hb-cite">(the stack's deploy-gate decision)</span>.
+<ul>
+<li>The <code>gate</code> block holds them: <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json" title="gate.default_stage in policy.json"><code>default_stage</code></a> (<code>block</code>) and <code>stages</code>, a list of <code>{stage, from}</code> entries per PROCTOR check; the latest <code>from</code> on or before the run date wins. It ships empty, so every check blocks until a date is agreed with the Citadel team.</li>
+</ul>
+</li>
 </ul>
 <h2 id="on-citadel"><a class="hb-sec" href="#on-citadel">§7.1</a> On Citadel</h2>
 <ul>
@@ -126,12 +130,13 @@ wherever the pipeline runs <span class="hb-cite">(first-repos)</span>.</li>
 will its later <code>openshift</code> and <code>coolify</code> targets <span class="hb-cite">(the stack's rule that
 packages run on any container platform)</span>.</li>
 </ul>
+<div class="hb-policy" role="note"><p class="hb-policy__title">In <a href="https://github.com/waynestate/creed/blob/main/policy/policy.json"><code>policy.json</code></a></p><dl><div><dt><code>gate.default_stage</code></dt><dd><code>&quot;block&quot;</code></dd></div></dl></div>
           </div>
         </div>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="runtime-and-headers.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 6</span><span class="hb-pager__name">Runtime and headers</span></a><a class="hb-pager__link hb-pager__link--next" href="ci.html" rel="next"><span class="hb-pager__dir">Next · Chapter 8</span><span class="hb-pager__name">CI</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/deploy-gate.md"><code>handbook/deploy-gate.md</code> on GitHub</a>, impression <code>a557384</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/deploy-gate.md"><code>handbook/deploy-gate.md</code> on GitHub</a>, impression <code>06be735</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 
