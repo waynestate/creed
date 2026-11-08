@@ -10,6 +10,7 @@ generator: Squire agent-ready
 
 ## Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Added: `Policy::overrideMaxDays()` reads `rules.override_max_days` (90 when absent; anything but a positive integer throws), so PROCTOR's exported reader can enforce the override cap.
 - Added: `rules.override_max_days` (90) in the policy and its schema, and the overrides chapter says an override may run at most that long.
 - Fixed: the docs menu closes with Escape and hands focus back to its button (docs kit synced from Squire).
 - Changed: the deploy layer requires PROCTOR ^0.8 (locked 0.8.0).
