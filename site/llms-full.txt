@@ -913,8 +913,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
-- Added: `policy.json` records session lifetimes (`sessions.sesame`: idle 120 and absolute 720 minutes; `sessions.gateway`: idle 3600 and session 28800 seconds).
-- Docs: the handbook writes Rollcall as a word, not in capitals.
+- Docs: the handbook and two command descriptions write Rollcall and Squire as words, not in capitals.
 - Fixed: the pipeline's PROCTOR jobs no longer pass `--policy`, which PROCTOR 0.7 refuses in CI; PROCTOR checks against the CREED policy it bundles.
 - Changed: the GitLab pipeline pins the Preflight components to 0.2.0 (was 0.1.4).
 - Changed: the front page's deploy layer (`deploy/`) runs Squire's kit 0.6.0 (was 0.5.0): `scripts/release.sh` asks PROCTOR's deploy gate for a go or no-go on each release (a report, not a stop, unless `SQUIRE_PROCTOR=enforce`), and `.env.squire.example` lists the new setting. The layer pins HELMET `^0.4` (locked 0.4.0).
@@ -1901,7 +1900,6 @@ CREED is the Wayne State app stack's version policy, as data. One file, `policy/
 | `refreshed_on` | string | A date in `YYYY-MM-DD` form. Optional. |
 | `components` | object | At least one entry. Each entry is a component holding a `versions` object, and nothing else. Required. |
 | `tools` | object | Maps tool names to a minimum version each. Optional. |
-| `sessions` | object | Records the session lifetimes the stack sets elsewhere: SESAME in minutes (`sesame.idle_minutes`, `sesame.absolute_minutes`) and the Drawbridge gateway in seconds (`gateway.idle_seconds`, `gateway.session_seconds`), each entry carrying a `source` that names the file in that repo where the default is set. Optional. |
 | `rules` | object | The rules every check runs against. Required. |
 
 ### The line fields[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#the-line-fields)

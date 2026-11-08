@@ -4,6 +4,7 @@
 
 - Added: `policy.json` records session lifetimes (`sessions.sesame`: idle 120 and absolute 720 minutes; `sessions.gateway`: idle 3600 and session 28800 seconds).
 - Docs: the handbook writes Rollcall as a word, not in capitals.
+- Docs: the handbook and two command descriptions write Rollcall and Squire as words, not in capitals.
 - Fixed: the pipeline's PROCTOR jobs no longer pass `--policy`, which PROCTOR 0.7 refuses in CI; PROCTOR checks against the CREED policy it bundles.
 - Changed: the GitLab pipeline pins the Preflight components to 0.2.0 (was 0.1.4).
 - Changed: the front page's deploy layer (`deploy/`) runs Squire's kit 0.6.0 (was 0.5.0): `scripts/release.sh` asks PROCTOR's deploy gate for a go or no-go on each release (a report, not a stop, unless `SQUIRE_PROCTOR=enforce`), and `.env.squire.example` lists the new setting. The layer pins HELMET `^0.4` (locked 0.4.0).
