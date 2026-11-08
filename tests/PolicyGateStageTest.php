@@ -136,6 +136,9 @@ final class PolicyGateStageTest extends TestCase
     }
 
     #[Test]
+    /**
+     * @param array<string, mixed> $gate
+     */
     #[DataProvider('malformedGates')]
     public function aMalformedGateThrowsNamingTheBlock(array $gate): void
     {
