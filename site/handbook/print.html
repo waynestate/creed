@@ -155,7 +155,9 @@ moves to <code>^8.3</code> on 2027-01-01. <a class="tool" href="https://proctor.
 <li>Stack packages raise their own <code>php</code> floor in a new major when a PHP version
 reaches EOL, so security fixes require the upgrade <span class="hb-cite">(the stack's version policy)</span>.</li>
 <li><code>policy.json</code> is a contract, versioned like <a class="tool" href="https://wayneui.apps.wayne.edu/">WayneUI</a>'s <code>/v2/</code>. Older Check
-versions <strong class="kw kw--must">MUST</strong> still read newer policy files <span class="hb-cite">(the stack's version policy)</span>.</li>
+versions <strong class="kw kw--must">MUST</strong> still read newer policy files <span class="hb-cite">(the stack's version policy)</span>.
+Held by: CREED's own CI, where <code>tests/OlderReaderContractTest.php</code> reads a
+future-shaped policy file with today's reader.</li>
 </ul>
 <h3 id="versions--latest-patches"><a class="hb-sec" href="#versions--latest-patches">§1.1</a> Latest patches</h3>
 <p>Each version can also carry a <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json" title="components.*.versions.*.latest_patch in policy.json"><code>latest_patch</code></a>: the newest patch release for
@@ -177,13 +179,18 @@ changes. The policy robot lands that change itself: it pushes the refresh to
 person only when the gate is red. So an image never sits behind the patch
 level the policy records <span class="hb-cite">(the stack's version policy)</span>. Every such change
 to <code>latest_patch</code> is a rebuild. An image <strong class="kw kw--must-not">MUST NOT</strong> be pinned to a branch the
-policy marks EOL <span class="hb-cite">(the stack's version policy)</span>.</p>
+policy marks EOL <span class="hb-cite">(the stack's version policy)</span>. PROCTOR check: <code>unpatched</code>,
+which warns when the PHP an app runs on (<code>--php-runtime</code>) is behind
+<code>latest_patch</code>; nothing reads the PHP image tag itself yet.</p>
 <p><code>images.docker</code> names the official image for a plain Docker target. Citadel
 names its own images, so <code>images.citadel</code> stays unset until Citadel publishes
 names. <code>openshift</code> and <code>coolify</code> are not filled yet.</p>
 <h3 id="versions--node"><a class="hb-sec" href="#versions--node">§1.3</a> Node</h3>
 <p>The policy lists even Node majors only, because even majors are the LTS lines;
-odd majors <strong class="kw kw--must-not">MUST NOT</strong> be a target and are not listed <span class="hb-cite">(the stack's version policy)</span>.</p>
+odd majors <strong class="kw kw--must-not">MUST NOT</strong> be a target and are not listed <span class="hb-cite">(the stack's version policy)</span>.
+Held by: CREED's own CI. The refresher adds even majors only, and
+<code>tests/PolicySchemaTest.php</code> fails if an odd major is ever written into
+<code>policy.json</code> by hand.</p>
 <p>An app <strong class="kw kw--must">MUST</strong> build on a Node line that has not reached end of life. PROCTOR
 check: <code>node-eol</code>. It reads <code>.nvmrc</code>, <code>.node-version</code>, <code>volta.node</code> and the
 <code>node</code> image in CI and Dockerfiles: an active line passes, a security-only line
@@ -229,19 +236,20 @@ one replaces it or records an override with a reason; PROCTOR's
 bound <span class="hb-cite">(the stack's version policy)</span>. PROCTOR check: <code>php-floor</code>.</li>
 <li>Apps <strong class="kw kw--should">SHOULD</strong> set a Composer cooldown of 3 days, once Composer 2.11 is stable
 and in the base images; until then no cooldown is set <span class="hb-cite">(the stack's dependency
-decision, 2026-11-03)</span>. A PROCTOR check for a missing cooldown is planned, not
-built.</li>
+decision, 2026-11-03)</span>. No check exists yet: a PROCTOR check for a missing
+cooldown is planned.</li>
 <li>Every project is a framework-free core plus thin adapters. <code>composer.json</code>
 requires only <code>php</code> and PSR packages; Laravel, Inertia and Vue are
 <code>suggest</code> <span class="hb-cite">(the stack's core-plus-adapters design)</span>.</li>
 <li>Adapters call the core and never re-implement it <span class="hb-cite">(the stack's core-plus-adapters design)</span>.</li>
-<li>Before adding a third-party package, check it comes from a trusted source, and where the source is open, read enough of it to judge it sound and fit (<strong class="kw kw--should">SHOULD</strong>). The audit and abandoned-package rules in this chapter apply after that choice (WSU developer standards, 2024).</li>
+<li>Before adding a third-party package, check it comes from a trusted source, and where the source is open, read enough of it to judge it sound and fit (<strong class="kw kw--should">SHOULD</strong>). The audit and abandoned-package rules in this chapter apply after that choice (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <h3 id="dependencies--private-packages"><a class="hb-sec" href="#dependencies--private-packages">§2.1</a> Private packages</h3>
 <ul>
 <li>Internal-only packages <strong class="kw kw--must">MUST</strong> be installed from one GitLab package registry
 per ecosystem (Composer, npm), not from one <code>vcs</code>, <code>path</code> or <code>artifact</code>
-repository entry per package <span class="hb-cite">(the stack's private-packages decision)</span>.</li>
+repository entry per package <span class="hb-cite">(the stack's private-packages decision)</span>.
+No check exists yet.</li>
 <li>Credentials <strong class="kw kw--must-not">MUST NOT</strong> appear in any repository URL in <code>composer.json</code> or
 <code>composer.lock</code>, or as a literal value in a committed <code>.npmrc</code>. Tokens live
 in a gitignored <code>auth.json</code>, the npm user config, or a CI or build-time
@@ -249,22 +257,28 @@ secret <span class="hb-cite">(the stack's private-packages decision)</span>. PRO
 <code>repo-url-credentials</code>.</li>
 <li>Builds <strong class="kw kw--must">MUST</strong> use a read-only deploy token (<code>read_package_registry</code> only);
 personal access tokens <strong class="kw kw--must-not">MUST NOT</strong> be used in builds (the stack's
-private-packages decision).</li>
+private-packages decision). No check exists yet.</li>
 <li>The private Composer registry entry <strong class="kw kw--must">MUST</strong> be canonical, and the Packagist
 entry <strong class="kw kw--should">SHOULD</strong> exclude the internal vendor names, so a public package with
 the same name can never be installed instead <span class="hb-cite">(the stack's private-packages
-decision)</span>.</li>
+decision)</span>. No check exists yet.</li>
 <li>A released version <strong class="kw kw--must">MUST</strong> map to one commit for ever: tags are protected,
 and a version is never republished from a different commit (the stack's
-private-packages decision).</li>
+private-packages decision). Held by: <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s <code>package-publish</code>
+component, which reads the registry first and refuses a version that
+already exists with different contents.</li>
 <li>Public code <strong class="kw kw--must-not">MUST NOT</strong> go through the private registry; it is published to
-Packagist or npm <span class="hb-cite">(the stack's private-packages decision)</span>.</li>
+Packagist or npm <span class="hb-cite">(the stack's private-packages decision)</span>. No check exists
+yet.</li>
 <li>Apps <strong class="kw kw--should-not">SHOULD NOT</strong> proxy or mirror public registries in v1 (the stack's
-private-packages decision).</li>
+private-packages decision). No check exists yet.</li>
 </ul>
-<p>PROCTOR's <code>repo-url-credentials</code>, <code>package-sources</code> and
-<code>internal-vendor-shadowing</code> checks enforce rules 1, 2 and 4 (warning first),
-and <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s publish job enforces rule 5.</p>
+<p>Today PROCTOR's <code>repo-url-credentials</code> check holds rule 2 and Preflight's
+<code>package-publish</code> component holds rule 5. Checks for rule 1 (one registry
+per ecosystem) and rule 4 (the canonical entry and the Packagist exclusion)
+are planned, not built: earlier versions of this chapter named them as
+<code>package-sources</code> and <code>internal-vendor-shadowing</code>, but PROCTOR has never
+shipped either.</p>
 <div class="hb-policy" role="note"><p class="hb-policy__title">In <a href="https://github.com/waynestate/creed/blob/main/policy/policy.json"><code>policy.json</code></a></p><dl><div><dt><code>rules.abandoned_packages</code></dt><dd><code>&quot;fail&quot;</code></dd></div></dl></div>
           </div>
       </article>
@@ -509,8 +523,8 @@ Playbook carries WSU's copy (public keys only), and the app points <a class="too
 that file rather than copy keys into config values, and the <code>gateway</code> driver
 never fetches keys over the network at sign-in <span class="hb-cite">(the stack's signing-key
 decision)</span>.
-SESAME config: the file is checked at boot, and a missing file, private key
-material or a repeated <code>kid</code> stops the app.</li>
+Held by: SESAME config, which checks the file at boot: a missing file,
+private key material or a repeated <code>kid</code> stops the app.</li>
 <li>The gateway's signing key <strong class="kw kw--must">MUST</strong> be rotated every 12 months, and at once when
 a private key could have been exposed. A retired key <strong class="kw kw--must">MUST</strong> stay in the key set
 for at least 5 minutes after the switch, so assertions signed just before it
@@ -523,9 +537,9 @@ assertions <span class="hb-cite">(the stack's SAML decision)</span>. SESAME conf
 <li>API and other stateless requests are authenticated with signed, short-lived bearer tokens in an <code>Authorization</code> header, verified on every request. A token is signed, not merely encrypted; JSON Web Tokens are a good fit (WSU developer standards, 2024).</li>
 <li>Authentication is checked before any content is shown or any script function runs, on every request. Deny by default: routes are protected unless listed as public, and an unauthenticated person is sent to sign in (WSU developer standards, 2024).</li>
 <li>When authentication or an authorization lookup fails, the result is fail closed: access is withheld (WSU developer standards, 2024).</li>
-<li>Administrative access <strong class="kw kw--must">MUST</strong> be limited to named users or roles, and access that is due to end is revoked on a regular schedule (WSU developer standards, 2024).</li>
-<li>Access that is due to end when a person's status changes (for example an ended employment) <strong class="kw kw--must">MUST</strong> be removed by an automated process, not by memory (WSU developer standards, 2024).</li>
-<li>Idle sessions <strong class="kw kw--must">MUST</strong> time out after a configurable period of inactivity (WSU developer standards, 2024). The stack's numbers are in <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json"><code>policy/policy.json</code></a>, under <code>sessions</code>, which is the source for them: SESAME signs a user out after 120 minutes idle and 720 minutes in all (<code>sessions.sesame</code>), and Drawbridge after 3600 seconds idle and 28800 seconds in all (<code>sessions.gateway</code>). SESAME config: <code>session.idle_minutes</code> (<code>SESAME_SESSION_IDLE_MINUTES</code>) and <code>session.absolute_minutes</code> (<code>SESAME_SESSION_ABSOLUTE_MINUTES</code>), with those defaults. An app that does not use SESAME sets its own idle limit; that is documented only.</li>
+<li>Administrative access <strong class="kw kw--must">MUST</strong> be limited to named users or roles, and access that is due to end is revoked on a regular schedule (WSU developer standards, 2024). No check exists yet.</li>
+<li>Access that is due to end when a person's status changes (for example an ended employment) <strong class="kw kw--must">MUST</strong> be removed by an automated process, not by memory (WSU developer standards, 2024). No check exists yet.</li>
+<li>Idle sessions <strong class="kw kw--must">MUST</strong> time out after a configurable period of inactivity (WSU developer standards, 2024). The stack's numbers are in <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json"><code>policy/policy.json</code></a>, under <code>sessions</code>, which is the source for them: SESAME signs a user out after 120 minutes idle and 720 minutes in all (<code>sessions.sesame</code>), and Drawbridge after 3600 seconds idle and 28800 seconds in all (<code>sessions.gateway</code>). Held by: SESAME config, <code>session.idle_minutes</code> (<code>SESAME_SESSION_IDLE_MINUTES</code>) and <code>session.absolute_minutes</code> (<code>SESAME_SESSION_ABSOLUTE_MINUTES</code>), with those defaults. An app that does not use SESAME sets its own idle limit; that is documented only.</li>
 </ul>
           </div>
       </article>
@@ -545,7 +559,10 @@ assertions <span class="hb-cite">(the stack's SAML decision)</span>. SESAME conf
 <p>The policy lists the MySQL versions in <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json"><code>policy/policy.json</code></a>, under <code>mysql</code>:
 5.6, 5.7, 8.0, 8.4 and 9.7, each with its <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json" title="components.*.versions.*.active_until in policy.json"><code>active_until</code></a> and <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json" title="components.*.versions.*.security_until in policy.json"><code>security_until</code></a>
 dates. The shared server runs 5.6, which is past security support; its
-<code>security_until</code> is 2021-02-28. Laravel 13 documents MySQL 5.7 or later. The
+<code>security_until</code> is 2021-02-28. Laravel 13 documents MySQL 5.7 or later, and
+each Laravel line in the policy records the oldest MySQL and MariaDB it needs
+(<code>requires.mysql</code> and <code>requires.mariadb</code>); <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> main's <code>mysql-minimum</code>
+warns when an app's declared database image is below that minimum. The
 conventions below keep an app working on the shared server until it is
 upgraded. They are a bridge, not the fix: the fix is the upgrade. Code that
 follows them runs unchanged on 8.4, so the move can be made With Arms Wide
@@ -556,24 +573,26 @@ older lines, 5.6, 5.7 and 8.0, only to say that they are end of life. In
 MySQL 8.4 and later the default authentication plugin is
 <code>caching_sha2_password</code>: <code>mysql_native_password</code> is disabled by default in
 8.4 and removed in 9.0. An app that <strong class="kw kw--must">MUST</strong> reach a server on the older plugin
-<strong class="kw kw--must">MUST</strong> set the server's plugin explicitly in its database config.</p>
+<strong class="kw kw--must">MUST</strong> set the server's plugin explicitly in its database config. No check
+exists yet.</p>
 <h3 id="databases--grace-period"><a class="hb-sec" href="#databases--grace-period">§5.3</a> Grace period</h3>
 <p>An app <strong class="kw kw--may">MAY</strong> stay on a database version for 90 days after it leaves support, the
 policy's <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json" title="rules.eol_grace_days in policy.json"><code>eol_grace_days</code></a>; the version is <code>Eol</code> through that window and
 <code>EolGraceExpired</code> the day after. The window is a bridge for the upgrade, not a
-second support window: the fix is still the upgrade.</p>
+second support window: the fix is still the upgrade. PROCTOR check:
+<code>mysql-eol</code>.</p>
 <ul>
 <li>For MySQL and MariaDB the check warns and does not fail yet. While Citadel's
 shared server runs 5.6, an app has no supported MySQL to move to there, so a
 security-only, <code>Eol</code> or <code>EolGraceExpired</code> version warns, and still says to
 move to 8.4 or later. It starts failing past the window when Citadel offers a
-supported MySQL <span class="hb-cite">(the stack's MySQL gate decision)</span>. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>mysql-eol</code>
-(on PROCTOR main, due in 0.8.0).</li>
+supported MySQL <span class="hb-cite">(the stack's MySQL gate decision)</span>. PROCTOR check: <code>mysql-eol</code>
+(since PROCTOR 0.8.0).</li>
 </ul>
 <h3 id="databases--names-comments-and-connections"><a class="hb-sec" href="#databases--names-comments-and-connections">§5.4</a> Names, comments and connections</h3>
 <ul>
-<li>Table and column names are descriptive. Add table and column comments (Laravel's <code>-&gt;comment()</code>) where the database supports them, to say what an element is for (<strong class="kw kw--should">SHOULD</strong>) (WSU developer standards, 2024).</li>
-<li>The connection between the app and the database <strong class="kw kw--must">MUST</strong> be encrypted. The database account <strong class="kw kw--must">MUST</strong> have only the privileges the app needs, never an administrator account (WSU developer standards, 2024).</li>
+<li>Table and column names are descriptive. Add table and column comments (Laravel's <code>-&gt;comment()</code>) where the database supports them, to say what an element is for (<strong class="kw kw--should">SHOULD</strong>) (WSU developer standards, 2024). No check exists yet.</li>
+<li>The connection between the app and the database <strong class="kw kw--must">MUST</strong> be encrypted. The database account <strong class="kw kw--must">MUST</strong> have only the privileges the app needs, never an administrator account (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <h3 id="databases--conventions-that-keep-5-6-working"><a class="hb-sec" href="#databases--conventions-that-keep-5-6-working">§5.5</a> Conventions that keep 5.6 working</h3>
 <ul>
@@ -753,9 +772,10 @@ Prometheus server exists <span class="hb-cite">(the stack's metrics decision)</s
 <li>PHP <code>display_errors</code> <strong class="kw kw--must">MUST</strong> be <code>Off</code> and <code>log_errors</code> <code>On</code> in production (<a class="tool" href="https://squire.apps.wayne.edu/"><img src="../assets/marks/squire.png" alt="" width="16" height="16">Squire</a>'s deploy kit ships that php.ini;
 HELMET neither sets nor checks it). No check exists yet.</li>
 <li>Laravel <code>APP_DEBUG</code> <strong class="kw kw--must">MUST</strong> be <code>false</code> in production (WSU developer standards, 2024). The Laravel adapter writes one
-warning <code>helmet.debug_enabled_in_production</code> when it is true in the production environment.</li>
+warning <code>helmet.debug_enabled_in_production</code> when it is true in the production environment. PROCTOR check:
+<code>app-debug</code>, on PROCTOR main: it warns when a committed production env template, deploy file or CI pipeline sets
+<code>APP_DEBUG</code> to true (<code>.env.example</code> is the local template and is skipped).</li>
 </ul>
-<p>A PROCTOR check for this is proposed, not built.</p>
 <h3 id="runtime-and-headers--not-decided-here"><a class="hb-sec" href="#runtime-and-headers--not-decided-here">§6.8</a> Not decided here</h3>
 <ul>
 <li>The Content-Security-Policy report endpoints.</li>
@@ -833,8 +853,8 @@ on a model's opinion <span class="hb-cite">(the stack's rule on language models)
 <li>Components are pinned at a tag or SHA, never <code>~latest</code> <span class="hb-cite">(first-repos)</span>.</li>
 <li>The components run on the git.wayne.edu instance runner <span class="hb-cite">(first-repos)</span>, and
 every product strongly recommends the instance runner.</li>
-<li>Every change lands through a merge request that another person reviews, and critical findings are addressed before merge (<strong class="kw kw--should">SHOULD</strong> for a one-person project: record the self-review in the merge request) (WSU developer standards, 2024).</li>
-<li>Every project <strong class="kw kw--must">MUST</strong> have a defined, well-understood change-control process with change requests; review and approval of merge requests is change control only for simple projects, and the process <strong class="kw kw--must">MUST</strong> be followed strictly (WSU developer standards, 2024).</li>
+<li>Every change lands through a merge request that another person reviews, and critical findings are addressed before merge (<strong class="kw kw--should">SHOULD</strong> for a one-person project: record the self-review in the merge request) (WSU developer standards, 2024). No check exists yet.</li>
+<li>Every project <strong class="kw kw--must">MUST</strong> have a defined, well-understood change-control process with change requests; review and approval of merge requests is change control only for simple projects, and the process <strong class="kw kw--must">MUST</strong> be followed strictly (WSU developer standards, 2024). No check exists yet.</li>
 <li>Known problem: the change-request procedure on Citadel is currently broken and needs fixing there; until it is fixed, record changes through reviewed merge requests and tell the Citadel team.</li>
 </ul>
           </div>
@@ -866,11 +886,11 @@ checked by WayneUI's own runnable accessibility gate <span class="hb-cite">(the 
 </ul>
 <h3 id="accessibility--checks"><a class="hb-sec" href="#accessibility--checks">§9.3</a> Checks</h3>
 <ul>
-<li>An automated accessibility check <strong class="kw kw--should">SHOULD</strong> run in CI on the app's key pages. GitLab's accessibility testing uses Pa11y
-and is available on every self-managed tier <span class="hb-cite">(the stack's accessibility design)</span>.</li>
+<li>An automated accessibility check <strong class="kw kw--should">SHOULD</strong> run in CI on the app's key pages <span class="hb-cite">(the stack's accessibility design)</span>.
+Held by: <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s <code>a11y</code> component, below.</li>
 <li>An automated tool catches regressions; it is not proof of conformance, and it never replaces a manual keyboard and
 screen reader pass before launch <span class="hb-cite">(the stack's accessibility design)</span>.</li>
-<li><a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s <code>a11y</code> component (0.3.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core
+<li>Preflight's <code>a11y</code> component (0.4.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core
 in light and dark at 320 and 1280 px, and fails the pipeline on any violation. Add <code>wcag22aa</code> to its tags for the
 WCAG 2.2 AA target above.</li>
 </ul>
@@ -889,7 +909,7 @@ this chapter does not decide it.</li>
           <div>
             <p class="chap-head__kicker">Chapter 10</p>
             <h2 id="every-os-title" class="hb-book__title">Every OS</h2>
-            <p class="hb-register">5 provisions · <strong class="kw kw--must">MUST</strong> 1</p>
+            <p class="hb-register">6 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -905,10 +925,17 @@ macOS get bash (<code>.sh</code>), written for macOS's stock bash 3.2 and its BS
 <li>Every repo carries a <code>.gitattributes</code> with <code>* text=auto eol=lf</code>, and
 <code>.ps1</code>, <code>.bat</code> and <code>.cmd</code> set to CRLF. Anything that runs on a Linux host
 <strong class="kw kw--must">MUST</strong> be LF: on Citadel, and on OpenShift, Coolify or raw Docker elsewhere
-<span class="hb-cite">(the stack's every-OS design)</span>.</li>
+<span class="hb-cite">(the stack's every-OS design)</span>. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>crlf-deploy-script</code>, for
+deploy scripts only: it fails on a CRLF deploy script and warns when
+<code>.gitattributes</code> does not pin <code>*.sh</code> to LF.</li>
+<li>Two paths in a repo <strong class="kw kw--must-not">MUST NOT</strong> differ only by letter case (<code>Docs/Guide.md</code>
+and <code>docs/guide.md</code>): Windows and macOS ignore case, so one checkout
+silently overwrites the other, and a Linux host then loads a file nobody
+edited (BEST_PRACTICES practice 34). PROCTOR check: <code>case-clash</code>, since
+PROCTOR 0.9.0.</li>
 <li>Paths are built with the language's path functions, and subprocesses start
 with argument arrays, never shell strings <span class="hb-cite">(the stack's every-OS design)</span>.
-<a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>portability</code>.</li>
+PROCTOR check: <code>portability</code>.</li>
 </ul>
           </div>
       </article>
@@ -934,7 +961,7 @@ with argument arrays, never shell strings <span class="hb-cite">(the stack's eve
 </ul>
 <h3 id="secrets--errors-and-debug-output"><a class="hb-sec" href="#secrets--errors-and-debug-output">§11.2</a> Errors and debug output</h3>
 <ul>
-<li><code>APP_DEBUG</code> <strong class="kw kw--must">MUST</strong> be <code>false</code> in production (WSU developer standards, 2024). The Laravel adapter writes one warning <code>helmet.debug_enabled_in_production</code> when it is true in the production environment. A PROCTOR check for this is proposed, not built.</li>
+<li><code>APP_DEBUG</code> <strong class="kw kw--must">MUST</strong> be <code>false</code> in production (WSU developer standards, 2024). The Laravel adapter writes one warning <code>helmet.debug_enabled_in_production</code> when it is true in the production environment. PROCTOR check: <code>app-debug</code> (on PROCTOR main), which warns when a committed production env template, deploy file or CI pipeline sets it to true.</li>
 <li>Public-facing code <strong class="kw kw--must-not">MUST NOT</strong> display default interpreter or framework error pages to the user; show a controlled message and log the detail (WSU developer standards, 2024). No check exists yet.</li>
 <li>Logs and diagnostic output <strong class="kw kw--must-not">MUST NOT</strong> contain credentials or personally identifiable information such as Social Security numbers. That includes logged exceptions (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
@@ -1022,7 +1049,7 @@ override <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>9c6beca</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>7827429</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

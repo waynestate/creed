@@ -112,19 +112,20 @@ one replaces it or records an override with a reason; PROCTOR's
 bound <span class="hb-cite">(the stack's version policy)</span>. PROCTOR check: <code>php-floor</code>.</li>
 <li>Apps <strong class="kw kw--should">SHOULD</strong> set a Composer cooldown of 3 days, once Composer 2.11 is stable
 and in the base images; until then no cooldown is set <span class="hb-cite">(the stack's dependency
-decision, 2026-11-03)</span>. A PROCTOR check for a missing cooldown is planned, not
-built.</li>
+decision, 2026-11-03)</span>. No check exists yet: a PROCTOR check for a missing
+cooldown is planned.</li>
 <li>Every project is a framework-free core plus thin adapters. <code>composer.json</code>
 requires only <code>php</code> and PSR packages; Laravel, Inertia and Vue are
 <code>suggest</code> <span class="hb-cite">(the stack's core-plus-adapters design)</span>.</li>
 <li>Adapters call the core and never re-implement it <span class="hb-cite">(the stack's core-plus-adapters design)</span>.</li>
-<li>Before adding a third-party package, check it comes from a trusted source, and where the source is open, read enough of it to judge it sound and fit (<strong class="kw kw--should">SHOULD</strong>). The audit and abandoned-package rules in this chapter apply after that choice (WSU developer standards, 2024).</li>
+<li>Before adding a third-party package, check it comes from a trusted source, and where the source is open, read enough of it to judge it sound and fit (<strong class="kw kw--should">SHOULD</strong>). The audit and abandoned-package rules in this chapter apply after that choice (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <h2 id="private-packages"><a class="hb-sec" href="#private-packages">§2.1</a> Private packages</h2>
 <ul>
 <li>Internal-only packages <strong class="kw kw--must">MUST</strong> be installed from one GitLab package registry
 per ecosystem (Composer, npm), not from one <code>vcs</code>, <code>path</code> or <code>artifact</code>
-repository entry per package <span class="hb-cite">(the stack's private-packages decision)</span>.</li>
+repository entry per package <span class="hb-cite">(the stack's private-packages decision)</span>.
+No check exists yet.</li>
 <li>Credentials <strong class="kw kw--must-not">MUST NOT</strong> appear in any repository URL in <code>composer.json</code> or
 <code>composer.lock</code>, or as a literal value in a committed <code>.npmrc</code>. Tokens live
 in a gitignored <code>auth.json</code>, the npm user config, or a CI or build-time
@@ -132,29 +133,35 @@ secret <span class="hb-cite">(the stack's private-packages decision)</span>. PRO
 <code>repo-url-credentials</code>.</li>
 <li>Builds <strong class="kw kw--must">MUST</strong> use a read-only deploy token (<code>read_package_registry</code> only);
 personal access tokens <strong class="kw kw--must-not">MUST NOT</strong> be used in builds (the stack's
-private-packages decision).</li>
+private-packages decision). No check exists yet.</li>
 <li>The private Composer registry entry <strong class="kw kw--must">MUST</strong> be canonical, and the Packagist
 entry <strong class="kw kw--should">SHOULD</strong> exclude the internal vendor names, so a public package with
 the same name can never be installed instead <span class="hb-cite">(the stack's private-packages
-decision)</span>.</li>
+decision)</span>. No check exists yet.</li>
 <li>A released version <strong class="kw kw--must">MUST</strong> map to one commit for ever: tags are protected,
 and a version is never republished from a different commit (the stack's
-private-packages decision).</li>
+private-packages decision). Held by: <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s <code>package-publish</code>
+component, which reads the registry first and refuses a version that
+already exists with different contents.</li>
 <li>Public code <strong class="kw kw--must-not">MUST NOT</strong> go through the private registry; it is published to
-Packagist or npm <span class="hb-cite">(the stack's private-packages decision)</span>.</li>
+Packagist or npm <span class="hb-cite">(the stack's private-packages decision)</span>. No check exists
+yet.</li>
 <li>Apps <strong class="kw kw--should-not">SHOULD NOT</strong> proxy or mirror public registries in v1 (the stack's
-private-packages decision).</li>
+private-packages decision). No check exists yet.</li>
 </ul>
-<p>PROCTOR's <code>repo-url-credentials</code>, <code>package-sources</code> and
-<code>internal-vendor-shadowing</code> checks enforce rules 1, 2 and 4 (warning first),
-and <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s publish job enforces rule 5.</p>
+<p>Today PROCTOR's <code>repo-url-credentials</code> check holds rule 2 and Preflight's
+<code>package-publish</code> component holds rule 5. Checks for rule 1 (one registry
+per ecosystem) and rule 4 (the canonical entry and the Packagist exclusion)
+are planned, not built: earlier versions of this chapter named them as
+<code>package-sources</code> and <code>internal-vendor-shadowing</code>, but PROCTOR has never
+shipped either.</p>
 <div class="hb-policy" role="note"><p class="hb-policy__title">In <a href="https://github.com/waynestate/creed/blob/main/policy/policy.json"><code>policy.json</code></a></p><dl><div><dt><code>rules.abandoned_packages</code></dt><dd><code>&quot;fail&quot;</code></dd></div></dl></div>
           </div>
         </div>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="versions.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 1</span><span class="hb-pager__name">Versions</span></a><a class="hb-pager__link hb-pager__link--next" href="code.html" rel="next"><span class="hb-pager__dir">Next · Chapter 3</span><span class="hb-pager__name">Code</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/dependencies.md"><code>handbook/dependencies.md</code> on GitHub</a>, impression <code>218c65c</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/dependencies.md"><code>handbook/dependencies.md</code> on GitHub</a>, impression <code>78b5b19</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

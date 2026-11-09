@@ -113,11 +113,11 @@ checked by WayneUI's own runnable accessibility gate <span class="hb-cite">(the 
 </ul>
 <h2 id="checks"><a class="hb-sec" href="#checks">§9.3</a> Checks</h2>
 <ul>
-<li>An automated accessibility check <strong class="kw kw--should">SHOULD</strong> run in CI on the app's key pages. GitLab's accessibility testing uses Pa11y
-and is available on every self-managed tier <span class="hb-cite">(the stack's accessibility design)</span>.</li>
+<li>An automated accessibility check <strong class="kw kw--should">SHOULD</strong> run in CI on the app's key pages <span class="hb-cite">(the stack's accessibility design)</span>.
+Held by: <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s <code>a11y</code> component, below.</li>
 <li>An automated tool catches regressions; it is not proof of conformance, and it never replaces a manual keyboard and
 screen reader pass before launch <span class="hb-cite">(the stack's accessibility design)</span>.</li>
-<li><a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s <code>a11y</code> component (0.3.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core
+<li>Preflight's <code>a11y</code> component (0.4.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core
 in light and dark at 320 and 1280 px, and fails the pipeline on any violation. Add <code>wcag22aa</code> to its tags for the
 WCAG 2.2 AA target above.</li>
 </ul>
@@ -133,7 +133,7 @@ this chapter does not decide it.</li>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="ci.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 8</span><span class="hb-pager__name">CI</span></a><a class="hb-pager__link hb-pager__link--next" href="every-os.html" rel="next"><span class="hb-pager__dir">Next · Chapter 10</span><span class="hb-pager__name">Every OS</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/accessibility.md"><code>handbook/accessibility.md</code> on GitHub</a>, impression <code>987eb29</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/accessibility.md"><code>handbook/accessibility.md</code> on GitHub</a>, impression <code>bad0e4e</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

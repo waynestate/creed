@@ -109,8 +109,8 @@ Playbook carries WSU's copy (public keys only), and the app points <a class="too
 that file rather than copy keys into config values, and the <code>gateway</code> driver
 never fetches keys over the network at sign-in <span class="hb-cite">(the stack's signing-key
 decision)</span>.
-SESAME config: the file is checked at boot, and a missing file, private key
-material or a repeated <code>kid</code> stops the app.</li>
+Held by: SESAME config, which checks the file at boot: a missing file,
+private key material or a repeated <code>kid</code> stops the app.</li>
 <li>The gateway's signing key <strong class="kw kw--must">MUST</strong> be rotated every 12 months, and at once when
 a private key could have been exposed. A retired key <strong class="kw kw--must">MUST</strong> stay in the key set
 for at least 5 minutes after the switch, so assertions signed just before it
@@ -123,16 +123,16 @@ assertions <span class="hb-cite">(the stack's SAML decision)</span>. SESAME conf
 <li>API and other stateless requests are authenticated with signed, short-lived bearer tokens in an <code>Authorization</code> header, verified on every request. A token is signed, not merely encrypted; JSON Web Tokens are a good fit (WSU developer standards, 2024).</li>
 <li>Authentication is checked before any content is shown or any script function runs, on every request. Deny by default: routes are protected unless listed as public, and an unauthenticated person is sent to sign in (WSU developer standards, 2024).</li>
 <li>When authentication or an authorization lookup fails, the result is fail closed: access is withheld (WSU developer standards, 2024).</li>
-<li>Administrative access <strong class="kw kw--must">MUST</strong> be limited to named users or roles, and access that is due to end is revoked on a regular schedule (WSU developer standards, 2024).</li>
-<li>Access that is due to end when a person's status changes (for example an ended employment) <strong class="kw kw--must">MUST</strong> be removed by an automated process, not by memory (WSU developer standards, 2024).</li>
-<li>Idle sessions <strong class="kw kw--must">MUST</strong> time out after a configurable period of inactivity (WSU developer standards, 2024). The stack's numbers are in <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json"><code>policy/policy.json</code></a>, under <code>sessions</code>, which is the source for them: SESAME signs a user out after 120 minutes idle and 720 minutes in all (<code>sessions.sesame</code>), and Drawbridge after 3600 seconds idle and 28800 seconds in all (<code>sessions.gateway</code>). SESAME config: <code>session.idle_minutes</code> (<code>SESAME_SESSION_IDLE_MINUTES</code>) and <code>session.absolute_minutes</code> (<code>SESAME_SESSION_ABSOLUTE_MINUTES</code>), with those defaults. An app that does not use SESAME sets its own idle limit; that is documented only.</li>
+<li>Administrative access <strong class="kw kw--must">MUST</strong> be limited to named users or roles, and access that is due to end is revoked on a regular schedule (WSU developer standards, 2024). No check exists yet.</li>
+<li>Access that is due to end when a person's status changes (for example an ended employment) <strong class="kw kw--must">MUST</strong> be removed by an automated process, not by memory (WSU developer standards, 2024). No check exists yet.</li>
+<li>Idle sessions <strong class="kw kw--must">MUST</strong> time out after a configurable period of inactivity (WSU developer standards, 2024). The stack's numbers are in <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json"><code>policy/policy.json</code></a>, under <code>sessions</code>, which is the source for them: SESAME signs a user out after 120 minutes idle and 720 minutes in all (<code>sessions.sesame</code>), and Drawbridge after 3600 seconds idle and 28800 seconds in all (<code>sessions.gateway</code>). Held by: SESAME config, <code>session.idle_minutes</code> (<code>SESAME_SESSION_IDLE_MINUTES</code>) and <code>session.absolute_minutes</code> (<code>SESAME_SESSION_ABSOLUTE_MINUTES</code>), with those defaults. An app that does not use SESAME sets its own idle limit; that is documented only.</li>
 </ul>
           </div>
         </div>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="code.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 3</span><span class="hb-pager__name">Code</span></a><a class="hb-pager__link hb-pager__link--next" href="databases.html" rel="next"><span class="hb-pager__dir">Next · Chapter 5</span><span class="hb-pager__name">Databases</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/auth.md"><code>handbook/auth.md</code> on GitHub</a>, impression <code>bcedfd8</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/auth.md"><code>handbook/auth.md</code> on GitHub</a>, impression <code>32f5e85</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

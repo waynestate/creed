@@ -166,9 +166,10 @@ Prometheus server exists <span class="hb-cite">(the stack's metrics decision)</s
 <li>PHP <code>display_errors</code> <strong class="kw kw--must">MUST</strong> be <code>Off</code> and <code>log_errors</code> <code>On</code> in production (<a class="tool" href="https://squire.apps.wayne.edu/"><img src="../assets/marks/squire.png" alt="" width="16" height="16">Squire</a>'s deploy kit ships that php.ini;
 HELMET neither sets nor checks it). No check exists yet.</li>
 <li>Laravel <code>APP_DEBUG</code> <strong class="kw kw--must">MUST</strong> be <code>false</code> in production (WSU developer standards, 2024). The Laravel adapter writes one
-warning <code>helmet.debug_enabled_in_production</code> when it is true in the production environment.</li>
+warning <code>helmet.debug_enabled_in_production</code> when it is true in the production environment. PROCTOR check:
+<code>app-debug</code>, on PROCTOR main: it warns when a committed production env template, deploy file or CI pipeline sets
+<code>APP_DEBUG</code> to true (<code>.env.example</code> is the local template and is skipped).</li>
 </ul>
-<p>A PROCTOR check for this is proposed, not built.</p>
 <h2 id="not-decided-here"><a class="hb-sec" href="#not-decided-here">§6.8</a> Not decided here</h2>
 <ul>
 <li>The Content-Security-Policy report endpoints.</li>
@@ -178,7 +179,7 @@ warning <code>helmet.debug_enabled_in_production</code> when it is true in the p
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="databases.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 5</span><span class="hb-pager__name">Databases</span></a><a class="hb-pager__link hb-pager__link--next" href="deploy-gate.html" rel="next"><span class="hb-pager__dir">Next · Chapter 7</span><span class="hb-pager__name">Deploy gate</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md"><code>handbook/runtime-and-headers.md</code> on GitHub</a>, impression <code>a8c85a5</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md"><code>handbook/runtime-and-headers.md</code> on GitHub</a>, impression <code>fd7d250</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 
