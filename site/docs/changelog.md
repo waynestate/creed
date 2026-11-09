@@ -10,6 +10,7 @@ generator: Squire agent-ready
 
 ## Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Fixed: scripts/a11y.ps1 works on a Windows checkout with CRLF line endings; it strips the carriage returns from the shell command it hands to Docker, which sh rejected with a syntax error.
 - Docs: the front page and docs pages follow the reader's dark mode: the front page and the handbook pages now read after hours like the docs already did, with warm graphite stock, cream type, the green ink thinned to a pale tint and gold foil for focus, while the green cloth (spine, cover, tabs, the ink button, colophon) stays put. Every text pair meets WCAG AA, the browser bar color and form controls follow the scheme, printing stays ink on white, and with motion allowed a lamp glint runs across the cover's foil once it is struck. The docs theme now says it shares those values with the front page.
 - Docs: the front page's Table 2-1 carries the policy's Laravel patches (12.71.0 and 13.40.0, checked 2026-11-08; it still showed 12.70.2 and 13.39.0) and says patches were checked 2026-10-28 to 2026-11-08, and the install appendix names the Packagist release in use (0.1.7, was 0.1.3).
 - Added: an optional `minimum_patch` per PHP line in policy.json, read by `Policy::minimumPatch()` and checked by `bin/validate-policy.php`; no values are set yet.
