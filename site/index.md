@@ -198,8 +198,8 @@ Table 2-1 Adopted editions, with the state on 2026-10-29
 | 8.2 | 2024-12-31 | 2026-12-31 | 8.2.35 | Security |
 | 8.1 | 2023-11-25 | 2025-12-31 | n/a | Grace expired |
 | Laravel floor **12** |  |  |  |  |
-| 13 | 2027-09-30 | 2028-03-17 | 13.39.0 | Active |
-| 12 | 2026-08-13 | 2027-02-24 | 12.70.2 | Security |
+| 13 | 2027-09-30 | 2028-03-17 | 13.40.0 | Active |
+| 12 | 2026-08-13 | 2027-02-24 | 12.71.0 | Security |
 | 11 | 2025-09-03 | 2026-03-12 | 11.57.1 | Grace expired |
 | 10 | 2024-08-06 | 2025-02-04 | 10.50.4 | Grace expired |
 | Node floor **22** |  |  |  |  |
@@ -219,7 +219,7 @@ Table 2-1 Adopted editions, with the state on 2026-10-29
 | Inertia 2 | Current line: no published end dates, none invented; see §1.9. | Active |  |  |
 | Inertia 3 | Current line: no published end dates, none invented; see §1.9. | Active |  |  |
 
-From `policy/policy.json`, schema version 1, patches checked 2026-10-28 and 2026-10-29. For Node, "active" holds the maintenance start; for MySQL, the Premier end. That mapping is the policy's, not the vendors' wording.
+From `policy/policy.json`, schema version 1, patches checked 2026-10-28 to 2026-11-08. For Node, "active" holds the maintenance start; for MySQL, the Premier end. That mapping is the policy's, not the vendors' wording.
 
 ### §2.5 Run a Laravel release that still gets security fixes.
 
@@ -452,7 +452,7 @@ Two ways in: read the policy from your own PHP tool, or clone CREED and run its 
 
 ### A.1 Read the policy from PHP
 
-Any OS with PHP 8.3 or newer and Composer. On Packagist, 0.1.3
+Any OS with PHP 8.3 or newer and Composer. On Packagist, 0.1.7
 
 `$ composer require waynestate/creed`
 
