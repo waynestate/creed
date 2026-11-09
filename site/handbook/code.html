@@ -171,10 +171,16 @@ for plain bans, and a custom rule only when neither fits.</p>
 <li>No disabled TLS verification, such as <code>withoutVerifying()</code> or
 <code>CURLOPT_SSL_VERIFYPEER</code> set to false (OWASP ASVS).
 <code>withoutVerifying()</code> is banned by <code>pinstripe.banned.withoutVerifying</code>
-(Pinstripe 0.2.0); <code>CURLOPT_SSL_VERIFYPEER</code> set to false is still
-Planned.</li>
+(Pinstripe 0.2.0). Since Pinstripe 0.3.0 the rest are banned too:
+<code>CURLOPT_SSL_VERIFYPEER</code> set to false or <code>CURLOPT_SSL_VERIFYHOST</code> set to 0
+(<code>pinstripe.banned.curlVerifyOff</code>), a stream context that skips the peer
+check (<code>pinstripe.banned.streamVerifyOff</code>) and Guzzle's <code>verify</code> set to
+false (<code>pinstripe.banned.verifyFalse</code>).</li>
 <li>No SQL built by joining strings; use bindings (OWASP SQL Injection
-Prevention Cheat Sheet). Planned.</li>
+Prevention Cheat Sheet). Banned since Pinstripe 0.3.0 as
+<code>pinstripe.banned.joinedSql</code>: a variable joined into the SQL given to PDO,
+mysqli, <code>oci_parse()</code> (and the old <code>ociparse()</code>) or Laravel's <code>DB::</code> calls
+fails; literal SQL with bindings passes.</li>
 <li>No debug leftovers or dynamic code: <code>eval()</code>, <code>extract()</code>, <code>var_dump()</code>,
 <code>dd()</code> and <code>dump()</code>. <code>phpstan-disallowed-calls</code> bans them as
 <code>pinstripe.banned.eval</code>, <code>pinstripe.banned.extract</code>,
@@ -203,7 +209,7 @@ and a Psalm taint-analysis pilot on one app <span class="hb-cite">(the stack's c
 <h2 id="how-it-is-enforced"><a class="hb-sec" href="#how-it-is-enforced">§3.9</a> How it is enforced</h2>
 <ul>
 <li>Pint, PHPStan, Rector dry-runs and ESLint run in CI through <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>
-components, not in the deploy gate <span class="hb-cite">(the stack's coding standard)</span>. Preflight 0.4.0
+components, not in the deploy gate <span class="hb-cite">(the stack's coding standard)</span>. Preflight 0.5.0
 ships the <code>pint</code>, <code>phpstan</code> and <code>eslint</code> components; a Rector dry-run component
 is Planned.</li>
 <li>New rules arrive as warnings and become errors on a stated date, the same
@@ -249,7 +255,7 @@ report is Planned.</li>
 <tr>
 <td>Banned patterns</td>
 <td><code>phpstan/disallowed.neon</code></td>
-<td>Built (Pinstripe 0.2.0)</td>
+<td>Built (Pinstripe 0.2.0; the joined SQL and TLS-off bans in 0.3.0)</td>
 </tr>
 <tr>
 <td>Vue and JavaScript</td>
@@ -309,7 +315,7 @@ the stack's coding standard does not decide it.</li>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="dependencies.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 2</span><span class="hb-pager__name">Dependencies</span></a><a class="hb-pager__link hb-pager__link--next" href="auth.html" rel="next"><span class="hb-pager__dir">Next · Chapter 4</span><span class="hb-pager__name">Auth</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/code.md"><code>handbook/code.md</code> on GitHub</a>, impression <code>4c094a7</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/code.md"><code>handbook/code.md</code> on GitHub</a>, impression <code>bb6b472</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

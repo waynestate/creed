@@ -22,7 +22,7 @@
         "opis/json-schema": "^2.4",
         "phpstan/phpstan": "^2.1",
         "phpunit/phpunit": "^11.5",
-        "waynestate/pinstripe": "^0.1.4"
+        "waynestate/pinstripe": "^0.3"
     },
     "autoload": {
         "psr-4": {

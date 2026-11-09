@@ -927,6 +927,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Changed: refreshed version mentions. The code handbook says the TLS-off bans (`pinstripe.banned.curlVerifyOff`, `streamVerifyOff`, `verifyFalse`) and the joined SQL ban (`pinstripe.banned.joinedSql`) are built in Pinstripe 0.3.0 (they said Planned), and its enforcement and accessibility pages name Preflight 0.5.0. BEST_PRACTICES names Preflight 0.5.0 (CREED's four pinned components, the `a11y` and `secret-detection` components, and the new `npm-audit` component, which no stack repo includes yet) and Composer 2.11.1 as the stable release the stack pins; the cooldown is still unset. The dev tools require Pinstripe ^0.3 (lock 0.3.0, was ^0.1.4 at 0.1.4), which brings the banned calls to CREED's own code: the one `eval()`, in `tests/ReadmeTest.php`, which evaluates the README's own expected values, carries a reasoned `pinstripe.banned.eval` ignore. Unlike anything on Creed Bratton's job application, every date here now checks out.
 - Changed: CI's own jobs, the README, MAINTAINING, the docs and the front page's Docker commands run Composer 2.11.1, pinned by its multi-arch digest (was 2.10.3, which Squire calls unmaintained); 2.11.1 fixes GHSA-c968-33g3-wh7p and GHSA-fm2w-xgf2-f9fh. The GitHub refresh job asks setup-php for 2.11.1.
 - Changed: the deploy kit is Squire 0.10.2 (was 0.10.0): `.squire/php.ini` sets SameSite=Lax session cookies, the Dockerfiles name every image in full, and the fallback base takes Composer 2.11.1 from a `COMPOSER_IMAGE` stage; `squire init --check` passes.
 - Changed: the front page deploy layer requires HELMET ^1.3 (lock 1.3.0, was ^1.0 at 1.0.1) and PROCTOR ^0.11 (lock 0.11.0, was ^0.8 at 0.8.0), and the dev tools require Pinstripe ^0.1.4 (lock 0.1.4, was 0.1.0), which no longer pulls in `composer/semver`.
@@ -2257,14 +2258,14 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 - An automated accessibility check **SHOULD** run in CI on the app's key pages (the stack's accessibility design). Held by: [Preflight](https://preflight.apps.wayne.edu/)'s `a11y` component, below.
 - An automated tool catches regressions; it is not proof of conformance, and it never replaces a manual keyboard and screen reader pass before launch (the stack's accessibility design).
-- Preflight's `a11y` component (0.4.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core in light and dark at 320 and 1280 px, and fails the pipeline on any violation. Add `wcag22aa` to its tags for the WCAG 2.2 AA target above.
+- Preflight's `a11y` component (0.5.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core in light and dark at 320 and 1280 px, and fails the pipeline on any violation. Add `wcag22aa` to its tags for the WCAG 2.2 AA target above.
 
 ### [§9.4](https://creed.apps.wayne.edu/handbook/accessibility.html#not-decided-here) Not decided here
 
 - Whether and when the ADA Title II web rule applies to a given WSU unit. The rule applies WCAG 2.1 AA to public entities on dates that depend on the entity's size; the answer is for WSU's counsel and accessibility office, and this chapter does not decide it.
 - Which pages need a manual audit.
 
-Set from [`handbook/accessibility.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/accessibility.md), impression `bad0e4e`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/accessibility.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/accessibility.md), impression `8b9cd86`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2380,8 +2381,8 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowed-calls` for plain bans, and a custom rule only when neither fits.
 
 - `env()` only in `config/` files, from Larastan's `NoEnvCallsOutsideOfConfig` rule. [PROCTOR](https://proctor.apps.wayne.edu/) check: `env-outside-config` (a warning per call); [Pinstripe](https://pinstripe.apps.wayne.edu/)'s Laravel cut turns Larastan's rule on (`noEnvCallsOutsideOfConfig`, Pinstripe 0.1.4).
-- No disabled TLS verification, such as `withoutVerifying()` or `CURLOPT_SSL_VERIFYPEER` set to false (OWASP ASVS). `withoutVerifying()` is banned by `pinstripe.banned.withoutVerifying` (Pinstripe 0.2.0); `CURLOPT_SSL_VERIFYPEER` set to false is still Planned.
-- No SQL built by joining strings; use bindings (OWASP SQL Injection Prevention Cheat Sheet). Planned.
+- No disabled TLS verification, such as `withoutVerifying()` or `CURLOPT_SSL_VERIFYPEER` set to false (OWASP ASVS). `withoutVerifying()` is banned by `pinstripe.banned.withoutVerifying` (Pinstripe 0.2.0). Since Pinstripe 0.3.0 the rest are banned too: `CURLOPT_SSL_VERIFYPEER` set to false or `CURLOPT_SSL_VERIFYHOST` set to 0 (`pinstripe.banned.curlVerifyOff`), a stream context that skips the peer check (`pinstripe.banned.streamVerifyOff`) and Guzzle's `verify` set to false (`pinstripe.banned.verifyFalse`).
+- No SQL built by joining strings; use bindings (OWASP SQL Injection Prevention Cheat Sheet). Banned since Pinstripe 0.3.0 as `pinstripe.banned.joinedSql`: a variable joined into the SQL given to PDO, mysqli, `oci_parse()` (and the old `ociparse()`) or Laravel's `DB::` calls fails; literal SQL with bindings passes.
 - No debug leftovers or dynamic code: `eval()`, `extract()`, `var_dump()`, `dd()` and `dump()`. `phpstan-disallowed-calls` bans them as `pinstripe.banned.eval`, `pinstripe.banned.extract`, `pinstripe.banned.varDump`, `pinstripe.banned.dd` and `pinstripe.banned.dump` (Pinstripe 0.2.0, [https://pinstripe.apps.wayne.edu/docs/reference/banned-calls.html](https://pinstripe.apps.wayne.edu/docs/reference/banned-calls.html)).
 
 ### [§3.7](https://creed.apps.wayne.edu/handbook/code.html#vue-and-javascript) Vue and JavaScript
@@ -2401,7 +2402,7 @@ Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowe
 
 ### [§3.9](https://creed.apps.wayne.edu/handbook/code.html#how-it-is-enforced) How it is enforced
 
-- Pint, PHPStan, Rector dry-runs and ESLint run in CI through [Preflight](https://preflight.apps.wayne.edu/) components, not in the deploy gate (the stack's coding standard). Preflight 0.4.0 ships the `pint`, `phpstan` and `eslint` components; a Rector dry-run component is Planned.
+- Pint, PHPStan, Rector dry-runs and ESLint run in CI through [Preflight](https://preflight.apps.wayne.edu/) components, not in the deploy gate (the stack's coding standard). Preflight 0.5.0 ships the `pint`, `phpstan` and `eslint` components; a Rector dry-run component is Planned.
 - New rules arrive as warnings and become errors on a stated date, the same staging as PHP versions (the stack's enforcement design).
 - PROCTOR reports whether an app uses the presets (the stack's coding standard). The PROCTOR report is Planned.
 
@@ -2416,7 +2417,7 @@ Table 3-1
 | Static analysis, level 8 | `phpstan/base.neon` | Built (Pinstripe 0.1.4) |
 | Static analysis, raw apps | `phpstan/raw.neon` | Built (Pinstripe 0.1.4) |
 | Static analysis, Laravel apps | `phpstan/laravel.neon` | Built (Pinstripe 0.1.4) |
-| Banned patterns | `phpstan/disallowed.neon` | Built (Pinstripe 0.2.0) |
+| Banned patterns | `phpstan/disallowed.neon` | Built (Pinstripe 0.2.0; the joined SQL and TLS-off bans in 0.3.0) |
 | Vue and JavaScript | `eslint/javascript.js` and `eslint/typescript.js` (npm `@waynestate/pinstripe`) | Built (Pinstripe 0.1.4) |
 | Security analysis | `phpstan/laravel.neon` (the env rule) and `phpstan/disallowed.neon` (the banned calls) are built; the Psalm taint pilot is not yet | Planned |
 
@@ -2454,7 +2455,7 @@ Table 3-1
 - GitLab Code Quality: [https://docs.gitlab.com/ci/testing/code_quality/](https://docs.gitlab.com/ci/testing/code_quality/)
 - OWASP ASVS: [https://asvs.owasp.org/](https://asvs.owasp.org/)
 
-Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `4c094a7`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `bb6b472`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 

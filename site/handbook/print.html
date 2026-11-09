@@ -358,10 +358,16 @@ for plain bans, and a custom rule only when neither fits.</p>
 <li>No disabled TLS verification, such as <code>withoutVerifying()</code> or
 <code>CURLOPT_SSL_VERIFYPEER</code> set to false (OWASP ASVS).
 <code>withoutVerifying()</code> is banned by <code>pinstripe.banned.withoutVerifying</code>
-(Pinstripe 0.2.0); <code>CURLOPT_SSL_VERIFYPEER</code> set to false is still
-Planned.</li>
+(Pinstripe 0.2.0). Since Pinstripe 0.3.0 the rest are banned too:
+<code>CURLOPT_SSL_VERIFYPEER</code> set to false or <code>CURLOPT_SSL_VERIFYHOST</code> set to 0
+(<code>pinstripe.banned.curlVerifyOff</code>), a stream context that skips the peer
+check (<code>pinstripe.banned.streamVerifyOff</code>) and Guzzle's <code>verify</code> set to
+false (<code>pinstripe.banned.verifyFalse</code>).</li>
 <li>No SQL built by joining strings; use bindings (OWASP SQL Injection
-Prevention Cheat Sheet). Planned.</li>
+Prevention Cheat Sheet). Banned since Pinstripe 0.3.0 as
+<code>pinstripe.banned.joinedSql</code>: a variable joined into the SQL given to PDO,
+mysqli, <code>oci_parse()</code> (and the old <code>ociparse()</code>) or Laravel's <code>DB::</code> calls
+fails; literal SQL with bindings passes.</li>
 <li>No debug leftovers or dynamic code: <code>eval()</code>, <code>extract()</code>, <code>var_dump()</code>,
 <code>dd()</code> and <code>dump()</code>. <code>phpstan-disallowed-calls</code> bans them as
 <code>pinstripe.banned.eval</code>, <code>pinstripe.banned.extract</code>,
@@ -390,7 +396,7 @@ and a Psalm taint-analysis pilot on one app <span class="hb-cite">(the stack's c
 <h3 id="code--how-it-is-enforced"><a class="hb-sec" href="#code--how-it-is-enforced">§3.9</a> How it is enforced</h3>
 <ul>
 <li>Pint, PHPStan, Rector dry-runs and ESLint run in CI through <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>
-components, not in the deploy gate <span class="hb-cite">(the stack's coding standard)</span>. Preflight 0.4.0
+components, not in the deploy gate <span class="hb-cite">(the stack's coding standard)</span>. Preflight 0.5.0
 ships the <code>pint</code>, <code>phpstan</code> and <code>eslint</code> components; a Rector dry-run component
 is Planned.</li>
 <li>New rules arrive as warnings and become errors on a stated date, the same
@@ -436,7 +442,7 @@ report is Planned.</li>
 <tr>
 <td>Banned patterns</td>
 <td><code>phpstan/disallowed.neon</code></td>
-<td>Built (Pinstripe 0.2.0)</td>
+<td>Built (Pinstripe 0.2.0; the joined SQL and TLS-off bans in 0.3.0)</td>
 </tr>
 <tr>
 <td>Vue and JavaScript</td>
@@ -894,7 +900,7 @@ checked by WayneUI's own runnable accessibility gate <span class="hb-cite">(the 
 Held by: <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s <code>a11y</code> component, below.</li>
 <li>An automated tool catches regressions; it is not proof of conformance, and it never replaces a manual keyboard and
 screen reader pass before launch <span class="hb-cite">(the stack's accessibility design)</span>.</li>
-<li>Preflight's <code>a11y</code> component (0.4.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core
+<li>Preflight's <code>a11y</code> component (0.5.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core
 in light and dark at 320 and 1280 px, and fails the pipeline on any violation. Add <code>wcag22aa</code> to its tags for the
 WCAG 2.2 AA target above.</li>
 </ul>
@@ -1057,7 +1063,7 @@ override <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>893cc73</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>9fabee6</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

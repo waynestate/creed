@@ -60,8 +60,8 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowed-calls` for plain bans, and a custom rule only when neither fits.
 
 - `env()` only in `config/` files, from Larastan's `NoEnvCallsOutsideOfConfig` rule. [PROCTOR](https://proctor.apps.wayne.edu/) check: `env-outside-config` (a warning per call); [Pinstripe](https://pinstripe.apps.wayne.edu/)'s Laravel cut turns Larastan's rule on (`noEnvCallsOutsideOfConfig`, Pinstripe 0.1.4).
-- No disabled TLS verification, such as `withoutVerifying()` or `CURLOPT_SSL_VERIFYPEER` set to false (OWASP ASVS). `withoutVerifying()` is banned by `pinstripe.banned.withoutVerifying` (Pinstripe 0.2.0); `CURLOPT_SSL_VERIFYPEER` set to false is still Planned.
-- No SQL built by joining strings; use bindings (OWASP SQL Injection Prevention Cheat Sheet). Planned.
+- No disabled TLS verification, such as `withoutVerifying()` or `CURLOPT_SSL_VERIFYPEER` set to false (OWASP ASVS). `withoutVerifying()` is banned by `pinstripe.banned.withoutVerifying` (Pinstripe 0.2.0). Since Pinstripe 0.3.0 the rest are banned too: `CURLOPT_SSL_VERIFYPEER` set to false or `CURLOPT_SSL_VERIFYHOST` set to 0 (`pinstripe.banned.curlVerifyOff`), a stream context that skips the peer check (`pinstripe.banned.streamVerifyOff`) and Guzzle's `verify` set to false (`pinstripe.banned.verifyFalse`).
+- No SQL built by joining strings; use bindings (OWASP SQL Injection Prevention Cheat Sheet). Banned since Pinstripe 0.3.0 as `pinstripe.banned.joinedSql`: a variable joined into the SQL given to PDO, mysqli, `oci_parse()` (and the old `ociparse()`) or Laravel's `DB::` calls fails; literal SQL with bindings passes.
 - No debug leftovers or dynamic code: `eval()`, `extract()`, `var_dump()`, `dd()` and `dump()`. `phpstan-disallowed-calls` bans them as `pinstripe.banned.eval`, `pinstripe.banned.extract`, `pinstripe.banned.varDump`, `pinstripe.banned.dd` and `pinstripe.banned.dump` (Pinstripe 0.2.0, [https://pinstripe.apps.wayne.edu/docs/reference/banned-calls.html](https://pinstripe.apps.wayne.edu/docs/reference/banned-calls.html)).
 
 ## [§3.7](https://creed.apps.wayne.edu/handbook/code.html#vue-and-javascript) Vue and JavaScript
@@ -81,7 +81,7 @@ Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowe
 
 ## [§3.9](https://creed.apps.wayne.edu/handbook/code.html#how-it-is-enforced) How it is enforced
 
-- Pint, PHPStan, Rector dry-runs and ESLint run in CI through [Preflight](https://preflight.apps.wayne.edu/) components, not in the deploy gate (the stack's coding standard). Preflight 0.4.0 ships the `pint`, `phpstan` and `eslint` components; a Rector dry-run component is Planned.
+- Pint, PHPStan, Rector dry-runs and ESLint run in CI through [Preflight](https://preflight.apps.wayne.edu/) components, not in the deploy gate (the stack's coding standard). Preflight 0.5.0 ships the `pint`, `phpstan` and `eslint` components; a Rector dry-run component is Planned.
 - New rules arrive as warnings and become errors on a stated date, the same staging as PHP versions (the stack's enforcement design).
 - PROCTOR reports whether an app uses the presets (the stack's coding standard). The PROCTOR report is Planned.
 
@@ -96,7 +96,7 @@ Table 3-1
 | Static analysis, level 8 | `phpstan/base.neon` | Built (Pinstripe 0.1.4) |
 | Static analysis, raw apps | `phpstan/raw.neon` | Built (Pinstripe 0.1.4) |
 | Static analysis, Laravel apps | `phpstan/laravel.neon` | Built (Pinstripe 0.1.4) |
-| Banned patterns | `phpstan/disallowed.neon` | Built (Pinstripe 0.2.0) |
+| Banned patterns | `phpstan/disallowed.neon` | Built (Pinstripe 0.2.0; the joined SQL and TLS-off bans in 0.3.0) |
 | Vue and JavaScript | `eslint/javascript.js` and `eslint/typescript.js` (npm `@waynestate/pinstripe`) | Built (Pinstripe 0.1.4) |
 | Security analysis | `phpstan/laravel.neon` (the env rule) and `phpstan/disallowed.neon` (the banned calls) are built; the Psalm taint pilot is not yet | Planned |
 
@@ -134,4 +134,4 @@ Table 3-1
 - GitLab Code Quality: [https://docs.gitlab.com/ci/testing/code_quality/](https://docs.gitlab.com/ci/testing/code_quality/)
 - OWASP ASVS: [https://asvs.owasp.org/](https://asvs.owasp.org/)
 
-Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `4c094a7`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `bb6b472`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

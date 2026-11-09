@@ -30,11 +30,11 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 - An automated accessibility check **SHOULD** run in CI on the app's key pages (the stack's accessibility design). Held by: [Preflight](https://preflight.apps.wayne.edu/)'s `a11y` component, below.
 - An automated tool catches regressions; it is not proof of conformance, and it never replaces a manual keyboard and screen reader pass before launch (the stack's accessibility design).
-- Preflight's `a11y` component (0.4.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core in light and dark at 320 and 1280 px, and fails the pipeline on any violation. Add `wcag22aa` to its tags for the WCAG 2.2 AA target above.
+- Preflight's `a11y` component (0.5.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core in light and dark at 320 and 1280 px, and fails the pipeline on any violation. Add `wcag22aa` to its tags for the WCAG 2.2 AA target above.
 
 ## [§9.4](https://creed.apps.wayne.edu/handbook/accessibility.html#not-decided-here) Not decided here
 
 - Whether and when the ADA Title II web rule applies to a given WSU unit. The rule applies WCAG 2.1 AA to public entities on dates that depend on the entity's size; the answer is for WSU's counsel and accessibility office, and this chapter does not decide it.
 - Which pages need a manual audit.
 
-Set from [`handbook/accessibility.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/accessibility.md), impression `bad0e4e`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/accessibility.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/accessibility.md), impression `8b9cd86`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

@@ -44,6 +44,7 @@ final class ReadmeTest extends TestCase
             foreach ($expected as $var => $expression) {
                 // eval does not inherit this file's use-imports, so the
                 // reader's State enum is imported into the evaluated code.
+                // @phpstan-ignore pinstripe.banned.eval (the code is this repo's own README expectation, never input)
                 $evaluated = eval('use Waynestate\Creed\State; return ' . $expression . ';');
                 self::assertSame(
                     $evaluated,
