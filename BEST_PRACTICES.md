@@ -400,7 +400,7 @@ commit SHA, which it calls preferred, or to a release tag; it says to avoid `~la
 stack's own, from the first-repos design.
 
 How the stack holds it: `Partially`. `ci.md` states it, and CREED's `.gitlab-ci.yml` pins its three Preflight
-components (`php-test`, `composer-audit` and `proctor`) to the 0.3.1 tag. PROCTOR main's `proctor/preflight-pinned`
+components (`php-test`, `composer-audit` and `proctor`) to the 0.4.0 tag. PROCTOR main's `proctor/preflight-pinned`
 warns when an app includes a Preflight component at a branch, `~latest`, a partial version such as `0.3` or no ref; a
 full release tag (such as `@0.3.0`) or a full commit SHA passes. Components from anywhere else are not checked.
 
