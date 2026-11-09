@@ -25,9 +25,9 @@ These are the stack's written standards. The handbook has the practices, and `po
 [Inspect a version](https://creed.apps.wayne.edu/#inspection) [Read the handbook](https://creed.apps.wayne.edu/handbook/)
 
 - **Enforced**: 7
-- **Checked**: 17
+- **Checked**: 18
 - **Partially**: 13
-- **Documented**: 19
+- **Documented**: 18
 - **Not yet**: 5
 
 Table of contents
