@@ -31,7 +31,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
   - Cross-Origin-Opener-Policy `same-origin`.
   - Strict-Transport-Security `max-age=31536000; includeSubDomains`, on HTTPS responses only.
 - Cross-Origin-Resource-Policy is off by default and opt-in, because a blanket `same-site` can break an app whose assets are read cross-origin (the stack's runtime and headers design). HELMET 1.0 ships that default: `corp` (raw PHP) or `HELMET_CORP` (Laravel) set to `same-site`, `same-origin` or `cross-origin` sends it.
-- An app **SHOULD NOT** weaken the default Content-Security-Policy with `'unsafe-inline'` for scripts; it uses the nonce instead (the stack's runtime and headers design). No check exists yet.
+- An app **SHOULD NOT** weaken the default Content-Security-Policy with `'unsafe-inline'` for scripts; it uses the nonce instead (the stack's runtime and headers design). [PROCTOR](https://proctor.apps.wayne.edu/) check: `csp-unsafe-inline` warns on committed app config, server config or an example env file that does (PROCTOR 0.10.0).
 
 The headers are the setlist: the same one on every response. The HSTS encore plays only when the show is really on HTTPS.
 
@@ -53,16 +53,16 @@ The headers are the setlist: the same one on every response. The HSTS encore pla
 ## [§6.6](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#metrics) Metrics
 
 - HELMET's metrics endpoint speaks the Prometheus text format and is off by default. It stays off until a Prometheus server scrapes the app; then the app turns it on with `HELMET_METRICS_ENABLED=true` (the stack's metrics decision). HELMET: with neither `HELMET_METRICS_TOKEN` nor `HELMET_METRICS_ALLOW` set, the endpoint answers 404 and logs a warning.
-- The scrape token **MUST NOT** be committed. On Citadel it goes in the app's `.env` through Citadel's configuration files step, which writes the file at deploy time (the stack's metrics decision). [PROCTOR](https://proctor.apps.wayne.edu/) check: `app-key` (`proctor/app-key/committed-env` flags a committed `.env`).
+- The scrape token **MUST NOT** be committed. On Citadel it goes in the app's `.env` through Citadel's configuration files step, which writes the file at deploy time (the stack's metrics decision). PROCTOR check: `app-key` (`proctor/app-key/committed-env` flags a committed `.env`).
 - On Citadel, request counts use the `sqlite` store for now (`HELMET_METRICS_STORAGE=sqlite`, with `HELMET_METRICS_SQLITE_PATH` on a file in the app's writable storage); the final store is picked when the stack's Prometheus server exists (the stack's metrics decision). Documented only.
 
 ## [§6.7](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#errors-in-production) Errors in production
 
-- PHP `display_errors` **MUST** be `Off` and `log_errors` `On` in production ([Squire](https://squire.apps.wayne.edu/)'s deploy kit ships that php.ini; HELMET neither sets nor checks it). No check exists yet.
+- PHP `display_errors` **MUST** be `Off` and `log_errors` `On` in production ([Squire](https://squire.apps.wayne.edu/)'s deploy kit ships that php.ini; HELMET neither sets nor checks it). PROCTOR check: `display-errors` warns on a committed php.ini, .user.ini or .htaccess that turns `display_errors` on or `log_errors` off (PROCTOR 0.10.0).
 - Laravel `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment. PROCTOR check: `app-debug`, on PROCTOR main: it warns when a committed production env template, deploy file or CI pipeline sets `APP_DEBUG` to true (`.env.example` is the local template and is skipped).
 
 ## [§6.8](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#not-decided-here) Not decided here
 
 - The Content-Security-Policy report endpoints.
 
-Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `fd7d250`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `596925f`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

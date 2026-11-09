@@ -43,6 +43,9 @@
       <article class="docs-article"><!-- Generated from CHANGELOG.md by bin/docs-site.php. Edit CHANGELOG.md, not this file. -->
 <h1 id="changelog">Changelog<a class="docs-heading-link" aria-label="Link to this section" href="#changelog">#</a></h1>
 <h2 id="unreleased">Unreleased<a class="docs-heading-link" aria-label="Link to this section" href="#unreleased">#</a></h2>
+<ul>
+<li>Changed: four handbook rules name the PROCTOR 0.10.0 check that reports them instead of &quot;No check exists yet&quot;: <code>csp-unsafe-inline</code> and <code>display-errors</code> (runtime and headers), <code>directory-listing</code> and <code>robots-txt</code> (production). The robots.txt rule says an app that wants crawling writes <code>Allow: /</code> for <code>User-agent: *</code>.</li>
+</ul>
 <h2 id="0-1-8-2026-11-09">0.1.8 (2026-11-09)<a class="docs-heading-link" aria-label="Link to this section" href="#0-1-8-2026-11-09">#</a></h2>
 <ul>
 <li>Fixed: scripts/a11y.ps1 works on a Windows checkout with CRLF line endings; it strips the carriage returns from the shell command it hands to Docker, which sh rejected with a syntax error.</li>
