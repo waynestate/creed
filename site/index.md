@@ -25,9 +25,9 @@ These are the stack's written standards. The handbook has the practices, and `po
 [Inspect a version](https://creed.apps.wayne.edu/#inspection) [Read the handbook](https://creed.apps.wayne.edu/handbook/)
 
 - **Enforced**: 7
-- **Checked**: 16
-- **Partially**: 12
-- **Documented**: 21
+- **Checked**: 17
+- **Partially**: 13
+- **Documented**: 19
 - **Not yet**: 5
 
 Table of contents
@@ -301,7 +301,7 @@ Chapter 4
 
 ## Secrets and configuration
 
-Of the three practices in this chapter, one is checked, one is partly checked and one is written down only. The last two are printed below.
+Of the three practices in this chapter, two are checked and one is partly checked. Two are printed below. Creed Bratton publishes his thoughts at www.creedthoughts.gov.www/creedthoughts; a debug page publishes your configuration, and nobody asked for either.
 
 ### §4.1 Keep secrets out of source control.
 
@@ -317,9 +317,9 @@ Partially
 
 `APP_DEBUG` is `false` in production.
 
-Held by The handbook's runtime and headers and secrets chapters. [HELMET](https://creed.apps.wayne.edu/#ahj-helmet) warns when a Laravel app boots with debug on in production; no PROCTOR check reads `APP_DEBUG` yet.
+Held by [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `app-debug`, on PROCTOR main, which warns when a committed production env template, deploy file or CI pipeline sets `APP_DEBUG` to true. [HELMET](https://creed.apps.wayne.edu/#ahj-helmet) watches the running app and warns when a Laravel app boots with debug on in production.
 
-Documented
+Checked
 
 **Rationale.** Debug pages expose configuration values to users.
 
@@ -341,11 +341,11 @@ Checked
 
 ### §5.2 Roll a new rule out in stages, with dates.
 
-Each rule moves `report`, then `warn`, then `block`. A deploy that does not make things worse always passes.
+Each rule moves `report`, then `warn`, then `block`, with the dates written in `policy.json`. A deploy that does not make things worse always passes.
 
-Held by the proposed deploy gate. The schema has no field for stage dates yet.
+Gap The policy's `gate` block holds a date for each stage, and [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor)'s `gate` command (0.9.0) reports, warns or blocks each check by its stage, and holds a failure the running deployment already had. No rule is staged yet, and the Citadel deploy gate that would run it on every release waits for the Citadel team.
 
-Documented
+Partially
 
 **Rationale.** Blocking every non-compliant app on day one blocks the fixes too.
 
@@ -431,7 +431,7 @@ CREED writes the rules down. These are the other projects in the stack, and the 
 
 - ![WayneUI logo: a rounded frame with a gold tab](https://creed.apps.wayne.edu/assets/marks/wayneui.svg)[WayneUI](https://wayneui.apps.wayne.edu/)Wayne State's design system, project 0 of the stack.This page is built on it
 - ![CREED logo: a stone arch with a gold keystone](https://creed.apps.wayne.edu/brand/creed-avatar-256.png)CREEDThe standards, with the policy file and its reader. This book.Chapters 1 to 11
-- ![PROCTOR logo: an eye with a gold square pupil](https://creed.apps.wayne.edu/assets/marks/proctor.png)[PROCTOR](https://proctor.apps.wayne.edu/)Reads your `composer.json`, lock file and repository and checks them against CREED.[§2.1](https://creed.apps.wayne.edu/#c-2-1) [§2.2](https://creed.apps.wayne.edu/#c-2-2) [§2.5](https://creed.apps.wayne.edu/#c-2-5) [§2.6](https://creed.apps.wayne.edu/#c-2-6) [§3.1](https://creed.apps.wayne.edu/#c-3-1) [§3.2](https://creed.apps.wayne.edu/#c-3-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§4.1](https://creed.apps.wayne.edu/#c-4-1) [§5.1](https://creed.apps.wayne.edu/#c-5-1)
+- ![PROCTOR logo: an eye with a gold square pupil](https://creed.apps.wayne.edu/assets/marks/proctor.png)[PROCTOR](https://proctor.apps.wayne.edu/)Reads your `composer.json`, lock file and repository and checks them against CREED.[§2.1](https://creed.apps.wayne.edu/#c-2-1) [§2.2](https://creed.apps.wayne.edu/#c-2-2) [§2.5](https://creed.apps.wayne.edu/#c-2-5) [§2.6](https://creed.apps.wayne.edu/#c-2-6) [§3.1](https://creed.apps.wayne.edu/#c-3-1) [§3.2](https://creed.apps.wayne.edu/#c-3-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§4.1](https://creed.apps.wayne.edu/#c-4-1) [§4.3](https://creed.apps.wayne.edu/#c-4-3) [§5.1](https://creed.apps.wayne.edu/#c-5-1) [§5.2](https://creed.apps.wayne.edu/#c-5-2)
 - ![Preflight logo: a runway with a gold center line](https://creed.apps.wayne.edu/assets/marks/preflight.png)[Preflight](https://preflight.apps.wayne.edu/)GitLab CI/CD components that run the checks on every push.[§1.2](https://creed.apps.wayne.edu/#c-1-2) [§3.3](https://creed.apps.wayne.edu/#c-3-3) [§3.6](https://creed.apps.wayne.edu/#c-3-6) [§6.6](https://creed.apps.wayne.edu/#c-6-6)
 - ![HELMET logo: a white football helmet with a gold facemask](https://creed.apps.wayne.edu/assets/marks/helmet.png)[HELMET](https://helmet.apps.wayne.edu/)Security headers and the runtime ribbon.[§2.2](https://creed.apps.wayne.edu/#c-2-2) [§4.3](https://creed.apps.wayne.edu/#c-4-3)
 - ![Rollcall logo: an open register with gold ticks](https://creed.apps.wayne.edu/assets/marks/rollcall.png)[Rollcall](https://rollcall.apps.wayne.edu/) *new*Scans the apps and reports which PHP, Laravel and sign-in package each one runs.[§5.1](https://creed.apps.wayne.edu/#c-5-1)
@@ -511,7 +511,7 @@ $ docker run --rm -v "${PWD}:/app" -w /app composer:2.10.3 composer validate-pol
 
 Maintainers: to pull new patch numbers from the upstream feeds, run `php bin/refresh-patches.php --dry-run` (drop `--dry-run` to write).
 
-**Strongly recommended:** a git.wayne.edu instance runner. CI is a gate only if something runs it (§6.7), and git.wayne.edu has no runners today.
+**Strongly recommended:** a git.wayne.edu instance runner. CI is a gate only if something runs it (§6.7). git.wayne.edu now has one, and CREED's own CI runs on it.
 
 Appendix B
 
