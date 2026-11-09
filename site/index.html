@@ -123,9 +123,9 @@
 
         <dl class="tally" aria-label="How the 61 practices are held today">
           <div class="tally__item tally__item--enforced"><dt>Enforced</dt><dd>7</dd></div>
-          <div class="tally__item tally__item--checked"><dt>Checked</dt><dd>16</dd></div>
-          <div class="tally__item tally__item--partially"><dt>Partially</dt><dd>12</dd></div>
-          <div class="tally__item tally__item--documented"><dt>Documented</dt><dd>21</dd></div>
+          <div class="tally__item tally__item--checked"><dt>Checked</dt><dd>17</dd></div>
+          <div class="tally__item tally__item--partially"><dt>Partially</dt><dd>13</dd></div>
+          <div class="tally__item tally__item--documented"><dt>Documented</dt><dd>19</dd></div>
           <div class="tally__item tally__item--notyet"><dt>Not yet</dt><dd>5</dd></div>
         </dl>
       </div>
@@ -169,8 +169,8 @@
         <li><a href="#ch-1"><span class="toc__no">1</span><span class="toc__name">The version policy as data</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§1.1 to §1.10</span></a><span class="toc__bar" role="img" aria-label="6 enforced, 1 checked, 2 documented, 1 not yet"><i class="e" style="--n:6"></i><i class="c" style="--n:1"></i><i class="d" style="--n:2"></i><i class="n" style="--n:1"></i></span></li>
         <li><a href="#ch-2"><span class="toc__no">2</span><span class="toc__name">PHP and framework versions</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§2.1 to §2.7</span></a><span class="toc__bar" role="img" aria-label="5 checked, 1 partially, 1 documented"><i class="c" style="--n:5"></i><i class="p" style="--n:1"></i><i class="d" style="--n:1"></i></span></li>
         <li><a href="#ch-3"><span class="toc__no">3</span><span class="toc__name">Dependencies</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§3.1 to §3.6</span></a><span class="toc__bar" role="img" aria-label="4 checked, 1 partially, 1 documented"><i class="c" style="--n:4"></i><i class="p" style="--n:1"></i><i class="d" style="--n:1"></i></span></li>
-        <li><a href="#ch-4"><span class="toc__no">4</span><span class="toc__name">Secrets and configuration</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§4.1 to §4.3</span></a><span class="toc__bar" role="img" aria-label="1 checked, 1 partially, 1 documented"><i class="c" style="--n:1"></i><i class="p" style="--n:1"></i><i class="d" style="--n:1"></i></span></li>
-        <li><a href="#ch-5"><span class="toc__no">5</span><span class="toc__name">Overrides and rollout</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§5.1 to §5.3</span></a><span class="toc__bar" role="img" aria-label="1 checked, 1 partially, 1 documented"><i class="c" style="--n:1"></i><i class="p" style="--n:1"></i><i class="d" style="--n:1"></i></span></li>
+        <li><a href="#ch-4"><span class="toc__no">4</span><span class="toc__name">Secrets and configuration</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§4.1 to §4.3</span></a><span class="toc__bar" role="img" aria-label="2 checked, 1 partially"><i class="c" style="--n:2"></i><i class="p" style="--n:1"></i></span></li>
+        <li><a href="#ch-5"><span class="toc__no">5</span><span class="toc__name">Overrides and rollout</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§5.1 to §5.3</span></a><span class="toc__bar" role="img" aria-label="1 checked, 2 partially"><i class="c" style="--n:1"></i><i class="p" style="--n:2"></i></span></li>
         <li><a href="#ch-6"><span class="toc__no">6</span><span class="toc__name">Writing the handbook</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§6.1 to §6.7</span></a><span class="toc__bar" role="img" aria-label="1 checked, 2 partially, 4 documented"><i class="c" style="--n:1"></i><i class="p" style="--n:2"></i><i class="d" style="--n:4"></i></span></li>
         <li><a href="#ch-7"><span class="toc__no">7</span><span class="toc__name">Patching and the supply chain</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§7.1 to §7.9</span></a><span class="toc__bar" role="img" aria-label="2 checked, 2 partially, 3 documented, 2 not yet"><i class="c" style="--n:2"></i><i class="p" style="--n:2"></i><i class="d" style="--n:3"></i><i class="n" style="--n:2"></i></span></li>
         <li><a href="https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#8-platform-and-database-second-pass"><span class="toc__no">8</span><span class="toc__name">Platform and database</span><span class="toc__lead" aria-hidden="true"></span><span class="toc__range">§8.1 to §8.3</span></a><span class="toc__bar" role="img" aria-label="1 partially, 1 documented, 1 not yet"><i class="p" style="--n:1"></i><i class="d" style="--n:1"></i><i class="n" style="--n:1"></i></span></li>
@@ -532,7 +532,7 @@
         <div>
           <p class="chap-head__kicker">Chapter 4</p>
           <h2 id="ch-4-title">Secrets and configuration</h2>
-          <p class="chap-head__lede">Of the three practices in this chapter, one is checked, one is partly checked and one is written down only. The last two are printed below.</p>
+          <p class="chap-head__lede">Of the three practices in this chapter, two are checked and one is partly checked. Two are printed below. Creed Bratton publishes his thoughts at www.creedthoughts.gov.www/creedthoughts; a debug page publishes your configuration, and nobody asked for either.</p>
         </div>
       </header>
 
@@ -550,9 +550,9 @@
         <div class="clause__body">
           <h3 class="clause__title"><span class="clause__sec">§4.3</span> Never run production with debug on.</h3>
           <p><code>APP_DEBUG</code> is <code>false</code> in production.</p>
-          <p class="xref"><span class="xref__label">Held by</span> The handbook's runtime and headers and secrets chapters. <a class="tool" href="#ahj-helmet"><img src="assets/marks/helmet.png" alt="" width="16" height="16">HELMET</a> warns when a Laravel app boots with debug on in production; no PROCTOR check reads <code>APP_DEBUG</code> yet.</p>
+          <p class="xref"><span class="xref__label">Held by</span> <a class="tool" href="#ahj-proctor"><img src="assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> <code>app-debug</code>, on PROCTOR main, which warns when a committed production env template, deploy file or CI pipeline sets <code>APP_DEBUG</code> to true. <a class="tool" href="#ahj-helmet"><img src="assets/marks/helmet.png" alt="" width="16" height="16">HELMET</a> watches the running app and warns when a Laravel app boots with debug on in production.</p>
         </div>
-        <span class="stamp stamp--documented">Documented</span>
+        <span class="stamp stamp--checked">Checked</span>
         <aside class="margin-note"><b>Rationale.</b> Debug pages expose configuration values to users.</aside>
       </div>
     </div>
@@ -584,10 +584,10 @@
       <div class="clause" id="c-5-2" data-reveal>
         <div class="clause__body">
           <h3 class="clause__title"><span class="clause__sec">§5.2</span> Roll a new rule out in stages, with dates.</h3>
-          <p>Each rule moves <code>report</code>, then <code>warn</code>, then <code>block</code>. A deploy that does not make things worse always passes.</p>
-          <p class="xref"><span class="xref__label">Held by</span> the proposed deploy gate. The schema has no field for stage dates yet.</p>
+          <p>Each rule moves <code>report</code>, then <code>warn</code>, then <code>block</code>, with the dates written in <code>policy.json</code>. A deploy that does not make things worse always passes.</p>
+          <p class="xref"><span class="xref__label">Gap</span> The policy's <code>gate</code> block holds a date for each stage, and <a class="tool" href="#ahj-proctor"><img src="assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a>'s <code>gate</code> command (0.9.0) reports, warns or blocks each check by its stage, and holds a failure the running deployment already had. No rule is staged yet, and the Citadel deploy gate that would run it on every release waits for the Citadel team.</p>
         </div>
-        <span class="stamp stamp--documented">Documented</span>
+        <span class="stamp stamp--partially">Partially</span>
         <aside class="margin-note"><b>Rationale.</b> Blocking every non-compliant app on day one blocks the fixes too.</aside>
       </div>
     </div>
@@ -710,7 +710,7 @@
       <ul class="ahj">
         <li class="ahj__row" id="ahj-wayneui" data-reveal><span class="ahj__mark ahj__mark--wayneui"><img src="assets/marks/wayneui.svg" width="40" height="40" alt="WayneUI logo: a rounded frame with a gold tab"></span><span class="ahj__name"><a class="part-link" href="https://wayneui.apps.wayne.edu/">WayneUI</a></span><span class="ahj__role">Wayne State's design system, project 0 of the stack.</span><span class="ahj__cites">This page is built on it</span></li>
         <li class="ahj__row ahj__row--this" id="ahj-creed" data-reveal><span class="ahj__mark"><img src="brand/creed-avatar-256.png" width="40" height="40" alt="CREED logo: a stone arch with a gold keystone"></span><span class="ahj__name">CREED</span><span class="ahj__role">The standards, with the policy file and its reader. This book.</span><span class="ahj__cites">Chapters 1 to 11</span></li>
-        <li class="ahj__row" id="ahj-proctor" data-reveal><span class="ahj__mark"><img src="assets/marks/proctor.png" width="40" height="40" alt="PROCTOR logo: an eye with a gold square pupil"></span><span class="ahj__name"><a class="part-link" href="https://proctor.apps.wayne.edu/">PROCTOR</a></span><span class="ahj__role">Reads your <code>composer.json</code>, lock file and repository and checks them against CREED.</span><span class="ahj__cites"><a href="#c-2-1">§2.1</a> <a href="#c-2-2">§2.2</a> <a href="#c-2-5">§2.5</a> <a href="#c-2-6">§2.6</a> <a href="#c-3-1">§3.1</a> <a href="#c-3-2">§3.2</a> <a href="#c-3-3">§3.3</a> <a href="#c-4-1">§4.1</a> <a href="#c-5-1">§5.1</a></span></li>
+        <li class="ahj__row" id="ahj-proctor" data-reveal><span class="ahj__mark"><img src="assets/marks/proctor.png" width="40" height="40" alt="PROCTOR logo: an eye with a gold square pupil"></span><span class="ahj__name"><a class="part-link" href="https://proctor.apps.wayne.edu/">PROCTOR</a></span><span class="ahj__role">Reads your <code>composer.json</code>, lock file and repository and checks them against CREED.</span><span class="ahj__cites"><a href="#c-2-1">§2.1</a> <a href="#c-2-2">§2.2</a> <a href="#c-2-5">§2.5</a> <a href="#c-2-6">§2.6</a> <a href="#c-3-1">§3.1</a> <a href="#c-3-2">§3.2</a> <a href="#c-3-3">§3.3</a> <a href="#c-4-1">§4.1</a> <a href="#c-4-3">§4.3</a> <a href="#c-5-1">§5.1</a> <a href="#c-5-2">§5.2</a></span></li>
         <li class="ahj__row" id="ahj-preflight" data-reveal><span class="ahj__mark"><img src="assets/marks/preflight.png" width="40" height="40" alt="Preflight logo: a runway with a gold center line"></span><span class="ahj__name"><a class="part-link" href="https://preflight.apps.wayne.edu/">Preflight</a></span><span class="ahj__role">GitLab CI/CD components that run the checks on every push.</span><span class="ahj__cites"><a href="#c-1-2">§1.2</a> <a href="#c-3-3">§3.3</a> <a href="#c-3-6">§3.6</a> <a href="#c-6-6">§6.6</a></span></li>
         <li class="ahj__row" id="ahj-helmet" data-reveal><span class="ahj__mark"><img src="assets/marks/helmet.png" width="40" height="40" alt="HELMET logo: a white football helmet with a gold facemask"></span><span class="ahj__name"><a class="part-link" href="https://helmet.apps.wayne.edu/">HELMET</a></span><span class="ahj__role">Security headers and the runtime ribbon.</span><span class="ahj__cites"><a href="#c-2-2">§2.2</a> <a href="#c-4-3">§4.3</a></span></li>
         <li class="ahj__row" id="ahj-rollcall" data-reveal><span class="ahj__mark"><img src="assets/marks/rollcall.png" width="40" height="40" alt="Rollcall logo: an open register with gold ticks"></span><span class="ahj__name"><a class="part-link" href="https://rollcall.apps.wayne.edu/">Rollcall</a> <em class="new">new</em></span><span class="ahj__role">Scans the apps and reports which PHP, Laravel and sign-in package each one runs.</span><span class="ahj__cites"><a href="#c-5-1">§5.1</a></span></li>
@@ -798,7 +798,7 @@ $floor = $policy-&gt;<span class="c-f">oldestSupported</span>(<span class="c-s">
         </div>
 
         <aside class="appendix__note" data-reveal>
-          <p><b>Strongly recommended:</b> a git.wayne.edu instance runner. CI is a gate only if something runs it (§6.7), and git.wayne.edu has no runners today.</p>
+          <p><b>Strongly recommended:</b> a git.wayne.edu instance runner. CI is a gate only if something runs it (§6.7). git.wayne.edu now has one, and CREED's own CI runs on it.</p>
         </aside>
       </div>
     </div>
