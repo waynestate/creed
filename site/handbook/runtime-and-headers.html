@@ -127,7 +127,8 @@
 assets are read cross-origin <span class="hb-cite">(the stack's runtime and headers design)</span>. HELMET 1.0 ships that default: <code>corp</code> (raw
 PHP) or <code>HELMET_CORP</code> (Laravel) set to <code>same-site</code>, <code>same-origin</code> or <code>cross-origin</code> sends it.</li>
 <li>An app <strong class="kw kw--should-not">SHOULD NOT</strong> weaken the default Content-Security-Policy with <code>'unsafe-inline'</code> for scripts; it uses the nonce
-instead <span class="hb-cite">(the stack's runtime and headers design)</span>. No check exists yet.</li>
+instead <span class="hb-cite">(the stack's runtime and headers design)</span>. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>csp-unsafe-inline</code> warns on
+committed app config, server config or an example env file that does (PROCTOR 0.10.0).</li>
 </ul>
 <p>The headers are the setlist: the same one on every response. The HSTS encore plays only when the show is really on
 HTTPS.</p>
@@ -157,7 +158,7 @@ server scrapes the app; then the app turns it on with <code>HELMET_METRICS_ENABL
 HELMET: with neither <code>HELMET_METRICS_TOKEN</code> nor <code>HELMET_METRICS_ALLOW</code> set, the endpoint answers 404 and logs a
 warning.</li>
 <li>The scrape token <strong class="kw kw--must-not">MUST NOT</strong> be committed. On Citadel it goes in the app's <code>.env</code> through Citadel's configuration files
-step, which writes the file at deploy time <span class="hb-cite">(the stack's metrics decision)</span>. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>app-key</code>
+step, which writes the file at deploy time <span class="hb-cite">(the stack's metrics decision)</span>. PROCTOR check: <code>app-key</code>
 (<code>proctor/app-key/committed-env</code> flags a committed <code>.env</code>).</li>
 <li>On Citadel, request counts use the <code>sqlite</code> store for now (<code>HELMET_METRICS_STORAGE=sqlite</code>, with
 <code>HELMET_METRICS_SQLITE_PATH</code> on a file in the app's writable storage); the final store is picked when the stack's
@@ -166,7 +167,8 @@ Prometheus server exists <span class="hb-cite">(the stack's metrics decision)</s
 <h2 id="errors-in-production"><a class="hb-sec" href="#errors-in-production">§6.7</a> Errors in production</h2>
 <ul>
 <li>PHP <code>display_errors</code> <strong class="kw kw--must">MUST</strong> be <code>Off</code> and <code>log_errors</code> <code>On</code> in production (<a class="tool" href="https://squire.apps.wayne.edu/"><img src="../assets/marks/squire.png" alt="" width="16" height="16">Squire</a>'s deploy kit ships that php.ini;
-HELMET neither sets nor checks it). No check exists yet.</li>
+HELMET neither sets nor checks it). PROCTOR check: <code>display-errors</code> warns on a committed php.ini,
+.user.ini or .htaccess that turns <code>display_errors</code> on or <code>log_errors</code> off (PROCTOR 0.10.0).</li>
 <li>Laravel <code>APP_DEBUG</code> <strong class="kw kw--must">MUST</strong> be <code>false</code> in production (WSU developer standards, 2024). The Laravel adapter writes one
 warning <code>helmet.debug_enabled_in_production</code> when it is true in the production environment. PROCTOR check:
 <code>app-debug</code>, on PROCTOR main: it warns when a committed production env template, deploy file or CI pipeline sets
@@ -181,7 +183,7 @@ warning <code>helmet.debug_enabled_in_production</code> when it is true in the p
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="databases.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 5</span><span class="hb-pager__name">Databases</span></a><a class="hb-pager__link hb-pager__link--next" href="deploy-gate.html" rel="next"><span class="hb-pager__dir">Next · Chapter 7</span><span class="hb-pager__name">Deploy gate</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md"><code>handbook/runtime-and-headers.md</code> on GitHub</a>, impression <code>fd7d250</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md"><code>handbook/runtime-and-headers.md</code> on GitHub</a>, impression <code>596925f</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

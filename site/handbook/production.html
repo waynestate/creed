@@ -111,9 +111,9 @@
 <h2 id="running-safely"><a class="hb-sec" href="#running-safely">§12.2</a> Running safely</h2>
 <ul>
 <li>The app and its scripts <strong class="kw kw--must">MUST</strong> run as a non-root, non-administrator user with the least access they need (WSU developer standards, 2024). No check exists yet.</li>
-<li>The web server <strong class="kw kw--must-not">MUST NOT</strong> list directory contents (WSU developer standards, 2024). No check exists yet.</li>
+<li>The web server <strong class="kw kw--must-not">MUST NOT</strong> list directory contents (WSU developer standards, 2024). <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>directory-listing</code> warns on committed server config that turns listing on (PROCTOR 0.10.0).</li>
 <li>File permissions <strong class="kw kw--must">MUST</strong> be set per path; write access for the web server is granted only to specific files or folders, and mode <code>777</code> <strong class="kw kw--must-not">MUST NOT</strong> be used (WSU developer standards, 2024).
-<a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>world-writable</code> (<code>chmod 777</code> in scripts, Dockerfiles, CI and PHP).</li>
+PROCTOR check: <code>world-writable</code> (<code>chmod 777</code> in scripts, Dockerfiles, CI and PHP).</li>
 <li>Debugging and diagnostic files, scripts, dumps and backups <strong class="kw kw--must-not">MUST NOT</strong> sit in the served folder (WSU developer standards, 2024).
 PROCTOR check: <code>served-folder</code> (<code>phpinfo()</code>, dumps, backups, logs, env files and <code>adminer*.php</code> under <code>public/</code>).</li>
 <li>On failure the app degrades predictably and fails closed: an authentication error withholds access (WSU developer standards, 2024).</li>
@@ -124,7 +124,7 @@ PROCTOR check: <code>served-folder</code> (<code>phpinfo()</code>, dumps, backup
 <p>Production is the encore. Keep the lights on and the doors locked, and the band plays on.</p>
 <h2 id="who-can-reach-it"><a class="hb-sec" href="#who-can-reach-it">§12.3</a> Who can reach it</h2>
 <ul>
-<li>Every app <strong class="kw kw--must">MUST</strong> set <code>robots.txt</code> to keep spiders out unless crawling is wanted (WSU developer standards, 2024). No check exists yet.</li>
+<li>Every app <strong class="kw kw--must">MUST</strong> set <code>robots.txt</code> to keep spiders out unless crawling is wanted (WSU developer standards, 2024). An app that wants crawling says so in the file with <code>Allow: /</code> for <code>User-agent: *</code>; keeping spiders out is <code>Disallow: /</code>. PROCTOR check: <code>robots-txt</code> warns when a served app commits no <code>public/robots.txt</code>, or one that decides neither (PROCTOR 0.10.0).</li>
 <li>Every app <strong class="kw kw--must">MUST</strong> limit access by network address to the audience it serves, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024). No check exists yet.</li>
 <li>The one named exception: the stack's own public front pages are crawlable by design <span class="hb-cite">(the stack's agent-ready sites decision)</span>. It is a special case for those pages, not a general exemption for public pages.</li>
 </ul>
@@ -133,7 +133,7 @@ PROCTOR check: <code>served-folder</code> (<code>phpinfo()</code>, dumps, backup
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="secrets.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 11</span><span class="hb-pager__name">Secrets and debugging</span></a><a class="hb-pager__link hb-pager__link--next" href="overrides.html" rel="next"><span class="hb-pager__dir">Next · Chapter 13</span><span class="hb-pager__name">Overrides</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/production.md"><code>handbook/production.md</code> on GitHub</a>, impression <code>4e14fd3</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/production.md"><code>handbook/production.md</code> on GitHub</a>, impression <code>5c75d99</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 
