@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Changed: four handbook rules name the PROCTOR 0.10.0 check that reports them instead of "No check exists yet": `csp-unsafe-inline` and `display-errors` (runtime and headers), `directory-listing` and `robots-txt` (production). The robots.txt rule says an app that wants crawling writes `Allow: /` for `User-agent: *`.
+
 ## 0.1.8 (2026-11-09)
 
 - Fixed: scripts/a11y.ps1 works on a Windows checkout with CRLF line endings; it strips the carriage returns from the shell command it hands to Docker, which sh rejected with a syntax error.
