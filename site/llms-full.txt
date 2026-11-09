@@ -927,6 +927,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Fixed: `bin/validate-policy.php` names the line when a policy line carries neither `security_until` nor `"current": true`, or carries both, and says how to fix it. The schema already refused such a line, but its message ("The properties must match schema") named nothing. An undated line would make `Policy::supported()` and `oldestSupported()` throw for the whole component in PROCTOR and ADVISOR, so CI now stops it with a message that names the component and version; the reader is unchanged.
 - Docs: BEST_PRACTICES catches up with PROCTOR 0.10.0 (mysql-minimum, app-debug, lock-committed, preflight-pinned), Pinstripe 0.3.0's joined-SQL ban, Sourdough's npm audit step, the GitLab tier (19.5.1 CE) and Composer 2.11's cooldown. Practice 56 (validate input) is now Checked, so the front page's tally reads 18 Checked and 18 Documented and chapter 11's bar follows.
 - Changed: four handbook rules name the PROCTOR 0.10.0 check that reports them instead of "No check exists yet": `csp-unsafe-inline` and `display-errors` (runtime and headers), `directory-listing` and `robots-txt` (production). The robots.txt rule says an app that wants crawling writes `Allow: /` for `User-agent: *`.
 - Changed: the deploy kit is Squire 0.10.0 (was 0.7.1): release.sh keeps Composer and npm download caches in the app folder and the gate takes SQUIRE_PHP_RUNTIME; the compose file, health.php and .env.squire.example follow the template, and the portable image files are added.
@@ -1095,7 +1096,7 @@ You need PHP 8.3 or newer and Composer, or only Docker. Everything has a native 
 | Install | `composer install` |
 | All checks (what CI runs) | `composer ci` |
 | Only the tests | `composer test` |
-| Validate `policy.json` against its schema and its `minimum_patch` rules | `composer validate-policy` |
+| Validate `policy.json`: every line dated or marked current, then its schema and its `minimum_patch` rules | `composer validate-policy` |
 | Lint the handbook | `composer lint-handbook` |
 | Fix code style | `composer fix` |
 
@@ -1777,7 +1778,7 @@ This page lists every command CREED ships, what each one does, and the exit code
 | `composer install` | Installs the project dependencies. |
 | `composer ci` | All checks, what CI runs, in order: `composer validate --strict`, the tests, the policy validator, Pint, the handbook lint, the handbook site and agent-ready freshness checks, PHPStan, `composer audit` and the docs site freshness check. The same command runs on GitLab and GitHub. |
 | `composer test` | Only the tests. |
-| `composer validate-policy` | Validate `policy.json` against its schema and its `minimum_patch` rules. |
+| `composer validate-policy` | Validate `policy.json`: every line dated or marked current, then its schema and its `minimum_patch` rules. |
 | `composer lint-handbook` | Lint the handbook. |
 | `composer fix` | Fix code style. |
 | `composer docs` | Rebuild `site/docs/` from `docs/` with the shared docs builder (SQUIRE's kit). |
@@ -1802,7 +1803,7 @@ The whole band fits in three commands, and nobody needs a solo.
 | `php bin/refresh-policy.php` | Refreshes `policy/policy.json` from the canonical upstream feeds: support dates, latest patches, and new version lines, with provenance recorded in `policy/sources.json`. |
 | `php bin/policy-bot.php run [--dry-run] [--offline <dir>]` | The CREED policy robot: it runs `bin/refresh-policy.php`, reads the run report, commits the policy data, runs `composer ci`, pushes straight to `main` with the job token when that passes (or opens `auto/policy-refresh` as a merge request labeled `auto-data` when it fails), and keeps its `auto-alert` issues in line. `--dry-run` prints the plan and changes nothing. See [The policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html). |
 | `php bin/export.php` | Exports a namespace-prefixed copy of the CREED reader for a consumer package to carry under its own namespace, so two tools in one app never fight over a class name. |
-| `php bin/validate-policy.php [--policy <path>]` | Validates `policy/policy.json` against `policy/policy.schema.json`, fails when a line's optional `minimum_patch` is not in that line or is above its `latest_patch`, and validates `policy/sources.json` against `policy/sources.schema.json` when present. `--policy <path>` runs the policy checks on another file instead (the tests point it at fixtures). |
+| `php bin/validate-policy.php [--policy <path>]` | Fails, naming the component and version, when a line carries neither `security_until` nor `"current": true`, or both; then validates `policy/policy.json` against `policy/policy.schema.json`, fails when a line's optional `minimum_patch` is not in that line or is above its `latest_patch`, and validates `policy/sources.json` against `policy/sources.schema.json` when present. `--policy <path>` runs the policy checks on another file instead (the tests point it at fixtures). |
 | `php bin/lint-handbook.php` | Lints the CREED handbook for RFC 2119 discipline. |
 | `php bin/build-handbook-site.php` | Builds the handbook pages of the CREED site from `handbook/*.md`. |
 | `php bin/agent-ready.php` | Makes a static front page readable by agents: writes the Markdown twins, `llms.txt`, `llms-full.txt`, `robots.txt` and `sitemap.xml` into the site folder. |
@@ -1984,7 +1985,7 @@ Each component holds a `versions` object that maps a version to a line. Every li
 | `requires` | object | May hold `php` (an object with required `min` and `max`, each a version string matching `^\d+(\.\d+)*$`) and `mysql` and `mariadb` (each a version string matching the same pattern), and nothing else. Optional. The bundled policy fills it for the Laravel lines, from Laravel's release notes and database pages. |
 | `images` | object | May hold `citadel`, `docker`, `openshift` and `coolify`, each a non-empty string. Optional. Today `docker` is filled for PHP 8.3 to 8.5; the other keys are not filled. |
 
-The `current` rule is the only conditional in the schema: a line with `"current": true` must not carry `security_until`, and every other line must.
+The `current` rule is the only conditional in the schema: a line with `"current": true` must not carry `security_until`, and every other line must. A line marked `"current": false`, or with no `current` at all, therefore needs a `security_until`: CREED does not list a line before its dates are known. `bin/validate-policy.php` checks this rule before the schema and names the line and the fix, for example `php 9.9: the line has neither security_until nor "current": true; add security_until (...) or mark the line "current": true.` The rule matters at runtime too: the reader does not guess the state of an undated line, so `supported()` and `oldestSupported()` would throw for that whole component.
 
 ### tools[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#tools)
 

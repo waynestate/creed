@@ -9,6 +9,7 @@ description: All notable changes to this project.
 
 ## Unreleased
 
+- Fixed: `bin/validate-policy.php` names the line when a policy line carries neither `security_until` nor `"current": true`, or carries both, and says how to fix it. The schema already refused such a line, but its message ("The properties must match schema") named nothing. An undated line would make `Policy::supported()` and `oldestSupported()` throw for the whole component in PROCTOR and ADVISOR, so CI now stops it with a message that names the component and version; the reader is unchanged.
 - Docs: BEST_PRACTICES catches up with PROCTOR 0.10.0 (mysql-minimum, app-debug, lock-committed, preflight-pinned), Pinstripe 0.3.0's joined-SQL ban, Sourdough's npm audit step, the GitLab tier (19.5.1 CE) and Composer 2.11's cooldown. Practice 56 (validate input) is now Checked, so the front page's tally reads 18 Checked and 18 Documented and chapter 11's bar follows.
 - Changed: four handbook rules name the PROCTOR 0.10.0 check that reports them instead of "No check exists yet": `csp-unsafe-inline` and `display-errors` (runtime and headers), `directory-listing` and `robots-txt` (production). The robots.txt rule says an app that wants crawling writes `Allow: /` for `User-agent: *`.
 - Changed: the deploy kit is Squire 0.10.0 (was 0.7.1): release.sh keeps Composer and npm download caches in the app folder and the gate takes SQUIRE_PHP_RUNTIME; the compose file, health.php and .env.squire.example follow the template, and the portable image files are added.

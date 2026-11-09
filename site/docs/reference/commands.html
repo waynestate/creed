@@ -65,7 +65,7 @@
 </tr>
 <tr>
 <td><code>composer validate-policy</code></td>
-<td>Validate <code>policy.json</code> against its schema and its <code>minimum_patch</code> rules.</td>
+<td>Validate <code>policy.json</code>: every line dated or marked current, then its schema and its <code>minimum_patch</code> rules.</td>
 </tr>
 <tr>
 <td><code>composer lint-handbook</code></td>
@@ -134,7 +134,7 @@
 </tr>
 <tr>
 <td><code>php bin/validate-policy.php [--policy &lt;path&gt;]</code></td>
-<td>Validates <code>policy/policy.json</code> against <code>policy/policy.schema.json</code>, fails when a line's optional <code>minimum_patch</code> is not in that line or is above its <code>latest_patch</code>, and validates <code>policy/sources.json</code> against <code>policy/sources.schema.json</code> when present. <code>--policy &lt;path&gt;</code> runs the policy checks on another file instead (the tests point it at fixtures).</td>
+<td>Fails, naming the component and version, when a line carries neither <code>security_until</code> nor <code>&quot;current&quot;: true</code>, or both; then validates <code>policy/policy.json</code> against <code>policy/policy.schema.json</code>, fails when a line's optional <code>minimum_patch</code> is not in that line or is above its <code>latest_patch</code>, and validates <code>policy/sources.json</code> against <code>policy/sources.schema.json</code> when present. <code>--policy &lt;path&gt;</code> runs the policy checks on another file instead (the tests point it at fixtures).</td>
 </tr>
 <tr>
 <td><code>php bin/lint-handbook.php</code></td>
