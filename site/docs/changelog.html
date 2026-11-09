@@ -44,6 +44,7 @@
 <h1 id="changelog">Changelog<a class="docs-heading-link" aria-label="Link to this section" href="#changelog">#</a></h1>
 <h2 id="unreleased">Unreleased<a class="docs-heading-link" aria-label="Link to this section" href="#unreleased">#</a></h2>
 <ul>
+<li>Changed: CI pins the Preflight components to 0.4.0 (the proctor job clones the full history, so the override-approver check can read git blame).</li>
 <li>Changed: the code handbook names what Pinstripe enforces (presets from 0.1.4, the env rule, and the banned calls in Pinstripe 0.2.0 with their <code>pinstripe.banned.*</code> identifiers) instead of calling every rule Planned.</li>
 <li>Docs: BEST_PRACTICES.md practices 41 (front-end install options, now Partially: Squire's release install and the npm cooldown are built) and 45 (CI host, now Documented: the instances run GitLab 19.5.1 CE) carry their true status.</li>
 <li>Added: <code>rules.override_self_approval</code> (<code>warn</code>; <code>warn</code> or <code>fail</code>) in the policy and its schema, <code>Policy::overrideSelfApproval()</code> in the reader (<code>warn</code> when the key is absent), and the overrides chapter says an override is approved by someone who did not write it, with the merge request as the control and PROCTOR's <code>override-approver</code> check as the tripwire.</li>
