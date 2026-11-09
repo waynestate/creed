@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Carrying CREED in another package | CREED docs</title>
 <meta name="description" content="How PROCTOR, Booster and Rollcall carry a generated copy of the reader under their own namespace, and how bin/export.php keeps the copies in step.">
-<meta name="docs-version" content="0.1.7">
+<meta name="docs-version" content="0.1.8">
 <link rel="stylesheet" href="../../assets/wayne-ui/wayne-ui.css">
 <link rel="stylesheet" href="../../assets/docs.css">
 <link rel="stylesheet" href="../../docs/theme/creed.css">
@@ -49,7 +49,7 @@
 <li>HELMET can read a <code>policy.json</code> at runtime, and apps and the stack's front-page deploys install <code>waynestate/creed</code> from Packagist.</li>
 </ul>
 <h2 id="why-the-copies-began">Why the copies began<a class="docs-heading-link" aria-label="Link to this section" href="#why-the-copies-began">#</a></h2>
-<p>The copies began because CREED was not on Packagist. It is now (<code>waynestate/creed</code>, 0.1.7 at this writing), so each copy can become a real <code>require</code>, one consumer at a time; until a consumer switches, its copy stays.</p>
+<p>The copies began because CREED was not on Packagist. It is now (<code>waynestate/creed</code>, 0.1.8 at this writing), so each copy can become a real <code>require</code>, one consumer at a time; until a consumer switches, its copy stays.</p>
 <h2 id="generating-and-checking-the-copy">Generating and checking the copy<a class="docs-heading-link" aria-label="Link to this section" href="#generating-and-checking-the-copy">#</a></h2>
 <p>CREED owns the generator and the check:</p>
 <pre tabindex="0"><code>php bin/export.php --namespace=Waynestate\Proctor\Creed --to=vendor/creed-copy
@@ -69,7 +69,7 @@ php bin/export.php --check --namespace=Waynestate\Proctor\Creed --to=vendor/cree
   <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#who-carries-a-copy">Who carries a copy</a></li><li class="docs-toc__item"><a href="#why-the-copies-began">Why the copies began</a></li><li class="docs-toc__item"><a href="#generating-and-checking-the-copy">Generating and checking the copy</a></li><li class="docs-toc__item"><a href="#related">Related</a></li></ul></nav>
 </div>
 <footer class="docs-footer">
-  <span>Documents CREED <span data-docs-version>0.1.7</span></span>
+  <span>Documents CREED <span data-docs-version>0.1.8</span></span>
   <span><a rel="noopener" href="https://github.com/waynestate/creed">Source</a> <a href="carrying-creed.md">Markdown</a></span>
 </footer>
 </body>

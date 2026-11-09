@@ -19,6 +19,22 @@ How CREED versions are cut, what each release changed that a consumer notices, a
 5. A release needs a maintainer's approval. Never move or delete a published tag.
 6. Then bump `waynestate/creed` where the stack pins it, and refresh the generated copies.
 
+## 0.1.8 (2026-11-09)[#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-8-2026-11-09)
+
+The policy gains five optional fields, each with a reader method that falls back to a default when the field is absent, so a consumer reading an older `policy.json` sees no change:
+
+- A `gate` block (`default_stage`, and per-check `stages` with `from` dates), read by `Policy::gateStage()`. It ships with `default_stage` set to `block` and no stages. With no gate block, or no entry for a check, the reader answers `default_stage`, and `block` when that is absent too, so the deploy gate behaves as it did before stages existed.
+- `rules.override_max_days` (90), read by `Policy::overrideMaxDays()`: 90 when absent. Anything but a positive integer throws.
+- `rules.override_self_approval` (`warn`), read by `Policy::overrideSelfApproval()`: `warn` when absent. Anything but `warn` or `fail` throws.
+- An optional `minimum_patch` on each PHP line, read by `Policy::minimumPatch()`: null when the line has none, and no line has one yet. `bin/validate-policy.php` checks that a set value sits in its own line and not above `latest_patch`.
+- A `sessions` block with the SESAME limits (120 minutes idle, 720 in all) and the gateway's (3600 seconds idle, 28800 in all). It is data only: the reader has no method for it, and the handbook's auth chapter quotes it.
+
+A policy file that uses any of these fails validation against the 0.1.7 schema, so a publisher updates the schema first. An older reader ignores the fields and keeps working on a newer file.
+
+The handbook lint now fails on a rule that uses MUST, SHOULD or MAY without saying what holds it ("PROCTOR check: `<id>`", "Held by: ..." or "No check exists yet"). That matters to anyone who writes handbook rules; the rules that shipped untagged are tagged in this release. The front page and handbook follow the reader's dark mode.
+
+PROCTOR refreshes its generated copy of the reader and policy, since its gate, overrides and override-approver checks read the new fields through it, and ADVISOR refreshes its data bundle, so it serves the new policy fields and the tagged handbook rules. Booster and Rollcall read none of the new fields; they refresh their copies with their next CREED bump, as before.
+
 ## 0.1.7 (2026-11-07)[#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-7-2026-11-07)
 
 The policy records, per Laravel line, the PHP versions it supports and the minimum MySQL and MariaDB versions, in a new optional `requires` field on the line. A policy file that uses `requires` fails validation against the 0.1.6 schema, so a publisher updates the schema first. Readers ignore the field, so an older reader keeps working on a newer file. The same holds for the new optional `images` object on a line (`images.docker` is filled for PHP 8.3 to 8.5).
