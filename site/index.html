@@ -552,7 +552,7 @@
         <div class="clause__body">
           <h3 class="clause__title"><span class="clause__sec">§4.3</span> Never run production with debug on.</h3>
           <p><code>APP_DEBUG</code> is <code>false</code> in production.</p>
-          <p class="xref"><span class="xref__label">Held by</span> <a class="tool" href="#ahj-proctor"><img src="assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> <code>app-debug</code>, on PROCTOR main, which warns when a committed production env template, deploy file or CI pipeline sets <code>APP_DEBUG</code> to true. <a class="tool" href="#ahj-helmet"><img src="assets/marks/helmet.png" alt="" width="16" height="16">HELMET</a> watches the running app and warns when a Laravel app boots with debug on in production.</p>
+          <p class="xref"><span class="xref__label">Held by</span> <a class="tool" href="#ahj-proctor"><img src="assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> <code>app-debug</code>, since PROCTOR 0.10.0, which warns when a committed production env template, deploy file or CI pipeline sets <code>APP_DEBUG</code> to true. <a class="tool" href="#ahj-helmet"><img src="assets/marks/helmet.png" alt="" width="16" height="16">HELMET</a> watches the running app and warns when a Laravel app boots with debug on in production.</p>
         </div>
         <span class="stamp stamp--checked">Checked</span>
         <aside class="margin-note"><b>Rationale.</b> Debug pages expose configuration values to users.</aside>
@@ -630,7 +630,7 @@
         <div class="clause__body">
           <h3 class="clause__title"><span class="clause__sec">§6.5</span> Keep every developer tool usable on Windows, macOS and Linux.</h3>
           <p>Scripts ship as a <code>.ps1</code> and <code>.sh</code> pair, or as one PHP command. Every repo carries <code>.gitattributes</code> with <code>* text=auto eol=lf</code>.</p>
-          <p class="xref"><span class="xref__label">Gap</span> <a class="tool" href="#ahj-proctor"><img src="assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> <code>crlf-deploy-script</code> fails a deploy script with Windows line endings. Nothing reads <code>.gitattributes</code> or other server files yet.</p>
+          <p class="xref"><span class="xref__label">Gap</span> <a class="tool" href="#ahj-proctor"><img src="assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> <code>crlf-deploy-script</code> fails a deploy script with Windows line endings. <code>gitattributes-eol</code>, on PROCTOR main and in its next release, warns when <code>.gitattributes</code> leaves shell scripts, <code>.conf</code> files or Dockerfiles off LF, and on a CRLF Dockerfile or <code>.conf</code> under <code>deploy/</code> or <code>.squire/</code>. Nothing checks the <code>.ps1</code> and <code>.sh</code> pair yet.</p>
         </div>
         <span class="stamp stamp--partially">Partially</span>
         <aside class="margin-note"><b>Rationale.</b> Developers work on all three, and the servers need LF.</aside>

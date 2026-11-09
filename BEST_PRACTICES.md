@@ -447,12 +447,12 @@ Why: debug pages expose configuration values to users.
 
 Sources: [Laravel configuration docs](https://laravel.com/docs/13.x/configuration).
 
-How the stack holds it: `Checked`. PROCTOR main's `app-debug` warns when a committed production env template
+How the stack holds it: `Checked`. PROCTOR 0.10.0's `app-debug` warns when a committed production env template
 (`.env.production`, `.env.squire.example`), a file under `deploy/` or `deployments/`, or a CI pipeline sets
 `APP_DEBUG` to true. HELMET's Laravel adapter covers the running app: it warns at boot when debug is on in the
 production environment (`helmet.debug_enabled_in_production`). `handbook/runtime-and-headers.md` and
 `handbook/secrets.md` write the rule and name both. What neither sees: a server that sets `APP_DEBUG` outside the
-repository, in an app without HELMET. `app-debug` is on PROCTOR main and not in a release yet.
+repository, in an app without HELMET.
 
 ## 5. Overrides and rollout
 
@@ -566,10 +566,14 @@ Why: developers work on all three, and Citadel needs LF.
 Sources: none outside the stack; this is the stack's every-OS design.
 
 How the stack holds it: `Partially`. The stack's every-OS design and `every-os.md` state it, and CREED has the
-`.gitattributes`. PROCTOR main's `proctor/crlf-deploy-script` fails when a deploy script (`build.sh`, `release.sh`, or
+`.gitattributes`. PROCTOR 0.10.0's `proctor/crlf-deploy-script` fails when a deploy script (`build.sh`, `release.sh`, or
 a `.sh` file under `deploy/`, `deployments/`, `deploy_scripts/` or `scripts/`) has Windows line endings, and warns
 when the app has a deploy script and `.gitattributes` does not pin `*.sh` to LF. PROCTOR 0.9.0's `case-clash` fails
-when two paths differ only by letter case. No check reads the rest of `.gitattributes` or other server files yet.
+when two paths differ only by letter case. PROCTOR main's `gitattributes-eol`, which ships in PROCTOR's next release,
+reads `.gitattributes` the way Git applies it and warns when the app's `*.sh`, `*.conf`, `Dockerfile` or
+`*.Dockerfile` files are not pinned to `eol=lf` (`proctor/gitattributes-eol/not-pinned`), and when a Dockerfile or
+`.conf` under `deploy/` or `.squire/` has Windows line endings (`proctor/gitattributes-eol/crlf`). No check asks for
+the whole `* text=auto eol=lf` line or for the `.ps1` and `.sh` pair yet.
 
 ### 35. Run the test suite on every supported PHP version
 
@@ -1124,8 +1128,10 @@ These are places where a source disagrees with the repository or with an earlier
 15. Done: the policy's `gate` block carries per-check stages (`report`, `warn`, `block`) with `from` dates, in the
     schema and the reader, and `proctor gate` (PROCTOR 0.9.0) applies them; no rule is staged yet (practice 28).
 16. Partly done: PROCTOR's `crlf-deploy-script` fails on CRLF in deploy scripts and warns when `.gitattributes` does
-    not pin them to LF, and PROCTOR 0.9.0's `case-clash` fails on file-name case collisions; checks for other server
-    files are still to add (practice 34).
+    not pin them to LF, PROCTOR 0.9.0's `case-clash` fails on file-name case collisions, and PROCTOR main's
+    `gitattributes-eol` (in its next release) warns when shell scripts, `.conf` files and Dockerfiles are not pinned to
+    LF and on a CRLF Dockerfile or `.conf` under `deploy/` or `.squire/`; a check for the `.ps1` and `.sh` pair is still
+    to add (practice 34).
 17. Partly done: PROCTOR's `preflight-pinned` warns when a Preflight include is not pinned to a full release tag (such
     as `@0.4.0`) or a 40-hex commit SHA; components from outside Preflight are not checked (practice 23).
 18. Partly done: the accessibility chapter is written, with the WCAG 2.2 AA target (practices 30 and 54); the Title
