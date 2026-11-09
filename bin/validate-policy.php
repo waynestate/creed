@@ -3,8 +3,9 @@
 declare(strict_types=1);
 
 /**
- * Validates policy/policy.json against policy/policy.schema.json, then
- * checks each line's optional minimum_patch (it must sit in its own line and
+ * Validates policy/policy.json: first that every line carries
+ * security_until or "current": true (exactly one, named per line), then
+ * against policy/policy.schema.json, then each line's optional minimum_patch (it must sit in its own line and
  * may not sort above latest_patch), and validates policy/sources.json (the
  * provenance ledger written by bin/refresh-policy.php) against
  * policy/sources.schema.json when present.
@@ -95,6 +96,57 @@ function minimumPatchProblems(object $policy): array
     return $problems;
 }
 
+/**
+ * The support-date problems of one decoded policy, as messages.
+ *
+ * Every line carries security_until or is marked "current": true, never both
+ * and never neither. The schema already says so, but its message names no
+ * line ("The properties must match schema"), so this check runs first and
+ * says which component, which version and what to write. An undated line is
+ * not cosmetic: Policy::stateOf() refuses to guess its state, so
+ * supported() and oldestSupported() throw for the whole component, and
+ * PROCTOR and ADVISOR fail on it at runtime.
+ *
+ * @param object $policy
+ *
+ * @return list<string>
+ */
+function lineDateProblems(object $policy): array
+{
+    $problems = [];
+    $components = $policy->components ?? null;
+    if (!is_object($components)) {
+        return $problems;
+    }
+    foreach (get_object_vars($components) as $component => $componentObj) {
+        if (!is_object($componentObj)) {
+            continue;
+        }
+        $versions = $componentObj->versions ?? null;
+        if (!is_object($versions)) {
+            continue;
+        }
+        foreach (get_object_vars($versions) as $version => $entry) {
+            if (!is_object($entry)) {
+                continue;
+            }
+            $fields = get_object_vars($entry);
+            $current = ($fields['current'] ?? null) === true;
+            $dated = array_key_exists('security_until', $fields);
+            if ($current && $dated) {
+                $problems[] = "{$component} {$version}: a line marked \"current\": true carries no security_until; "
+                    . 'remove security_until, or drop "current": true and keep the date.';
+            } elseif (!$current && !$dated) {
+                $problems[] = "{$component} {$version}: the line has neither security_until nor \"current\": true; "
+                    . 'add security_until (the vendor\'s end of security support, YYYY-MM-DD) '
+                    . 'or mark the line "current": true. The reader cannot judge an undated line, '
+                    . "so every {$component} lookup would fail.";
+            }
+        }
+    }
+    return $problems;
+}
+
 $args = array_slice($_SERVER['argv'] ?? [], 1);
 $policyPath = null;
 for ($i = 0; $i < count($args); $i++) {
@@ -104,10 +156,22 @@ for ($i = 0; $i < count($args); $i++) {
 }
 
 /**
- * The schema check, then the minimum_patch checks, on one policy file.
+ * The support-date check, the schema check, then the minimum_patch checks, on
+ * one policy file. The support-date check runs before the schema so its
+ * message, which names the line, is the one a reader sees.
  */
 function validatePolicy(string $label, string $schemaPath, string $dataPath): bool
 {
+    $decoded = json_decode((string) file_get_contents($dataPath), false);
+    if (is_object($decoded)) {
+        $dateProblems = lineDateProblems($decoded);
+        foreach ($dateProblems as $problem) {
+            echo $problem . "\n";
+        }
+        if ($dateProblems !== []) {
+            return false;
+        }
+    }
     if (!validateFile($label, $schemaPath, $dataPath)) {
         return false;
     }

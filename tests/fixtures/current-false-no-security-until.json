@@ -1,0 +1,21 @@
+{
+    "schema_version": 1,
+    "components": {
+        "node": {
+            "versions": {
+                "30": {
+                    "current": false,
+                    "active_until": "2030-04-30"
+                }
+            }
+        }
+    },
+    "rules": {
+        "audit_severity_threshold": "high",
+        "banned_constraints": [
+            "dev-*",
+            "*"
+        ],
+        "eol_grace_days": 90
+    }
+}

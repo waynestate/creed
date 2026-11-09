@@ -123,6 +123,7 @@ final class PolicySchemaTest extends TestCase
             'zero idle_minutes inside sessions' => [__DIR__ . '/fixtures/sessions-zero-idle.json'],
             'current line with security_until' => [__DIR__ . '/fixtures/current-with-security-until.json'],
             'neither current nor security_until' => [__DIR__ . '/fixtures/no-security-until.json'],
+            'current false without security_until' => [__DIR__ . '/fixtures/current-false-no-security-until.json'],
         ];
     }
 
