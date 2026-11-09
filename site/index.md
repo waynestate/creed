@@ -317,7 +317,7 @@ Partially
 
 `APP_DEBUG` is `false` in production.
 
-Held by [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `app-debug`, on PROCTOR main, which warns when a committed production env template, deploy file or CI pipeline sets `APP_DEBUG` to true. [HELMET](https://creed.apps.wayne.edu/#ahj-helmet) watches the running app and warns when a Laravel app boots with debug on in production.
+Held by [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `app-debug`, since PROCTOR 0.10.0, which warns when a committed production env template, deploy file or CI pipeline sets `APP_DEBUG` to true. [HELMET](https://creed.apps.wayne.edu/#ahj-helmet) watches the running app and warns when a Laravel app boots with debug on in production.
 
 Checked
 
@@ -375,7 +375,7 @@ Documented
 
 Scripts ship as a `.ps1` and `.sh` pair, or as one PHP command. Every repo carries `.gitattributes` with `* text=auto eol=lf`.
 
-Gap [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `crlf-deploy-script` fails a deploy script with Windows line endings. Nothing reads `.gitattributes` or other server files yet.
+Gap [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `crlf-deploy-script` fails a deploy script with Windows line endings. `gitattributes-eol`, on PROCTOR main and in its next release, warns when `.gitattributes` leaves shell scripts, `.conf` files or Dockerfiles off LF, and on a CRLF Dockerfile or `.conf` under `deploy/` or `.squire/`. Nothing checks the `.ps1` and `.sh` pair yet.
 
 Partially
 

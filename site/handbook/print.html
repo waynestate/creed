@@ -929,9 +929,13 @@ macOS get bash (<code>.sh</code>), written for macOS's stock bash 3.2 and its BS
 <li>Every repo carries a <code>.gitattributes</code> with <code>* text=auto eol=lf</code>, and
 <code>.ps1</code>, <code>.bat</code> and <code>.cmd</code> set to CRLF. Anything that runs on a Linux host
 <strong class="kw kw--must">MUST</strong> be LF: on Citadel, and on OpenShift, Coolify or raw Docker elsewhere
-<span class="hb-cite">(the stack's every-OS design)</span>. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>crlf-deploy-script</code>, for
+<span class="hb-cite">(the stack's every-OS design)</span>. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> checks: <code>crlf-deploy-script</code>, for
 deploy scripts only: it fails on a CRLF deploy script and warns when
-<code>.gitattributes</code> does not pin <code>*.sh</code> to LF.</li>
+<code>.gitattributes</code> does not pin <code>*.sh</code> to LF; and <code>gitattributes-eol</code> (on
+PROCTOR main, in its next release), which warns when <code>.gitattributes</code> does
+not pin the repo's <code>*.sh</code>, <code>*.conf</code>, <code>Dockerfile</code> and <code>*.Dockerfile</code> files
+to <code>eol=lf</code>, and on a CRLF Dockerfile or <code>.conf</code> under <code>deploy/</code> or
+<code>.squire/</code>.</li>
 <li>Two paths in a repo <strong class="kw kw--must-not">MUST NOT</strong> differ only by letter case (<code>Docs/Guide.md</code>
 and <code>docs/guide.md</code>): Windows and macOS ignore case, so one checkout
 silently overwrites the other, and a Linux host then loads a file nobody
@@ -965,14 +969,14 @@ PROCTOR check: <code>portability</code>.</li>
 </ul>
 <h3 id="secrets--errors-and-debug-output"><a class="hb-sec" href="#secrets--errors-and-debug-output">§11.2</a> Errors and debug output</h3>
 <ul>
-<li><code>APP_DEBUG</code> <strong class="kw kw--must">MUST</strong> be <code>false</code> in production (WSU developer standards, 2024). The Laravel adapter writes one warning <code>helmet.debug_enabled_in_production</code> when it is true in the production environment. PROCTOR check: <code>app-debug</code> (on PROCTOR main), which warns when a committed production env template, deploy file or CI pipeline sets it to true.</li>
-<li>Public-facing code <strong class="kw kw--must-not">MUST NOT</strong> display default interpreter or framework error pages to the user; show a controlled message and log the detail (WSU developer standards, 2024). No check exists yet.</li>
+<li><code>APP_DEBUG</code> <strong class="kw kw--must">MUST</strong> be <code>false</code> in production (WSU developer standards, 2024). The Laravel adapter writes one warning <code>helmet.debug_enabled_in_production</code> when it is true in the production environment. PROCTOR check: <code>app-debug</code> (since PROCTOR 0.10.0), which warns when a committed production env template, deploy file or CI pipeline sets it to true.</li>
+<li>Public-facing code <strong class="kw kw--must-not">MUST NOT</strong> display default interpreter or framework error pages to the user; show a controlled message and log the detail (WSU developer standards, 2024). Held by: <a class="tool" href="https://helmet.apps.wayne.edu/"><img src="../assets/marks/helmet.png" alt="" width="16" height="16">HELMET</a>, when the app turns it on. Raw PHP apps get a fixed 500 page with no exception text from the opt-in error handler (<code>helmet_boot()</code> with <code>error_handler</code> enabled) and a fixed 4xx page from <code>helmet_client_error()</code>; Laravel apps set <code>HELMET_ERROR_PAGES=true</code> for the same 4xx pages and leave 5xx to Laravel's handler, which shows no detail with <code>APP_DEBUG</code> false; JSON clients keep Laravel's JSON answer. The 4xx pages are on HELMET main and ship in its next release. Nothing checks that an app turned them on.</li>
 <li>Logs and diagnostic output <strong class="kw kw--must-not">MUST NOT</strong> contain credentials or personally identifiable information such as Social Security numbers. That includes logged exceptions (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <p>A leaked password is a bad encore: everyone remembers it, and nobody asked for a second showing.</p>
 <h3 id="secrets--not-decided-here"><a class="hb-sec" href="#secrets--not-decided-here">§11.3</a> Not decided here</h3>
 <ul>
-<li>The <a class="tool" href="https://helmet.apps.wayne.edu/"><img src="../assets/marks/helmet.png" alt="" width="16" height="16">HELMET</a> header rules and runtime refusals are written in <code>runtime-and-headers.md</code>.</li>
+<li>The HELMET header rules and runtime refusals are written in <code>runtime-and-headers.md</code>.</li>
 </ul>
           </div>
       </article>
@@ -1053,7 +1057,7 @@ override <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>4df7f16</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>893cc73</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

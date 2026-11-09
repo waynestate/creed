@@ -26,14 +26,14 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 ## [§11.2](https://creed.apps.wayne.edu/handbook/secrets.html#errors-and-debug-output) Errors and debug output
 
-- `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment. PROCTOR check: `app-debug` (on PROCTOR main), which warns when a committed production env template, deploy file or CI pipeline sets it to true.
-- Public-facing code **MUST NOT** display default interpreter or framework error pages to the user; show a controlled message and log the detail (WSU developer standards, 2024). No check exists yet.
+- `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment. PROCTOR check: `app-debug` (since PROCTOR 0.10.0), which warns when a committed production env template, deploy file or CI pipeline sets it to true.
+- Public-facing code **MUST NOT** display default interpreter or framework error pages to the user; show a controlled message and log the detail (WSU developer standards, 2024). Held by: [HELMET](https://helmet.apps.wayne.edu/), when the app turns it on. Raw PHP apps get a fixed 500 page with no exception text from the opt-in error handler (`helmet_boot()` with `error_handler` enabled) and a fixed 4xx page from `helmet_client_error()`; Laravel apps set `HELMET_ERROR_PAGES=true` for the same 4xx pages and leave 5xx to Laravel's handler, which shows no detail with `APP_DEBUG` false; JSON clients keep Laravel's JSON answer. The 4xx pages are on HELMET main and ship in its next release. Nothing checks that an app turned them on.
 - Logs and diagnostic output **MUST NOT** contain credentials or personally identifiable information such as Social Security numbers. That includes logged exceptions (WSU developer standards, 2024). No check exists yet.
 
 A leaked password is a bad encore: everyone remembers it, and nobody asked for a second showing.
 
 ## [§11.3](https://creed.apps.wayne.edu/handbook/secrets.html#not-decided-here) Not decided here
 
-- The [HELMET](https://helmet.apps.wayne.edu/) header rules and runtime refusals are written in `runtime-and-headers.md`.
+- The HELMET header rules and runtime refusals are written in `runtime-and-headers.md`.
 
-Set from [`handbook/secrets.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/secrets.md), impression `deb228f`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/secrets.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/secrets.md), impression `e561d67`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

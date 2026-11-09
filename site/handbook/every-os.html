@@ -101,9 +101,13 @@ macOS get bash (<code>.sh</code>), written for macOS's stock bash 3.2 and its BS
 <li>Every repo carries a <code>.gitattributes</code> with <code>* text=auto eol=lf</code>, and
 <code>.ps1</code>, <code>.bat</code> and <code>.cmd</code> set to CRLF. Anything that runs on a Linux host
 <strong class="kw kw--must">MUST</strong> be LF: on Citadel, and on OpenShift, Coolify or raw Docker elsewhere
-<span class="hb-cite">(the stack's every-OS design)</span>. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>crlf-deploy-script</code>, for
+<span class="hb-cite">(the stack's every-OS design)</span>. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> checks: <code>crlf-deploy-script</code>, for
 deploy scripts only: it fails on a CRLF deploy script and warns when
-<code>.gitattributes</code> does not pin <code>*.sh</code> to LF.</li>
+<code>.gitattributes</code> does not pin <code>*.sh</code> to LF; and <code>gitattributes-eol</code> (on
+PROCTOR main, in its next release), which warns when <code>.gitattributes</code> does
+not pin the repo's <code>*.sh</code>, <code>*.conf</code>, <code>Dockerfile</code> and <code>*.Dockerfile</code> files
+to <code>eol=lf</code>, and on a CRLF Dockerfile or <code>.conf</code> under <code>deploy/</code> or
+<code>.squire/</code>.</li>
 <li>Two paths in a repo <strong class="kw kw--must-not">MUST NOT</strong> differ only by letter case (<code>Docs/Guide.md</code>
 and <code>docs/guide.md</code>): Windows and macOS ignore case, so one checkout
 silently overwrites the other, and a Linux host then loads a file nobody
@@ -118,7 +122,7 @@ PROCTOR check: <code>portability</code>.</li>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="accessibility.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 9</span><span class="hb-pager__name">Accessibility</span></a><a class="hb-pager__link hb-pager__link--next" href="secrets.html" rel="next"><span class="hb-pager__dir">Next · Chapter 11</span><span class="hb-pager__name">Secrets and debugging</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/every-os.md"><code>handbook/every-os.md</code> on GitHub</a>, impression <code>e4c9571</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/every-os.md"><code>handbook/every-os.md</code> on GitHub</a>, impression <code>ad16b95</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

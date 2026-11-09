@@ -600,7 +600,7 @@ Partially
 
 `APP_DEBUG` is `false` in production.
 
-Held by [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `app-debug`, on PROCTOR main, which warns when a committed production env template, deploy file or CI pipeline sets `APP_DEBUG` to true. [HELMET](https://creed.apps.wayne.edu/#ahj-helmet) watches the running app and warns when a Laravel app boots with debug on in production.
+Held by [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `app-debug`, since PROCTOR 0.10.0, which warns when a committed production env template, deploy file or CI pipeline sets `APP_DEBUG` to true. [HELMET](https://creed.apps.wayne.edu/#ahj-helmet) watches the running app and warns when a Laravel app boots with debug on in production.
 
 Checked
 
@@ -658,7 +658,7 @@ Documented
 
 Scripts ship as a `.ps1` and `.sh` pair, or as one PHP command. Every repo carries `.gitattributes` with `* text=auto eol=lf`.
 
-Gap [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `crlf-deploy-script` fails a deploy script with Windows line endings. Nothing reads `.gitattributes` or other server files yet.
+Gap [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `crlf-deploy-script` fails a deploy script with Windows line endings. `gitattributes-eol`, on PROCTOR main and in its next release, warns when `.gitattributes` leaves shell scripts, `.conf` files or Dockerfiles off LF, and on a CRLF Dockerfile or `.conf` under `deploy/` or `.squire/`. Nothing checks the `.ps1` and `.sh` pair yet.
 
 Partially
 
@@ -927,6 +927,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Docs: the every-OS rule (practice 34, backlog item 16, handbook `every-os.md`, front page §6.5) names PROCTOR main's `gitattributes-eol`, which ships in PROCTOR's next release and warns when `.gitattributes` leaves shell scripts, `.conf` files or Dockerfiles off LF and on a CRLF Dockerfile or `.conf` under `deploy/` or `.squire/`; practice 34 stays Partially (nothing checks the `.ps1` and `.sh` pair). The secrets chapter's error-page rule is now "Held by: HELMET" (the opt-in 500 handler, `helmet_client_error()` and the Laravel 4xx pages behind `HELMET_ERROR_PAGES`, on HELMET main) instead of "No check exists yet", and practice 26, the secrets chapter and front page §4.3 say `app-debug` shipped in PROCTOR 0.10.0. No CREED row covered the Entra client secret expiry Drawbridge now reminds about, so none changed. The tally is unchanged.
 - Fixed: `bin/validate-policy.php` names the line when a policy line carries neither `security_until` nor `"current": true`, or carries both, and says how to fix it. The schema already refused such a line, but its message ("The properties must match schema") named nothing. An undated line would make `Policy::supported()` and `oldestSupported()` throw for the whole component in PROCTOR and ADVISOR, so CI now stops it with a message that names the component and version; the reader is unchanged.
 - Docs: BEST_PRACTICES catches up with PROCTOR 0.10.0 (mysql-minimum, app-debug, lock-committed, preflight-pinned), Pinstripe 0.3.0's joined-SQL ban, Sourdough's npm audit step, the GitLab tier (19.5.1 CE) and Composer 2.11's cooldown. Practice 56 (validate input) is now Checked, so the front page's tally reads 18 Checked and 18 Documented and chapter 11's bar follows.
 - Changed: four handbook rules name the PROCTOR 0.10.0 check that reports them instead of "No check exists yet": `csp-unsafe-inline` and `display-errors` (runtime and headers), `directory-listing` and `robots-txt` (production). The robots.txt rule says an app that wants crawling writes `Allow: /` for `User-agent: *`.
@@ -2660,11 +2661,11 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - Every developer tool works on Windows, macOS and Linux (the stack's every-OS design).
 - A developer script ships as a `.ps1` and `.sh` pair that do the same thing, or as one PHP command, which works the same everywhere (the stack's every-OS design).
 - Windows gets PowerShell (`.ps1`), which never needs bash or WSL. Linux and macOS get bash (`.sh`), written for macOS's stock bash 3.2 and its BSD tools (the stack's every-OS design).
-- Every repo carries a `.gitattributes` with `* text=auto eol=lf`, and `.ps1`, `.bat` and `.cmd` set to CRLF. Anything that runs on a Linux host **MUST** be LF: on Citadel, and on OpenShift, Coolify or raw Docker elsewhere (the stack's every-OS design). [PROCTOR](https://proctor.apps.wayne.edu/) check: `crlf-deploy-script`, for deploy scripts only: it fails on a CRLF deploy script and warns when `.gitattributes` does not pin `*.sh` to LF.
+- Every repo carries a `.gitattributes` with `* text=auto eol=lf`, and `.ps1`, `.bat` and `.cmd` set to CRLF. Anything that runs on a Linux host **MUST** be LF: on Citadel, and on OpenShift, Coolify or raw Docker elsewhere (the stack's every-OS design). [PROCTOR](https://proctor.apps.wayne.edu/) checks: `crlf-deploy-script`, for deploy scripts only: it fails on a CRLF deploy script and warns when `.gitattributes` does not pin `*.sh` to LF; and `gitattributes-eol` (on PROCTOR main, in its next release), which warns when `.gitattributes` does not pin the repo's `*.sh`, `*.conf`, `Dockerfile` and `*.Dockerfile` files to `eol=lf`, and on a CRLF Dockerfile or `.conf` under `deploy/` or `.squire/`.
 - Two paths in a repo **MUST NOT** differ only by letter case (`Docs/Guide.md` and `docs/guide.md`): Windows and macOS ignore case, so one checkout silently overwrites the other, and a Linux host then loads a file nobody edited (BEST_PRACTICES practice 34). PROCTOR check: `case-clash`, since PROCTOR 0.9.0.
 - Paths are built with the language's path functions, and subprocesses start with argument arrays, never shell strings (the stack's every-OS design). PROCTOR check: `portability`.
 
-Set from [`handbook/every-os.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/every-os.md), impression `e4c9571`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/every-os.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/every-os.md), impression `ad16b95`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2864,17 +2865,17 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 ### [§11.2](https://creed.apps.wayne.edu/handbook/secrets.html#errors-and-debug-output) Errors and debug output
 
-- `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment. PROCTOR check: `app-debug` (on PROCTOR main), which warns when a committed production env template, deploy file or CI pipeline sets it to true.
-- Public-facing code **MUST NOT** display default interpreter or framework error pages to the user; show a controlled message and log the detail (WSU developer standards, 2024). No check exists yet.
+- `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment. PROCTOR check: `app-debug` (since PROCTOR 0.10.0), which warns when a committed production env template, deploy file or CI pipeline sets it to true.
+- Public-facing code **MUST NOT** display default interpreter or framework error pages to the user; show a controlled message and log the detail (WSU developer standards, 2024). Held by: [HELMET](https://helmet.apps.wayne.edu/), when the app turns it on. Raw PHP apps get a fixed 500 page with no exception text from the opt-in error handler (`helmet_boot()` with `error_handler` enabled) and a fixed 4xx page from `helmet_client_error()`; Laravel apps set `HELMET_ERROR_PAGES=true` for the same 4xx pages and leave 5xx to Laravel's handler, which shows no detail with `APP_DEBUG` false; JSON clients keep Laravel's JSON answer. The 4xx pages are on HELMET main and ship in its next release. Nothing checks that an app turned them on.
 - Logs and diagnostic output **MUST NOT** contain credentials or personally identifiable information such as Social Security numbers. That includes logged exceptions (WSU developer standards, 2024). No check exists yet.
 
 A leaked password is a bad encore: everyone remembers it, and nobody asked for a second showing.
 
 ### [§11.3](https://creed.apps.wayne.edu/handbook/secrets.html#not-decided-here) Not decided here
 
-- The [HELMET](https://helmet.apps.wayne.edu/) header rules and runtime refusals are written in `runtime-and-headers.md`.
+- The HELMET header rules and runtime refusals are written in `runtime-and-headers.md`.
 
-Set from [`handbook/secrets.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/secrets.md), impression `deb228f`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/secrets.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/secrets.md), impression `e561d67`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
