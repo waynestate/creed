@@ -125,5 +125,6 @@ the page reprints. `FrontPageTallyTest` recounts the stamps from `BEST_PRACTICES
 
 ## Who maintains it
 
-Adam Perkins, Wayne State University Enterprise Applications. Internal runbook (accounts, tokens, mirrors, deploy
-access): ask Enterprise Applications.
+The stack maintainer (a role, not a named person), Wayne State University Enterprise Applications. To reach them,
+open an issue on git.wayne.edu. Internal runbook (accounts, tokens, mirrors, deploy access): ask Enterprise
+Applications.
