@@ -8,7 +8,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Keeps the public pages from counting Wayne State apps (D-063). Proof runs
+ * Keeps the public pages from counting Wayne State apps. Proof runs
  * against real applications live on the private proof site; anything public
  * speaks in percentages and trends, never "37 of 41 apps", and never names an
  * app or a team. Names cannot be caught by a pattern, so review still owns
@@ -36,7 +36,7 @@ final class PublicProofCopyTest extends TestCase
             }
         }
 
-        self::assertSame([], $found, "Public copy states app counts; use percentages and trends (D-063):\n" . implode("\n", $found));
+        self::assertSame([], $found, "Public copy states app counts; use percentages and trends:\n" . implode("\n", $found));
     }
 
     #[Test]
