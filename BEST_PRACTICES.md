@@ -661,7 +661,7 @@ Sources: [Packagist: Composer 2.9.6 Perforce fixes](https://blog.packagist.com/c
 
 How the stack holds it: `Checked`. PROCTOR's `composer-version` check fails a Composer below the higher of its CVE
 floors and CREED's policy minimum (`tools.composer.minimum`, 2.8.0), naming the policy in its message. CREED's own
-pipeline runs the pinned `composer:2.10.3` image.
+pipeline runs the `composer:2.11.1` image, pinned by digest.
 
 ### 40. Treat a brand-new package version as untrusted for a short time
 
