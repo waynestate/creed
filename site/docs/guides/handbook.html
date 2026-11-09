@@ -47,7 +47,8 @@
 <h2 id="how-to-read-a-rule">How to read a rule<a class="docs-heading-link" aria-label="Link to this section" href="#how-to-read-a-rule">#</a></h2>
 <ul>
 <li>The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in each chapter are to be interpreted as described in RFC 2119.</li>
-<li>A line that reads &quot;PROCTOR check: <code>&lt;id&gt;</code>&quot; names the PROCTOR check that reports a breach of that rule.</li>
+<li>Every rule names what holds it, with one of three tags: &quot;PROCTOR check: <code>&lt;id&gt;</code>&quot; (the PROCTOR check that reports a breach), &quot;Held by: ...&quot; (any other point that holds it, such as a Preflight component or a runtime package's config) or &quot;No check exists yet&quot;.</li>
+<li><code>composer lint-handbook</code> fails when a rule that uses MUST, SHOULD or MAY carries none of the three, so a rule cannot quietly lose its tag. Like any good frontman, every rule has to say who is backing it.</li>
 </ul>
 <h2 id="the-chapters">The chapters<a class="docs-heading-link" aria-label="Link to this section" href="#the-chapters">#</a></h2>
 <ul>
@@ -59,7 +60,7 @@
 <li><a href="../../handbook/runtime-and-headers.html">Runtime and headers</a>: the runtime (Baseline) warns and refuses only for unsafe config, HELMET's headers on every response, proxy trust from a platform preset or the app's own list, and debug off in production.</li>
 <li><a href="../../handbook/deploy-gate.html">Deploy gate</a>: the gate runs PROCTOR against the commit being released, before it is released, and refuses EOL PHP.</li>
 <li><a href="../../handbook/ci.html">CI</a>: CI is enforcement point (c), a red pipeline before merge, built from Preflight's pinned components and judged with deterministic commands, never with a model.</li>
-<li><a href="../../handbook/accessibility.html">Accessibility</a>: WCAG 2.2 Level AA as the target for every public page, WayneUI components as the checked starting point, an automated Pa11y check in CI, and the open Title II question.</li>
+<li><a href="../../handbook/accessibility.html">Accessibility</a>: WCAG 2.2 Level AA as the target for every public page, WayneUI components as the checked starting point, Preflight's automated axe-core check in CI, and the open Title II question.</li>
 <li><a href="../../handbook/every-os.html">Every OS</a>: every developer tool works on Windows, macOS and Linux, with <code>.ps1</code> and <code>.sh</code> pairs, LF line endings and portable paths.</li>
 <li><a href="../../handbook/secrets.html">Secrets</a>: credentials never in version control and never in the served folder, with errors and debug output that hide them.</li>
 <li><a href="../../handbook/production.html">Production</a>: pre-production and production environments, running safely with the least access needed, and who can reach an app.</li>

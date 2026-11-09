@@ -10,7 +10,7 @@ Chapter 10
 
 # Every OS
 
-5 provisions · **MUST** 1
+6 provisions · **MUST NOT** 1 · **MUST** 1
 
 Decided
 
@@ -19,7 +19,8 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - Every developer tool works on Windows, macOS and Linux (the stack's every-OS design).
 - A developer script ships as a `.ps1` and `.sh` pair that do the same thing, or as one PHP command, which works the same everywhere (the stack's every-OS design).
 - Windows gets PowerShell (`.ps1`), which never needs bash or WSL. Linux and macOS get bash (`.sh`), written for macOS's stock bash 3.2 and its BSD tools (the stack's every-OS design).
-- Every repo carries a `.gitattributes` with `* text=auto eol=lf`, and `.ps1`, `.bat` and `.cmd` set to CRLF. Anything that runs on a Linux host **MUST** be LF: on Citadel, and on OpenShift, Coolify or raw Docker elsewhere (the stack's every-OS design).
-- Paths are built with the language's path functions, and subprocesses start with argument arrays, never shell strings (the stack's every-OS design). [PROCTOR](https://proctor.apps.wayne.edu/) check: `portability`.
+- Every repo carries a `.gitattributes` with `* text=auto eol=lf`, and `.ps1`, `.bat` and `.cmd` set to CRLF. Anything that runs on a Linux host **MUST** be LF: on Citadel, and on OpenShift, Coolify or raw Docker elsewhere (the stack's every-OS design). [PROCTOR](https://proctor.apps.wayne.edu/) check: `crlf-deploy-script`, for deploy scripts only: it fails on a CRLF deploy script and warns when `.gitattributes` does not pin `*.sh` to LF.
+- Two paths in a repo **MUST NOT** differ only by letter case (`Docs/Guide.md` and `docs/guide.md`): Windows and macOS ignore case, so one checkout silently overwrites the other, and a Linux host then loads a file nobody edited (BEST_PRACTICES practice 34). PROCTOR check: `case-clash`, since PROCTOR 0.9.0.
+- Paths are built with the language's path functions, and subprocesses start with argument arrays, never shell strings (the stack's every-OS design). PROCTOR check: `portability`.
 
-Set from [`handbook/every-os.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/every-os.md), impression `665c7ab`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/every-os.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/every-os.md), impression `e4c9571`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

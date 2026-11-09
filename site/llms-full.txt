@@ -927,6 +927,8 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Fixed: BEST_PRACTICES catches up with PROCTOR and its own policy. Practice 28 and backlog item 15 (now Done) say the policy's `gate` block carries stage dates and `proctor gate` (0.9.0) applies them; practices 26, 34 and 46 and backlog items 12, 16 and 28 name `app-debug`, `case-clash` and `mysql-minimum`, which they called unbuilt. No stamp moved in this change.
+- Added: the handbook lint fails on a rule that names nothing holding it. Every rule that uses MUST, SHOULD or MAY carries "PROCTOR check: `<id>`", "Held by: ..." or "No check exists yet" (`HandbookLinter::untaggedRules()`, practice 29), and the 25 rules that had none are tagged. Fixed with them: the dependencies chapter no longer names `package-sources` and `internal-vendor-shadowing`, two PROCTOR checks that never shipped; the `APP_DEBUG` rules name PROCTOR main's `app-debug`; the every-OS chapter gains the `case-clash` rule; the databases chapter names `mysql-minimum`; and a test fails if an odd Node major is written into `policy.json`.
 - Changed: CI pins the Preflight components to 0.4.0 (the proctor job clones the full history, so the override-approver check can read git blame).
 - Changed: the code handbook names what Pinstripe enforces (presets from 0.1.4, the env rule, and the banned calls in Pinstripe 0.2.0 with their `pinstripe.banned.*` identifiers) instead of calling every rule Planned.
 - Docs: BEST_PRACTICES.md practices 41 (front-end install options, now Partially: Squire's release install and the npm cooldown are built) and 45 (CI host, now Documented: the instances run GitLab 19.5.1 CE) carry their true status.
@@ -1195,7 +1197,8 @@ The rules for the Wayne State app stack, chapter by chapter. Each chapter states
 ### How to read a rule[#](https://creed.apps.wayne.edu/docs/guides/handbook.html#how-to-read-a-rule)
 
 - The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in each chapter are to be interpreted as described in RFC 2119.
-- A line that reads "PROCTOR check: `<id>`" names the PROCTOR check that reports a breach of that rule.
+- Every rule names what holds it, with one of three tags: "PROCTOR check: `<id>`" (the PROCTOR check that reports a breach), "Held by: ..." (any other point that holds it, such as a Preflight component or a runtime package's config) or "No check exists yet".
+- `composer lint-handbook` fails when a rule that uses MUST, SHOULD or MAY carries none of the three, so a rule cannot quietly lose its tag. Like any good frontman, every rule has to say who is backing it.
 
 ### The chapters[#](https://creed.apps.wayne.edu/docs/guides/handbook.html#the-chapters)
 
@@ -1207,7 +1210,7 @@ The rules for the Wayne State app stack, chapter by chapter. Each chapter states
 - [Runtime and headers](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html): the runtime (Baseline) warns and refuses only for unsafe config, HELMET's headers on every response, proxy trust from a platform preset or the app's own list, and debug off in production.
 - [Deploy gate](https://creed.apps.wayne.edu/handbook/deploy-gate.html): the gate runs PROCTOR against the commit being released, before it is released, and refuses EOL PHP.
 - [CI](https://creed.apps.wayne.edu/handbook/ci.html): CI is enforcement point (c), a red pipeline before merge, built from Preflight's pinned components and judged with deterministic commands, never with a model.
-- [Accessibility](https://creed.apps.wayne.edu/handbook/accessibility.html): WCAG 2.2 Level AA as the target for every public page, WayneUI components as the checked starting point, an automated Pa11y check in CI, and the open Title II question.
+- [Accessibility](https://creed.apps.wayne.edu/handbook/accessibility.html): WCAG 2.2 Level AA as the target for every public page, WayneUI components as the checked starting point, Preflight's automated axe-core check in CI, and the open Title II question.
 - [Every OS](https://creed.apps.wayne.edu/handbook/every-os.html): every developer tool works on Windows, macOS and Linux, with `.ps1` and `.sh` pairs, LF line endings and portable paths.
 - [Secrets](https://creed.apps.wayne.edu/handbook/secrets.html): credentials never in version control and never in the served folder, with errors and debug output that hide them.
 - [Production](https://creed.apps.wayne.edu/handbook/production.html): pre-production and production environments, running safely with the least access needed, and who can reach an app.
@@ -2219,16 +2222,16 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 ### [§9.3](https://creed.apps.wayne.edu/handbook/accessibility.html#checks) Checks
 
-- An automated accessibility check **SHOULD** run in CI on the app's key pages. GitLab's accessibility testing uses Pa11y and is available on every self-managed tier (the stack's accessibility design).
+- An automated accessibility check **SHOULD** run in CI on the app's key pages (the stack's accessibility design). Held by: [Preflight](https://preflight.apps.wayne.edu/)'s `a11y` component, below.
 - An automated tool catches regressions; it is not proof of conformance, and it never replaces a manual keyboard and screen reader pass before launch (the stack's accessibility design).
-- [Preflight](https://preflight.apps.wayne.edu/)'s `a11y` component (0.3.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core in light and dark at 320 and 1280 px, and fails the pipeline on any violation. Add `wcag22aa` to its tags for the WCAG 2.2 AA target above.
+- Preflight's `a11y` component (0.4.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core in light and dark at 320 and 1280 px, and fails the pipeline on any violation. Add `wcag22aa` to its tags for the WCAG 2.2 AA target above.
 
 ### [§9.4](https://creed.apps.wayne.edu/handbook/accessibility.html#not-decided-here) Not decided here
 
 - Whether and when the ADA Title II web rule applies to a given WSU unit. The rule applies WCAG 2.1 AA to public entities on dates that depend on the entity's size; the answer is for WSU's counsel and accessibility office, and this chapter does not decide it.
 - Which pages need a manual audit.
 
-Set from [`handbook/accessibility.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/accessibility.md), impression `987eb29`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/accessibility.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/accessibility.md), impression `bad0e4e`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2249,17 +2252,17 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - The `gateway` driver accepts only a signed assertion, never a bare header: user, attributes, issued-at, audience, an expiry of 60 seconds or less, and a signature the gateway and app share (the stack's auth design).
 - Drivers: `cas` (the default today), `gateway`, `oidc`, `oauth2`, `saml` (opt-in), and `fake` for local development and tests (the stack's auth design).
 - Non-EOL PHP only, with no exceptions (the stack's auth design). [PROCTOR](https://proctor.apps.wayne.edu/) check: `php-floor`.
-- The gateway's public keys reach apps as one key set file (JWKS) that holds the current key and the next one. [Drawbridge](https://drawbridge.apps.wayne.edu/) writes it (`keys:jwks`), Playbook carries WSU's copy (public keys only), and the app points [SESAME](https://sesame.apps.wayne.edu/)'s `gateway.jwks_file` (`SESAME_GATEWAY_JWKS_FILE`) at it. An app **SHOULD** read that file rather than copy keys into config values, and the `gateway` driver never fetches keys over the network at sign-in (the stack's signing-key decision). SESAME config: the file is checked at boot, and a missing file, private key material or a repeated `kid` stops the app.
+- The gateway's public keys reach apps as one key set file (JWKS) that holds the current key and the next one. [Drawbridge](https://drawbridge.apps.wayne.edu/) writes it (`keys:jwks`), Playbook carries WSU's copy (public keys only), and the app points [SESAME](https://sesame.apps.wayne.edu/)'s `gateway.jwks_file` (`SESAME_GATEWAY_JWKS_FILE`) at it. An app **SHOULD** read that file rather than copy keys into config values, and the `gateway` driver never fetches keys over the network at sign-in (the stack's signing-key decision). Held by: SESAME config, which checks the file at boot: a missing file, private key material or a repeated `kid` stops the app.
 - The gateway's signing key **MUST** be rotated every 12 months, and at once when a private key could have been exposed. A retired key **MUST** stay in the key set for at least 5 minutes after the switch, so assertions signed just before it still verify (the stack's signing-key decision). No check exists yet. Still open: where the private keys live on Citadel and who runs the yearly rotation.
 - The `saml` driver is built on `onelogin/php-saml`, is opt-in, sets no default WSU identity provider, and requires the provider to sign its assertions (the stack's SAML decision). SESAME config: the `saml` block.
 - API and other stateless requests are authenticated with signed, short-lived bearer tokens in an `Authorization` header, verified on every request. A token is signed, not merely encrypted; JSON Web Tokens are a good fit (WSU developer standards, 2024).
 - Authentication is checked before any content is shown or any script function runs, on every request. Deny by default: routes are protected unless listed as public, and an unauthenticated person is sent to sign in (WSU developer standards, 2024).
 - When authentication or an authorization lookup fails, the result is fail closed: access is withheld (WSU developer standards, 2024).
-- Administrative access **MUST** be limited to named users or roles, and access that is due to end is revoked on a regular schedule (WSU developer standards, 2024).
-- Access that is due to end when a person's status changes (for example an ended employment) **MUST** be removed by an automated process, not by memory (WSU developer standards, 2024).
-- Idle sessions **MUST** time out after a configurable period of inactivity (WSU developer standards, 2024). The stack's numbers are in [`policy/policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.json), under `sessions`, which is the source for them: SESAME signs a user out after 120 minutes idle and 720 minutes in all (`sessions.sesame`), and Drawbridge after 3600 seconds idle and 28800 seconds in all (`sessions.gateway`). SESAME config: `session.idle_minutes` (`SESAME_SESSION_IDLE_MINUTES`) and `session.absolute_minutes` (`SESAME_SESSION_ABSOLUTE_MINUTES`), with those defaults. An app that does not use SESAME sets its own idle limit; that is documented only.
+- Administrative access **MUST** be limited to named users or roles, and access that is due to end is revoked on a regular schedule (WSU developer standards, 2024). No check exists yet.
+- Access that is due to end when a person's status changes (for example an ended employment) **MUST** be removed by an automated process, not by memory (WSU developer standards, 2024). No check exists yet.
+- Idle sessions **MUST** time out after a configurable period of inactivity (WSU developer standards, 2024). The stack's numbers are in [`policy/policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.json), under `sessions`, which is the source for them: SESAME signs a user out after 120 minutes idle and 720 minutes in all (`sessions.sesame`), and Drawbridge after 3600 seconds idle and 28800 seconds in all (`sessions.gateway`). Held by: SESAME config, `session.idle_minutes` (`SESAME_SESSION_IDLE_MINUTES`) and `session.absolute_minutes` (`SESAME_SESSION_ABSOLUTE_MINUTES`), with those defaults. An app that does not use SESAME sets its own idle limit; that is documented only.
 
-Set from [`handbook/auth.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/auth.md), impression `bcedfd8`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/auth.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/auth.md), impression `32f5e85`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2280,11 +2283,11 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - CI judges with deterministic commands, never with a model. No gate depends on a model's opinion (the stack's rule on language models).
 - Components are pinned at a tag or SHA, never `~latest` (first-repos).
 - The components run on the git.wayne.edu instance runner (first-repos), and every product strongly recommends the instance runner.
-- Every change lands through a merge request that another person reviews, and critical findings are addressed before merge (**SHOULD** for a one-person project: record the self-review in the merge request) (WSU developer standards, 2024).
-- Every project **MUST** have a defined, well-understood change-control process with change requests; review and approval of merge requests is change control only for simple projects, and the process **MUST** be followed strictly (WSU developer standards, 2024).
+- Every change lands through a merge request that another person reviews, and critical findings are addressed before merge (**SHOULD** for a one-person project: record the self-review in the merge request) (WSU developer standards, 2024). No check exists yet.
+- Every project **MUST** have a defined, well-understood change-control process with change requests; review and approval of merge requests is change control only for simple projects, and the process **MUST** be followed strictly (WSU developer standards, 2024). No check exists yet.
 - Known problem: the change-request procedure on Citadel is currently broken and needs fixing there; until it is fixed, record changes through reviewed merge requests and tell the Citadel team.
 
-Set from [`handbook/ci.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/ci.md), impression `8802e0e`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/ci.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/ci.md), impression `b89d167`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2436,22 +2439,22 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 ### [§5.1](https://creed.apps.wayne.edu/handbook/databases.html#what-the-stack-supports) What the stack supports
 
-The policy lists the MySQL versions in [`policy/policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.json), under `mysql`: 5.6, 5.7, 8.0, 8.4 and 9.7, each with its [`active_until`](https://github.com/waynestate/creed/blob/main/policy/policy.json) and [`security_until`](https://github.com/waynestate/creed/blob/main/policy/policy.json) dates. The shared server runs 5.6, which is past security support; its `security_until` is 2021-02-28. Laravel 13 documents MySQL 5.7 or later. The conventions below keep an app working on the shared server until it is upgraded. They are a bridge, not the fix: the fix is the upgrade. Code that follows them runs unchanged on 8.4, so the move can be made With Arms Wide Open.
+The policy lists the MySQL versions in [`policy/policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.json), under `mysql`: 5.6, 5.7, 8.0, 8.4 and 9.7, each with its [`active_until`](https://github.com/waynestate/creed/blob/main/policy/policy.json) and [`security_until`](https://github.com/waynestate/creed/blob/main/policy/policy.json) dates. The shared server runs 5.6, which is past security support; its `security_until` is 2021-02-28. Laravel 13 documents MySQL 5.7 or later, and each Laravel line in the policy records the oldest MySQL and MariaDB it needs (`requires.mysql` and `requires.mariadb`); [PROCTOR](https://proctor.apps.wayne.edu/) main's `mysql-minimum` warns when an app's declared database image is below that minimum. The conventions below keep an app working on the shared server until it is upgraded. They are a bridge, not the fix: the fix is the upgrade. Code that follows them runs unchanged on 8.4, so the move can be made With Arms Wide Open.
 
 ### [§5.2](https://creed.apps.wayne.edu/handbook/databases.html#which-mysql-lines-the-policy-lists) Which MySQL lines the policy lists
 
-The policy lists the LTS lines, 8.4 and 9.7, for current use. It keeps the older lines, 5.6, 5.7 and 8.0, only to say that they are end of life. In MySQL 8.4 and later the default authentication plugin is `caching_sha2_password`: `mysql_native_password` is disabled by default in 8.4 and removed in 9.0. An app that **MUST** reach a server on the older plugin **MUST** set the server's plugin explicitly in its database config.
+The policy lists the LTS lines, 8.4 and 9.7, for current use. It keeps the older lines, 5.6, 5.7 and 8.0, only to say that they are end of life. In MySQL 8.4 and later the default authentication plugin is `caching_sha2_password`: `mysql_native_password` is disabled by default in 8.4 and removed in 9.0. An app that **MUST** reach a server on the older plugin **MUST** set the server's plugin explicitly in its database config. No check exists yet.
 
 ### [§5.3](https://creed.apps.wayne.edu/handbook/databases.html#grace-period) Grace period
 
-An app **MAY** stay on a database version for 90 days after it leaves support, the policy's [`eol_grace_days`](https://github.com/waynestate/creed/blob/main/policy/policy.json); the version is `Eol` through that window and `EolGraceExpired` the day after. The window is a bridge for the upgrade, not a second support window: the fix is still the upgrade.
+An app **MAY** stay on a database version for 90 days after it leaves support, the policy's [`eol_grace_days`](https://github.com/waynestate/creed/blob/main/policy/policy.json); the version is `Eol` through that window and `EolGraceExpired` the day after. The window is a bridge for the upgrade, not a second support window: the fix is still the upgrade. PROCTOR check: `mysql-eol`.
 
-- For MySQL and MariaDB the check warns and does not fail yet. While Citadel's shared server runs 5.6, an app has no supported MySQL to move to there, so a security-only, `Eol` or `EolGraceExpired` version warns, and still says to move to 8.4 or later. It starts failing past the window when Citadel offers a supported MySQL (the stack's MySQL gate decision). [PROCTOR](https://proctor.apps.wayne.edu/) check: `mysql-eol` (on PROCTOR main, due in 0.8.0).
+- For MySQL and MariaDB the check warns and does not fail yet. While Citadel's shared server runs 5.6, an app has no supported MySQL to move to there, so a security-only, `Eol` or `EolGraceExpired` version warns, and still says to move to 8.4 or later. It starts failing past the window when Citadel offers a supported MySQL (the stack's MySQL gate decision). PROCTOR check: `mysql-eol` (since PROCTOR 0.8.0).
 
 ### [§5.4](https://creed.apps.wayne.edu/handbook/databases.html#names-comments-and-connections) Names, comments and connections
 
-- Table and column names are descriptive. Add table and column comments (Laravel's `->comment()`) where the database supports them, to say what an element is for (**SHOULD**) (WSU developer standards, 2024).
-- The connection between the app and the database **MUST** be encrypted. The database account **MUST** have only the privileges the app needs, never an administrator account (WSU developer standards, 2024).
+- Table and column names are descriptive. Add table and column comments (Laravel's `->comment()`) where the database supports them, to say what an element is for (**SHOULD**) (WSU developer standards, 2024). No check exists yet.
+- The connection between the app and the database **MUST** be encrypted. The database account **MUST** have only the privileges the app needs, never an administrator account (WSU developer standards, 2024). No check exists yet.
 
 ### [§5.5](https://creed.apps.wayne.edu/handbook/databases.html#conventions-that-keep-5-6-working) Conventions that keep 5.6 working
 
@@ -2527,7 +2530,7 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`rules.eol_grace_days`**: `90`
 - **`components.*.versions.*.security_until`**: set per version
 
-Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `8e1a91e`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `76a165f`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2550,28 +2553,28 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 CREED's [`abandoned_packages`](https://github.com/waynestate/creed/blob/main/policy/policy.json) rule is `fail`, matching Composer's default since 2.7, so `composer audit` fails on an abandoned package. An app that has to keep one replaces it or records an override with a reason; PROCTOR's `composer-audit` check applies the same setting.
 
 - `composer.json` `require.php` **MUST NOT** allow an EOL version as its lowest bound (the stack's version policy). PROCTOR check: `php-floor`.
-- Apps **SHOULD** set a Composer cooldown of 3 days, once Composer 2.11 is stable and in the base images; until then no cooldown is set (the stack's dependency decision, 2026-11-03). A PROCTOR check for a missing cooldown is planned, not built.
+- Apps **SHOULD** set a Composer cooldown of 3 days, once Composer 2.11 is stable and in the base images; until then no cooldown is set (the stack's dependency decision, 2026-11-03). No check exists yet: a PROCTOR check for a missing cooldown is planned.
 - Every project is a framework-free core plus thin adapters. `composer.json` requires only `php` and PSR packages; Laravel, Inertia and Vue are `suggest` (the stack's core-plus-adapters design).
 - Adapters call the core and never re-implement it (the stack's core-plus-adapters design).
-- Before adding a third-party package, check it comes from a trusted source, and where the source is open, read enough of it to judge it sound and fit (**SHOULD**). The audit and abandoned-package rules in this chapter apply after that choice (WSU developer standards, 2024).
+- Before adding a third-party package, check it comes from a trusted source, and where the source is open, read enough of it to judge it sound and fit (**SHOULD**). The audit and abandoned-package rules in this chapter apply after that choice (WSU developer standards, 2024). No check exists yet.
 
 ### [§2.1](https://creed.apps.wayne.edu/handbook/dependencies.html#private-packages) Private packages
 
-- Internal-only packages **MUST** be installed from one GitLab package registry per ecosystem (Composer, npm), not from one `vcs`, `path` or `artifact` repository entry per package (the stack's private-packages decision).
+- Internal-only packages **MUST** be installed from one GitLab package registry per ecosystem (Composer, npm), not from one `vcs`, `path` or `artifact` repository entry per package (the stack's private-packages decision). No check exists yet.
 - Credentials **MUST NOT** appear in any repository URL in `composer.json` or `composer.lock`, or as a literal value in a committed `.npmrc`. Tokens live in a gitignored `auth.json`, the npm user config, or a CI or build-time secret (the stack's private-packages decision). PROCTOR check: `repo-url-credentials`.
-- Builds **MUST** use a read-only deploy token (`read_package_registry` only); personal access tokens **MUST NOT** be used in builds (the stack's private-packages decision).
-- The private Composer registry entry **MUST** be canonical, and the Packagist entry **SHOULD** exclude the internal vendor names, so a public package with the same name can never be installed instead (the stack's private-packages decision).
-- A released version **MUST** map to one commit for ever: tags are protected, and a version is never republished from a different commit (the stack's private-packages decision).
-- Public code **MUST NOT** go through the private registry; it is published to Packagist or npm (the stack's private-packages decision).
-- Apps **SHOULD NOT** proxy or mirror public registries in v1 (the stack's private-packages decision).
+- Builds **MUST** use a read-only deploy token (`read_package_registry` only); personal access tokens **MUST NOT** be used in builds (the stack's private-packages decision). No check exists yet.
+- The private Composer registry entry **MUST** be canonical, and the Packagist entry **SHOULD** exclude the internal vendor names, so a public package with the same name can never be installed instead (the stack's private-packages decision). No check exists yet.
+- A released version **MUST** map to one commit for ever: tags are protected, and a version is never republished from a different commit (the stack's private-packages decision). Held by: [Preflight](https://preflight.apps.wayne.edu/)'s `package-publish` component, which reads the registry first and refuses a version that already exists with different contents.
+- Public code **MUST NOT** go through the private registry; it is published to Packagist or npm (the stack's private-packages decision). No check exists yet.
+- Apps **SHOULD NOT** proxy or mirror public registries in v1 (the stack's private-packages decision). No check exists yet.
 
-PROCTOR's `repo-url-credentials`, `package-sources` and `internal-vendor-shadowing` checks enforce rules 1, 2 and 4 (warning first), and [Preflight](https://preflight.apps.wayne.edu/)'s publish job enforces rule 5.
+Today PROCTOR's `repo-url-credentials` check holds rule 2 and Preflight's `package-publish` component holds rule 5. Checks for rule 1 (one registry per ecosystem) and rule 4 (the canonical entry and the Packagist exclusion) are planned, not built: earlier versions of this chapter named them as `package-sources` and `internal-vendor-shadowing`, but PROCTOR has never shipped either.
 
 In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.json)
 
 - **`rules.abandoned_packages`**: `"fail"`
 
-Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `218c65c`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `78b5b19`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2619,7 +2622,7 @@ Chapter 10
 
 ## Every OS
 
-5 provisions · **MUST** 1
+6 provisions · **MUST NOT** 1 · **MUST** 1
 
 Decided
 
@@ -2628,10 +2631,11 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - Every developer tool works on Windows, macOS and Linux (the stack's every-OS design).
 - A developer script ships as a `.ps1` and `.sh` pair that do the same thing, or as one PHP command, which works the same everywhere (the stack's every-OS design).
 - Windows gets PowerShell (`.ps1`), which never needs bash or WSL. Linux and macOS get bash (`.sh`), written for macOS's stock bash 3.2 and its BSD tools (the stack's every-OS design).
-- Every repo carries a `.gitattributes` with `* text=auto eol=lf`, and `.ps1`, `.bat` and `.cmd` set to CRLF. Anything that runs on a Linux host **MUST** be LF: on Citadel, and on OpenShift, Coolify or raw Docker elsewhere (the stack's every-OS design).
-- Paths are built with the language's path functions, and subprocesses start with argument arrays, never shell strings (the stack's every-OS design). [PROCTOR](https://proctor.apps.wayne.edu/) check: `portability`.
+- Every repo carries a `.gitattributes` with `* text=auto eol=lf`, and `.ps1`, `.bat` and `.cmd` set to CRLF. Anything that runs on a Linux host **MUST** be LF: on Citadel, and on OpenShift, Coolify or raw Docker elsewhere (the stack's every-OS design). [PROCTOR](https://proctor.apps.wayne.edu/) check: `crlf-deploy-script`, for deploy scripts only: it fails on a CRLF deploy script and warns when `.gitattributes` does not pin `*.sh` to LF.
+- Two paths in a repo **MUST NOT** differ only by letter case (`Docs/Guide.md` and `docs/guide.md`): Windows and macOS ignore case, so one checkout silently overwrites the other, and a Linux host then loads a file nobody edited (BEST_PRACTICES practice 34). PROCTOR check: `case-clash`, since PROCTOR 0.9.0.
+- Paths are built with the language's path functions, and subprocesses start with argument arrays, never shell strings (the stack's every-OS design). PROCTOR check: `portability`.
 
-Set from [`handbook/every-os.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/every-os.md), impression `665c7ab`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/every-os.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/every-os.md), impression `e4c9571`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2643,7 +2647,7 @@ The handbook · 2026 Edition
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a "Not decided here" heading.
 
-Thirteen chapters · 181 provisions · **MUST** 56 · **SHOULD** 15 · **MAY** 1
+Thirteen chapters · 182 provisions · **MUST** 57 · **SHOULD** 15 · **MAY** 1
 
 ### Contents
 
@@ -2656,7 +2660,7 @@ Thirteen chapters · 181 provisions · **MUST** 56 · **SHOULD** 15 · **MAY** 1
 7. [7 Deploy gate On Citadel · Elsewhere](https://creed.apps.wayne.edu/handbook/deploy-gate.html)2 sections · 8 provisionsDecided
 8. [8 CI](https://creed.apps.wayne.edu/handbook/ci.html)8 provisions · **MUST** 2 · **SHOULD** 1Decided
 9. [9 Accessibility Target · Components · Checks · Not decided here](https://creed.apps.wayne.edu/handbook/accessibility.html)4 sections · 9 provisions · **MUST NOT** 1 · **SHOULD** 1Decided
-10. [10 Every OS](https://creed.apps.wayne.edu/handbook/every-os.html)5 provisions · **MUST** 1Decided
+10. [10 Every OS](https://creed.apps.wayne.edu/handbook/every-os.html)6 provisions · **MUST NOT** 1 · **MUST** 1Decided
 11. [11 Secrets and debugging Credentials · Errors and debug output · Not decided here](https://creed.apps.wayne.edu/handbook/secrets.html)3 sections · 9 provisions · **MUST NOT** 4 · **MUST** 3 · **SHOULD NOT** 1Decided
 12. [12 Production Environments · Running safely · Who can reach it](https://creed.apps.wayne.edu/handbook/production.html)3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 5 · **SHOULD** 3Decided
 13. [13 Overrides](https://creed.apps.wayne.edu/handbook/overrides.html)7 provisions · **MUST** 1Decided
@@ -2672,7 +2676,7 @@ Thirteen chapters · 181 provisions · **MUST** 56 · **SHOULD** 15 · **MAY** 1
 
 For printing, or for your browser's find. Every chapter, in order, from the same Markdown.
 
-Set from [`handbook/README.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/README.md), impression `741c4a8`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/README.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/README.md), impression `249720c`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2799,15 +2803,13 @@ The headers are the setlist: the same one on every response. The HSTS encore pla
 ### [§6.7](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#errors-in-production) Errors in production
 
 - PHP `display_errors` **MUST** be `Off` and `log_errors` `On` in production ([Squire](https://squire.apps.wayne.edu/)'s deploy kit ships that php.ini; HELMET neither sets nor checks it). No check exists yet.
-- Laravel `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment.
-
-A PROCTOR check for this is proposed, not built.
+- Laravel `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment. PROCTOR check: `app-debug`, on PROCTOR main: it warns when a committed production env template, deploy file or CI pipeline sets `APP_DEBUG` to true (`.env.example` is the local template and is skipped).
 
 ### [§6.8](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#not-decided-here) Not decided here
 
 - The Content-Security-Policy report endpoints.
 
-Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `a8c85a5`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `fd7d250`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2833,7 +2835,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 ### [§11.2](https://creed.apps.wayne.edu/handbook/secrets.html#errors-and-debug-output) Errors and debug output
 
-- `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment. A PROCTOR check for this is proposed, not built.
+- `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment. PROCTOR check: `app-debug` (on PROCTOR main), which warns when a committed production env template, deploy file or CI pipeline sets it to true.
 - Public-facing code **MUST NOT** display default interpreter or framework error pages to the user; show a controlled message and log the detail (WSU developer standards, 2024). No check exists yet.
 - Logs and diagnostic output **MUST NOT** contain credentials or personally identifiable information such as Social Security numbers. That includes logged exceptions (WSU developer standards, 2024). No check exists yet.
 
@@ -2843,7 +2845,7 @@ A leaked password is a bad encore: everyone remembers it, and nobody asked for a
 
 - The [HELMET](https://helmet.apps.wayne.edu/) header rules and runtime refusals are written in `runtime-and-headers.md`.
 
-Set from [`handbook/secrets.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/secrets.md), impression `8f59128`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/secrets.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/secrets.md), impression `deb228f`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2873,7 +2875,7 @@ Table 1-1
 - The dates live in [`policy/policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.json). Every tool derives a version's state from the date, through the CREED reader. No other code decides state (the stack's version policy).
 - The PHP floor is `^8.2`, the oldest non-EOL version today (the stack's version policy). It moves to `^8.3` on 2027-01-01. [PROCTOR](https://proctor.apps.wayne.edu/) check: `php-floor`.
 - Stack packages raise their own `php` floor in a new major when a PHP version reaches EOL, so security fixes require the upgrade (the stack's version policy).
-- `policy.json` is a contract, versioned like [WayneUI](https://wayneui.apps.wayne.edu/)'s `/v2/`. Older Check versions **MUST** still read newer policy files (the stack's version policy).
+- `policy.json` is a contract, versioned like [WayneUI](https://wayneui.apps.wayne.edu/)'s `/v2/`. Older Check versions **MUST** still read newer policy files (the stack's version policy). Held by: CREED's own CI, where `tests/OlderReaderContractTest.php` reads a future-shaped policy file with today's reader.
 
 ### [§1.1](https://creed.apps.wayne.edu/handbook/versions.html#latest-patches) Latest patches
 
@@ -2881,13 +2883,13 @@ Each version can also carry a [`latest_patch`](https://github.com/waynestate/cre
 
 ### [§1.2](https://creed.apps.wayne.edu/handbook/versions.html#base-images) Base images
 
-A base image **MUST** be rebuilt when the policy's `latest_patch` for its branch changes. The policy robot lands that change itself: it pushes the refresh to `main` when its `composer ci` gate is green, and opens a merge request for a person only when the gate is red. So an image never sits behind the patch level the policy records (the stack's version policy). Every such change to `latest_patch` is a rebuild. An image **MUST NOT** be pinned to a branch the policy marks EOL (the stack's version policy).
+A base image **MUST** be rebuilt when the policy's `latest_patch` for its branch changes. The policy robot lands that change itself: it pushes the refresh to `main` when its `composer ci` gate is green, and opens a merge request for a person only when the gate is red. So an image never sits behind the patch level the policy records (the stack's version policy). Every such change to `latest_patch` is a rebuild. An image **MUST NOT** be pinned to a branch the policy marks EOL (the stack's version policy). PROCTOR check: `unpatched`, which warns when the PHP an app runs on (`--php-runtime`) is behind `latest_patch`; nothing reads the PHP image tag itself yet.
 
 `images.docker` names the official image for a plain Docker target. Citadel names its own images, so `images.citadel` stays unset until Citadel publishes names. `openshift` and `coolify` are not filled yet.
 
 ### [§1.3](https://creed.apps.wayne.edu/handbook/versions.html#node) Node
 
-The policy lists even Node majors only, because even majors are the LTS lines; odd majors **MUST NOT** be a target and are not listed (the stack's version policy).
+The policy lists even Node majors only, because even majors are the LTS lines; odd majors **MUST NOT** be a target and are not listed (the stack's version policy). Held by: CREED's own CI. The refresher adds even majors only, and `tests/PolicySchemaTest.php` fails if an odd major is ever written into `policy.json` by hand.
 
 An app **MUST** build on a Node line that has not reached end of life. PROCTOR check: `node-eol`. It reads `.nvmrc`, `.node-version`, `volta.node` and the `node` image in CI and Dockerfiles: an active line passes, a security-only line warns and an EOL line fails. `engines.node` and an odd major warn.
 
@@ -2904,4 +2906,4 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`components.*.versions.*.latest_patch`**: set per version
 - **`components.*.versions.*.latest_patch_checked`**: set per version
 
-Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `a620495`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `228dd00`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

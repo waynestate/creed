@@ -30,7 +30,7 @@ Table 1-1
 - The dates live in [`policy/policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.json). Every tool derives a version's state from the date, through the CREED reader. No other code decides state (the stack's version policy).
 - The PHP floor is `^8.2`, the oldest non-EOL version today (the stack's version policy). It moves to `^8.3` on 2027-01-01. [PROCTOR](https://proctor.apps.wayne.edu/) check: `php-floor`.
 - Stack packages raise their own `php` floor in a new major when a PHP version reaches EOL, so security fixes require the upgrade (the stack's version policy).
-- `policy.json` is a contract, versioned like [WayneUI](https://wayneui.apps.wayne.edu/)'s `/v2/`. Older Check versions **MUST** still read newer policy files (the stack's version policy).
+- `policy.json` is a contract, versioned like [WayneUI](https://wayneui.apps.wayne.edu/)'s `/v2/`. Older Check versions **MUST** still read newer policy files (the stack's version policy). Held by: CREED's own CI, where `tests/OlderReaderContractTest.php` reads a future-shaped policy file with today's reader.
 
 ## [§1.1](https://creed.apps.wayne.edu/handbook/versions.html#latest-patches) Latest patches
 
@@ -38,13 +38,13 @@ Each version can also carry a [`latest_patch`](https://github.com/waynestate/cre
 
 ## [§1.2](https://creed.apps.wayne.edu/handbook/versions.html#base-images) Base images
 
-A base image **MUST** be rebuilt when the policy's `latest_patch` for its branch changes. The policy robot lands that change itself: it pushes the refresh to `main` when its `composer ci` gate is green, and opens a merge request for a person only when the gate is red. So an image never sits behind the patch level the policy records (the stack's version policy). Every such change to `latest_patch` is a rebuild. An image **MUST NOT** be pinned to a branch the policy marks EOL (the stack's version policy).
+A base image **MUST** be rebuilt when the policy's `latest_patch` for its branch changes. The policy robot lands that change itself: it pushes the refresh to `main` when its `composer ci` gate is green, and opens a merge request for a person only when the gate is red. So an image never sits behind the patch level the policy records (the stack's version policy). Every such change to `latest_patch` is a rebuild. An image **MUST NOT** be pinned to a branch the policy marks EOL (the stack's version policy). PROCTOR check: `unpatched`, which warns when the PHP an app runs on (`--php-runtime`) is behind `latest_patch`; nothing reads the PHP image tag itself yet.
 
 `images.docker` names the official image for a plain Docker target. Citadel names its own images, so `images.citadel` stays unset until Citadel publishes names. `openshift` and `coolify` are not filled yet.
 
 ## [§1.3](https://creed.apps.wayne.edu/handbook/versions.html#node) Node
 
-The policy lists even Node majors only, because even majors are the LTS lines; odd majors **MUST NOT** be a target and are not listed (the stack's version policy).
+The policy lists even Node majors only, because even majors are the LTS lines; odd majors **MUST NOT** be a target and are not listed (the stack's version policy). Held by: CREED's own CI. The refresher adds even majors only, and `tests/PolicySchemaTest.php` fails if an odd major is ever written into `policy.json` by hand.
 
 An app **MUST** build on a Node line that has not reached end of life. PROCTOR check: `node-eol`. It reads `.nvmrc`, `.node-version`, `volta.node` and the `node` image in CI and Dockerfiles: an active line passes, a security-only line warns and an EOL line fails. `engines.node` and an odd major warn.
 
@@ -61,4 +61,4 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`components.*.versions.*.latest_patch`**: set per version
 - **`components.*.versions.*.latest_patch_checked`**: set per version
 
-Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `a620495`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `228dd00`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

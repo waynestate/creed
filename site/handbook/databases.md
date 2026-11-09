@@ -18,22 +18,22 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 ## [§5.1](https://creed.apps.wayne.edu/handbook/databases.html#what-the-stack-supports) What the stack supports
 
-The policy lists the MySQL versions in [`policy/policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.json), under `mysql`: 5.6, 5.7, 8.0, 8.4 and 9.7, each with its [`active_until`](https://github.com/waynestate/creed/blob/main/policy/policy.json) and [`security_until`](https://github.com/waynestate/creed/blob/main/policy/policy.json) dates. The shared server runs 5.6, which is past security support; its `security_until` is 2021-02-28. Laravel 13 documents MySQL 5.7 or later. The conventions below keep an app working on the shared server until it is upgraded. They are a bridge, not the fix: the fix is the upgrade. Code that follows them runs unchanged on 8.4, so the move can be made With Arms Wide Open.
+The policy lists the MySQL versions in [`policy/policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.json), under `mysql`: 5.6, 5.7, 8.0, 8.4 and 9.7, each with its [`active_until`](https://github.com/waynestate/creed/blob/main/policy/policy.json) and [`security_until`](https://github.com/waynestate/creed/blob/main/policy/policy.json) dates. The shared server runs 5.6, which is past security support; its `security_until` is 2021-02-28. Laravel 13 documents MySQL 5.7 or later, and each Laravel line in the policy records the oldest MySQL and MariaDB it needs (`requires.mysql` and `requires.mariadb`); [PROCTOR](https://proctor.apps.wayne.edu/) main's `mysql-minimum` warns when an app's declared database image is below that minimum. The conventions below keep an app working on the shared server until it is upgraded. They are a bridge, not the fix: the fix is the upgrade. Code that follows them runs unchanged on 8.4, so the move can be made With Arms Wide Open.
 
 ## [§5.2](https://creed.apps.wayne.edu/handbook/databases.html#which-mysql-lines-the-policy-lists) Which MySQL lines the policy lists
 
-The policy lists the LTS lines, 8.4 and 9.7, for current use. It keeps the older lines, 5.6, 5.7 and 8.0, only to say that they are end of life. In MySQL 8.4 and later the default authentication plugin is `caching_sha2_password`: `mysql_native_password` is disabled by default in 8.4 and removed in 9.0. An app that **MUST** reach a server on the older plugin **MUST** set the server's plugin explicitly in its database config.
+The policy lists the LTS lines, 8.4 and 9.7, for current use. It keeps the older lines, 5.6, 5.7 and 8.0, only to say that they are end of life. In MySQL 8.4 and later the default authentication plugin is `caching_sha2_password`: `mysql_native_password` is disabled by default in 8.4 and removed in 9.0. An app that **MUST** reach a server on the older plugin **MUST** set the server's plugin explicitly in its database config. No check exists yet.
 
 ## [§5.3](https://creed.apps.wayne.edu/handbook/databases.html#grace-period) Grace period
 
-An app **MAY** stay on a database version for 90 days after it leaves support, the policy's [`eol_grace_days`](https://github.com/waynestate/creed/blob/main/policy/policy.json); the version is `Eol` through that window and `EolGraceExpired` the day after. The window is a bridge for the upgrade, not a second support window: the fix is still the upgrade.
+An app **MAY** stay on a database version for 90 days after it leaves support, the policy's [`eol_grace_days`](https://github.com/waynestate/creed/blob/main/policy/policy.json); the version is `Eol` through that window and `EolGraceExpired` the day after. The window is a bridge for the upgrade, not a second support window: the fix is still the upgrade. PROCTOR check: `mysql-eol`.
 
-- For MySQL and MariaDB the check warns and does not fail yet. While Citadel's shared server runs 5.6, an app has no supported MySQL to move to there, so a security-only, `Eol` or `EolGraceExpired` version warns, and still says to move to 8.4 or later. It starts failing past the window when Citadel offers a supported MySQL (the stack's MySQL gate decision). [PROCTOR](https://proctor.apps.wayne.edu/) check: `mysql-eol` (on PROCTOR main, due in 0.8.0).
+- For MySQL and MariaDB the check warns and does not fail yet. While Citadel's shared server runs 5.6, an app has no supported MySQL to move to there, so a security-only, `Eol` or `EolGraceExpired` version warns, and still says to move to 8.4 or later. It starts failing past the window when Citadel offers a supported MySQL (the stack's MySQL gate decision). PROCTOR check: `mysql-eol` (since PROCTOR 0.8.0).
 
 ## [§5.4](https://creed.apps.wayne.edu/handbook/databases.html#names-comments-and-connections) Names, comments and connections
 
-- Table and column names are descriptive. Add table and column comments (Laravel's `->comment()`) where the database supports them, to say what an element is for (**SHOULD**) (WSU developer standards, 2024).
-- The connection between the app and the database **MUST** be encrypted. The database account **MUST** have only the privileges the app needs, never an administrator account (WSU developer standards, 2024).
+- Table and column names are descriptive. Add table and column comments (Laravel's `->comment()`) where the database supports them, to say what an element is for (**SHOULD**) (WSU developer standards, 2024). No check exists yet.
+- The connection between the app and the database **MUST** be encrypted. The database account **MUST** have only the privileges the app needs, never an administrator account (WSU developer standards, 2024). No check exists yet.
 
 ## [§5.5](https://creed.apps.wayne.edu/handbook/databases.html#conventions-that-keep-5-6-working) Conventions that keep 5.6 working
 
@@ -109,4 +109,4 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`rules.eol_grace_days`**: `90`
 - **`components.*.versions.*.security_until`**: set per version
 
-Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `8e1a91e`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `76a165f`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
