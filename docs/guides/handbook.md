@@ -14,7 +14,8 @@ The rules for the Wayne State app stack, chapter by chapter. Each chapter states
 ## How to read a rule
 
 - The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in each chapter are to be interpreted as described in RFC 2119.
-- A line that reads "PROCTOR check: `<id>`" names the PROCTOR check that reports a breach of that rule.
+- Every rule names what holds it, with one of three tags: "PROCTOR check: `<id>`" (the PROCTOR check that reports a breach), "Held by: ..." (any other point that holds it, such as a Preflight component or a runtime package's config) or "No check exists yet".
+- `composer lint-handbook` fails when a rule that uses MUST, SHOULD or MAY carries none of the three, so a rule cannot quietly lose its tag. Like any good frontman, every rule has to say who is backing it.
 
 ## The chapters
 
@@ -26,7 +27,7 @@ The rules for the Wayne State app stack, chapter by chapter. Each chapter states
 - [Runtime and headers](../../handbook/runtime-and-headers.html): the runtime (Baseline) warns and refuses only for unsafe config, HELMET's headers on every response, proxy trust from a platform preset or the app's own list, and debug off in production.
 - [Deploy gate](../../handbook/deploy-gate.html): the gate runs PROCTOR against the commit being released, before it is released, and refuses EOL PHP.
 - [CI](../../handbook/ci.html): CI is enforcement point (c), a red pipeline before merge, built from Preflight's pinned components and judged with deterministic commands, never with a model.
-- [Accessibility](../../handbook/accessibility.html): WCAG 2.2 Level AA as the target for every public page, WayneUI components as the checked starting point, an automated Pa11y check in CI, and the open Title II question.
+- [Accessibility](../../handbook/accessibility.html): WCAG 2.2 Level AA as the target for every public page, WayneUI components as the checked starting point, Preflight's automated axe-core check in CI, and the open Title II question.
 - [Every OS](../../handbook/every-os.html): every developer tool works on Windows, macOS and Linux, with `.ps1` and `.sh` pairs, LF line endings and portable paths.
 - [Secrets](../../handbook/secrets.html): credentials never in version control and never in the served folder, with errors and debug output that hide them.
 - [Production](../../handbook/production.html): pre-production and production environments, running safely with the least access needed, and who can reach an app.

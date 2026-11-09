@@ -44,6 +44,23 @@ final class PolicySchemaTest extends TestCase
         self::assertSame([], $errors, 'The bundled policy must validate against the schema.');
     }
 
+    /**
+     * Node's even majors are its LTS lines; an odd major is never a target
+     * (handbook/versions.md). The refresher only adds even majors, so this
+     * guards the hand edit. Creed went Higher; this policy never goes odd.
+     */
+    #[Test]
+    public function bundledPolicyListsEvenNodeMajorsOnly(): void
+    {
+        $policy = json_decode((string) file_get_contents(dirname(__DIR__) . '/policy/policy.json'), true);
+        self::assertIsArray($policy);
+        $majors = array_map('strval', array_keys($policy['components']['node']['versions'] ?? []));
+        self::assertNotEmpty($majors, 'The bundled policy lists no Node majors.');
+
+        $odd = array_values(array_filter($majors, static fn(string $major): bool => (int) $major % 2 === 1));
+        self::assertSame([], $odd, 'The bundled policy lists odd Node majors: ' . implode(', ', $odd));
+    }
+
     #[Test]
     public function imagesObjectIsValid(): void
     {

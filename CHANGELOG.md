@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added: the handbook lint fails on a rule that names nothing holding it. Every rule that uses MUST, SHOULD or MAY carries "PROCTOR check: `<id>`", "Held by: ..." or "No check exists yet" (`HandbookLinter::untaggedRules()`, practice 29), and the 25 rules that had none are tagged. Fixed with them: the dependencies chapter no longer names `package-sources` and `internal-vendor-shadowing`, two PROCTOR checks that never shipped; the `APP_DEBUG` rules name PROCTOR main's `app-debug`; the every-OS chapter gains the `case-clash` rule; the databases chapter names `mysql-minimum`; and a test fails if an odd Node major is written into `policy.json`.
 - Changed: CI pins the Preflight components to 0.4.0 (the proctor job clones the full history, so the override-approver check can read git blame).
 - Changed: the code handbook names what Pinstripe enforces (presets from 0.1.4, the env rule, and the banned calls in Pinstripe 0.2.0 with their `pinstripe.banned.*` identifiers) instead of calling every rule Planned.
 - Docs: BEST_PRACTICES.md practices 41 (front-end install options, now Partially: Squire's release install and the npm cooldown are built) and 45 (CI host, now Documented: the instances run GitLab 19.5.1 CE) carry their true status.

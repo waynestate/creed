@@ -88,4 +88,60 @@ final class HandbookLinterTest extends TestCase
             'The handbook has lowercase RFC 2119 keywords: ' . implode(', ', $problems),
         );
     }
+
+    #[Test]
+    public function untaggedRulesAreReportedWithTheirFirstLine(): void
+    {
+        $content = (string) file_get_contents(self::FIXTURES . '/handbook-tags-mixed.md');
+
+        self::assertSame(
+            [
+                ['line' => 5, 'excerpt' => 'An app MUST commit its lock file.'],
+                ['line' => 10, 'excerpt' => 'An app MUST name its tables well. PROCTOR check, planned.'],
+                ['line' => 11, 'excerpt' => 'A nested rule MUST carry its own tag.'],
+                ['line' => 14, 'excerpt' => 'A paragraph that SHOULD be tagged runs over two lines.'],
+            ],
+            (new HandbookLinter())->untaggedRules($content),
+        );
+    }
+
+    #[Test]
+    public function aFileWithoutAnRfc2119DeclarationIsNotCheckedForTags(): void
+    {
+        $content = (string) file_get_contents(self::FIXTURES . '/handbook-tags-no-declaration.md');
+
+        self::assertSame([], (new HandbookLinter())->untaggedRules($content));
+    }
+
+    #[Test]
+    public function aLongRuleIsCutToAShortExcerpt(): void
+    {
+        $rule = '- An app MUST ' . str_repeat('keep going ', 10) . 'and stop.';
+        $content = "# Fixture\n\nKey words as described in RFC 2119.\n\n{$rule}\n";
+
+        $untagged = (new HandbookLinter())->untaggedRules($content);
+
+        self::assertCount(1, $untagged);
+        self::assertSame(5, $untagged[0]['line']);
+        self::assertSame(72, strlen($untagged[0]['excerpt']));
+        self::assertStringEndsWith('...', $untagged[0]['excerpt']);
+    }
+
+    /**
+     * Practice 29: every rule names what holds it, so a rule that loses its
+     * tag fails here and in `composer lint-handbook`.
+     */
+    #[Test]
+    public function everyRuleInTheRealHandbookNamesWhatHoldsIt(): void
+    {
+        $linter = new HandbookLinter();
+        $problems = [];
+        foreach (glob(__DIR__ . '/../handbook/*.md') ?: [] as $file) {
+            foreach ($linter->untaggedRules((string) file_get_contents($file)) as $rule) {
+                $problems[] = basename($file) . ':' . $rule['line'] . ' ' . $rule['excerpt'];
+            }
+        }
+
+        self::assertSame([], $problems, "Handbook rules with no tag:\n" . implode("\n", $problems));
+    }
 }

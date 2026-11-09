@@ -491,11 +491,11 @@ Why: a rule that nothing runs is only a wish.
 
 Sources: [OWASP ASVS](https://asvs.owasp.org/).
 
-How the stack holds it: `Partially`. Most rules in the handbook name their point: the PROCTOR check that enforces it,
-the command that measures it, or the plain words "no check exists yet". Some still name neither (the auth chapter's
-driver and access rules, for example). What remains: tags for those rules, the checks behind the "no check exists
-yet" tags, and a guard that fails when a rule loses its tag; the handbook lint (`bin/lint-handbook.php`) checks RFC
-2119 wording only.
+How the stack holds it: `Partially`. Every handbook rule that uses MUST, SHOULD or MAY names its point with one of
+three tags: "PROCTOR check: `<id>`", "Held by: ..." (a Preflight component, a runtime package's config, CREED's own
+CI) or "No check exists yet". The handbook lint (`bin/lint-handbook.php`, run by `composer ci`) fails when a rule
+carries none, so a rule cannot lose its tag. What remains: the checks behind the "No check exists yet" tags, and
+rules written without an RFC 2119 capital, which the lint does not see.
 
 ## 6. Writing the handbook
 
@@ -530,10 +530,10 @@ Why: a standard is a command that fails, not a sentence in a README.
 
 Sources: [OWASP ASVS](https://asvs.owasp.org/) (requirements written to be verified).
 
-How the stack holds it: `Partially`. Most handbook rules name, beside the rule, the PROCTOR check that enforces it,
-the command that measures it, or the plain words "no check exists yet"; some still name neither (practice 29). What
-remains: those tags, the checks behind them, and a mechanical guard that keeps every rule named; the handbook lint
-checks RFC 2119 wording only.
+How the stack holds it: `Partially`. Every handbook rule that uses an RFC 2119 capital names, beside the rule, the
+PROCTOR check that enforces it, the other point that holds it ("Held by:"), or the plain words "No check exists yet",
+and the handbook lint fails when one names none (practice 29). What remains: the checks behind the "No check exists
+yet" tags.
 
 ### 33. Judge with deterministic checks only
 
@@ -1094,8 +1094,9 @@ These are places where a source disagrees with the repository or with an earlier
     Pinstripe would catch it earlier, in the editor.
 12. Partly done: the runtime and headers chapter is written (practice 26); the `config` check that `APP_DEBUG` is
     false in production is not built.
-13. Partly done: versions, dependencies, auth, databases, ci, every-os and overrides carry check IDs; the other chapters
-    are still to walk (practices 29 and 32).
+13. Partly done: every handbook rule that uses an RFC 2119 capital carries a tag (a PROCTOR check ID, "Held by:" or
+    "No check exists yet"), and the handbook lint fails on an untagged one; rules phrased without a capital are still
+    to walk (practices 29 and 32).
 14. Done: `tests/OlderReaderContractTest.php` loads a future-shaped policy file with the reader and asserts every
     known line still answers the same (practice 10).
 15. Add stage dates (`report`, `warn`, `block`) to the schema (practice 28).

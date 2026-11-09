@@ -11,6 +11,10 @@ declare(strict_types=1);
  * plain-English use is excused with a `<!-- lint: allow -->` comment on the
  * same line.
  *
+ * In the same chapters, every rule that uses MUST, SHOULD or MAY names what
+ * holds it: "PROCTOR check: `<id>`", "Held by: ..." or "No check exists yet"
+ * (practice 29). A rule that loses its tag fails the lint.
+ *
  * Usage:
  *   php bin/lint-handbook.php [dir]
  *
@@ -18,7 +22,7 @@ declare(strict_types=1);
  *
  * Exit codes:
  *   0  every file is clean
- *   1  at least one file has a lowercase RFC 2119 keyword
+ *   1  at least one file has a lowercase RFC 2119 keyword or an untagged rule
  *
  * One PHP command, so it runs the same on Windows, macOS and Linux.
  */
@@ -51,7 +55,8 @@ foreach ($files as $file) {
     }
 
     $violations = $linter->lint($content);
-    if ($violations === []) {
+    $untagged = $linter->untaggedRules($content);
+    if ($violations === [] && $untagged === []) {
         continue;
     }
 
@@ -65,10 +70,18 @@ foreach ($files as $file) {
             $violation['keyword'],
         ));
     }
+    foreach ($untagged as $rule) {
+        fwrite(STDERR, sprintf(
+            "%s:%d: rule names nothing that holds it: add \"PROCTOR check: `<id>`\", \"Held by: ...\" or \"No check exists yet\" (%s)\n",
+            $relative,
+            $rule['line'],
+            $rule['excerpt'],
+        ));
+    }
 }
 
 if ($failedFiles > 0) {
-    fwrite(STDERR, "Handbook lint failed: {$failedFiles} file(s) with lowercase RFC 2119 keywords.\n");
+    fwrite(STDERR, "Handbook lint failed: {$failedFiles} file(s) with lowercase RFC 2119 keywords or untagged rules.\n");
     exit(1);
 }
 
