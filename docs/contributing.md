@@ -20,7 +20,7 @@ You need PHP 8.3 or newer and Composer, or only Docker. Everything has a native 
 | Install | `composer install` |
 | All checks (what CI runs) | `composer ci` |
 | Only the tests | `composer test` |
-| Validate `policy.json` against its schema | `composer validate-policy` |
+| Validate `policy.json` against its schema and its `minimum_patch` rules | `composer validate-policy` |
 | Lint the handbook | `composer lint-handbook` |
 | Fix code style | `composer fix` |
 

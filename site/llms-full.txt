@@ -928,6 +928,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 ### Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
 - Docs: the front page's Table 2-1 carries the policy's Laravel patches (12.71.0 and 13.40.0, checked 2026-11-08; it still showed 12.70.2 and 13.39.0) and says patches were checked 2026-10-28 to 2026-11-08, and the install appendix names the Packagist release in use (0.1.7, was 0.1.3).
+- Added: an optional `minimum_patch` per PHP line in policy.json, read by `Policy::minimumPatch()` and checked by `bin/validate-policy.php`; no values are set yet.
 - Docs: BEST_PRACTICES practice 26 (debug off in production) is now Checked, held by PROCTOR main's `app-debug` and HELMET's boot warning, and practice 28 (staged rollout) is now Partially, since `proctor gate` 0.9.0 applies the policy's stage dates and ratchets against the baseline while no rule is staged yet. The front page follows: the tally, the chapter 4 and 5 bars, both clauses, and the runner note, which still said git.wayne.edu had none.
 - Fixed: BEST_PRACTICES catches up with PROCTOR and its own policy. Practice 28 and backlog item 15 (now Done) say the policy's `gate` block carries stage dates and `proctor gate` (0.9.0) applies them; practices 26, 34 and 46 and backlog items 12, 16 and 28 name `app-debug`, `case-clash` and `mysql-minimum`, which they called unbuilt. No stamp moved in this change.
 - Added: the handbook lint fails on a rule that names nothing holding it. Every rule that uses MUST, SHOULD or MAY carries "PROCTOR check: `<id>`", "Held by: ..." or "No check exists yet" (`HandbookLinter::untaggedRules()`, practice 29), and the 25 rules that had none are tagged. Fixed with them: the dependencies chapter no longer names `package-sources` and `internal-vendor-shadowing`, two PROCTOR checks that never shipped; the `APP_DEBUG` rules name PROCTOR main's `app-debug`; the every-OS chapter gains the `case-clash` rule; the databases chapter names `mysql-minimum`; and a test fails if an odd Node major is written into `policy.json`.
@@ -1086,7 +1087,7 @@ You need PHP 8.3 or newer and Composer, or only Docker. Everything has a native 
 | Install | `composer install` |
 | All checks (what CI runs) | `composer ci` |
 | Only the tests | `composer test` |
-| Validate `policy.json` against its schema | `composer validate-policy` |
+| Validate `policy.json` against its schema and its `minimum_patch` rules | `composer validate-policy` |
 | Lint the handbook | `composer lint-handbook` |
 | Fix code style | `composer fix` |
 
@@ -1724,6 +1725,7 @@ This page lists every public member of the `Waynestate\Creed\Policy` reader, in 
 | `oldestSupported($component, $on)` | The lowest version still Active or Security | `public function oldestSupported(string $component, DateTimeImmutable $on): ?string` |
 | `supported()` | Lists all of them, oldest first | `public function supported(string $component, DateTimeImmutable $on): array` |
 | `latestPatch($component, $version)` | The current patch in that line | `public function latestPatch(string $component, string $version): ?string` |
+| `minimumPatch($component, $version)` | The oldest patch the stack accepts in that line, or null | `public function minimumPatch(string $component, string $version): ?string` |
 | `latestPatchChecked()` | Says when it was last checked | `public function latestPatchChecked(string $component, string $version): ?string` |
 | `line($component, $version)` | The raw line, with `active_until`, `security_until`, `latest_patch`, `latest_patch_checked` (each a string or null) and `current` (true or null) | `public function line(string $component, string $version): ?array` |
 | `requires($component, $version)` | The line's `requires` object as an array (`php` range, `mysql` and `mariadb` minimums), or null | `public function requires(string $component, string $version): ?array` |
@@ -1767,7 +1769,7 @@ This page lists every command CREED ships, what each one does, and the exit code
 | `composer install` | Installs the project dependencies. |
 | `composer ci` | All checks, what CI runs, in order: `composer validate --strict`, the tests, the policy validator, Pint, the handbook lint, the handbook site and agent-ready freshness checks, PHPStan, `composer audit` and the docs site freshness check. The same command runs on GitLab and GitHub. |
 | `composer test` | Only the tests. |
-| `composer validate-policy` | Validate `policy.json` against its schema. |
+| `composer validate-policy` | Validate `policy.json` against its schema and its `minimum_patch` rules. |
 | `composer lint-handbook` | Lint the handbook. |
 | `composer fix` | Fix code style. |
 | `composer docs` | Rebuild `site/docs/` from `docs/` with the shared docs builder (SQUIRE's kit). |
@@ -1792,7 +1794,7 @@ The whole band fits in three commands, and nobody needs a solo.
 | `php bin/refresh-policy.php` | Refreshes `policy/policy.json` from the canonical upstream feeds: support dates, latest patches, and new version lines, with provenance recorded in `policy/sources.json`. |
 | `php bin/policy-bot.php run [--dry-run] [--offline <dir>]` | The CREED policy robot: it runs `bin/refresh-policy.php`, reads the run report, commits the policy data, runs `composer ci`, pushes straight to `main` with the job token when that passes (or opens `auto/policy-refresh` as a merge request labeled `auto-data` when it fails), and keeps its `auto-alert` issues in line. `--dry-run` prints the plan and changes nothing. See [The policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html). |
 | `php bin/export.php` | Exports a namespace-prefixed copy of the CREED reader for a consumer package to carry under its own namespace, so two tools in one app never fight over a class name. |
-| `php bin/validate-policy.php` | Validates `policy/policy.json` against `policy/policy.schema.json`, and validates `policy/sources.json` against `policy/sources.schema.json` when present. |
+| `php bin/validate-policy.php [--policy <path>]` | Validates `policy/policy.json` against `policy/policy.schema.json`, fails when a line's optional `minimum_patch` is not in that line or is above its `latest_patch`, and validates `policy/sources.json` against `policy/sources.schema.json` when present. `--policy <path>` runs the policy checks on another file instead (the tests point it at fixtures). |
 | `php bin/lint-handbook.php` | Lints the CREED handbook for RFC 2119 discipline. |
 | `php bin/build-handbook-site.php` | Builds the handbook pages of the CREED site from `handbook/*.md`. |
 | `php bin/agent-ready.php` | Makes a static front page readable by agents: writes the Markdown twins, `llms.txt`, `llms-full.txt`, `robots.txt` and `sitemap.xml` into the site folder. |

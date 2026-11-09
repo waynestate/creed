@@ -13,7 +13,9 @@ use RuntimeException;
  * It does exactly what the old script did: bump latest_patch and
  * latest_patch_checked for the PHP, Laravel, and Node lines the feeds still
  * carry, and propose new Vue lines from endoflife.date. Same messages, same
- * warnings, same exit codes. The fuller tool is Refresher.
+ * warnings, same exit codes. Every other field of a line, minimum_patch
+ * included, is left as it was, and none is ever added. The fuller tool is
+ * Refresher.
  */
 final class LegacyPatches
 {

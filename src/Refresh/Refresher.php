@@ -19,7 +19,9 @@ final class Refresher
 {
     /**
      * Canonical key order when a version line is rewritten. Unknown keys are
-     * kept, after these.
+     * kept, after these. minimum_patch is listed so it stays next to
+     * latest_patch; the refresh never writes or adds it (the maintainers set
+     * the floor by hand).
      *
      * @var list<string>
      */
@@ -28,6 +30,7 @@ final class Refresher
         'active_until',
         'security_until',
         'latest_patch',
+        'minimum_patch',
         'latest_patch_checked',
         'current',
         'images',

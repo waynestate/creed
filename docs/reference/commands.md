@@ -14,7 +14,7 @@ This page lists every command CREED ships, what each one does, and the exit code
 | `composer install` | Installs the project dependencies. |
 | `composer ci` | All checks, what CI runs, in order: `composer validate --strict`, the tests, the policy validator, Pint, the handbook lint, the handbook site and agent-ready freshness checks, PHPStan, `composer audit` and the docs site freshness check. The same command runs on GitLab and GitHub. |
 | `composer test` | Only the tests. |
-| `composer validate-policy` | Validate `policy.json` against its schema. |
+| `composer validate-policy` | Validate `policy.json` against its schema and its `minimum_patch` rules. |
 | `composer lint-handbook` | Lint the handbook. |
 | `composer fix` | Fix code style. |
 | `composer docs` | Rebuild `site/docs/` from `docs/` with the shared docs builder (SQUIRE's kit). |
@@ -38,7 +38,7 @@ The whole band fits in three commands, and nobody needs a solo.
 | `php bin/refresh-policy.php` | Refreshes `policy/policy.json` from the canonical upstream feeds: support dates, latest patches, and new version lines, with provenance recorded in `policy/sources.json`. |
 | `php bin/policy-bot.php run [--dry-run] [--offline <dir>]` | The CREED policy robot: it runs `bin/refresh-policy.php`, reads the run report, commits the policy data, runs `composer ci`, pushes straight to `main` with the job token when that passes (or opens `auto/policy-refresh` as a merge request labeled `auto-data` when it fails), and keeps its `auto-alert` issues in line. `--dry-run` prints the plan and changes nothing. See [The policy robot](../guides/policy-bot.md). |
 | `php bin/export.php` | Exports a namespace-prefixed copy of the CREED reader for a consumer package to carry under its own namespace, so two tools in one app never fight over a class name. |
-| `php bin/validate-policy.php` | Validates `policy/policy.json` against `policy/policy.schema.json`, and validates `policy/sources.json` against `policy/sources.schema.json` when present. |
+| `php bin/validate-policy.php [--policy <path>]` | Validates `policy/policy.json` against `policy/policy.schema.json`, fails when a line's optional `minimum_patch` is not in that line or is above its `latest_patch`, and validates `policy/sources.json` against `policy/sources.schema.json` when present. `--policy <path>` runs the policy checks on another file instead (the tests point it at fixtures). |
 | `php bin/lint-handbook.php` | Lints the CREED handbook for RFC 2119 discipline. |
 | `php bin/build-handbook-site.php` | Builds the handbook pages of the CREED site from `handbook/*.md`. |
 | `php bin/agent-ready.php` | Makes a static front page readable by agents: writes the Markdown twins, `llms.txt`, `llms-full.txt`, `robots.txt` and `sitemap.xml` into the site folder. |

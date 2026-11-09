@@ -47,6 +47,10 @@
                                 "latest_patch": {
                                     "type": "string"
                                 },
+                                "minimum_patch": {
+                                    "type": "string",
+                                    "pattern": "^\\d+\\.\\d+\\.\\d+$"
+                                },
                                 "latest_patch_checked": {
                                     "type": "string",
                                     "format": "date"

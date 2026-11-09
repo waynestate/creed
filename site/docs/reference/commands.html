@@ -65,7 +65,7 @@
 </tr>
 <tr>
 <td><code>composer validate-policy</code></td>
-<td>Validate <code>policy.json</code> against its schema.</td>
+<td>Validate <code>policy.json</code> against its schema and its <code>minimum_patch</code> rules.</td>
 </tr>
 <tr>
 <td><code>composer lint-handbook</code></td>
@@ -133,8 +133,8 @@
 <td>Exports a namespace-prefixed copy of the CREED reader for a consumer package to carry under its own namespace, so two tools in one app never fight over a class name.</td>
 </tr>
 <tr>
-<td><code>php bin/validate-policy.php</code></td>
-<td>Validates <code>policy/policy.json</code> against <code>policy/policy.schema.json</code>, and validates <code>policy/sources.json</code> against <code>policy/sources.schema.json</code> when present.</td>
+<td><code>php bin/validate-policy.php [--policy &lt;path&gt;]</code></td>
+<td>Validates <code>policy/policy.json</code> against <code>policy/policy.schema.json</code>, fails when a line's optional <code>minimum_patch</code> is not in that line or is above its <code>latest_patch</code>, and validates <code>policy/sources.json</code> against <code>policy/sources.schema.json</code> when present. <code>--policy &lt;path&gt;</code> runs the policy checks on another file instead (the tests point it at fixtures).</td>
 </tr>
 <tr>
 <td><code>php bin/lint-handbook.php</code></td>

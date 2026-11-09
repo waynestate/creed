@@ -18,6 +18,7 @@ This page lists every public member of the `Waynestate\Creed\Policy` reader, in 
 | `oldestSupported($component, $on)` | The lowest version still Active or Security | `public function oldestSupported(string $component, DateTimeImmutable $on): ?string` |
 | `supported()` | Lists all of them, oldest first | `public function supported(string $component, DateTimeImmutable $on): array` |
 | `latestPatch($component, $version)` | The current patch in that line | `public function latestPatch(string $component, string $version): ?string` |
+| `minimumPatch($component, $version)` | The oldest patch the stack accepts in that line, or null | `public function minimumPatch(string $component, string $version): ?string` |
 | `latestPatchChecked()` | Says when it was last checked | `public function latestPatchChecked(string $component, string $version): ?string` |
 | `line($component, $version)` | The raw line, with `active_until`, `security_until`, `latest_patch`, `latest_patch_checked` (each a string or null) and `current` (true or null) | `public function line(string $component, string $version): ?array` |
 | `requires($component, $version)` | The line's `requires` object as an array (`php` range, `mysql` and `mariadb` minimums), or null | `public function requires(string $component, string $version): ?array` |

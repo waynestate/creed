@@ -1123,8 +1123,9 @@ These are places where a source disagrees with the repository or with an earlier
 
 Added in the second pass (2026-10-27):
 
-19. Add a minimum PHP patch version per branch to `policy.json`, fed by the freshness check, and a PROCTOR check that
-    compares it with the image or runtime (practice 37).
+19. Partly done: `policy.json` carries an optional `minimum_patch` per PHP line, read by `Policy::minimumPatch()` and
+    checked by `bin/validate-policy.php`; no values are set yet, and the PROCTOR check that compares the value with
+    the image or runtime waits (practice 37).
 20. Add a response window per severity to `rules` (for example "fix within N days"; the maintainers choose N), and a
     check that applies it to `composer audit` output (practice 38).
 21. Decide between the legacy `audit` keys and `config.policy` (the Composer version is pinned in CI and the README
