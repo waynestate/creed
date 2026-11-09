@@ -27,6 +27,11 @@ anywhere (Citadel, any web server, or `python -m http.server` inside `site/` for
   marks, copied from WELD's and Booster's sites; WayneUI uses its own reversed mark on green.
 - reduced motion: the book is already printed, every stamp already inked, every word present at first paint; the form
   still stamps, without the thunk.
+- after hours: a reader whose system is set to dark gets the same book read after hours, the docs' night shift (the
+  after hours section at the foot of `assets/creed.css`, which the handbook pages share): warm graphite stock, cream
+  type, the green ink thinned to a pale tint, gold foil for focus. Green cloth stays where the book has cloth (spine,
+  cover, tabs, the ink button, colophon). A reading lamp warms the desk under the book, and with motion allowed the
+  lamp catches the cover's foil once it is struck (and again when you tilt the book). Printing stays ink on white.
 - jokes: Creed Bratton's unauditable records, "with arms wide open" for the inclusive boundary, Creed being one version
   ahead. GIFs are linked from the colophon, never committed. No lyrics, no quotes.
 

@@ -14,8 +14,9 @@
    --dk-* tokens and the rules below win without !important. The kit's
    docs.css stays byte for byte Squire's. Edit here, never there.
 
-   The front page has no dark mode, so the dark set is derived: the same
-   book read after hours. Warm graphite stock, cream type, a pale tint of the
+   The dark set is the same book read after hours, shared with the front
+   page (the after hours section of site/assets/creed.css): change one,
+   change both. Warm graphite stock, cream type, a pale tint of the
    green ink for links, gold foil for the title rule, the current page and
    focus. Green cloth only where the front page has it (spine, colophon).
 
@@ -872,8 +873,9 @@ body::before {
 
 /* ---------------------------------------------------------------- 10. dark */
 
-/* Derived, because the front page has no dark mode: the same code book, read
-   in the stacks after hours. Warm graphite stock under a faint grain, cream
+/* The front page reads after hours too (site/assets/creed.css, after
+   hours), with these values: the same code book, read in the stacks after
+   hours. Warm graphite stock under a faint grain, cream
    type, the book's green ink thinned to a pale tint for links and section
    marks, gold foil for the title rule, the current page and focus. Green
    cloth stays where the front page puts it: the spine and the colophon.

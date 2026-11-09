@@ -393,7 +393,9 @@ final class SiteBuilder
             <script src="../assets/stack-env.js" defer></script>
             <title>{$e($title)}</title>
             <meta name="description" content="{$e($description)}">
-            <meta name="theme-color" content="#0c5449">{$twinLink}
+            <meta name="theme-color" content="#0c5449" media="(prefers-color-scheme: light)">
+            <meta name="theme-color" content="#1a1b18" media="(prefers-color-scheme: dark)">
+            <meta name="color-scheme" content="light dark">{$twinLink}
             <link rel="icon" href="../brand/favicon.ico" sizes="any">
             <link rel="icon" type="image/png" sizes="32x32" href="../brand/favicon-32.png">
             <link rel="stylesheet" href="../assets/wayne-ui/wayne-ui.css">
