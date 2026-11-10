@@ -10,6 +10,7 @@ generator: Squire agent-ready
 
 ## Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Docs: practice 40's Composer cooldown is `Partially` held (Sourdough's shapes set 3 days and exempt `waynestate/*`, so a fresh app installs right after a stack release); the handbook's dependency rule says the same. The PROCTOR warning is still planned.
 - Docs: BEST_PRACTICES and the handbook name the PROCTOR release that ships each check (0.7.0 to 0.11.0) instead of "PROCTOR main" or "its next release"; the any-component `preflight-pinned` change stays marked unreleased.
 - Site: the front page's stale facts are current (four Preflight components at 0.5.0; PROCTOR's `laravel-eol`, `node-eol` and `app-key` since 0.7.0, `repo-url-credentials` since 0.2.0, `gitattributes-eol` since 0.11.0).
 - Docs: five handbook lines now match the code: Pint's preset comes from a root `pint.json` or `--config`, PHPStan infers `phpVersion` from composer.json, the Vue preset is `flat/recommended-error`, only the Inertia starter is TypeScript, and the Citadel release-hook gate is written as pending.

@@ -242,10 +242,11 @@ one replaces it or records an override with a reason; PROCTOR's
 <ul>
 <li><code>composer.json</code> <code>require.php</code> <strong class="kw kw--must-not">MUST NOT</strong> allow an EOL version as its lowest
 bound <span class="hb-cite">(the stack's version policy)</span>. PROCTOR check: <code>php-floor</code>.</li>
-<li>Apps <strong class="kw kw--should">SHOULD</strong> set a Composer cooldown of 3 days, once Composer 2.11 is stable
-and in the base images; until then no cooldown is set <span class="hb-cite">(the stack's dependency
-decision, 2026-11-03)</span>. No check exists yet: a PROCTOR check for a missing
-cooldown is planned.</li>
+<li>Apps <strong class="kw kw--should">SHOULD</strong> set a Composer cooldown of 3 days (<code>config.policy.cooldown.period</code>,
+Composer 2.11; the stack's dependency decision, 2026-11-03) and exempt the
+stack's own packages (<code>&quot;ignore&quot;: [&quot;waynestate/*&quot;]</code>), which the stack's CI tests
+before tagging. <a class="tool" href="https://sourdough.apps.wayne.edu/"><img src="../assets/marks/sourdough.png" alt="" width="16" height="16">Sourdough</a>'s shapes set both. No check exists yet: a PROCTOR
+check for a missing cooldown is planned.</li>
 <li>Every project is a framework-free core plus thin adapters. <code>composer.json</code>
 requires only <code>php</code> and PSR packages; Laravel, Inertia and Vue are
 <code>suggest</code> <span class="hb-cite">(the stack's core-plus-adapters design)</span>.</li>
@@ -1081,7 +1082,7 @@ a permanent override <span class="hb-cite">(the stack's deploy-gate decision)</s
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>0791f31</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>834892c</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

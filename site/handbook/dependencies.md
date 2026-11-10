@@ -24,7 +24,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 CREED's [`abandoned_packages`](https://github.com/waynestate/creed/blob/main/policy/policy.json) rule is `fail`, matching Composer's default since 2.7, so `composer audit` fails on an abandoned package. An app that has to keep one replaces it or records an override with a reason; PROCTOR's `composer-audit` check applies the same setting.
 
 - `composer.json` `require.php` **MUST NOT** allow an EOL version as its lowest bound (the stack's version policy). PROCTOR check: `php-floor`.
-- Apps **SHOULD** set a Composer cooldown of 3 days, once Composer 2.11 is stable and in the base images; until then no cooldown is set (the stack's dependency decision, 2026-11-03). No check exists yet: a PROCTOR check for a missing cooldown is planned.
+- Apps **SHOULD** set a Composer cooldown of 3 days (`config.policy.cooldown.period`, Composer 2.11; the stack's dependency decision, 2026-11-03) and exempt the stack's own packages (`"ignore": ["waynestate/*"]`), which the stack's CI tests before tagging. [Sourdough](https://sourdough.apps.wayne.edu/)'s shapes set both. No check exists yet: a PROCTOR check for a missing cooldown is planned.
 - Every project is a framework-free core plus thin adapters. `composer.json` requires only `php` and PSR packages; Laravel, Inertia and Vue are `suggest` (the stack's core-plus-adapters design).
 - Adapters **MUST** call the core and **MUST NOT** re-implement it (the stack's core-plus-adapters design). No check exists yet.
 - Before adding a third-party package, check it comes from a trusted source, and where the source is open, read enough of it to judge it sound and fit (**SHOULD**). The audit and abandoned-package rules in this chapter apply after that choice (WSU developer standards, 2024). No check exists yet.
@@ -46,4 +46,4 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`rules.abandoned_packages`**: `"fail"`
 - **`rules.audit_severity_threshold`**: `"high"`
 
-Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `3cb59ae`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `4c44752`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

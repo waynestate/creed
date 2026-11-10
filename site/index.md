@@ -26,9 +26,9 @@ These are the stack's written standards. The handbook has the practices, and `po
 
 - **Enforced**: 7
 - **Checked**: 18
-- **Partially**: 13
+- **Partially**: 14
 - **Documented**: 18
-- **Not yet**: 5
+- **Not yet**: 4
 
 Table of contents
 
