@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Deploy kit refreshed to Squire 0.10.5
+
 ## 0.1.9 (2026-11-09)
 
 - Docs: Parity joins the party. The README cast and the front page's "Authorities having jurisdiction" list Parity, the stack's new tool that runs Citadel on your computer (its PHP image, its proxy and MySQL 5.6), next to Squire, with its spirit-level mark; it holds §6.5, since it is one program for Windows, macOS and Linux and its `check` flags Windows line endings in the files Citadel runs. 0.1.0 is coming and it has no site yet, so its row links nowhere. Creed Bratton has claimed for years that his laptop is Citadel's twin; now somebody can check.
