@@ -215,7 +215,7 @@ ceiling: we do not go lower, no matter how the crowd sings for more.</p>
           <div>
             <p class="chap-head__kicker">Chapter 2</p>
             <h2 id="dependencies-title" class="hb-book__title">Dependencies</h2>
-            <p class="hb-register">1 section · 15 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 5 · <strong class="kw kw--must">MUST</strong> 7 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 3</p>
+            <p class="hb-register">1 section · 16 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 5 · <strong class="kw kw--must">MUST</strong> 8 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 3</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -228,6 +228,12 @@ ceiling: we do not go lower, no matter how the crowd sings for more.</p>
 policy)</span>. PROCTOR check: <code>lock-committed</code>.</li>
 <li><code>composer audit</code> <strong class="kw kw--must">MUST</strong> report no advisories at or above the policy's severity
 threshold <span class="hb-cite">(the stack's version policy)</span>. PROCTOR check: <code>composer-audit</code>.</li>
+<li>The policy's <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json" title="rules.audit_severity_threshold in policy.json"><code>audit_severity_threshold</code></a> uses Composer's words. npm's
+<code>audit-level</code> reads them as: <code>low</code> is <code>low</code>, <code>medium</code> is <code>moderate</code>, <code>high</code>
+is <code>high</code>, <code>critical</code> is <code>critical</code> (npm's <code>info</code> has no Composer word).
+A tool that reads the threshold for npm <strong class="kw kw--must">MUST</strong> apply this map (the stack's
+version policy). Held by: <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s <code>npm-audit</code> component (<code>medium</code>
+means <code>moderate</code>).</li>
 </ul>
 <p>CREED's <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json" title="rules.abandoned_packages in policy.json"><code>abandoned_packages</code></a> rule is <code>fail</code>, matching Composer's default since
 2.7, so <code>composer audit</code> fails on an abandoned package. An app that has to keep
@@ -266,7 +272,7 @@ the same name can never be installed instead <span class="hb-cite">(the stack's 
 decision)</span>. No check exists yet.</li>
 <li>A released version <strong class="kw kw--must">MUST</strong> map to one commit for ever: tags are protected,
 and a version is never republished from a different commit (the stack's
-private-packages decision). Held by: <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s <code>package-publish</code>
+private-packages decision). Held by: Preflight's <code>package-publish</code>
 component, which reads the registry first and refuses a version that
 already exists with different contents.</li>
 <li>Public code <strong class="kw kw--must-not">MUST NOT</strong> go through the private registry; it is published to
@@ -281,7 +287,7 @@ per ecosystem) and rule 4 (the canonical entry and the Packagist exclusion)
 are planned, not built: earlier versions of this chapter named them as
 <code>package-sources</code> and <code>internal-vendor-shadowing</code>, but PROCTOR has never
 shipped either.</p>
-<div class="hb-policy" role="note"><p class="hb-policy__title">In <a href="https://github.com/waynestate/creed/blob/main/policy/policy.json"><code>policy.json</code></a></p><dl><div><dt><code>rules.abandoned_packages</code></dt><dd><code>&quot;fail&quot;</code></dd></div></dl></div>
+<div class="hb-policy" role="note"><p class="hb-policy__title">In <a href="https://github.com/waynestate/creed/blob/main/policy/policy.json"><code>policy.json</code></a></p><dl><div><dt><code>rules.abandoned_packages</code></dt><dd><code>&quot;fail&quot;</code></dd></div><div><dt><code>rules.audit_severity_threshold</code></dt><dd><code>&quot;high&quot;</code></dd></div></dl></div>
           </div>
       </article>
       <article class="hb-chapter hb-chapter--book" id="code" aria-labelledby="code-title">
@@ -1067,7 +1073,7 @@ a permanent override <span class="hb-cite">(the stack's deploy-gate decision)</s
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>5f49db2</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>1c47231</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 
