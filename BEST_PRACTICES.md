@@ -720,8 +720,7 @@ templates/raw-vue/.gitlab-ci.yml:104-106). The rest is written down only: WELD's
 `npm ci --no-audit --no-fund` without `--ignore-scripts` and with no audit step (weld .gitlab-ci.yml:111),
 Preflight 0.5.0 adds an `npm-audit` component that audits `package-lock.json` (its fourteen templates are a11y,
 composer-audit, eslint, npm-audit, package-publish, php-test, phpstan, pint, portability, proctor, renovate, sbom,
-secret-detection and squire-kit), but no stack repo or template includes it yet, and the `audit_severity_threshold` rule is read by the Composer audit alone (proctor README.md:111), so the
-mapping between npm's `moderate` and Composer's `medium` is unwritten. (Sourdough grades the same release install
+secret-detection and squire-kit), but no stack repo or template includes it yet, and the `audit_severity_threshold` rule is read by the Composer audit alone (proctor README.md:111), and `handbook/dependencies.md` writes the map (`medium` is npm's `moderate`), which Preflight's `npm-audit` component applies (preflight templates/npm-audit/template.yml:38,76). (Sourdough grades the same release install
 `Documented` from its own seat, sourdough BEST_PRACTICES.md:203; the tag here counts the built code in the stack.)
 
 ### 42. Gate on tools that work on every GitLab tier
@@ -1149,8 +1148,9 @@ Added in the second pass (2026-10-27):
     (with the legacy `audit` keys as a fallback), and the Composer the stack pins, 2.11.1, supports it (practices 21
     and 39).
 22. Done: decided 2026-11-03: a 3 day cooldown once Composer 2.11 is stable and in the base images; Sourdough apps set it and PROCTOR warns when it is missing (PROCTOR plan 4.11). Composer 2.11.0 shipped on 2026-10-29 (2.11.1 on 2026-10-30) with `policy.cooldown.period`; it is not set anywhere yet; the stack's images and CI pin 2.11.1 now, so setting it is the next step (practice 40).
-23. Add an npm check (`audit-level`, `ignore-scripts`, `min-release-age`) to Preflight, with a severity word map between
-    Composer and npm (practice 41).
+23. Done: Preflight 0.5.0 has the `npm-audit` component (`audit_level`, default `high`), and
+    `handbook/dependencies.md` writes the severity word map between Composer and npm (practice 41).
+    `ignore-scripts` and `min-release-age` are set by Squire's release script and the Vue `.npmrc`.
 24. Done: git.wayne.edu, the home of every stack repo, runs GitLab 19.5.1 Community Edition, the Free tier (the rule is
     written in `handbook/code.md`; practice 42).
 25. Partly done: PROCTOR main's `app-key` warns on a committed `.env` or `APP_KEY` and the cookie session driver, on

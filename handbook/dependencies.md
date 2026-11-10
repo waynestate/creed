@@ -8,6 +8,12 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
   policy). PROCTOR check: `lock-committed`.
 - `composer audit` MUST report no advisories at or above the policy's severity
   threshold (the stack's version policy). PROCTOR check: `composer-audit`.
+- The policy's `audit_severity_threshold` uses Composer's words. npm's
+  `audit-level` reads them as: `low` is `low`, `medium` is `moderate`, `high`
+  is `high`, `critical` is `critical` (npm's `info` has no Composer word).
+  A tool that reads the threshold for npm MUST apply this map (the stack's
+  version policy). Held by: Preflight's `npm-audit` component (`medium`
+  means `moderate`).
 
 CREED's `abandoned_packages` rule is `fail`, matching Composer's default since
 2.7, so `composer audit` fails on an abandoned package. An app that has to keep
