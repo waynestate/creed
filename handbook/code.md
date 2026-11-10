@@ -8,8 +8,10 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
 - Raw PHP apps and the stack's own packages use the `per` preset, PER Coding
   Style 3.1 (the stack's coding standard).
 - A repo MUST use one formatter, never two (the stack's coding standard). No check exists yet.
-- An app points Pint at the preset in `vendor/waynestate/pinstripe/pint/`
-  with `--config` (the stack's coding standard).
+- An app gets the preset through Pint's config: a root `pint.json` with a
+  `preset` key (what Sourdough bakes ship), or `--config
+  vendor/waynestate/pinstripe/pint/<preset>.json` (what Pinstripe's docs show)
+  (the stack's coding standard).
 - Files MUST be UTF-8 without a BOM, with LF line endings (the stack's
   every-OS design). PROCTOR check: `gitattributes-eol` (the LF pins; nothing checks for a BOM yet).
 
@@ -34,7 +36,10 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
 - Larastan loads only where Laravel is present (the stack's coding standard).
 - Every inline ignore carries an identifier and a reason; configs set
   `reportIgnoresWithoutComments` (the stack's coding standard).
-- PHPStan's `phpVersion` follows the policy's PHP floor (the stack's coding standard).
+- The PHPStan preset leaves `phpVersion` unset, so PHPStan infers it from the
+  app's `composer.json` (`config.platform.php`, else `require.php`), and
+  PROCTOR's `php-floor` keeps `require.php` off EOL versions (the stack's coding
+  standard).
 - Existing apps start at the highest level they pass, with a committed
   baseline that MUST NOT grow, then raise the level one step at a time
   (the stack's coding standard). No check exists yet. Like the band says,
@@ -82,12 +87,16 @@ for plain bans, and a custom rule only when neither fits.
 ## Vue and JavaScript
 
 - ESLint flat config (the stack's coding standard).
-- `eslint-plugin-vue` `flat/recommended` (the stack's coding standard).
+- `eslint-plugin-vue` `flat/recommended-error`: the recommended rules with
+  every warning raised to an error, so the editor, a local run and CI agree on
+  what fails; the `-warn` presets keep warnings while an app adopts gradually
+  (the stack's coding standard).
 - Prettier for formatting (the stack's coding standard).
 - `eslint-plugin-vuejs-accessibility` (the stack's coding standard).
 - Both JavaScript and TypeScript are linted (the stack's coding standard).
-- The stack's Vue starters use TypeScript; plain JavaScript stays fully
-  supported (the stack's coding standard).
+- The stack's Inertia starter uses TypeScript; the raw Vue and Blade island
+  starters use plain JavaScript, which stays fully supported (the stack's
+  coding standard).
 - Node 22.13 or newer for the lint tools (the stack's coding standard).
 
 ## Security analysis
