@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Changelog | CREED docs</title>
 <meta name="description" content="All notable changes to this project.">
-<meta name="docs-version" content="0.1.8">
+<meta name="docs-version" content="0.1.9">
 <link rel="stylesheet" href="../assets/wayne-ui/wayne-ui.css">
 <link rel="stylesheet" href="../assets/docs.css">
 <link rel="stylesheet" href="../docs/theme/creed.css">
@@ -43,6 +43,7 @@
       <article class="docs-article"><!-- Generated from CHANGELOG.md by bin/docs-site.php. Edit CHANGELOG.md, not this file. -->
 <h1 id="changelog">Changelog<a class="docs-heading-link" aria-label="Link to this section" href="#changelog">#</a></h1>
 <h2 id="unreleased">Unreleased<a class="docs-heading-link" aria-label="Link to this section" href="#unreleased">#</a></h2>
+<h2 id="0-1-9-2026-11-09">0.1.9 (2026-11-09)<a class="docs-heading-link" aria-label="Link to this section" href="#0-1-9-2026-11-09">#</a></h2>
 <ul>
 <li>Docs: Parity joins the party. The README cast and the front page's &quot;Authorities having jurisdiction&quot; list Parity, the stack's new tool that runs Citadel on your computer (its PHP image, its proxy and MySQL 5.6), next to Squire, with its spirit-level mark; it holds §6.5, since it is one program for Windows, macOS and Linux and its <code>check</code> flags Windows line endings in the files Citadel runs. 0.1.0 is coming and it has no site yet, so its row links nowhere. Creed Bratton has claimed for years that his laptop is Citadel's twin; now somebody can check.</li>
 <li>Changed: refreshed version mentions. The code handbook says the TLS-off bans (<code>pinstripe.banned.curlVerifyOff</code>, <code>streamVerifyOff</code>, <code>verifyFalse</code>) and the joined SQL ban (<code>pinstripe.banned.joinedSql</code>) are built in Pinstripe 0.3.0 (they said Planned), and its enforcement and accessibility pages name Preflight 0.5.0. BEST_PRACTICES names Preflight 0.5.0 (CREED's four pinned components, the <code>a11y</code> and <code>secret-detection</code> components, and the new <code>npm-audit</code> component, which no stack repo includes yet) and Composer 2.11.1 as the stable release the stack pins; the cooldown is still unset. The dev tools require Pinstripe ^0.3 (lock 0.3.0, was ^0.1.4 at 0.1.4), which brings the banned calls to CREED's own code: the one <code>eval()</code>, in <code>tests/ReadmeTest.php</code>, which evaluates the README's own expected values, carries a reasoned <code>pinstripe.banned.eval</code> ignore. Unlike anything on Creed Bratton's job application, every date here now checks out.</li>
@@ -280,10 +281,10 @@ plain-English use. <code>composer ci</code> runs the lint as <code>lint-handbook
     </main>
     <nav class="docs-pager" aria-label="Pages"><a class="docs-pager__link" href="../docs/contributing.html"><span class="docs-pager__dir">Previous</span><span class="docs-pager__title">Contributing</span></a></nav>
   </div>
-  <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#unreleased">Unreleased</a></li><li class="docs-toc__item"><a href="#0-1-8-2026-11-09">0.1.8 (2026-11-09)</a></li><li class="docs-toc__item"><a href="#0-1-7-2026-11-07">0.1.7 (2026-11-07)</a></li><li class="docs-toc__item"><a href="#0-1-6-2026-11-03">0.1.6 (2026-11-03)</a></li><li class="docs-toc__item"><a href="#0-1-5-2026-11-03">0.1.5 (2026-11-03)</a></li><li class="docs-toc__item"><a href="#0-1-4-2026-10-30">0.1.4 (2026-10-30)</a></li><li class="docs-toc__item"><a href="#0-1-3-2026-10-29">0.1.3 (2026-10-29)</a></li><li class="docs-toc__item"><a href="#0-1-2-2026-10-29">0.1.2 (2026-10-29)</a></li><li class="docs-toc__item"><a href="#0-1-1-2026-10-29">0.1.1 (2026-10-29)</a></li><li class="docs-toc__item"><a href="#0-1-0-2026-10-27">0.1.0 (2026-10-27)</a></li></ul></nav>
+  <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#unreleased">Unreleased</a></li><li class="docs-toc__item"><a href="#0-1-9-2026-11-09">0.1.9 (2026-11-09)</a></li><li class="docs-toc__item"><a href="#0-1-8-2026-11-09">0.1.8 (2026-11-09)</a></li><li class="docs-toc__item"><a href="#0-1-7-2026-11-07">0.1.7 (2026-11-07)</a></li><li class="docs-toc__item"><a href="#0-1-6-2026-11-03">0.1.6 (2026-11-03)</a></li><li class="docs-toc__item"><a href="#0-1-5-2026-11-03">0.1.5 (2026-11-03)</a></li><li class="docs-toc__item"><a href="#0-1-4-2026-10-30">0.1.4 (2026-10-30)</a></li><li class="docs-toc__item"><a href="#0-1-3-2026-10-29">0.1.3 (2026-10-29)</a></li><li class="docs-toc__item"><a href="#0-1-2-2026-10-29">0.1.2 (2026-10-29)</a></li><li class="docs-toc__item"><a href="#0-1-1-2026-10-29">0.1.1 (2026-10-29)</a></li><li class="docs-toc__item"><a href="#0-1-0-2026-10-27">0.1.0 (2026-10-27)</a></li></ul></nav>
 </div>
 <footer class="docs-footer">
-  <span>Documents CREED <span data-docs-version>0.1.8</span></span>
+  <span>Documents CREED <span data-docs-version>0.1.9</span></span>
   <span><a rel="noopener" href="https://github.com/waynestate/creed">Source</a> <a href="changelog.md">Markdown</a></span>
 </footer>
 </body>

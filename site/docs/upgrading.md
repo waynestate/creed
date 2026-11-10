@@ -19,6 +19,10 @@ How CREED versions are cut, what each release changed that a consumer notices, a
 5. A release needs a maintainer's approval. Never move or delete a published tag.
 6. Then bump `waynestate/creed` where the stack pins it, and refresh the generated copies.
 
+## 0.1.9 (2026-11-09)[#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-9-2026-11-09)
+
+Nothing changes for a consumer: `policy.json`, its schema and the reader are as they were in 0.1.8, so no generated copy needs a refresh. `bin/validate-policy.php` now names a policy line that carries neither `security_until` nor `"current": true`, or both, and says how to fix it; such a file failed before too, with a message that named nothing. The rest is the handbook, BEST_PRACTICES, the front page, CREED's own CI (Composer 2.11.1, Preflight 0.5.0) and the deploy kit (Squire 0.10.2).
+
 ## 0.1.8 (2026-11-09)[#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-8-2026-11-09)
 
 The policy gains five optional fields, each with a reader method that falls back to a default when the field is absent, so a consumer reading an older `policy.json` sees no change:

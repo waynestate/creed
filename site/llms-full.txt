@@ -240,7 +240,7 @@ PROCTOR, Booster and Rollcall each carry a generated copy of the reader
 under their own namespace, so two tools in one app never fight over a class
 name (the generator below keeps the copies in step). ADVISOR carries CREED's
 policy and handbook as a data bundle instead. The copies began
-because CREED was not on Packagist. It is now (`waynestate/creed`, 0.1.8 at this writing), so
+because CREED was not on Packagist. It is now (`waynestate/creed`, 0.1.9 at this writing), so
 each copy can become a real `require`, one consumer at a time; until a
 consumer switches, its copy stays. CREED owns the generator and the check:
 
@@ -736,7 +736,7 @@ Two ways in: read the policy from your own PHP tool, or clone CREED and run its 
 
 #### A.1 Read the policy from PHP
 
-Any OS with PHP 8.3 or newer and Composer. On Packagist, 0.1.8, the ninth printing
+Any OS with PHP 8.3 or newer and Composer. On Packagist, 0.1.9, the tenth printing
 
 `$ composer require waynestate/creed`
 
@@ -927,6 +927,8 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 ## Changelog[#](https://creed.apps.wayne.edu/docs/changelog.html#changelog)
 
 ### Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
+
+### 0.1.9 (2026-11-09)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-9-2026-11-09)
 
 - Docs: Parity joins the party. The README cast and the front page's "Authorities having jurisdiction" list Parity, the stack's new tool that runs Citadel on your computer (its PHP image, its proxy and MySQL 5.6), next to Squire, with its spirit-level mark; it holds §6.5, since it is one program for Windows, macOS and Linux and its `check` flags Windows line endings in the files Citadel runs. 0.1.0 is coming and it has no site yet, so its row links nowhere. Creed Bratton has claimed for years that his laptop is Citadel's twin; now somebody can check.
 - Changed: refreshed version mentions. The code handbook says the TLS-off bans (`pinstripe.banned.curlVerifyOff`, `streamVerifyOff`, `verifyFalse`) and the joined SQL ban (`pinstripe.banned.joinedSql`) are built in Pinstripe 0.3.0 (they said Planned), and its enforcement and accessibility pages name Preflight 0.5.0. BEST_PRACTICES names Preflight 0.5.0 (CREED's four pinned components, the `a11y` and `secret-detection` components, and the new `npm-audit` component, which no stack repo includes yet) and Composer 2.11.1 as the stable release the stack pins; the cooldown is still unset. The dev tools require Pinstripe ^0.3 (lock 0.3.0, was ^0.1.4 at 0.1.4), which brings the banned calls to CREED's own code: the one `eval()`, in `tests/ReadmeTest.php`, which evaluates the README's own expected values, carries a reasoned `pinstripe.banned.eval` ignore. Unlike anything on Creed Bratton's job application, every date here now checks out.
@@ -1182,7 +1184,7 @@ This page explains who carries a copy of CREED's reader and policy, what the cop
 
 ### Why the copies began[#](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html#why-the-copies-began)
 
-The copies began because CREED was not on Packagist. It is now (`waynestate/creed`, 0.1.8 at this writing), so each copy can become a real `require`, one consumer at a time; until a consumer switches, its copy stays.
+The copies began because CREED was not on Packagist. It is now (`waynestate/creed`, 0.1.9 at this writing), so each copy can become a real `require`, one consumer at a time; until a consumer switches, its copy stays.
 
 ### Generating and checking the copy[#](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html#generating-and-checking-the-copy)
 
@@ -1642,7 +1644,7 @@ $floor = $policy->oldestSupported('php', new DateTimeImmutable('2026-10-27'));
 - [Reader API](https://creed.apps.wayne.edu/docs/reference/api.html): every public member of the reader, one line each.
 - [Handbook](https://creed.apps.wayne.edu/docs/guides/handbook.html): the rules, chapter by chapter.
 
-Status: version 0.1.8, MIT license.
+Status: version 0.1.9, MIT license.
 
 Agents: fetch [https://creed.apps.wayne.edu/llms.txt](https://creed.apps.wayne.edu/llms.txt).
 
@@ -2168,6 +2170,10 @@ How CREED versions are cut, what each release changed that a consumer notices, a
 4. Tag `X.Y.Z` (no `v`) on git.wayne.edu. The mirror carries the tag to GitHub, and Packagist picks it up from there.
 5. A release needs a maintainer's approval. Never move or delete a published tag.
 6. Then bump `waynestate/creed` where the stack pins it, and refresh the generated copies.
+
+### 0.1.9 (2026-11-09)[#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-9-2026-11-09)
+
+Nothing changes for a consumer: `policy.json`, its schema and the reader are as they were in 0.1.8, so no generated copy needs a refresh. `bin/validate-policy.php` now names a policy line that carries neither `security_until` nor `"current": true`, or both, and says how to fix it; such a file failed before too, with a message that named nothing. The rest is the handbook, BEST_PRACTICES, the front page, CREED's own CI (Composer 2.11.1, Preflight 0.5.0) and the deploy kit (Squire 0.10.2).
 
 ### 0.1.8 (2026-11-09)[#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-8-2026-11-09)
 

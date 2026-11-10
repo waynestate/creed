@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Upgrading | CREED docs</title>
 <meta name="description" content="How an app on an older PHP reaches the policy floor, and what the reader says on each boundary day.">
-<meta name="docs-version" content="0.1.8">
+<meta name="docs-version" content="0.1.9">
 <link rel="stylesheet" href="../assets/wayne-ui/wayne-ui.css">
 <link rel="stylesheet" href="../assets/docs.css">
 <link rel="stylesheet" href="../docs/theme/creed.css">
@@ -51,6 +51,8 @@
 <li>A release needs a maintainer's approval. Never move or delete a published tag.</li>
 <li>Then bump <code>waynestate/creed</code> where the stack pins it, and refresh the generated copies.</li>
 </ol>
+<h2 id="0-1-9-2026-11-09">0.1.9 (2026-11-09)<a class="docs-heading-link" aria-label="Link to this section" href="#0-1-9-2026-11-09">#</a></h2>
+<p>Nothing changes for a consumer: <code>policy.json</code>, its schema and the reader are as they were in 0.1.8, so no generated copy needs a refresh. <code>bin/validate-policy.php</code> now names a policy line that carries neither <code>security_until</code> nor <code>&quot;current&quot;: true</code>, or both, and says how to fix it; such a file failed before too, with a message that named nothing. The rest is the handbook, BEST_PRACTICES, the front page, CREED's own CI (Composer 2.11.1, Preflight 0.5.0) and the deploy kit (Squire 0.10.2).</p>
 <h2 id="0-1-8-2026-11-09">0.1.8 (2026-11-09)<a class="docs-heading-link" aria-label="Link to this section" href="#0-1-8-2026-11-09">#</a></h2>
 <p>The policy gains five optional fields, each with a reader method that falls back to a default when the field is absent, so a consumer reading an older <code>policy.json</code> sees no change:</p>
 <ul>
@@ -94,10 +96,10 @@
     </main>
     <nav class="docs-pager" aria-label="Pages"><a class="docs-pager__link" href="../docs/troubleshooting.html"><span class="docs-pager__dir">Previous</span><span class="docs-pager__title">Troubleshooting</span></a><a class="docs-pager__link docs-pager__link--next" href="../docs/contributing.html"><span class="docs-pager__dir">Next</span><span class="docs-pager__title">Contributing</span></a></nav>
   </div>
-  <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#how-versions-are-cut">How versions are cut</a></li><li class="docs-toc__item"><a href="#0-1-8-2026-11-09">0.1.8 (2026-11-09)</a></li><li class="docs-toc__item"><a href="#0-1-7-2026-11-07">0.1.7 (2026-11-07)</a></li><li class="docs-toc__item"><a href="#0-1-6-2026-11-03">0.1.6 (2026-11-03)</a></li><li class="docs-toc__item"><a href="#0-1-5-2026-11-03">0.1.5 (2026-11-03)</a></li><li class="docs-toc__item"><a href="#0-1-4-2026-10-30">0.1.4 (2026-10-30)</a></li><li class="docs-toc__item"><a href="#0-1-3-2026-10-29">0.1.3 (2026-10-29)</a></li><li class="docs-toc__item"><a href="#0-1-2-2026-10-29">0.1.2 (2026-10-29)</a></li><li class="docs-toc__item"><a href="#0-1-1-2026-10-29">0.1.1 (2026-10-29)</a></li><li class="docs-toc__item"><a href="#0-1-0-2026-10-27">0.1.0 (2026-10-27)</a></li><li class="docs-toc__item"><a href="#which-consumers-must-refresh-a-generated-copy">Which consumers must refresh a generated copy</a></li><li class="docs-toc__item"><a href="#related">Related</a></li></ul></nav>
+  <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#how-versions-are-cut">How versions are cut</a></li><li class="docs-toc__item"><a href="#0-1-9-2026-11-09">0.1.9 (2026-11-09)</a></li><li class="docs-toc__item"><a href="#0-1-8-2026-11-09">0.1.8 (2026-11-09)</a></li><li class="docs-toc__item"><a href="#0-1-7-2026-11-07">0.1.7 (2026-11-07)</a></li><li class="docs-toc__item"><a href="#0-1-6-2026-11-03">0.1.6 (2026-11-03)</a></li><li class="docs-toc__item"><a href="#0-1-5-2026-11-03">0.1.5 (2026-11-03)</a></li><li class="docs-toc__item"><a href="#0-1-4-2026-10-30">0.1.4 (2026-10-30)</a></li><li class="docs-toc__item"><a href="#0-1-3-2026-10-29">0.1.3 (2026-10-29)</a></li><li class="docs-toc__item"><a href="#0-1-2-2026-10-29">0.1.2 (2026-10-29)</a></li><li class="docs-toc__item"><a href="#0-1-1-2026-10-29">0.1.1 (2026-10-29)</a></li><li class="docs-toc__item"><a href="#0-1-0-2026-10-27">0.1.0 (2026-10-27)</a></li><li class="docs-toc__item"><a href="#which-consumers-must-refresh-a-generated-copy">Which consumers must refresh a generated copy</a></li><li class="docs-toc__item"><a href="#related">Related</a></li></ul></nav>
 </div>
 <footer class="docs-footer">
-  <span>Documents CREED <span data-docs-version>0.1.8</span></span>
+  <span>Documents CREED <span data-docs-version>0.1.9</span></span>
   <span><a rel="noopener" href="https://github.com/waynestate/creed">Source</a> <a href="upgrading.md">Markdown</a></span>
 </footer>
 </body>
