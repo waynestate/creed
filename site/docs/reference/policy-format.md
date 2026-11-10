@@ -19,7 +19,7 @@ CREED is the Wayne State app stack's version policy, as data. One file, `policy/
 | `schema_version` | integer | Must be exactly `1`. Required. |
 | `refreshed_on` | string | A date in `YYYY-MM-DD` form. Optional. |
 | `components` | object | At least one entry. Each entry is a component holding a `versions` object, and nothing else. Required. |
-| `tools` | object | Maps tool names to a minimum version each. Optional. |
+| `tools` | object | Maps tool names to a minimum version each, and optionally a release cooldown. Optional. |
 | `sessions` | object | Records the session lifetimes the stack sets elsewhere: SESAME in minutes (`sesame.idle_minutes`, `sesame.absolute_minutes`) and the Drawbridge gateway in seconds (`gateway.idle_seconds`, `gateway.session_seconds`), each entry carrying a `source` that names the file in that repo where the default is set. Optional. |
 | `rules` | object | The rules every check runs against. Required. |
 
@@ -42,11 +42,12 @@ The `current` rule is the only conditional in the schema: a line with `"current"
 
 ## tools [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#tools)
 
-`tools` is optional. Its property names must match `^[a-z][a-z0-9-]*$`, and each value is an object with one required field:
+`tools` is optional. Its property names must match `^[a-z][a-z0-9-]*$`, and each value is an object with one required field and one optional one:
 
 | Name | Type | What the schema states |
 | --- | --- | --- |
 | `minimum` | string | Matches `^\d+\.\d+\.\d+$`, a major.minor.patch version. Required inside each tool. |
+| `cooldown` | object | Optional. `period` (required) is a duration such as `3 days` (a whole number, then hour, day or week, singular or plural); `ignore` is an optional list of package patterns that skip the wait. The bundled policy sets Composer's to `3 days`, ignoring `waynestate/*`. |
 
 ## rules [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#rules)
 

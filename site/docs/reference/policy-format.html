@@ -71,7 +71,7 @@
 <tr>
 <td><code>tools</code></td>
 <td>object</td>
-<td>Maps tool names to a minimum version each. Optional.</td>
+<td>Maps tool names to a minimum version each, and optionally a release cooldown. Optional.</td>
 </tr>
 <tr>
 <td><code>sessions</code></td>
@@ -140,7 +140,7 @@
 </table></div>
 <p>The <code>current</code> rule is the only conditional in the schema: a line with <code>&quot;current&quot;: true</code> must not carry <code>security_until</code>, and every other line must. A line marked <code>&quot;current&quot;: false</code>, or with no <code>current</code> at all, therefore needs a <code>security_until</code>: CREED does not list a line before its dates are known. <code>bin/validate-policy.php</code> checks this rule before the schema and names the line and the fix, for example <code>php 9.9: the line has neither security_until nor &quot;current&quot;: true; add security_until (...) or mark the line &quot;current&quot;: true.</code> The rule matters at runtime too: the reader does not guess the state of an undated line, so <code>supported()</code> and <code>oldestSupported()</code> would throw for that whole component.</p>
 <h2 id="tools"><span class="docs-heading-tail"><span>tools</span><a class="docs-heading-link" aria-label="Link to this section" href="#tools">#</a></span></h2>
-<p><code>tools</code> is optional. Its property names must match <code>^[a-z][a-z0-9-]*$</code>, and each value is an object with one required field:</p>
+<p><code>tools</code> is optional. Its property names must match <code>^[a-z][a-z0-9-]*$</code>, and each value is an object with one required field and one optional one:</p>
 <div class="docs-table" role="region" aria-label="Table" tabindex="0"><table>
 <thead>
 <tr>
@@ -154,6 +154,11 @@
 <td><code>minimum</code></td>
 <td>string</td>
 <td>Matches <code>^\d+\.\d+\.\d+$</code>, a major.minor.patch version. Required inside each tool.</td>
+</tr>
+<tr>
+<td><code>cooldown</code></td>
+<td>object</td>
+<td>Optional. <code>period</code> (required) is a duration such as <code>3 days</code> (a whole number, then hour, day or week, singular or plural); <code>ignore</code> is an optional list of package patterns that skip the wait. The bundled policy sets Composer's to <code>3 days</code>, ignoring <code>waynestate/*</code>.</td>
 </tr>
 </tbody>
 </table></div>
