@@ -100,7 +100,7 @@ The reader's public members, one line each:
 - `resolveVersion($component, $version)`: the policy line a full version like `8.3.12` belongs to.
 - `isAheadOfPolicy($component, $version)`: whether a version sorts above every line the policy lists.
 - `belowOldestLineReason($component, $version)`: the reason a version is `Eol` for sorting below every listed line, or null.
-- `hasComponent()`, `components()`, `versions($component)`, `tools()`, `toolMinimum($tool)`, `rules()`: the shape of the policy itself.
+- `hasComponent()`, `components()`, `versions($component)`, `tools()`, `toolMinimum($tool)`, `toolCooldownPeriod($tool)`, `toolCooldownIgnore($tool)`, `rules()`: the shape of the policy itself.
 
 One last time: the reader answers, it does not guess.
 
@@ -928,6 +928,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Added: `Policy::toolCooldownPeriod()` and `Policy::toolCooldownIgnore()` read a tool's release cooldown (`tools.<tool>.cooldown`), so PROCTOR can take the period from the policy.
 - Added: `policy.json` names the Composer release cooldown (`tools.composer.cooldown`: `3 days`, ignoring `waynestate/*`), the period Sourdough's shapes already set; the schema allows an optional `cooldown` on any tool. Practice 40 says so and stays `Partially` until PROCTOR reads the period from the policy.
 - Docs: practice 40 and the handbook's dependency rules name PROCTOR's new `composer-cooldown` warning (no cooldown, or blocking turned off), and practice 18 and the lock rule name `lock-tracked` (git does not track the lock); both are on PROCTOR main for its next release. Practice 40 stays `Partially`.
 - Docs: practice 40's Composer cooldown is `Partially` held (Sourdough's shapes set 3 days and exempt `waynestate/*`, so a fresh app installs right after a stack release); the handbook's dependency rule says the same. The PROCTOR warning is still planned.
@@ -1777,6 +1778,8 @@ This page lists every public member of the `Waynestate\Creed\Policy` reader, in 
 | `versions($component)` | The shape of the policy itself | `public function versions(string $component): array` |
 | `tools()` | The shape of the policy itself | `public function tools(): array` |
 | `toolMinimum($tool)` | The shape of the policy itself | `public function toolMinimum(string $tool): ?string` |
+| `toolCooldownPeriod($tool)` | The shape of the policy itself | `public function toolCooldownPeriod(string $tool): ?string` |
+| `toolCooldownIgnore($tool)` | The shape of the policy itself | `public function toolCooldownIgnore(string $tool): array` |
 | `rules()` | The shape of the policy itself | `public function rules(): array` |
 
 Note

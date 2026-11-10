@@ -38,6 +38,8 @@ This page lists every public member of the `Waynestate\Creed\Policy` reader, in 
 | `versions($component)` | The shape of the policy itself | `public function versions(string $component): array` |
 | `tools()` | The shape of the policy itself | `public function tools(): array` |
 | `toolMinimum($tool)` | The shape of the policy itself | `public function toolMinimum(string $tool): ?string` |
+| `toolCooldownPeriod($tool)` | The shape of the policy itself | `public function toolCooldownPeriod(string $tool): ?string` |
+| `toolCooldownIgnore($tool)` | The shape of the policy itself | `public function toolCooldownIgnore(string $tool): array` |
 | `rules()` | The shape of the policy itself | `public function rules(): array` |
 
 Note
