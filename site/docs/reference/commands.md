@@ -6,11 +6,11 @@ llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
 ---
 
-# Commands and exit codes[#](https://creed.apps.wayne.edu/docs/reference/commands.html#commands-and-exit-codes)
+# Commands and exit codes [#](https://creed.apps.wayne.edu/docs/reference/commands.html#commands-and-exit-codes)
 
 This page lists every command CREED ships, what each one does, and the exit codes the refresh tools return.
 
-## Composer scripts[#](https://creed.apps.wayne.edu/docs/reference/commands.html#composer-scripts)
+## Composer scripts [#](https://creed.apps.wayne.edu/docs/reference/commands.html#composer-scripts)
 
 | Command | What it does |
 | --- | --- |
@@ -34,7 +34,7 @@ On Windows, if tests fail oddly after a Docker install, delete `vendor/` and ins
 
 The whole band fits in three commands, and nobody needs a solo.
 
-## The php bin/\*.php tools[#](https://creed.apps.wayne.edu/docs/reference/commands.html#the-php-bin-php-tools)
+## The php bin/\*.php tools [#](https://creed.apps.wayne.edu/docs/reference/commands.html#the-php-bin-php-tools)
 
 | Tool | What it does |
 | --- | --- |
@@ -48,9 +48,9 @@ The whole band fits in three commands, and nobody needs a solo.
 | `php bin/agent-ready.php` | Makes a static front page readable by agents: writes the Markdown twins, `llms.txt`, `llms-full.txt`, `robots.txt` and `sitemap.xml` into the site folder. |
 | `php bin/docs-site.php` | Turns every Markdown file under `docs/` into a committed, accessible, WayneUI-styled docs site under `site/docs/`, and fails CI when the committed pages are stale. |
 
-## Exit codes[#](https://creed.apps.wayne.edu/docs/reference/commands.html#exit-codes)
+## Exit codes [#](https://creed.apps.wayne.edu/docs/reference/commands.html#exit-codes)
 
-### refresh-policy[#](https://creed.apps.wayne.edu/docs/reference/commands.html#refresh-policy)
+### refresh-policy [#](https://creed.apps.wayne.edu/docs/reference/commands.html#refresh-policy)
 
 | Code | Meaning |
 | --- | --- |
@@ -61,14 +61,14 @@ The whole band fits in three commands, and nobody needs a solo.
 
 The refresher never commits; the policy robot does.
 
-### policy-bot run[#](https://creed.apps.wayne.edu/docs/reference/commands.html#policy-bot-run)
+### policy-bot run [#](https://creed.apps.wayne.edu/docs/reference/commands.html#policy-bot-run)
 
 | Code | Meaning |
 | --- | --- |
 | `0` | Every handled outcome: nothing to do, the gate passed and the refresh was pushed to `main` (or nothing staged), the alert issues synced, or a dry run. |
 | `1` | The refresher hard-failed or could not start, a required CI variable is missing (named in the output), the pipeline is not on the default branch, a git step or the push failed, the gate failed (the refresh went to `auto/policy-refresh` as a merge request), or the alert issues could not be synced. After a failed gate or push the alert issues still sync first. |
 
-### refresh-patches[#](https://creed.apps.wayne.edu/docs/reference/commands.html#refresh-patches)
+### refresh-patches [#](https://creed.apps.wayne.edu/docs/reference/commands.html#refresh-patches)
 
 | Code | Meaning |
 | --- | --- |
@@ -76,15 +76,15 @@ The refresher never commits; the policy robot does.
 | `1` | A feed could not be fetched or parsed. |
 | `3` | The policy was updated (or `--dry-run` with changes to show). In CI the scheduled job is check-only: when the policy changed, the tool exits 3 and the job fails on the diff. |
 
-### export --check[#](https://creed.apps.wayne.edu/docs/reference/commands.html#export-check)
+### export --check [#](https://creed.apps.wayne.edu/docs/reference/commands.html#export-check)
 
 `export --check` compares the copy against a fresh export and exits `1` naming every file that differs, is missing, or is an extra `.php`/`.json` file. In short: it fails when the copy drifts from the source.
 
-## With only Docker[#](https://creed.apps.wayne.edu/docs/reference/commands.html#with-only-docker)
+## With only Docker [#](https://creed.apps.wayne.edu/docs/reference/commands.html#with-only-docker)
 
 The same lines work in PowerShell and sh.
 
-### Install and run every check[#](https://creed.apps.wayne.edu/docs/reference/commands.html#install-and-run-every-check)
+### Install and run every check [#](https://creed.apps.wayne.edu/docs/reference/commands.html#install-and-run-every-check)
 
 sh
 
@@ -100,7 +100,7 @@ docker run --rm -v "${PWD}:/app" -w /app composer:2.11.1@sha256:8de2184c6de224f4
 docker run --rm -v "${PWD}:/app" -w /app php:8.5-cli vendor/bin/phpunit
 ```
 
-### Run the test suite[#](https://creed.apps.wayne.edu/docs/reference/commands.html#run-the-test-suite)
+### Run the test suite [#](https://creed.apps.wayne.edu/docs/reference/commands.html#run-the-test-suite)
 
 No PHP on the machine? Fine. Docker runs the suite:
 
@@ -120,7 +120,7 @@ docker run --rm -v "${PWD}:/app" -w /app php:8.4-cli vendor/bin/phpunit
 docker run --rm -v "${PWD}:/app" -w /app php:8.3-cli vendor/bin/phpunit
 ```
 
-### Validate the policy against its schema[#](https://creed.apps.wayne.edu/docs/reference/commands.html#validate-the-policy-against-its-schema)
+### Validate the policy against its schema [#](https://creed.apps.wayne.edu/docs/reference/commands.html#validate-the-policy-against-its-schema)
 
 sh
 
@@ -134,7 +134,7 @@ PowerShell
 docker run --rm -v "${PWD}:/app" -w /app composer:2.11.1@sha256:8de2184c6de224f4689e8f80ed5f5edaf0030b6b8b7839a22a2bcb6722ac87d0 composer validate-policy
 ```
 
-## Related[#](https://creed.apps.wayne.edu/docs/reference/commands.html#related)
+## Related [#](https://creed.apps.wayne.edu/docs/reference/commands.html#related)
 
 - [Policy file format](https://creed.apps.wayne.edu/docs/reference/policy-format.html)
 - [Configuration](https://creed.apps.wayne.edu/docs/reference/configuration.html)

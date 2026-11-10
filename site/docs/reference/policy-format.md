@@ -6,13 +6,13 @@ llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
 ---
 
-# Policy file format[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#policy-file-format)
+# Policy file format [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#policy-file-format)
 
 This page shows the shape of `policy/policy.json` and `policy/sources.json`, exactly as their schemas state it.
 
 CREED is the Wayne State app stack's version policy, as data. One file, `policy/policy.json`, lists the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, plus the rules every check runs against. The schema titles the file "CREED version policy", requires `schema_version`, `components` and `rules`, and allows no other top-level properties.
 
-## Top level of policy/policy.json[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#top-level-of-policy-policy-json)
+## Top level of policy/policy.json [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#top-level-of-policy-policy-json)
 
 | Name | Type | What the schema states |
 | --- | --- | --- |
@@ -23,7 +23,7 @@ CREED is the Wayne State app stack's version policy, as data. One file, `policy/
 | `sessions` | object | Records the session lifetimes the stack sets elsewhere: SESAME in minutes (`sesame.idle_minutes`, `sesame.absolute_minutes`) and the Drawbridge gateway in seconds (`gateway.idle_seconds`, `gateway.session_seconds`), each entry carrying a `source` that names the file in that repo where the default is set. Optional. |
 | `rules` | object | The rules every check runs against. Required. |
 
-## The line fields[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#the-line-fields)
+## The line fields [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#the-line-fields)
 
 Each component holds a `versions` object that maps a version to a line. Every line may carry these fields:
 
@@ -40,7 +40,7 @@ Each component holds a `versions` object that maps a version to a line. Every li
 
 The `current` rule is the only conditional in the schema: a line with `"current": true` must not carry `security_until`, and every other line must. A line marked `"current": false`, or with no `current` at all, therefore needs a `security_until`: CREED does not list a line before its dates are known. `bin/validate-policy.php` checks this rule before the schema and names the line and the fix, for example `php 9.9: the line has neither security_until nor "current": true; add security_until (...) or mark the line "current": true.` The rule matters at runtime too: the reader does not guess the state of an undated line, so `supported()` and `oldestSupported()` would throw for that whole component.
 
-## tools[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#tools)
+## tools [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#tools)
 
 `tools` is optional. Its property names must match `^[a-z][a-z0-9-]*$`, and each value is an object with one required field:
 
@@ -48,7 +48,7 @@ The `current` rule is the only conditional in the schema: a line with `"current"
 | --- | --- | --- |
 | `minimum` | string | Matches `^\d+\.\d+\.\d+$`, a major.minor.patch version. Required inside each tool. |
 
-## rules[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#rules)
+## rules [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#rules)
 
 `rules` allows exactly three properties, all required:
 
@@ -58,7 +58,7 @@ The `current` rule is the only conditional in the schema: a line with `"current"
 | `banned_constraints` | array of strings | Required. |
 | `eol_grace_days` | integer | Minimum `0`. Required. |
 
-## policy/sources.json[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#policy-sources-json)
+## policy/sources.json [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#policy-sources-json)
 
 The schema titles `policy/sources.json` the "CREED refresh provenance ledger". It records, per observed value, which source said it and the first and last day it was seen.
 
@@ -76,11 +76,11 @@ Each leaf record carries exactly three fields:
 | `first_seen` | string | A date in `YYYY-MM-DD` form. Required. |
 | `last_seen` | string | A date in `YYYY-MM-DD` form. Required. |
 
-## Schema version and older readers[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#schema-version-and-older-readers)
+## Schema version and older readers [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#schema-version-and-older-readers)
 
 The schema is `version: 1`. Optional new fields keep it at 1; a breaking schema change needs a new version and a release of every reader. The schema is strict: unknown keys fail CREED's own CI. Readers are tolerant: unknown keys are ignored, so older readers keep working on a newer file. The older-reader contract is pinned by `tests/OlderReaderContractTest.php`; change the fixture only with a `schema_version` bump.
 
-## A real excerpt[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#a-real-excerpt)
+## A real excerpt [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#a-real-excerpt)
 
 One real line from `policy/policy.json`, verbatim (the PHP 8.2 entry):
 
@@ -97,7 +97,7 @@ Note
 
 Creed Bratton's past is a mystery. Ours is in `policy/policy.json`, where it belongs.
 
-## Related[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#related)
+## Related [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#related)
 
 - [Commands and exit codes](https://creed.apps.wayne.edu/docs/reference/commands.html)
 - [Configuration](https://creed.apps.wayne.edu/docs/reference/configuration.html)

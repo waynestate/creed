@@ -6,15 +6,15 @@ llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
 ---
 
-# Contributing[#](https://creed.apps.wayne.edu/docs/contributing.html#contributing)
+# Contributing [#](https://creed.apps.wayne.edu/docs/contributing.html#contributing)
 
 This page tells you how to build, test and release CREED, and how its policy data stays current.
 
-## Where the code lives[#](https://creed.apps.wayne.edu/docs/contributing.html#where-the-code-lives)
+## Where the code lives [#](https://creed.apps.wayne.edu/docs/contributing.html#where-the-code-lives)
 
 Development happens on git.wayne.edu, the canonical repository ([enterprise-apps/creed](https://git.wayne.edu/enterprise-apps/creed)). GitHub ([waynestate/creed](https://github.com/waynestate/creed)) is a read-only push mirror: `main` and tags are copied automatically, and Packagist picks releases up from it. Changes, issues and merge requests go to git.wayne.edu; tags are made there, by the maintainer, with an approver. Nobody pushes to the mirror.
 
-## Build and test[#](https://creed.apps.wayne.edu/docs/contributing.html#build-and-test)
+## Build and test [#](https://creed.apps.wayne.edu/docs/contributing.html#build-and-test)
 
 You need PHP 8.3 or newer and Composer, or only Docker. Everything has a native path on Windows (PowerShell), Linux and macOS.
 
@@ -36,17 +36,17 @@ docker run --rm -v "${PWD}:/app" -w /app php:8.5-cli vendor/bin/phpunit
 
 `composer ci` runs `composer validate --strict`, the tests, the policy validator, Pint, the handbook lint, the handbook site and agent-ready freshness checks, PHPStan, `composer audit` and the docs site freshness check. On Windows, if tests fail oddly after a Docker install, delete `vendor/` and install again.
 
-## The docs site[#](https://creed.apps.wayne.edu/docs/contributing.html#the-docs-site)
+## The docs site [#](https://creed.apps.wayne.edu/docs/contributing.html#the-docs-site)
 
 The documentation site is built by `composer docs` and checked by `composer docs:check`. Its sources live in `docs/`, one Markdown file per page, and `composer ci` fails when the committed pages go stale.
 
-## CI[#](https://creed.apps.wayne.edu/docs/contributing.html#ci)
+## CI [#](https://creed.apps.wayne.edu/docs/contributing.html#ci)
 
 - **GitLab:** Preflight components (`php-test` on PHP 8.3, 8.4 and 8.5, `composer-audit`, and `proctor` for the `deploy/` layer), plus a `composer-ci` job and a `wayneui-copies` job. On scheduled pipelines, `refresh-patches` (check-only) runs on a schedule without `CREED_JOB`, and `policy-bot` runs on the Monday schedule that carries `CREED_JOB=policy-bot` (and by hand from the web).
 - **GitHub:** `.github/workflows/ci.yml` calls Preflight's reusable workflow with `composer ci`, and runs `refresh-patches` weekly (Mondays) and on demand.
 - Green means the tests passed on all three PHP versions on both, and `composer ci` passed (on all three on GitHub, once on GitLab).
 
-## Keeping the policy current[#](https://creed.apps.wayne.edu/docs/contributing.html#keeping-the-policy-current)
+## Keeping the policy current [#](https://creed.apps.wayne.edu/docs/contributing.html#keeping-the-policy-current)
 
 This is CREED's real maintenance job.
 
@@ -57,7 +57,7 @@ This is CREED's real maintenance job.
 - **After any policy change,** the copies downstream are stale until refreshed. In each consumer (PROCTOR, Rollcall, Booster), run `php <creed>/bin/export.php --namespace='Waynestate\<Project>\Creed' --to=src/Creed`, then `composer creed-copy:check` with `CREED_PATH` pointing at this checkout. ADVISOR regenerates with `content:generate`.
 - The schema is `version: 1`. Optional new fields keep it at 1; a breaking schema change needs a new version and a release of every reader. The older-reader contract is pinned by `tests/OlderReaderContractTest.php`; change the fixture only with a `schema_version` bump.
 
-## Releasing[#](https://creed.apps.wayne.edu/docs/contributing.html#releasing)
+## Releasing [#](https://creed.apps.wayne.edu/docs/contributing.html#releasing)
 
 1. Move the lines under `## Unreleased` in `CHANGELOG.md` to a new `## X.Y.Z (YYYY-MM-DD)` heading, leaving an empty `## Unreleased`. (0.1.0 predates the heading convention, so it has none.)
 2. `composer ci` green locally, then on both pipelines for that commit.
@@ -66,19 +66,19 @@ This is CREED's real maintenance job.
 5. A release needs a maintainer's approval. Never move or delete a published tag.
 6. Then bump `waynestate/creed` where the stack pins it, and refresh the generated copies.
 
-## The front page and its deploy[#](https://creed.apps.wayne.edu/docs/contributing.html#the-front-page-and-its-deploy)
+## The front page and its deploy [#](https://creed.apps.wayne.edu/docs/contributing.html#the-front-page-and-its-deploy)
 
 `site/` is the static front page. It is served on Citadel at `https://creed.apps.wayne.edu/` (pre-production first) by the raw-PHP layer in `deploy/`: HELMET's headers in front, PROCTOR and this policy in the release. `deploy/` is its own Composer project, separate from the library. Most of it is generated by Squire (`deploy/.squire.json` records what), so regenerate it rather than hand-editing it. Only `deploy/public/index.php`, `deploy/public/.htaccess` and `deploy/composer.json` are written by hand. Run the parity kit with `deploy\scripts\parity.ps1` (Windows) or `deploy/scripts/parity.sh` (Linux and macOS).
 
 When a stamp in `BEST_PRACTICES.md` changes, or a practice is added, update the front page in the same commit: the tally on the title page, the contents heading, that chapter's stamp bar and clause range, and the stamp on any clause the page reprints. `FrontPageTallyTest` recounts the stamps from `BEST_PRACTICES.md` and fails `composer ci` until `site/index.html` agrees; then run `composer site:agent-ready` so `site/index.md` and `llms-full.txt` follow.
 
-## Things that trip people up[#](https://creed.apps.wayne.edu/docs/contributing.html#things-that-trip-people-up)
+## Things that trip people up [#](https://creed.apps.wayne.edu/docs/contributing.html#things-that-trip-people-up)
 
 - `composer.json` pins Pinstripe for dev; PROCTOR warns on any `dev-main` pin.
 - A scheduled `refresh-patches` failure is expected whenever upstream ships a patch.
 - No em or en dashes anywhere in the docs; the handbook lint and the house style both care. Creed Bratton would not care, but he is not reviewing the merge request.
 
-## Related[#](https://creed.apps.wayne.edu/docs/contributing.html#related)
+## Related [#](https://creed.apps.wayne.edu/docs/contributing.html#related)
 
 - [Overview](https://creed.apps.wayne.edu/docs/index.html)
 - [Install](https://creed.apps.wayne.edu/docs/install.html)

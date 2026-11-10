@@ -6,15 +6,16 @@ llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
 ---
 
-# Changelog[#](https://creed.apps.wayne.edu/docs/changelog.html#changelog)
+# Changelog [#](https://creed.apps.wayne.edu/docs/changelog.html#changelog)
 
-## Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
+## Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Changed: the docs, agent-ready and deploy kits are Squire 0.10.6 (was 0.10.5): the docs builder and agent-ready generator see every file on Docker Desktop mounts.
 - Site: `assets/stack-env.js` knows Parity, so a pre-production page links Parity's pre-production site and a dev page links its local `site/` folder. Until now Parity, of all parts, was the one link that ignored its environment.
 - Site: Parity is out; the party list links its site.
 - Deploy kit refreshed to Squire 0.10.5
 
-## 0.1.9 (2026-11-09)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-9-2026-11-09)
+## 0.1.9 (2026-11-09) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-9-2026-11-09)
 
 - Docs: Parity joins the party. The README cast and the front page's "Authorities having jurisdiction" list Parity, the stack's new tool that runs Citadel on your computer (its PHP image, its proxy and MySQL 5.6), next to Squire, with its spirit-level mark; it holds §6.5, since it is one program for Windows, macOS and Linux and its `check` flags Windows line endings in the files Citadel runs. 0.1.0 is coming and it has no site yet, so its row links nowhere. Creed Bratton has claimed for years that his laptop is Citadel's twin; now somebody can check.
 - Changed: refreshed version mentions. The code handbook says the TLS-off bans (`pinstripe.banned.curlVerifyOff`, `streamVerifyOff`, `verifyFalse`) and the joined SQL ban (`pinstripe.banned.joinedSql`) are built in Pinstripe 0.3.0 (they said Planned), and its enforcement and accessibility pages name Preflight 0.5.0. BEST_PRACTICES names Preflight 0.5.0 (CREED's four pinned components, the `a11y` and `secret-detection` components, and the new `npm-audit` component, which no stack repo includes yet) and Composer 2.11.1 as the stable release the stack pins; the cooldown is still unset. The dev tools require Pinstripe ^0.3 (lock 0.3.0, was ^0.1.4 at 0.1.4), which brings the banned calls to CREED's own code: the one `eval()`, in `tests/ReadmeTest.php`, which evaluates the README's own expected values, carries a reasoned `pinstripe.banned.eval` ignore. Unlike anything on Creed Bratton's job application, every date here now checks out.
@@ -27,7 +28,7 @@ generator: Squire agent-ready
 - Changed: four handbook rules name the PROCTOR 0.10.0 check that reports them instead of "No check exists yet": `csp-unsafe-inline` and `display-errors` (runtime and headers), `directory-listing` and `robots-txt` (production). The robots.txt rule says an app that wants crawling writes `Allow: /` for `User-agent: *`.
 - Changed: the deploy kit is Squire 0.10.0 (was 0.7.1): release.sh keeps Composer and npm download caches in the app folder and the gate takes SQUIRE_PHP_RUNTIME; the compose file, health.php and .env.squire.example follow the template, and the portable image files are added.
 
-## 0.1.8 (2026-11-09)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-8-2026-11-09)
+## 0.1.8 (2026-11-09) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-8-2026-11-09)
 
 - Fixed: scripts/a11y.ps1 works on a Windows checkout with CRLF line endings; it strips the carriage returns from the shell command it hands to Docker, which sh rejected with a syntax error.
 - Docs: the front page and docs pages follow the reader's dark mode: the front page and the handbook pages now read after hours like the docs already did, with warm graphite stock, cream type, the green ink thinned to a pale tint and gold foil for focus, while the green cloth (spine, cover, tabs, the ink button, colophon) stays put. Every text pair meets WCAG AA, the browser bar color and form controls follow the scheme, printing stays ink on white, and with motion allowed a lamp glint runs across the cover's foil once it is struck. The docs theme now says it shares those values with the front page.
@@ -70,7 +71,7 @@ generator: Squire agent-ready
 - Changed: the front-page deploy layer pins PROCTOR ^0.7 (lock: PROCTOR 0.7.0, was 0.4.0).
 - Changed: CI caches Composer downloads per lock file (`.composer-cache`, keyed on `composer.lock` and `deploy/composer.lock`), so a pipeline stops fetching every package from Packagist on every run. Images already come through the Dependency Proxy.
 
-## 0.1.7 (2026-11-07)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-7-2026-11-07)
+## 0.1.7 (2026-11-07) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-7-2026-11-07)
 
 - Changed: the front page's deploy layer (`deploy/`) runs Squire's kit 0.5.0 (was 0.3.4): `oracle-check.php` arrives, `scripts/release.sh` and `scripts/parity.ps1` take the new templates, and the two kit files Renovate had edited (`docker-compose.squire.yml`, `.squire/base-fallback.Dockerfile`, which it had moved to PHP 8.5) are Squire's template again, so `squire init --check` passes. The shared Renovate preset leaves kit files alone now. `site/assets/stack-env.js` takes the stack's one copy, with bindingless catch blocks.
 - Changed: The canonical repository is git.wayne.edu (ADR-0021); docs, links and package metadata no longer point at the archived nougat copy.
@@ -103,12 +104,12 @@ generator: Squire agent-ready
 - Added: handbook chapter Runtime and headers (HELMET's headers, proxy trust, debug off in production).
 - Added: handbook chapter Accessibility (WCAG 2.2 AA as the target, an automated check, the open Title II question).
 
-## 0.1.6 (2026-11-03)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-6-2026-11-03)
+## 0.1.6 (2026-11-03) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-6-2026-11-03)
 
 - Added: a policy-bot CI job (weekly schedule with CREED_JOB=policy-bot, or run by hand) that runs bin/policy-bot.php run with CREED_BOT_TOKEN; without the token it skips green. The check-only refresh-patches job now skips that schedule.
 - Changed: docs and package metadata name nougat as the canonical repository, with git.wayne.edu and GitHub as read-only mirrors, until git.wayne.edu has CI runners.
 
-## 0.1.5 (2026-11-03)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-5-2026-11-03)
+## 0.1.5 (2026-11-03) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-5-2026-11-03)
 
 - Changed: WSU developer standards rules updated with the owners' answers (source home, catalog, change control, crawling).
 - Changed: CI pulls its Docker Hub images through the GitLab Dependency Proxy (the group's CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX), so pipelines no longer hit Docker Hub's anonymous pull limit.
@@ -124,13 +125,13 @@ generator: Squire agent-ready
 - Added: WSU developer standards (2024) rules in the Code, Auth, Databases, Dependencies and CI chapters.
 - Added: BEST_PRACTICES section 11 (practices 55 to 61) from the WSU developer standards (2024).
 
-## 0.1.4 (2026-10-30)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-4-2026-10-30)
+## 0.1.4 (2026-10-30) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-4-2026-10-30)
 
 - Fixed: the bot's GitLab HTTP client failed on every API call (`stream_context_create` options were not under the `http` wrapper, a ValueError on current PHP). It now works, and reads response headers from the stream's metadata, so PHP 8.5 shows no deprecation. Found by Booster's hop-data robot, which uses this client.
 - Changed: the deploy layer's Squire kit is refreshed to 0.3.3 (release options can now live in ./.env.squire).
 - Changed: the deploy layer's Squire kit is refreshed to 0.3.4 (the local .env.squire file is now git-ignored).
 
-## 0.1.3 (2026-10-29)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-3-2026-10-29)
+## 0.1.3 (2026-10-29) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-3-2026-10-29)
 
 - Changed: the proof page moves to a private site that needs a Wayne State sign-in.
 - Changed: project names written as words except acronyms.
@@ -142,12 +143,12 @@ generator: Squire agent-ready
 - New `src/Bot/GitLabClient.php`: a small GitLab API client (list open issues, create an issue, add a note, close an issue) over an injectable `HttpTransport`, shipped with a dependency-free PHP streams transport (`GitLabClient::streamTransport`). The token rides only in the `PRIVATE-TOKEN` header, never in a URL, and every error it throws is masked, so a failed call can never print the token.
 - Fixed: stale capability claims in the site and docs.
 
-## 0.1.2 (2026-10-29)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-2-2026-10-29)
+## 0.1.2 (2026-10-29) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-2-2026-10-29)
 
 - `bin/refresh-policy.php`: a released version that loosens a constraint now exits 3 (changes written) with an alert in the report, instead of exit 4.
 - Fixed: a version of a known component that is older than the oldest listed line (PHP 5.x to 8.0, Laravel 5 to 8, Inertia 0.x) is now `Eol`, with the reason `older than the oldest listed line (8.1)` from the new `belowOldestLineReason($component, $version)`, instead of being refused as an unknown version. Unlisted components and version strings that do not parse are still refused, and a version above every listed line is still `Active`.
 
-## 0.1.1 (2026-10-29)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-1-2026-10-29)
+## 0.1.1 (2026-10-29) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-1-2026-10-29)
 
 - `bin/refresh-policy.php` keeps every support date, patch and new line in the policy tied to a canonical source (php.net, the Node.js release schedule, endoflife.date, Packagist, npm). Changes are classed tighten, neutral, loosen-warning or loosen-fail; a later security date is held until two sources agree or 14 days pass; nothing is ever removed. Provenance lives in the new `policy/sources.json` (schema and validation included), and the policy gains an optional `refreshed_on` date. `refresh-patches.php` keeps working.
 - PHPStan now includes Pinstripe's raw preset (`vendor/waynestate/pinstripe/phpstan/raw.neon`) instead of carrying a hand copy; `phpstan.neon` keeps only this repo's own paths and phpVersion. `waynestate/pinstripe` joins require-dev (dev-main until 0.1.0 is tagged) and `phpstan/extension-installer` is allowed so the preset's deprecation rules load. The suit is off the rack now.
@@ -166,6 +167,6 @@ generator: Squire agent-ready
 - The handbook is now linted for RFC 2119 capitalization. `src/HandbookLinter.php` and `bin/lint-handbook.php` flag lowercase `must`, `must not`, `should`, `should not` and `may` in any chapter that declares RFC 2119, ignoring code spans and blocks; a same-line `<!-- lint: allow -->` excuses a deliberate plain-English use. `composer ci` runs the lint as `lint-handbook`.
 - Every handbook chapter now declares RFC 2119 and uses capital keywords; `handbook/databases.md` gains a "Grace period" section spelling out the 90-day `eol_grace_days` window (`Security` on `security_until`, `Eol` for the window, `EolGraceExpired` after, no override).
 
-## 0.1.0 (2026-10-27)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-0-2026-10-27)
+## 0.1.0 (2026-10-27) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-0-2026-10-27)
 
 - First tagged release.

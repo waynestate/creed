@@ -40,9 +40,9 @@
   <nav class="docs-nav docs-nav--sidebar" aria-label="Documentation"><ul class="docs-nav__list"><li class="docs-nav__group"><span class="docs-nav__label">Getting started</span><ul><li><a href="../../docs/index.html">Overview</a></li><li><a href="../../docs/install.html">Install</a></li><li><a href="../../docs/guides/quick-start.html">Quick start</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Guides</span><ul><li><a href="../../docs/guides/reading-the-policy.html">Reading the policy from PHP</a></li><li><a href="../../docs/guides/support-states.html">Support states and the grace period</a></li><li><a href="../../docs/guides/patch-refresh.html">Keeping the patches fresh</a></li><li><a href="../../docs/guides/policy-refresh.html">Refreshing the policy</a></li><li><a href="../../docs/guides/policy-bot.html" aria-current="page">The policy robot</a></li><li><a href="../../docs/guides/carrying-creed.html">Carrying CREED in another package</a></li><li><a href="../../docs/guides/handbook.html">The handbook</a></li><li><a href="../../docs/guides/instance-runner.html">The instance runner</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Reference</span><ul><li><a href="../../docs/reference/api.html">Reader API</a></li><li><a href="../../docs/reference/policy-format.html">Policy file format</a></li><li><a href="../../docs/reference/commands.html">Commands and exit codes</a></li><li><a href="../../docs/reference/configuration.html">Configuration</a></li><li><a href="../../docs/reference/proof.html">Proof</a></li></ul></li><li><a href="../../docs/troubleshooting.html">Troubleshooting</a></li><li><a href="../../docs/upgrading.html">Upgrading</a></li><li><a href="../../docs/contributing.html">Contributing</a></li><li><a href="../../docs/changelog.html">Changelog</a></li></ul></nav>
   <div class="docs-content">
     <main id="main">
-      <article class="docs-article"><h1 id="the-policy-robot">The policy robot<a class="docs-heading-link" aria-label="Link to this section" href="#the-policy-robot">#</a></h1>
+      <article class="docs-article"><h1 id="the-policy-robot">The policy <span class="docs-heading-tail"><span>robot</span><a class="docs-heading-link" aria-label="Link to this section" href="#the-policy-robot">#</a></span></h1>
 <p>This page explains what the policy robot does every Monday, what it pushes or opens on the CREED project, how it is set up, and how a person handles a red week.</p>
-<h2 id="what-the-robot-does">What the robot does<a class="docs-heading-link" aria-label="Link to this section" href="#what-the-robot-does">#</a></h2>
+<h2 id="what-the-robot-does">What the robot <span class="docs-heading-tail"><span>does</span><a class="docs-heading-link" aria-label="Link to this section" href="#what-the-robot-does">#</a></span></h2>
 <p>The policy robot is <code>bin/policy-bot.php run</code> (the logic is <code>src/Bot/PolicyBot.php</code>). Once a week it runs the full refresher, <a href="policy-refresh.html"><code>bin/refresh-policy.php</code></a>, which re-reads the upstream sources for support dates, latest patches and new version lines. Then it turns the refresher's exit code and report into one of four outcomes:</p>
 <div class="docs-table" role="region" aria-label="Table" tabindex="0"><table>
 <thead>
@@ -73,7 +73,7 @@
 <p>After every handled run, red or green, it also brings its <a href="#the-alert-issues">alert issues</a> in line with the report.</p>
 <aside class="docs-callout docs-callout--note" role="note"><p class="docs-callout__label">Note</p><p>The robot only ever stages <code>policy/policy.json</code> and <code>policy/sources.json</code>, and only on <code>main</code>: a pipeline on any other branch stops before it commits. It never tags, releases or touches code, and nothing it writes reaches <code>main</code> without <code>composer ci</code> passing on it first.</p></aside>
 <p>What it may write is decided by the refresher's change classes: a date that moves earlier (<code>tighten</code>), a new patch or a new line (<code>neutral</code>) and a later <code>active_until</code> (<code>loosen-warning</code>) are written; a later <code>security_until</code> (<code>loosen-fail</code>) is held until two sources or 14 days of the same answer prove it; removing anything, or touching <code>tools</code> or <code>rules</code>, is refused. <a href="policy-refresh.html">Refreshing the policy</a> has the full table.</p>
-<h2 id="the-gate">The gate<a class="docs-heading-link" aria-label="Link to this section" href="#the-gate">#</a></h2>
+<h2 id="the-gate">The <span class="docs-heading-tail"><span>gate</span><a class="docs-heading-link" aria-label="Link to this section" href="#the-gate">#</a></span></h2>
 <p>The scheduled job runs as the schedule owner, so it can run the whole gate itself:</p>
 <ol>
 <li>The robot commits the refresh on the commit the job checked out (main's), titled <code>policy: refresh from upstream sources</code>. The committer is <code>CREED policy bot</code>.</li>
@@ -81,7 +81,7 @@
 <li><strong>Green:</strong> it pushes the commit straight to <code>main</code> with the CI job token (<code>CI_JOB_TOKEN</code>), no force. GitLab starts no new pipeline for a job-token push, which is fine: the gate already ran. Nobody merges anything by hand. If <code>main</code> moved during the run, the push is refused and the job fails; the next run starts from the new <code>main</code>.</li>
 <li><strong>Red:</strong> it pushes the commit to <code>auto/policy-refresh</code> as a <a href="#the-fallback-merge-request">merge request</a> for a person, and the job fails, so the schedule owner gets the pipeline mail.</li>
 </ol>
-<h2 id="the-fallback-merge-request">The fallback merge request<a class="docs-heading-link" aria-label="Link to this section" href="#the-fallback-merge-request">#</a></h2>
+<h2 id="the-fallback-merge-request">The fallback merge <span class="docs-heading-tail"><span>request</span><a class="docs-heading-link" aria-label="Link to this section" href="#the-fallback-merge-request">#</a></span></h2>
 <p>Only a red gate opens (or updates) a merge request:</p>
 <ul>
 <li><strong>Title:</strong> <code>policy: refresh from upstream sources</code>, also the commit message.</li>
@@ -91,7 +91,7 @@
 <li><strong>Body:</strong> the date of the run, then one line per change in the refresher's own words, <code>php 8.3: latest_patch 8.3.35 -&gt; 8.3.36 [neutral]</code>, under <code>Changes:</code>, <code>Held:</code> and <code>Refused:</code>, then any <code>Disagreements:</code> between sources and any <code>Sources that failed this run:</code>.</li>
 </ul>
 <p>The robot force-pushes <code>auto/policy-refresh</code> each time the gate is red, so the branch always holds the latest failed refresh and an open merge request is updated rather than duplicated. Anything a person commits to that branch is overwritten on the next red run.</p>
-<h2 id="the-alert-issues">The alert issues<a class="docs-heading-link" aria-label="Link to this section" href="#the-alert-issues">#</a></h2>
+<h2 id="the-alert-issues">The alert <span class="docs-heading-tail"><span>issues</span><a class="docs-heading-link" aria-label="Link to this section" href="#the-alert-issues">#</a></span></h2>
 <p>People hear from the robot through GitLab issues, one per alert key, labeled <code>auto-alert</code> and titled <code>[auto-alert] &lt;key&gt;</code>. They sync on every handled run, red or green, so a red week still shows its held and refused items:</p>
 <div class="docs-table" role="region" aria-label="Table" tabindex="0"><table>
 <thead>
@@ -120,7 +120,7 @@
 </tbody>
 </table></div>
 <p>A key that is still there on a later run gets a note on its open issue instead of a second issue. A key that is gone closes its issue with a &quot;Cleared on&quot; note. The logic is <code>src/Bot/AlertIssues.php</code>.</p>
-<h2 id="reviewing-what-it-does">Reviewing what it does<a class="docs-heading-link" aria-label="Link to this section" href="#reviewing-what-it-does">#</a></h2>
+<h2 id="reviewing-what-it-does">Reviewing what it <span class="docs-heading-tail"><span>does</span><a class="docs-heading-link" aria-label="Link to this section" href="#reviewing-what-it-does">#</a></span></h2>
 <ol>
 <li><strong>A green week needs nothing.</strong> The refresh is on <code>main</code> with <code>composer ci</code> passed on it. Read the commit if you are curious: the job log lists every change the refresher wrote.</li>
 <li><strong>A red week: read the failed job first.</strong> Whether the failure is in the policy (the schema validator or a test) or unrelated (for example a new security advisory in <code>composer audit</code>), the job log shows it.</li>
@@ -129,10 +129,10 @@
 <li><strong>Decide the held and refused items by hand.</strong> They are in the <code>auto-alert</code> issues (and in a red week's merge request body). A held <code>security_until</code> that you can prove from the vendor's page goes in by a normal merge request that cites the source; the issue closes itself on the next run.</li>
 <li><strong>After a refresh lands,</strong> the copies downstream are stale until refreshed: see <a href="carrying-creed.html">Carrying CREED in another package</a>. A release of CREED is still a person's call (<a href="../contributing.html">Contributing</a>).</li>
 </ol>
-<h2 id="how-it-is-scheduled">How it is scheduled<a class="docs-heading-link" aria-label="Link to this section" href="#how-it-is-scheduled">#</a></h2>
+<h2 id="how-it-is-scheduled">How it is <span class="docs-heading-tail"><span>scheduled</span><a class="docs-heading-link" aria-label="Link to this section" href="#how-it-is-scheduled">#</a></span></h2>
 <p>The <code>policy-bot</code> job in <code>.gitlab-ci.yml</code> runs the robot in two cases only, both on the default branch: a scheduled pipeline whose schedule carries the variable <code>CREED_JOB=policy-bot</code>, and a pipeline started by hand from the web. CREED's schedule runs it on <code>main</code> every Monday. The check-only <a href="patch-refresh.html"><code>refresh-patches</code></a> job skips that schedule, so a robot pipeline runs only the robot. <code>GIT_DEPTH: &quot;0&quot;</code> gives the job the full history it needs to push its commit back.</p>
 <p>Without the token the job prints &quot;CREED_BOT_TOKEN not set; skipping the policy robot&quot; and stays green.</p>
-<h2 id="setting-it-up">Setting it up<a class="docs-heading-link" aria-label="Link to this section" href="#setting-it-up">#</a></h2>
+<h2 id="setting-it-up">Setting it <span class="docs-heading-tail"><span>up</span><a class="docs-heading-link" aria-label="Link to this section" href="#setting-it-up">#</a></span></h2>
 <p>The setup lives in GitLab project settings, not in this repo. To set it up on CREED again, or on a fork:</p>
 <ol>
 <li><strong>A project access token</strong> (Settings &gt; Access tokens) for the alert issues only: role Maintainer, scope <code>api</code>, an expiry of 90 days, then rotate. The push uses the job token, so <code>write_repository</code> is no longer needed; a token that already has it keeps working as it is.</li>
@@ -143,13 +143,13 @@
 </ol>
 <p>The robot also reads GitLab's predefined variables (listed in <a href="../reference/configuration.html">Configuration</a>); a real run that is missing any of them stops with exit 1 before it commits or pushes, and names the missing variables (names only, never values).</p>
 <aside class="docs-callout docs-callout--warning" role="note"><p class="docs-callout__label">Warning</p><p>Every line the robot prints, including git's own errors, <code>composer ci</code> output and the command echoes, passes through one mask that replaces the job token and the bot token with <code>[masked]</code>. The job token travels only in the push URL and the bot token only in the <code>PRIVATE-TOKEN</code> header. Still: keep the variable masked, and rotate the token if a job log ever shows it.</p></aside>
-<h2 id="trying-it-without-gitlab">Trying it without GitLab<a class="docs-heading-link" aria-label="Link to this section" href="#trying-it-without-gitlab">#</a></h2>
+<h2 id="trying-it-without-gitlab">Trying it without <span class="docs-heading-tail"><span>GitLab</span><a class="docs-heading-link" aria-label="Link to this section" href="#trying-it-without-gitlab">#</a></span></h2>
 <p>A dry run needs no token and changes nothing. It prints the outcome it would choose, the files it would commit, the merge request title and body, and the alert issues it would open:</p>
 <pre tabindex="0"><code>php bin/policy-bot.php run --dry-run
 php bin/policy-bot.php run --dry-run --offline tests/fixtures/feeds
 </code></pre>
 <p><code>--offline</code> reads saved feeds instead of fetching them; <code>tests/fixtures/feeds/</code> carries a full set. Creed Bratton ran a dry run once, at the quarry. Nobody asked what it printed.</p>
-<h2 id="related">Related<a class="docs-heading-link" aria-label="Link to this section" href="#related">#</a></h2>
+<h2 id="related"><span class="docs-heading-tail"><span>Related</span><a class="docs-heading-link" aria-label="Link to this section" href="#related">#</a></span></h2>
 <ul>
 <li><a href="policy-refresh.html">Refreshing the policy</a></li>
 <li><a href="patch-refresh.html">Keeping the patches fresh</a></li>

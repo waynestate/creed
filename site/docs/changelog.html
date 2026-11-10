@@ -41,14 +41,15 @@
   <div class="docs-content">
     <main id="main">
       <article class="docs-article"><!-- Generated from CHANGELOG.md by bin/docs-site.php. Edit CHANGELOG.md, not this file. -->
-<h1 id="changelog">Changelog<a class="docs-heading-link" aria-label="Link to this section" href="#changelog">#</a></h1>
-<h2 id="unreleased">Unreleased<a class="docs-heading-link" aria-label="Link to this section" href="#unreleased">#</a></h2>
+<h1 id="changelog"><span class="docs-heading-tail"><span>Changelog</span><a class="docs-heading-link" aria-label="Link to this section" href="#changelog">#</a></span></h1>
+<h2 id="unreleased"><span class="docs-heading-tail"><span>Unreleased</span><a class="docs-heading-link" aria-label="Link to this section" href="#unreleased">#</a></span></h2>
 <ul>
+<li>Changed: the docs, agent-ready and deploy kits are Squire 0.10.6 (was 0.10.5): the docs builder and agent-ready generator see every file on Docker Desktop mounts.</li>
 <li>Site: <code>assets/stack-env.js</code> knows Parity, so a pre-production page links Parity's pre-production site and a dev page links its local <code>site/</code> folder. Until now Parity, of all parts, was the one link that ignored its environment.</li>
 <li>Site: Parity is out; the party list links its site.</li>
 <li>Deploy kit refreshed to Squire 0.10.5</li>
 </ul>
-<h2 id="0-1-9-2026-11-09">0.1.9 (2026-11-09)<a class="docs-heading-link" aria-label="Link to this section" href="#0-1-9-2026-11-09">#</a></h2>
+<h2 id="0-1-9-2026-11-09">0.1.9 <span class="docs-heading-tail"><span>(2026-11-09)</span><a class="docs-heading-link" aria-label="Link to this section" href="#0-1-9-2026-11-09">#</a></span></h2>
 <ul>
 <li>Docs: Parity joins the party. The README cast and the front page's &quot;Authorities having jurisdiction&quot; list Parity, the stack's new tool that runs Citadel on your computer (its PHP image, its proxy and MySQL 5.6), next to Squire, with its spirit-level mark; it holds §6.5, since it is one program for Windows, macOS and Linux and its <code>check</code> flags Windows line endings in the files Citadel runs. 0.1.0 is coming and it has no site yet, so its row links nowhere. Creed Bratton has claimed for years that his laptop is Citadel's twin; now somebody can check.</li>
 <li>Changed: refreshed version mentions. The code handbook says the TLS-off bans (<code>pinstripe.banned.curlVerifyOff</code>, <code>streamVerifyOff</code>, <code>verifyFalse</code>) and the joined SQL ban (<code>pinstripe.banned.joinedSql</code>) are built in Pinstripe 0.3.0 (they said Planned), and its enforcement and accessibility pages name Preflight 0.5.0. BEST_PRACTICES names Preflight 0.5.0 (CREED's four pinned components, the <code>a11y</code> and <code>secret-detection</code> components, and the new <code>npm-audit</code> component, which no stack repo includes yet) and Composer 2.11.1 as the stable release the stack pins; the cooldown is still unset. The dev tools require Pinstripe ^0.3 (lock 0.3.0, was ^0.1.4 at 0.1.4), which brings the banned calls to CREED's own code: the one <code>eval()</code>, in <code>tests/ReadmeTest.php</code>, which evaluates the README's own expected values, carries a reasoned <code>pinstripe.banned.eval</code> ignore. Unlike anything on Creed Bratton's job application, every date here now checks out.</li>
@@ -61,7 +62,7 @@
 <li>Changed: four handbook rules name the PROCTOR 0.10.0 check that reports them instead of &quot;No check exists yet&quot;: <code>csp-unsafe-inline</code> and <code>display-errors</code> (runtime and headers), <code>directory-listing</code> and <code>robots-txt</code> (production). The robots.txt rule says an app that wants crawling writes <code>Allow: /</code> for <code>User-agent: *</code>.</li>
 <li>Changed: the deploy kit is Squire 0.10.0 (was 0.7.1): release.sh keeps Composer and npm download caches in the app folder and the gate takes SQUIRE_PHP_RUNTIME; the compose file, health.php and .env.squire.example follow the template, and the portable image files are added.</li>
 </ul>
-<h2 id="0-1-8-2026-11-09">0.1.8 (2026-11-09)<a class="docs-heading-link" aria-label="Link to this section" href="#0-1-8-2026-11-09">#</a></h2>
+<h2 id="0-1-8-2026-11-09">0.1.8 <span class="docs-heading-tail"><span>(2026-11-09)</span><a class="docs-heading-link" aria-label="Link to this section" href="#0-1-8-2026-11-09">#</a></span></h2>
 <ul>
 <li>Fixed: scripts/a11y.ps1 works on a Windows checkout with CRLF line endings; it strips the carriage returns from the shell command it hands to Docker, which sh rejected with a syntax error.</li>
 <li>Docs: the front page and docs pages follow the reader's dark mode: the front page and the handbook pages now read after hours like the docs already did, with warm graphite stock, cream type, the green ink thinned to a pale tint and gold foil for focus, while the green cloth (spine, cover, tabs, the ink button, colophon) stays put. Every text pair meets WCAG AA, the browser bar color and form controls follow the scheme, printing stays ink on white, and with motion allowed a lamp glint runs across the cover's foil once it is struck. The docs theme now says it shares those values with the front page.</li>
@@ -104,7 +105,7 @@
 <li>Changed: the front-page deploy layer pins PROCTOR ^0.7 (lock: PROCTOR 0.7.0, was 0.4.0).</li>
 <li>Changed: CI caches Composer downloads per lock file (<code>.composer-cache</code>, keyed on <code>composer.lock</code> and <code>deploy/composer.lock</code>), so a pipeline stops fetching every package from Packagist on every run. Images already come through the Dependency Proxy.</li>
 </ul>
-<h2 id="0-1-7-2026-11-07">0.1.7 (2026-11-07)<a class="docs-heading-link" aria-label="Link to this section" href="#0-1-7-2026-11-07">#</a></h2>
+<h2 id="0-1-7-2026-11-07">0.1.7 <span class="docs-heading-tail"><span>(2026-11-07)</span><a class="docs-heading-link" aria-label="Link to this section" href="#0-1-7-2026-11-07">#</a></span></h2>
 <ul>
 <li>Changed: the front page's deploy layer (<code>deploy/</code>) runs Squire's kit 0.5.0 (was 0.3.4): <code>oracle-check.php</code> arrives, <code>scripts/release.sh</code> and <code>scripts/parity.ps1</code> take the new templates, and the two kit files Renovate had edited (<code>docker-compose.squire.yml</code>, <code>.squire/base-fallback.Dockerfile</code>, which it had moved to PHP 8.5) are Squire's template again, so <code>squire init --check</code> passes. The shared Renovate preset leaves kit files alone now. <code>site/assets/stack-env.js</code> takes the stack's one copy, with bindingless catch blocks.</li>
 <li>Changed: The canonical repository is git.wayne.edu (ADR-0021); docs, links and package metadata no longer point at the archived nougat copy.</li>
@@ -137,12 +138,12 @@
 <li>Added: handbook chapter Runtime and headers (HELMET's headers, proxy trust, debug off in production).</li>
 <li>Added: handbook chapter Accessibility (WCAG 2.2 AA as the target, an automated check, the open Title II question).</li>
 </ul>
-<h2 id="0-1-6-2026-11-03">0.1.6 (2026-11-03)<a class="docs-heading-link" aria-label="Link to this section" href="#0-1-6-2026-11-03">#</a></h2>
+<h2 id="0-1-6-2026-11-03">0.1.6 <span class="docs-heading-tail"><span>(2026-11-03)</span><a class="docs-heading-link" aria-label="Link to this section" href="#0-1-6-2026-11-03">#</a></span></h2>
 <ul>
 <li>Added: a policy-bot CI job (weekly schedule with CREED_JOB=policy-bot, or run by hand) that runs bin/policy-bot.php run with CREED_BOT_TOKEN; without the token it skips green. The check-only refresh-patches job now skips that schedule.</li>
 <li>Changed: docs and package metadata name nougat as the canonical repository, with git.wayne.edu and GitHub as read-only mirrors, until git.wayne.edu has CI runners.</li>
 </ul>
-<h2 id="0-1-5-2026-11-03">0.1.5 (2026-11-03)<a class="docs-heading-link" aria-label="Link to this section" href="#0-1-5-2026-11-03">#</a></h2>
+<h2 id="0-1-5-2026-11-03">0.1.5 <span class="docs-heading-tail"><span>(2026-11-03)</span><a class="docs-heading-link" aria-label="Link to this section" href="#0-1-5-2026-11-03">#</a></span></h2>
 <ul>
 <li>Changed: WSU developer standards rules updated with the owners' answers (source home, catalog, change control, crawling).</li>
 <li>Changed: CI pulls its Docker Hub images through the GitLab Dependency Proxy (the group's CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX), so pipelines no longer hit Docker Hub's anonymous pull limit.</li>
@@ -158,13 +159,13 @@
 <li>Added: WSU developer standards (2024) rules in the Code, Auth, Databases, Dependencies and CI chapters.</li>
 <li>Added: BEST_PRACTICES section 11 (practices 55 to 61) from the WSU developer standards (2024).</li>
 </ul>
-<h2 id="0-1-4-2026-10-30">0.1.4 (2026-10-30)<a class="docs-heading-link" aria-label="Link to this section" href="#0-1-4-2026-10-30">#</a></h2>
+<h2 id="0-1-4-2026-10-30">0.1.4 <span class="docs-heading-tail"><span>(2026-10-30)</span><a class="docs-heading-link" aria-label="Link to this section" href="#0-1-4-2026-10-30">#</a></span></h2>
 <ul>
 <li>Fixed: the bot's GitLab HTTP client failed on every API call (<code>stream_context_create</code> options were not under the <code>http</code> wrapper, a ValueError on current PHP). It now works, and reads response headers from the stream's metadata, so PHP 8.5 shows no deprecation. Found by Booster's hop-data robot, which uses this client.</li>
 <li>Changed: the deploy layer's Squire kit is refreshed to 0.3.3 (release options can now live in ./.env.squire).</li>
 <li>Changed: the deploy layer's Squire kit is refreshed to 0.3.4 (the local .env.squire file is now git-ignored).</li>
 </ul>
-<h2 id="0-1-3-2026-10-29">0.1.3 (2026-10-29)<a class="docs-heading-link" aria-label="Link to this section" href="#0-1-3-2026-10-29">#</a></h2>
+<h2 id="0-1-3-2026-10-29">0.1.3 <span class="docs-heading-tail"><span>(2026-10-29)</span><a class="docs-heading-link" aria-label="Link to this section" href="#0-1-3-2026-10-29">#</a></span></h2>
 <ul>
 <li>
 <p>Changed: the proof page moves to a private site that needs a Wayne State sign-in.</p>
@@ -216,7 +217,7 @@ masked, so a failed call can never print the token.</p>
 <p>Fixed: stale capability claims in the site and docs.</p>
 </li>
 </ul>
-<h2 id="0-1-2-2026-10-29">0.1.2 (2026-10-29)<a class="docs-heading-link" aria-label="Link to this section" href="#0-1-2-2026-10-29">#</a></h2>
+<h2 id="0-1-2-2026-10-29">0.1.2 <span class="docs-heading-tail"><span>(2026-10-29)</span><a class="docs-heading-link" aria-label="Link to this section" href="#0-1-2-2026-10-29">#</a></span></h2>
 <ul>
 <li>
 <p><code>bin/refresh-policy.php</code>: a released version that loosens a constraint now exits 3 (changes written) with an alert in the report, instead of exit 4.</p>
@@ -231,7 +232,7 @@ parse are still refused, and a version above every listed line is still
 <code>Active</code>.</p>
 </li>
 </ul>
-<h2 id="0-1-1-2026-10-29">0.1.1 (2026-10-29)<a class="docs-heading-link" aria-label="Link to this section" href="#0-1-1-2026-10-29">#</a></h2>
+<h2 id="0-1-1-2026-10-29">0.1.1 <span class="docs-heading-tail"><span>(2026-10-29)</span><a class="docs-heading-link" aria-label="Link to this section" href="#0-1-1-2026-10-29">#</a></span></h2>
 <ul>
 <li><code>bin/refresh-policy.php</code> keeps every support date, patch and new line in the
 policy tied to a canonical source (php.net, the Node.js release schedule,
@@ -278,7 +279,7 @@ plain-English use. <code>composer ci</code> runs the lint as <code>lint-handbook
 <code>eol_grace_days</code> window (<code>Security</code> on <code>security_until</code>, <code>Eol</code> for the window,
 <code>EolGraceExpired</code> after, no override).</li>
 </ul>
-<h2 id="0-1-0-2026-10-27">0.1.0 (2026-10-27)<a class="docs-heading-link" aria-label="Link to this section" href="#0-1-0-2026-10-27">#</a></h2>
+<h2 id="0-1-0-2026-10-27">0.1.0 <span class="docs-heading-tail"><span>(2026-10-27)</span><a class="docs-heading-link" aria-label="Link to this section" href="#0-1-0-2026-10-27">#</a></span></h2>
 <ul>
 <li>First tagged release.</li>
 </ul>

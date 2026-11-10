@@ -924,15 +924,16 @@ The agent reads the same pages you do: [llms.txt](https://creed.apps.wayne.edu/l
 
 Source: https://creed.apps.wayne.edu/docs/changelog.html
 
-## Changelog[#](https://creed.apps.wayne.edu/docs/changelog.html#changelog)
+## Changelog [#](https://creed.apps.wayne.edu/docs/changelog.html#changelog)
 
-### Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
+### Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Changed: the docs, agent-ready and deploy kits are Squire 0.10.6 (was 0.10.5): the docs builder and agent-ready generator see every file on Docker Desktop mounts.
 - Site: `assets/stack-env.js` knows Parity, so a pre-production page links Parity's pre-production site and a dev page links its local `site/` folder. Until now Parity, of all parts, was the one link that ignored its environment.
 - Site: Parity is out; the party list links its site.
 - Deploy kit refreshed to Squire 0.10.5
 
-### 0.1.9 (2026-11-09)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-9-2026-11-09)
+### 0.1.9 (2026-11-09) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-9-2026-11-09)
 
 - Docs: Parity joins the party. The README cast and the front page's "Authorities having jurisdiction" list Parity, the stack's new tool that runs Citadel on your computer (its PHP image, its proxy and MySQL 5.6), next to Squire, with its spirit-level mark; it holds §6.5, since it is one program for Windows, macOS and Linux and its `check` flags Windows line endings in the files Citadel runs. 0.1.0 is coming and it has no site yet, so its row links nowhere. Creed Bratton has claimed for years that his laptop is Citadel's twin; now somebody can check.
 - Changed: refreshed version mentions. The code handbook says the TLS-off bans (`pinstripe.banned.curlVerifyOff`, `streamVerifyOff`, `verifyFalse`) and the joined SQL ban (`pinstripe.banned.joinedSql`) are built in Pinstripe 0.3.0 (they said Planned), and its enforcement and accessibility pages name Preflight 0.5.0. BEST_PRACTICES names Preflight 0.5.0 (CREED's four pinned components, the `a11y` and `secret-detection` components, and the new `npm-audit` component, which no stack repo includes yet) and Composer 2.11.1 as the stable release the stack pins; the cooldown is still unset. The dev tools require Pinstripe ^0.3 (lock 0.3.0, was ^0.1.4 at 0.1.4), which brings the banned calls to CREED's own code: the one `eval()`, in `tests/ReadmeTest.php`, which evaluates the README's own expected values, carries a reasoned `pinstripe.banned.eval` ignore. Unlike anything on Creed Bratton's job application, every date here now checks out.
@@ -945,7 +946,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 - Changed: four handbook rules name the PROCTOR 0.10.0 check that reports them instead of "No check exists yet": `csp-unsafe-inline` and `display-errors` (runtime and headers), `directory-listing` and `robots-txt` (production). The robots.txt rule says an app that wants crawling writes `Allow: /` for `User-agent: *`.
 - Changed: the deploy kit is Squire 0.10.0 (was 0.7.1): release.sh keeps Composer and npm download caches in the app folder and the gate takes SQUIRE_PHP_RUNTIME; the compose file, health.php and .env.squire.example follow the template, and the portable image files are added.
 
-### 0.1.8 (2026-11-09)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-8-2026-11-09)
+### 0.1.8 (2026-11-09) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-8-2026-11-09)
 
 - Fixed: scripts/a11y.ps1 works on a Windows checkout with CRLF line endings; it strips the carriage returns from the shell command it hands to Docker, which sh rejected with a syntax error.
 - Docs: the front page and docs pages follow the reader's dark mode: the front page and the handbook pages now read after hours like the docs already did, with warm graphite stock, cream type, the green ink thinned to a pale tint and gold foil for focus, while the green cloth (spine, cover, tabs, the ink button, colophon) stays put. Every text pair meets WCAG AA, the browser bar color and form controls follow the scheme, printing stays ink on white, and with motion allowed a lamp glint runs across the cover's foil once it is struck. The docs theme now says it shares those values with the front page.
@@ -988,7 +989,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 - Changed: the front-page deploy layer pins PROCTOR ^0.7 (lock: PROCTOR 0.7.0, was 0.4.0).
 - Changed: CI caches Composer downloads per lock file (`.composer-cache`, keyed on `composer.lock` and `deploy/composer.lock`), so a pipeline stops fetching every package from Packagist on every run. Images already come through the Dependency Proxy.
 
-### 0.1.7 (2026-11-07)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-7-2026-11-07)
+### 0.1.7 (2026-11-07) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-7-2026-11-07)
 
 - Changed: the front page's deploy layer (`deploy/`) runs Squire's kit 0.5.0 (was 0.3.4): `oracle-check.php` arrives, `scripts/release.sh` and `scripts/parity.ps1` take the new templates, and the two kit files Renovate had edited (`docker-compose.squire.yml`, `.squire/base-fallback.Dockerfile`, which it had moved to PHP 8.5) are Squire's template again, so `squire init --check` passes. The shared Renovate preset leaves kit files alone now. `site/assets/stack-env.js` takes the stack's one copy, with bindingless catch blocks.
 - Changed: The canonical repository is git.wayne.edu (ADR-0021); docs, links and package metadata no longer point at the archived nougat copy.
@@ -1021,12 +1022,12 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 - Added: handbook chapter Runtime and headers (HELMET's headers, proxy trust, debug off in production).
 - Added: handbook chapter Accessibility (WCAG 2.2 AA as the target, an automated check, the open Title II question).
 
-### 0.1.6 (2026-11-03)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-6-2026-11-03)
+### 0.1.6 (2026-11-03) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-6-2026-11-03)
 
 - Added: a policy-bot CI job (weekly schedule with CREED_JOB=policy-bot, or run by hand) that runs bin/policy-bot.php run with CREED_BOT_TOKEN; without the token it skips green. The check-only refresh-patches job now skips that schedule.
 - Changed: docs and package metadata name nougat as the canonical repository, with git.wayne.edu and GitHub as read-only mirrors, until git.wayne.edu has CI runners.
 
-### 0.1.5 (2026-11-03)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-5-2026-11-03)
+### 0.1.5 (2026-11-03) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-5-2026-11-03)
 
 - Changed: WSU developer standards rules updated with the owners' answers (source home, catalog, change control, crawling).
 - Changed: CI pulls its Docker Hub images through the GitLab Dependency Proxy (the group's CI_DEPENDENCY_PROXY_GROUP_IMAGE_PREFIX), so pipelines no longer hit Docker Hub's anonymous pull limit.
@@ -1042,13 +1043,13 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 - Added: WSU developer standards (2024) rules in the Code, Auth, Databases, Dependencies and CI chapters.
 - Added: BEST_PRACTICES section 11 (practices 55 to 61) from the WSU developer standards (2024).
 
-### 0.1.4 (2026-10-30)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-4-2026-10-30)
+### 0.1.4 (2026-10-30) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-4-2026-10-30)
 
 - Fixed: the bot's GitLab HTTP client failed on every API call (`stream_context_create` options were not under the `http` wrapper, a ValueError on current PHP). It now works, and reads response headers from the stream's metadata, so PHP 8.5 shows no deprecation. Found by Booster's hop-data robot, which uses this client.
 - Changed: the deploy layer's Squire kit is refreshed to 0.3.3 (release options can now live in ./.env.squire).
 - Changed: the deploy layer's Squire kit is refreshed to 0.3.4 (the local .env.squire file is now git-ignored).
 
-### 0.1.3 (2026-10-29)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-3-2026-10-29)
+### 0.1.3 (2026-10-29) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-3-2026-10-29)
 
 - Changed: the proof page moves to a private site that needs a Wayne State sign-in.
 - Changed: project names written as words except acronyms.
@@ -1060,12 +1061,12 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 - New `src/Bot/GitLabClient.php`: a small GitLab API client (list open issues, create an issue, add a note, close an issue) over an injectable `HttpTransport`, shipped with a dependency-free PHP streams transport (`GitLabClient::streamTransport`). The token rides only in the `PRIVATE-TOKEN` header, never in a URL, and every error it throws is masked, so a failed call can never print the token.
 - Fixed: stale capability claims in the site and docs.
 
-### 0.1.2 (2026-10-29)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-2-2026-10-29)
+### 0.1.2 (2026-10-29) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-2-2026-10-29)
 
 - `bin/refresh-policy.php`: a released version that loosens a constraint now exits 3 (changes written) with an alert in the report, instead of exit 4.
 - Fixed: a version of a known component that is older than the oldest listed line (PHP 5.x to 8.0, Laravel 5 to 8, Inertia 0.x) is now `Eol`, with the reason `older than the oldest listed line (8.1)` from the new `belowOldestLineReason($component, $version)`, instead of being refused as an unknown version. Unlisted components and version strings that do not parse are still refused, and a version above every listed line is still `Active`.
 
-### 0.1.1 (2026-10-29)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-1-2026-10-29)
+### 0.1.1 (2026-10-29) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-1-2026-10-29)
 
 - `bin/refresh-policy.php` keeps every support date, patch and new line in the policy tied to a canonical source (php.net, the Node.js release schedule, endoflife.date, Packagist, npm). Changes are classed tighten, neutral, loosen-warning or loosen-fail; a later security date is held until two sources agree or 14 days pass; nothing is ever removed. Provenance lives in the new `policy/sources.json` (schema and validation included), and the policy gains an optional `refreshed_on` date. `refresh-patches.php` keeps working.
 - PHPStan now includes Pinstripe's raw preset (`vendor/waynestate/pinstripe/phpstan/raw.neon`) instead of carrying a hand copy; `phpstan.neon` keeps only this repo's own paths and phpVersion. `waynestate/pinstripe` joins require-dev (dev-main until 0.1.0 is tagged) and `phpstan/extension-installer` is allowed so the preset's deprecation rules load. The suit is off the rack now.
@@ -1084,7 +1085,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 - The handbook is now linted for RFC 2119 capitalization. `src/HandbookLinter.php` and `bin/lint-handbook.php` flag lowercase `must`, `must not`, `should`, `should not` and `may` in any chapter that declares RFC 2119, ignoring code spans and blocks; a same-line `<!-- lint: allow -->` excuses a deliberate plain-English use. `composer ci` runs the lint as `lint-handbook`.
 - Every handbook chapter now declares RFC 2119 and uses capital keywords; `handbook/databases.md` gains a "Grace period" section spelling out the 90-day `eol_grace_days` window (`Security` on `security_until`, `Eol` for the window, `EolGraceExpired` after, no override).
 
-### 0.1.0 (2026-10-27)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-0-2026-10-27)
+### 0.1.0 (2026-10-27) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-0-2026-10-27)
 
 - First tagged release.
 
@@ -1092,15 +1093,15 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 Source: https://creed.apps.wayne.edu/docs/contributing.html
 
-## Contributing[#](https://creed.apps.wayne.edu/docs/contributing.html#contributing)
+## Contributing [#](https://creed.apps.wayne.edu/docs/contributing.html#contributing)
 
 This page tells you how to build, test and release CREED, and how its policy data stays current.
 
-### Where the code lives[#](https://creed.apps.wayne.edu/docs/contributing.html#where-the-code-lives)
+### Where the code lives [#](https://creed.apps.wayne.edu/docs/contributing.html#where-the-code-lives)
 
 Development happens on git.wayne.edu, the canonical repository ([enterprise-apps/creed](https://git.wayne.edu/enterprise-apps/creed)). GitHub ([waynestate/creed](https://github.com/waynestate/creed)) is a read-only push mirror: `main` and tags are copied automatically, and Packagist picks releases up from it. Changes, issues and merge requests go to git.wayne.edu; tags are made there, by the maintainer, with an approver. Nobody pushes to the mirror.
 
-### Build and test[#](https://creed.apps.wayne.edu/docs/contributing.html#build-and-test)
+### Build and test [#](https://creed.apps.wayne.edu/docs/contributing.html#build-and-test)
 
 You need PHP 8.3 or newer and Composer, or only Docker. Everything has a native path on Windows (PowerShell), Linux and macOS.
 
@@ -1122,17 +1123,17 @@ docker run --rm -v "${PWD}:/app" -w /app php:8.5-cli vendor/bin/phpunit
 
 `composer ci` runs `composer validate --strict`, the tests, the policy validator, Pint, the handbook lint, the handbook site and agent-ready freshness checks, PHPStan, `composer audit` and the docs site freshness check. On Windows, if tests fail oddly after a Docker install, delete `vendor/` and install again.
 
-### The docs site[#](https://creed.apps.wayne.edu/docs/contributing.html#the-docs-site)
+### The docs site [#](https://creed.apps.wayne.edu/docs/contributing.html#the-docs-site)
 
 The documentation site is built by `composer docs` and checked by `composer docs:check`. Its sources live in `docs/`, one Markdown file per page, and `composer ci` fails when the committed pages go stale.
 
-### CI[#](https://creed.apps.wayne.edu/docs/contributing.html#ci)
+### CI [#](https://creed.apps.wayne.edu/docs/contributing.html#ci)
 
 - **GitLab:** Preflight components (`php-test` on PHP 8.3, 8.4 and 8.5, `composer-audit`, and `proctor` for the `deploy/` layer), plus a `composer-ci` job and a `wayneui-copies` job. On scheduled pipelines, `refresh-patches` (check-only) runs on a schedule without `CREED_JOB`, and `policy-bot` runs on the Monday schedule that carries `CREED_JOB=policy-bot` (and by hand from the web).
 - **GitHub:** `.github/workflows/ci.yml` calls Preflight's reusable workflow with `composer ci`, and runs `refresh-patches` weekly (Mondays) and on demand.
 - Green means the tests passed on all three PHP versions on both, and `composer ci` passed (on all three on GitHub, once on GitLab).
 
-### Keeping the policy current[#](https://creed.apps.wayne.edu/docs/contributing.html#keeping-the-policy-current)
+### Keeping the policy current [#](https://creed.apps.wayne.edu/docs/contributing.html#keeping-the-policy-current)
 
 This is CREED's real maintenance job.
 
@@ -1143,7 +1144,7 @@ This is CREED's real maintenance job.
 - **After any policy change,** the copies downstream are stale until refreshed. In each consumer (PROCTOR, Rollcall, Booster), run `php <creed>/bin/export.php --namespace='Waynestate\<Project>\Creed' --to=src/Creed`, then `composer creed-copy:check` with `CREED_PATH` pointing at this checkout. ADVISOR regenerates with `content:generate`.
 - The schema is `version: 1`. Optional new fields keep it at 1; a breaking schema change needs a new version and a release of every reader. The older-reader contract is pinned by `tests/OlderReaderContractTest.php`; change the fixture only with a `schema_version` bump.
 
-### Releasing[#](https://creed.apps.wayne.edu/docs/contributing.html#releasing)
+### Releasing [#](https://creed.apps.wayne.edu/docs/contributing.html#releasing)
 
 1. Move the lines under `## Unreleased` in `CHANGELOG.md` to a new `## X.Y.Z (YYYY-MM-DD)` heading, leaving an empty `## Unreleased`. (0.1.0 predates the heading convention, so it has none.)
 2. `composer ci` green locally, then on both pipelines for that commit.
@@ -1152,19 +1153,19 @@ This is CREED's real maintenance job.
 5. A release needs a maintainer's approval. Never move or delete a published tag.
 6. Then bump `waynestate/creed` where the stack pins it, and refresh the generated copies.
 
-### The front page and its deploy[#](https://creed.apps.wayne.edu/docs/contributing.html#the-front-page-and-its-deploy)
+### The front page and its deploy [#](https://creed.apps.wayne.edu/docs/contributing.html#the-front-page-and-its-deploy)
 
 `site/` is the static front page. It is served on Citadel at `https://creed.apps.wayne.edu/` (pre-production first) by the raw-PHP layer in `deploy/`: HELMET's headers in front, PROCTOR and this policy in the release. `deploy/` is its own Composer project, separate from the library. Most of it is generated by Squire (`deploy/.squire.json` records what), so regenerate it rather than hand-editing it. Only `deploy/public/index.php`, `deploy/public/.htaccess` and `deploy/composer.json` are written by hand. Run the parity kit with `deploy\scripts\parity.ps1` (Windows) or `deploy/scripts/parity.sh` (Linux and macOS).
 
 When a stamp in `BEST_PRACTICES.md` changes, or a practice is added, update the front page in the same commit: the tally on the title page, the contents heading, that chapter's stamp bar and clause range, and the stamp on any clause the page reprints. `FrontPageTallyTest` recounts the stamps from `BEST_PRACTICES.md` and fails `composer ci` until `site/index.html` agrees; then run `composer site:agent-ready` so `site/index.md` and `llms-full.txt` follow.
 
-### Things that trip people up[#](https://creed.apps.wayne.edu/docs/contributing.html#things-that-trip-people-up)
+### Things that trip people up [#](https://creed.apps.wayne.edu/docs/contributing.html#things-that-trip-people-up)
 
 - `composer.json` pins Pinstripe for dev; PROCTOR warns on any `dev-main` pin.
 - A scheduled `refresh-patches` failure is expected whenever upstream ships a patch.
 - No em or en dashes anywhere in the docs; the handbook lint and the house style both care. Creed Bratton would not care, but he is not reviewing the merge request.
 
-### Related[#](https://creed.apps.wayne.edu/docs/contributing.html#related)
+### Related [#](https://creed.apps.wayne.edu/docs/contributing.html#related)
 
 - [Overview](https://creed.apps.wayne.edu/docs/index.html)
 - [Install](https://creed.apps.wayne.edu/docs/install.html)
@@ -1176,21 +1177,21 @@ When a stamp in `BEST_PRACTICES.md` changes, or a practice is added, update the 
 
 Source: https://creed.apps.wayne.edu/docs/guides/carrying-creed.html
 
-## Carrying CREED in another package[#](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html#carrying-creed-in-another-package)
+## Carrying CREED in another package [#](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html#carrying-creed-in-another-package)
 
 This page explains who carries a copy of CREED's reader and policy, what the copy is, and how `bin/export.php` generates it and checks it.
 
-### Who carries a copy[#](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html#who-carries-a-copy)
+### Who carries a copy [#](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html#who-carries-a-copy)
 
 - PROCTOR, Booster and Rollcall each carry a generated copy of the reader and policy under their own namespace, made by `bin/export.php`, so two tools in one app never fight over a class name.
 - ADVISOR carries CREED's policy and handbook as a data bundle instead, in its `data/`.
 - HELMET can read a `policy.json` at runtime, and apps and the stack's front-page deploys install `waynestate/creed` from Packagist.
 
-### Why the copies began[#](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html#why-the-copies-began)
+### Why the copies began [#](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html#why-the-copies-began)
 
 The copies began because CREED was not on Packagist. It is now (`waynestate/creed`, 0.1.9 at this writing), so each copy can become a real `require`, one consumer at a time; until a consumer switches, its copy stays.
 
-### Generating and checking the copy[#](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html#generating-and-checking-the-copy)
+### Generating and checking the copy [#](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html#generating-and-checking-the-copy)
 
 CREED owns the generator and the check:
 
@@ -1201,7 +1202,7 @@ php bin/export.php --check --namespace=Waynestate\Proctor\Creed --to=vendor/cree
 
 The copy is the reader with the namespace rewritten and `bundled()` repointed at its own `policy.json`; `--check` fails when the copy drifts from the source. Creed Bratton would have a form for this.
 
-### Related[#](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html#related)
+### Related [#](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html#related)
 
 - [The handbook](https://creed.apps.wayne.edu/docs/guides/handbook.html)
 - [Reading the policy from PHP](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html)
@@ -1211,21 +1212,21 @@ The copy is the reader with the namespace rewritten and `bundled()` repointed at
 
 Source: https://creed.apps.wayne.edu/docs/guides/handbook.html
 
-## The handbook[#](https://creed.apps.wayne.edu/docs/guides/handbook.html#the-handbook)
+## The handbook [#](https://creed.apps.wayne.edu/docs/guides/handbook.html#the-handbook)
 
 This page maps the CREED handbook: what it is, how to read its key words and PROCTOR check lines, and where each of the thirteen chapters lives.
 
-### What the handbook is[#](https://creed.apps.wayne.edu/docs/guides/handbook.html#what-the-handbook-is)
+### What the handbook is [#](https://creed.apps.wayne.edu/docs/guides/handbook.html#what-the-handbook-is)
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a "Not decided here" heading. The rules, chapter by chapter, live in the handbook site, built separately from `handbook/`.
 
-### How to read a rule[#](https://creed.apps.wayne.edu/docs/guides/handbook.html#how-to-read-a-rule)
+### How to read a rule [#](https://creed.apps.wayne.edu/docs/guides/handbook.html#how-to-read-a-rule)
 
 - The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in each chapter are to be interpreted as described in RFC 2119.
 - Every rule names what holds it, with one of three tags: "PROCTOR check: `<id>`" (the PROCTOR check that reports a breach), "Held by: ..." (any other point that holds it, such as a Preflight component or a runtime package's config) or "No check exists yet".
 - `composer lint-handbook` fails when a rule that uses MUST, SHOULD or MAY carries none of the three, so a rule cannot quietly lose its tag. Like any good frontman, every rule has to say who is backing it.
 
-### The chapters[#](https://creed.apps.wayne.edu/docs/guides/handbook.html#the-chapters)
+### The chapters [#](https://creed.apps.wayne.edu/docs/guides/handbook.html#the-chapters)
 
 - [Versions](https://creed.apps.wayne.edu/handbook/versions.html): the stack's version policy, the state table from active to EOL plus 90 days, with the dates in `policy/policy.json` and every tool deriving a version's state from the date.
 - [Dependencies](https://creed.apps.wayne.edu/handbook/dependencies.html): no unbounded constraints, a committed lock file, an audit with no advisories at or above the policy's severity threshold, and the private-packages registry rules.
@@ -1241,7 +1242,7 @@ The rules for the Wayne State app stack, chapter by chapter. Each chapter states
 - [Production](https://creed.apps.wayne.edu/handbook/production.html): pre-production and production environments, running safely with the least access needed, and who can reach an app.
 - [Overrides](https://creed.apps.wayne.edu/handbook/overrides.html): overrides are named, dated and visible, with an expiry date and a reason, and an expired override is a failure.
 
-### Related[#](https://creed.apps.wayne.edu/docs/guides/handbook.html#related)
+### Related [#](https://creed.apps.wayne.edu/docs/guides/handbook.html#related)
 
 - [Carrying CREED in another package](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html)
 - [Support states and the grace period](https://creed.apps.wayne.edu/docs/guides/support-states.html)
@@ -1251,11 +1252,11 @@ The rules for the Wayne State app stack, chapter by chapter. Each chapter states
 
 Source: https://creed.apps.wayne.edu/docs/guides/instance-runner.html
 
-## The instance runner[#](https://creed.apps.wayne.edu/docs/guides/instance-runner.html#the-instance-runner)
+## The instance runner [#](https://creed.apps.wayne.edu/docs/guides/instance-runner.html#the-instance-runner)
 
 This page explains why every product in the stack strongly recommends a git.wayne.edu instance runner, and where CREED's code lives.
 
-### Strongly recommended: a git.wayne.edu instance runner[#](https://creed.apps.wayne.edu/docs/guides/instance-runner.html#strongly-recommended-a-git-wayne-edu-instance-runner)
+### Strongly recommended: a git.wayne.edu instance runner [#](https://creed.apps.wayne.edu/docs/guides/instance-runner.html#strongly-recommended-a-git-wayne-edu-instance-runner)
 
 git.wayne.edu now has an instance runner, and the stack's CI runs on it. Every product in the stack still strongly recommends a git.wayne.edu instance runner, so that capacity stays there.
 
@@ -1263,13 +1264,13 @@ git.wayne.edu now has an instance runner, and the stack's CI runs on it. Every p
 
 Creed Bratton, whose quality assurance work we all admire. His past is a mystery. Ours is in `policy/policy.json`, where it belongs.
 
-### Where the code lives[#](https://creed.apps.wayne.edu/docs/guides/instance-runner.html#where-the-code-lives)
+### Where the code lives [#](https://creed.apps.wayne.edu/docs/guides/instance-runner.html#where-the-code-lives)
 
 The canonical repository is [enterprise-apps/creed](https://git.wayne.edu/enterprise-apps/creed) on git.wayne.edu. Open issues and merge requests there; tags are made there, by the maintainer, with an approver. CI runs on git.wayne.edu. GitHub ([waynestate/creed](https://github.com/waynestate/creed)) is a read-only push mirror of it: nobody pushes to it, and Packagist reads from it.
 
 Creed Bratton would say the code lives wherever he last left it. Ours lives on git.wayne.edu.
 
-### Related[#](https://creed.apps.wayne.edu/docs/guides/instance-runner.html#related)
+### Related [#](https://creed.apps.wayne.edu/docs/guides/instance-runner.html#related)
 
 - [Carrying CREED in another package](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html)
 - [The handbook](https://creed.apps.wayne.edu/docs/guides/handbook.html)
@@ -1279,29 +1280,29 @@ Creed Bratton would say the code lives wherever he last left it. Ours lives on g
 
 Source: https://creed.apps.wayne.edu/docs/guides/patch-refresh.html
 
-## Keeping the patches fresh[#](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html#keeping-the-patches-fresh)
+## Keeping the patches fresh [#](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html#keeping-the-patches-fresh)
 
 This page explains how the patch-level data in `policy/policy.json` stays tied to the upstream feeds, and what the check-only scheduled job does when the refresh changes something.
 
-### What the refresh does[#](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html#what-the-refresh-does)
+### What the refresh does [#](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html#what-the-refresh-does)
 
 `bin/refresh-patches.php` re-reads the upstream feeds, rewrites the `latest_patch` fields in `policy/policy.json`, and proposes new Vue lines from endoflife.date. In doing so it updates `latest_patch` and `latest_patch_checked`.
 
-### Where the data comes from[#](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html#where-the-data-comes-from)
+### Where the data comes from [#](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html#where-the-data-comes-from)
 
 Patch levels are watched automatically. `bin/refresh-patches.php` reads php.net (PHP), Packagist (Laravel), nodejs.org (Node) and endoflife.date (a PHP cross-check and Vue lines).
 
-### The check-only scheduled job[#](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html#the-check-only-scheduled-job)
+### The check-only scheduled job [#](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html#the-check-only-scheduled-job)
 
 A scheduled CI job runs the refresh and is check-only: when the policy changed, the tool exits 3 and the job fails on the diff. A red scheduled run is a to-do, not an outage: run `php bin/refresh-patches.php`, read the diff, `composer ci`, add a CHANGELOG line, commit.
 
 The committing path is the policy robot, covered in [The policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html): it runs the fuller `bin/refresh-policy.php` every Monday, pushes the refresh to `main` when its `composer ci` gate is green, and opens a merge request only when the gate is red, so a red check-only run is usually fixed by the robot's next Monday push, or has a robot merge request waiting beside it. The robot's schedule (`CREED_JOB=policy-bot`) does not run this job.
 
-### Support dates[#](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html#support-dates)
+### Support dates [#](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html#support-dates)
 
 This script never touches a support date. Dates move in two reviewed ways only: the [policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html)'s Monday merge request, where `bin/refresh-policy.php` writes a date that moves earlier or a later `active_until`, and holds a later `security_until` until it is proven; or a person's own edit, with the upstream source in the commit message. End days are inclusive.
 
-### Related[#](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html#related)
+### Related [#](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html#related)
 
 - [Refreshing the policy](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html)
 - [The policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html)
@@ -1311,11 +1312,11 @@ This script never touches a support date. Dates move in two reviewed ways only: 
 
 Source: https://creed.apps.wayne.edu/docs/guides/policy-bot.html
 
-## The policy robot[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-policy-robot)
+## The policy robot [#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-policy-robot)
 
 This page explains what the policy robot does every Monday, what it pushes or opens on the CREED project, how it is set up, and how a person handles a red week.
 
-### What the robot does[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#what-the-robot-does)
+### What the robot does [#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#what-the-robot-does)
 
 The policy robot is `bin/policy-bot.php run` (the logic is `src/Bot/PolicyBot.php`). Once a week it runs the full refresher, [`bin/refresh-policy.php`](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html), which re-reads the upstream sources for support dates, latest patches and new version lines. Then it turns the refresher's exit code and report into one of four outcomes:
 
@@ -1334,7 +1335,7 @@ The robot only ever stages `policy/policy.json` and `policy/sources.json`, and o
 
 What it may write is decided by the refresher's change classes: a date that moves earlier (`tighten`), a new patch or a new line (`neutral`) and a later `active_until` (`loosen-warning`) are written; a later `security_until` (`loosen-fail`) is held until two sources or 14 days of the same answer prove it; removing anything, or touching `tools` or `rules`, is refused. [Refreshing the policy](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html) has the full table.
 
-### The gate[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-gate)
+### The gate [#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-gate)
 
 The scheduled job runs as the schedule owner, so it can run the whole gate itself:
 
@@ -1343,7 +1344,7 @@ The scheduled job runs as the schedule owner, so it can run the whole gate itsel
 3. **Green:** it pushes the commit straight to `main` with the CI job token (`CI_JOB_TOKEN`), no force. GitLab starts no new pipeline for a job-token push, which is fine: the gate already ran. Nobody merges anything by hand. If `main` moved during the run, the push is refused and the job fails; the next run starts from the new `main`.
 4. **Red:** it pushes the commit to `auto/policy-refresh` as a [merge request](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-fallback-merge-request) for a person, and the job fails, so the schedule owner gets the pipeline mail.
 
-### The fallback merge request[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-fallback-merge-request)
+### The fallback merge request [#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-fallback-merge-request)
 
 Only a red gate opens (or updates) a merge request:
 
@@ -1355,7 +1356,7 @@ Only a red gate opens (or updates) a merge request:
 
 The robot force-pushes `auto/policy-refresh` each time the gate is red, so the branch always holds the latest failed refresh and an open merge request is updated rather than duplicated. Anything a person commits to that branch is overwritten on the next red run.
 
-### The alert issues[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-alert-issues)
+### The alert issues [#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-alert-issues)
 
 People hear from the robot through GitLab issues, one per alert key, labeled `auto-alert` and titled `[auto-alert] <key>`. They sync on every handled run, red or green, so a red week still shows its held and refused items:
 
@@ -1368,7 +1369,7 @@ People hear from the robot through GitLab issues, one per alert key, labeled `au
 
 A key that is still there on a later run gets a note on its open issue instead of a second issue. A key that is gone closes its issue with a "Cleared on" note. The logic is `src/Bot/AlertIssues.php`.
 
-### Reviewing what it does[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#reviewing-what-it-does)
+### Reviewing what it does [#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#reviewing-what-it-does)
 
 1. **A green week needs nothing.** The refresh is on `main` with `composer ci` passed on it. Read the commit if you are curious: the job log lists every change the refresher wrote.
 2. **A red week: read the failed job first.** Whether the failure is in the policy (the schema validator or a test) or unrelated (for example a new security advisory in `composer audit`), the job log shows it.
@@ -1377,13 +1378,13 @@ A key that is still there on a later run gets a note on its open issue instead o
 5. **Decide the held and refused items by hand.** They are in the `auto-alert` issues (and in a red week's merge request body). A held `security_until` that you can prove from the vendor's page goes in by a normal merge request that cites the source; the issue closes itself on the next run.
 6. **After a refresh lands,** the copies downstream are stale until refreshed: see [Carrying CREED in another package](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html). A release of CREED is still a person's call ([Contributing](https://creed.apps.wayne.edu/docs/contributing.html)).
 
-### How it is scheduled[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#how-it-is-scheduled)
+### How it is scheduled [#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#how-it-is-scheduled)
 
 The `policy-bot` job in `.gitlab-ci.yml` runs the robot in two cases only, both on the default branch: a scheduled pipeline whose schedule carries the variable `CREED_JOB=policy-bot`, and a pipeline started by hand from the web. CREED's schedule runs it on `main` every Monday. The check-only [`refresh-patches`](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html) job skips that schedule, so a robot pipeline runs only the robot. `GIT_DEPTH: "0"` gives the job the full history it needs to push its commit back.
 
 Without the token the job prints "CREED_BOT_TOKEN not set; skipping the policy robot" and stays green.
 
-### Setting it up[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#setting-it-up)
+### Setting it up [#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#setting-it-up)
 
 The setup lives in GitLab project settings, not in this repo. To set it up on CREED again, or on a fork:
 
@@ -1399,7 +1400,7 @@ Warning
 
 Every line the robot prints, including git's own errors, `composer ci` output and the command echoes, passes through one mask that replaces the job token and the bot token with `[masked]`. The job token travels only in the push URL and the bot token only in the `PRIVATE-TOKEN` header. Still: keep the variable masked, and rotate the token if a job log ever shows it.
 
-### Trying it without GitLab[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#trying-it-without-gitlab)
+### Trying it without GitLab [#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#trying-it-without-gitlab)
 
 A dry run needs no token and changes nothing. It prints the outcome it would choose, the files it would commit, the merge request title and body, and the alert issues it would open:
 
@@ -1410,7 +1411,7 @@ php bin/policy-bot.php run --dry-run --offline tests/fixtures/feeds
 
 `--offline` reads saved feeds instead of fetching them; `tests/fixtures/feeds/` carries a full set. Creed Bratton ran a dry run once, at the quarry. Nobody asked what it printed.
 
-### Related[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#related)
+### Related [#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#related)
 
 - [Refreshing the policy](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html)
 - [Keeping the patches fresh](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html)
@@ -1422,15 +1423,15 @@ php bin/policy-bot.php run --dry-run --offline tests/fixtures/feeds
 
 Source: https://creed.apps.wayne.edu/docs/guides/policy-refresh.html
 
-## Refreshing the policy[#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#refreshing-the-policy)
+## Refreshing the policy [#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#refreshing-the-policy)
 
 This page explains how `bin/refresh-policy.php` keeps every support date, patch and new line in `policy/policy.json` tied to a canonical source, so nobody types a date by hand.
 
-### Sources per component[#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#sources-per-component)
+### Sources per component [#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#sources-per-component)
 
 PHP dates come from php.net, Node dates from the Node.js release schedule, and Laravel, MySQL, Vue and Composer from endoflife.date; patches come from php.net, nodejs.org, Packagist and npm.
 
-### Change classes[#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#change-classes)
+### Change classes [#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#change-classes)
 
 Each run sorts every change into a class:
 
@@ -1442,11 +1443,11 @@ Each run sorts every change into a class:
 | `loosen-fail` | `security_until` moves later, or an EOL line would be supported again | held, unless two independent sources agree (php.net and endoflife.date for PHP, schedule.json and endoflife.date for Node) or `policy/sources.json` shows the same value from the same source for 14 days |
 | `refused` | removing a line or a date, or any change to `tools` or `rules` | never automatic; reported (a Composer minimum on an EOL line shows up here) |
 
-### When a source is down[#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#when-a-source-is-down)
+### When a source is down [#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#when-a-source-is-down)
 
 A source that is down, slow or returns something unreadable changes nothing: its fields keep their last good value. A line missing from a feed is never removed. Where a first-party source and endoflife.date disagree, the first party wins and the disagreement is reported.
 
-### Running the refresher[#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#running-the-refresher)
+### Running the refresher [#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#running-the-refresher)
 
 ```
 php bin/refresh-policy.php [--dry-run] [--offline <dir>] [--policy <path>]
@@ -1455,7 +1456,7 @@ php bin/refresh-policy.php [--dry-run] [--offline <dir>] [--policy <path>]
 
 `--report` writes JSON with `changes`, `held`, `refused`, `disagreements` and `source_errors`. `--touch` sets `refreshed_on` to today even when nothing else changed (the weekly heartbeat). `policy/sources.json` records, per value, which source said it, and the first and last day it was seen.
 
-### Exit codes[#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#exit-codes)
+### Exit codes [#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#exit-codes)
 
 Exit codes: `0` nothing worth committing (always `0` with `--dry-run`); `1` hard failure; `3` something was written to `policy/policy.json` or `policy/sources.json`, including a released `loosen-fail` (the policy robot raises the alert from the report); `4` something was held or refused. The refresher itself never commits: whatever it could write is written either way, and on exit 4 the held or refused items stay out of the file.
 
@@ -1463,7 +1464,7 @@ What happens next is the [policy robot](https://creed.apps.wayne.edu/docs/guides
 
 `bin/refresh-patches.php` still works as before.
 
-### Related[#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#related)
+### Related [#](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html#related)
 
 - [Keeping the patches fresh](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html)
 - [The policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html)
@@ -1473,11 +1474,11 @@ What happens next is the [policy robot](https://creed.apps.wayne.edu/docs/guides
 
 Source: https://creed.apps.wayne.edu/docs/guides/quick-start.html
 
-## Quick start[#](https://creed.apps.wayne.edu/docs/guides/quick-start.html#quick-start)
+## Quick start [#](https://creed.apps.wayne.edu/docs/guides/quick-start.html#quick-start)
 
 This page takes you from an empty project to two real answers from the CREED reader in four steps.
 
-### Steps[#](https://creed.apps.wayne.edu/docs/guides/quick-start.html#steps)
+### Steps [#](https://creed.apps.wayne.edu/docs/guides/quick-start.html#steps)
 
 1. **Require it.** Add CREED to your project.
    ```sh
@@ -1505,17 +1506,17 @@ This page takes you from an empty project to two real answers from the CREED rea
    ```
    Expected result: `'8.2'`, the lowest version still Active or Security.
 
-### What you built[#](https://creed.apps.wayne.edu/docs/guides/quick-start.html#what-you-built)
+### What you built [#](https://creed.apps.wayne.edu/docs/guides/quick-start.html#what-you-built)
 
 Two questions, two stamped answers: the state of a version on a date, and the floor an app may declare. One last time: the reader answers, it does not guess.
 
-### Next steps[#](https://creed.apps.wayne.edu/docs/guides/quick-start.html#next-steps)
+### Next steps [#](https://creed.apps.wayne.edu/docs/guides/quick-start.html#next-steps)
 
 - Read every public member in the [Reader API](https://creed.apps.wayne.edu/docs/reference/api.html).
 - See how a version moves between states in [Support states and the grace period](https://creed.apps.wayne.edu/docs/guides/support-states.html).
 - [Install](https://creed.apps.wayne.edu/docs/install.html) covers developing on CREED itself.
 
-### Related[#](https://creed.apps.wayne.edu/docs/guides/quick-start.html#related)
+### Related [#](https://creed.apps.wayne.edu/docs/guides/quick-start.html#related)
 
 - [Overview](https://creed.apps.wayne.edu/docs/index.html)
 - [Install](https://creed.apps.wayne.edu/docs/install.html)
@@ -1526,17 +1527,17 @@ Two questions, two stamped answers: the state of a version on a date, and the fl
 
 Source: https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html
 
-## Reading the policy from PHP[#](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html#reading-the-policy-from-php)
+## Reading the policy from PHP [#](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html#reading-the-policy-from-php)
 
 This page shows how a PHP program loads the CREED policy and asks it the one question every tool needs: what state is this version in, on this date?
 
-### Load a policy[#](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html#load-a-policy)
+### Load a policy [#](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html#load-a-policy)
 
 CREED is the Wayne State app stack's version policy, as data. One file, `policy/policy.json`, lists the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, plus the rules every check runs against. A small framework-free PHP reader, `Waynestate\Creed\Policy`, answers the questions:
 
 - `Policy::bundled()`, `Policy::fromFile($path)`, `Policy::fromArray($data)`: load a policy; `origin()` says where it came from.
 
-### The example[#](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html#the-example)
+### The example [#](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html#the-example)
 
 One snippet covers the whole round trip:
 
@@ -1555,11 +1556,11 @@ $floor = $policy->oldestSupported('php', new DateTimeImmutable('2026-10-27'));
 // '8.2'
 ```
 
-### stateOf[#](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html#stateof)
+### stateOf [#](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html#stateof)
 
 `stateOf($component, $version, $on)`: the state, or an exception; `tryStateOf()` is the same answer as `null` when it cannot be answered. In the example, PHP 8.2 on 2026-10-27 is `State::Security`.
 
-### oldestSupported[#](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html#oldestsupported)
+### oldestSupported [#](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html#oldestsupported)
 
 `oldestSupported($component, $on)`: the lowest version still Active or Security; `supported()` lists all of them, oldest first. In the example, the oldest PHP an app may declare on 2026-10-27 is `'8.2'`.
 
@@ -1567,7 +1568,7 @@ Tip
 
 One last time: the reader answers, it does not guess.
 
-### Related[#](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html#related)
+### Related [#](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html#related)
 
 - [Support states and the grace period](https://creed.apps.wayne.edu/docs/guides/support-states.html)
 - [Reader API](https://creed.apps.wayne.edu/docs/reference/api.html)
@@ -1578,11 +1579,11 @@ One last time: the reader answers, it does not guess.
 
 Source: https://creed.apps.wayne.edu/docs/guides/support-states.html
 
-## Support states and the grace period[#](https://creed.apps.wayne.edu/docs/guides/support-states.html#support-states-and-the-grace-period)
+## Support states and the grace period [#](https://creed.apps.wayne.edu/docs/guides/support-states.html#support-states-and-the-grace-period)
 
 This page explains how a version moves through the states `Active`, `Security`, `Eol` and `EolGraceExpired`, and what the reader does with versions it has never heard of.
 
-### With Arms Wide Open[#](https://creed.apps.wayne.edu/docs/guides/support-states.html#with-arms-wide-open)
+### With Arms Wide Open [#](https://creed.apps.wayne.edu/docs/guides/support-states.html#with-arms-wide-open)
 
 The support window stays open until `security_until`. A version is still `Security` on that day, moves to `Eol` the day after, and stays in `Eol` for `eol_grace_days` (90) more days before it is `EolGraceExpired`. The boundary is inclusive, and the reader never guesses.
 
@@ -1590,17 +1591,17 @@ The support window stays open until `security_until`. A version is still `Securi
 
 Form CR-1, as the front page fills it in: four real rows of `policy/policy.json`, the same answers `Policy::stateOf` gives, stamped.
 
-### Versions CREED hasn't heard of[#](https://creed.apps.wayne.edu/docs/guides/support-states.html#versions-creed-hasn-t-heard-of)
+### Versions CREED hasn't heard of [#](https://creed.apps.wayne.edu/docs/guides/support-states.html#versions-creed-hasn-t-heard-of)
 
 The reader refuses what it does not know, except the newest thing and the oldest. A version that sorts above every line the policy lists is `Active`, and `isAheadOfPolicy()` says so. A version that parses and sorts below every listed line is `Eol`: it is older than the oldest listed line, and that is end of life by definition. `belowOldestLineReason()` gives the reason, `older than the oldest listed line (8.1)`. A version that falls between listed lines, or that does not parse, is still unknown, and still throws. Current versions are never refused.
 
 A line marked `"current": true` is `Active` on every date and carries no `security_until`: the policy says the line is current, and the reader does not guess when it stops being so.
 
-### Higher[#](https://creed.apps.wayne.edu/docs/guides/support-states.html#higher)
+### Higher [#](https://creed.apps.wayne.edu/docs/guides/support-states.html#higher)
 
 CREED itself requires PHP `^8.3`, like every stack package, and CI tests it on 8.3, 8.4 and 8.5. The policy's floor for apps is a different number: `^8.2` until PHP 8.2 reaches end of life on 2026-12-31, then `^8.3`. Creed has always been one version ahead of everyone else, at least by his own account.
 
-### Related[#](https://creed.apps.wayne.edu/docs/guides/support-states.html#related)
+### Related [#](https://creed.apps.wayne.edu/docs/guides/support-states.html#related)
 
 - [Reading the policy from PHP](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html)
 - [Reader API](https://creed.apps.wayne.edu/docs/reference/api.html)
@@ -1612,7 +1613,7 @@ Source: https://creed.apps.wayne.edu/docs/
 
 [![CREED's front page: the title page of the Wayne State App Stack Code, 2026 edition, with clause §0.1 spelling out the name, and a green cloth-bound book stamped with CREED's keystone arch mark.](https://creed.apps.wayne.edu/docs/readme/hero.jpg)](https://creed.apps.wayne.edu/index.html)
 
-## CREED[#](https://creed.apps.wayne.edu/docs/#creed)
+## CREED [#](https://creed.apps.wayne.edu/docs/#creed)
 
 ![php ^8.3](https://creed.apps.wayne.edu/docs/readme/badges/php.svg) ![license MIT](https://creed.apps.wayne.edu/docs/readme/badges/license.svg) ![policy schema v1, 6 components](https://creed.apps.wayne.edu/docs/readme/badges/policy.svg)
 
@@ -1624,7 +1625,7 @@ This page orients you: what CREED is, what it ships, and where to go next.
 
 CREED is the Wayne State app stack's version policy, as data. One file, `policy/policy.json`, lists the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, plus the rules every check runs against. A small framework-free PHP reader, `Waynestate\Creed\Policy`, answers the one question every tool needs: what state is this version in, on this date?
 
-### Usage[#](https://creed.apps.wayne.edu/docs/#usage)
+### Usage [#](https://creed.apps.wayne.edu/docs/#usage)
 
 ```php
 use Waynestate\Creed\Policy;
@@ -1641,7 +1642,7 @@ $floor = $policy->oldestSupported('php', new DateTimeImmutable('2026-10-27'));
 // '8.2'
 ```
 
-### Pick your path[#](https://creed.apps.wayne.edu/docs/#pick-your-path)
+### Pick your path [#](https://creed.apps.wayne.edu/docs/#pick-your-path)
 
 - [Quick start](https://creed.apps.wayne.edu/docs/guides/quick-start.html): the shortest path from `composer require` to a stamped answer.
 - [Install](https://creed.apps.wayne.edu/docs/install.html): require the package, verify the bundled policy, develop on it.
@@ -1656,7 +1657,7 @@ One command, two clouds, zero excuses. Higher.
 
 ![Singer of the band Creed in a white tank top and black leather pants on a stage with a red backdrop, one arm stretched out over a cheering crowd](https://creed.apps.wayne.edu/docs/readme/creed-band.gif)
 
-### Related[#](https://creed.apps.wayne.edu/docs/#related)
+### Related [#](https://creed.apps.wayne.edu/docs/#related)
 
 - [Install](https://creed.apps.wayne.edu/docs/install.html)
 - [Quick start](https://creed.apps.wayne.edu/docs/guides/quick-start.html)
@@ -1668,15 +1669,15 @@ One command, two clouds, zero excuses. Higher.
 
 Source: https://creed.apps.wayne.edu/docs/install.html
 
-## Install[#](https://creed.apps.wayne.edu/docs/install.html#install)
+## Install [#](https://creed.apps.wayne.edu/docs/install.html#install)
 
 This page gets you from an empty project to a working CREED reader, and shows how to build and test CREED itself.
 
-### Requirements[#](https://creed.apps.wayne.edu/docs/install.html#requirements)
+### Requirements [#](https://creed.apps.wayne.edu/docs/install.html#requirements)
 
 CREED requires PHP `^8.3`. Its `composer.json` says so, and pins the platform to `8.3.0` so installs resolve against that floor. The reader is framework-free, so nothing else is required at runtime.
 
-### Install[#](https://creed.apps.wayne.edu/docs/install.html#install-1)
+### Install [#](https://creed.apps.wayne.edu/docs/install.html#install-1)
 
 Add the package to your project:
 
@@ -1684,7 +1685,7 @@ Add the package to your project:
 composer require waynestate/creed
 ```
 
-#### Develop on it[#](https://creed.apps.wayne.edu/docs/install.html#develop-on-it)
+#### Develop on it [#](https://creed.apps.wayne.edu/docs/install.html#develop-on-it)
 
 The same commands work in PowerShell and sh:
 
@@ -1700,7 +1701,7 @@ docker run --rm -v "${PWD}:/app" -w /app php:8.5-cli vendor/bin/phpunit
 
 The whole band fits in three commands, and nobody needs a solo.
 
-### Verify[#](https://creed.apps.wayne.edu/docs/install.html#verify)
+### Verify [#](https://creed.apps.wayne.edu/docs/install.html#verify)
 
 Load the bundled policy and ask it what state a version is in:
 
@@ -1717,11 +1718,11 @@ $state = $policy->stateOf('php', '8.2', new DateTimeImmutable('2026-10-27'));
 
 Expected result: `State::Security`. The reader answers, it does not guess, so if you get a different answer, the date or the policy file is not what you think it is.
 
-### Next steps[#](https://creed.apps.wayne.edu/docs/install.html#next-steps)
+### Next steps [#](https://creed.apps.wayne.edu/docs/install.html#next-steps)
 
 Ask the reader two questions in the [Quick start](https://creed.apps.wayne.edu/docs/guides/quick-start.html), or read every public member in the [Reader API](https://creed.apps.wayne.edu/docs/reference/api.html).
 
-### Related[#](https://creed.apps.wayne.edu/docs/install.html#related)
+### Related [#](https://creed.apps.wayne.edu/docs/install.html#related)
 
 - [Overview](https://creed.apps.wayne.edu/docs/index.html)
 - [Quick start](https://creed.apps.wayne.edu/docs/guides/quick-start.html)
@@ -1732,7 +1733,7 @@ Ask the reader two questions in the [Quick start](https://creed.apps.wayne.edu/d
 
 Source: https://creed.apps.wayne.edu/docs/reference/api.html
 
-## Reader API[#](https://creed.apps.wayne.edu/docs/reference/api.html#reader-api)
+## Reader API [#](https://creed.apps.wayne.edu/docs/reference/api.html#reader-api)
 
 This page lists every public member of the `Waynestate\Creed\Policy` reader, in the order the README introduces them, with the signature from `src/Policy.php`.
 
@@ -1770,7 +1771,7 @@ Note
 
 The wording is the README's, one line per member; the signatures are copied from `src/Policy.php`.
 
-### Related[#](https://creed.apps.wayne.edu/docs/reference/api.html#related)
+### Related [#](https://creed.apps.wayne.edu/docs/reference/api.html#related)
 
 - [Reading the policy from PHP](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html)
 - [Support states and the grace period](https://creed.apps.wayne.edu/docs/guides/support-states.html)
@@ -1780,11 +1781,11 @@ The wording is the README's, one line per member; the signatures are copied from
 
 Source: https://creed.apps.wayne.edu/docs/reference/commands.html
 
-## Commands and exit codes[#](https://creed.apps.wayne.edu/docs/reference/commands.html#commands-and-exit-codes)
+## Commands and exit codes [#](https://creed.apps.wayne.edu/docs/reference/commands.html#commands-and-exit-codes)
 
 This page lists every command CREED ships, what each one does, and the exit codes the refresh tools return.
 
-### Composer scripts[#](https://creed.apps.wayne.edu/docs/reference/commands.html#composer-scripts)
+### Composer scripts [#](https://creed.apps.wayne.edu/docs/reference/commands.html#composer-scripts)
 
 | Command | What it does |
 | --- | --- |
@@ -1808,7 +1809,7 @@ On Windows, if tests fail oddly after a Docker install, delete `vendor/` and ins
 
 The whole band fits in three commands, and nobody needs a solo.
 
-### The php bin/\*.php tools[#](https://creed.apps.wayne.edu/docs/reference/commands.html#the-php-bin-php-tools)
+### The php bin/\*.php tools [#](https://creed.apps.wayne.edu/docs/reference/commands.html#the-php-bin-php-tools)
 
 | Tool | What it does |
 | --- | --- |
@@ -1822,9 +1823,9 @@ The whole band fits in three commands, and nobody needs a solo.
 | `php bin/agent-ready.php` | Makes a static front page readable by agents: writes the Markdown twins, `llms.txt`, `llms-full.txt`, `robots.txt` and `sitemap.xml` into the site folder. |
 | `php bin/docs-site.php` | Turns every Markdown file under `docs/` into a committed, accessible, WayneUI-styled docs site under `site/docs/`, and fails CI when the committed pages are stale. |
 
-### Exit codes[#](https://creed.apps.wayne.edu/docs/reference/commands.html#exit-codes)
+### Exit codes [#](https://creed.apps.wayne.edu/docs/reference/commands.html#exit-codes)
 
-#### refresh-policy[#](https://creed.apps.wayne.edu/docs/reference/commands.html#refresh-policy)
+#### refresh-policy [#](https://creed.apps.wayne.edu/docs/reference/commands.html#refresh-policy)
 
 | Code | Meaning |
 | --- | --- |
@@ -1835,14 +1836,14 @@ The whole band fits in three commands, and nobody needs a solo.
 
 The refresher never commits; the policy robot does.
 
-#### policy-bot run[#](https://creed.apps.wayne.edu/docs/reference/commands.html#policy-bot-run)
+#### policy-bot run [#](https://creed.apps.wayne.edu/docs/reference/commands.html#policy-bot-run)
 
 | Code | Meaning |
 | --- | --- |
 | `0` | Every handled outcome: nothing to do, the gate passed and the refresh was pushed to `main` (or nothing staged), the alert issues synced, or a dry run. |
 | `1` | The refresher hard-failed or could not start, a required CI variable is missing (named in the output), the pipeline is not on the default branch, a git step or the push failed, the gate failed (the refresh went to `auto/policy-refresh` as a merge request), or the alert issues could not be synced. After a failed gate or push the alert issues still sync first. |
 
-#### refresh-patches[#](https://creed.apps.wayne.edu/docs/reference/commands.html#refresh-patches)
+#### refresh-patches [#](https://creed.apps.wayne.edu/docs/reference/commands.html#refresh-patches)
 
 | Code | Meaning |
 | --- | --- |
@@ -1850,15 +1851,15 @@ The refresher never commits; the policy robot does.
 | `1` | A feed could not be fetched or parsed. |
 | `3` | The policy was updated (or `--dry-run` with changes to show). In CI the scheduled job is check-only: when the policy changed, the tool exits 3 and the job fails on the diff. |
 
-#### export --check[#](https://creed.apps.wayne.edu/docs/reference/commands.html#export-check)
+#### export --check [#](https://creed.apps.wayne.edu/docs/reference/commands.html#export-check)
 
 `export --check` compares the copy against a fresh export and exits `1` naming every file that differs, is missing, or is an extra `.php`/`.json` file. In short: it fails when the copy drifts from the source.
 
-### With only Docker[#](https://creed.apps.wayne.edu/docs/reference/commands.html#with-only-docker)
+### With only Docker [#](https://creed.apps.wayne.edu/docs/reference/commands.html#with-only-docker)
 
 The same lines work in PowerShell and sh.
 
-#### Install and run every check[#](https://creed.apps.wayne.edu/docs/reference/commands.html#install-and-run-every-check)
+#### Install and run every check [#](https://creed.apps.wayne.edu/docs/reference/commands.html#install-and-run-every-check)
 
 sh
 
@@ -1874,7 +1875,7 @@ docker run --rm -v "${PWD}:/app" -w /app composer:2.11.1@sha256:8de2184c6de224f4
 docker run --rm -v "${PWD}:/app" -w /app php:8.5-cli vendor/bin/phpunit
 ```
 
-#### Run the test suite[#](https://creed.apps.wayne.edu/docs/reference/commands.html#run-the-test-suite)
+#### Run the test suite [#](https://creed.apps.wayne.edu/docs/reference/commands.html#run-the-test-suite)
 
 No PHP on the machine? Fine. Docker runs the suite:
 
@@ -1894,7 +1895,7 @@ docker run --rm -v "${PWD}:/app" -w /app php:8.4-cli vendor/bin/phpunit
 docker run --rm -v "${PWD}:/app" -w /app php:8.3-cli vendor/bin/phpunit
 ```
 
-#### Validate the policy against its schema[#](https://creed.apps.wayne.edu/docs/reference/commands.html#validate-the-policy-against-its-schema)
+#### Validate the policy against its schema [#](https://creed.apps.wayne.edu/docs/reference/commands.html#validate-the-policy-against-its-schema)
 
 sh
 
@@ -1908,7 +1909,7 @@ PowerShell
 docker run --rm -v "${PWD}:/app" -w /app composer:2.11.1@sha256:8de2184c6de224f4689e8f80ed5f5edaf0030b6b8b7839a22a2bcb6722ac87d0 composer validate-policy
 ```
 
-### Related[#](https://creed.apps.wayne.edu/docs/reference/commands.html#related)
+### Related [#](https://creed.apps.wayne.edu/docs/reference/commands.html#related)
 
 - [Policy file format](https://creed.apps.wayne.edu/docs/reference/policy-format.html)
 - [Configuration](https://creed.apps.wayne.edu/docs/reference/configuration.html)
@@ -1921,11 +1922,11 @@ docker run --rm -v "${PWD}:/app" -w /app composer:2.11.1@sha256:8de2184c6de224f4
 
 Source: https://creed.apps.wayne.edu/docs/reference/configuration.html
 
-## Configuration[#](https://creed.apps.wayne.edu/docs/reference/configuration.html#configuration)
+## Configuration [#](https://creed.apps.wayne.edu/docs/reference/configuration.html#configuration)
 
 This page lists the environment CREED reads and the options of `bin/refresh-policy.php`.
 
-### Environment variables[#](https://creed.apps.wayne.edu/docs/reference/configuration.html#environment-variables)
+### Environment variables [#](https://creed.apps.wayne.edu/docs/reference/configuration.html#environment-variables)
 
 | Variable | What it is |
 | --- | --- |
@@ -1938,7 +1939,7 @@ Warning
 
 The token is masked, hidden and protected, and never printed. Every line the robot prints, including runner errors and command echoes, passes through one mask function that replaces the job token and bot token values with `[masked]`, so a runner error that echoes the URL back never leaks either.
 
-### refresh-policy options[#](https://creed.apps.wayne.edu/docs/reference/configuration.html#refresh-policy-options)
+### refresh-policy options [#](https://creed.apps.wayne.edu/docs/reference/configuration.html#refresh-policy-options)
 
 ```
 php bin/refresh-policy.php [--dry-run] [--offline <dir>] [--policy <path>]
@@ -1955,7 +1956,7 @@ php bin/refresh-policy.php [--dry-run] [--offline <dir>] [--policy <path>]
 | `--today YYYY-MM-DD` | Pretend today is this date (deterministic runs). |
 | `--touch` | Set `refreshed_on` to today even when nothing else changed: the robot's weekly heartbeat. |
 
-### Related[#](https://creed.apps.wayne.edu/docs/reference/configuration.html#related)
+### Related [#](https://creed.apps.wayne.edu/docs/reference/configuration.html#related)
 
 - [Commands and exit codes](https://creed.apps.wayne.edu/docs/reference/commands.html)
 - [Policy file format](https://creed.apps.wayne.edu/docs/reference/policy-format.html)
@@ -1966,13 +1967,13 @@ php bin/refresh-policy.php [--dry-run] [--offline <dir>] [--policy <path>]
 
 Source: https://creed.apps.wayne.edu/docs/reference/policy-format.html
 
-## Policy file format[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#policy-file-format)
+## Policy file format [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#policy-file-format)
 
 This page shows the shape of `policy/policy.json` and `policy/sources.json`, exactly as their schemas state it.
 
 CREED is the Wayne State app stack's version policy, as data. One file, `policy/policy.json`, lists the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, plus the rules every check runs against. The schema titles the file "CREED version policy", requires `schema_version`, `components` and `rules`, and allows no other top-level properties.
 
-### Top level of policy/policy.json[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#top-level-of-policy-policy-json)
+### Top level of policy/policy.json [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#top-level-of-policy-policy-json)
 
 | Name | Type | What the schema states |
 | --- | --- | --- |
@@ -1983,7 +1984,7 @@ CREED is the Wayne State app stack's version policy, as data. One file, `policy/
 | `sessions` | object | Records the session lifetimes the stack sets elsewhere: SESAME in minutes (`sesame.idle_minutes`, `sesame.absolute_minutes`) and the Drawbridge gateway in seconds (`gateway.idle_seconds`, `gateway.session_seconds`), each entry carrying a `source` that names the file in that repo where the default is set. Optional. |
 | `rules` | object | The rules every check runs against. Required. |
 
-### The line fields[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#the-line-fields)
+### The line fields [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#the-line-fields)
 
 Each component holds a `versions` object that maps a version to a line. Every line may carry these fields:
 
@@ -2000,7 +2001,7 @@ Each component holds a `versions` object that maps a version to a line. Every li
 
 The `current` rule is the only conditional in the schema: a line with `"current": true` must not carry `security_until`, and every other line must. A line marked `"current": false`, or with no `current` at all, therefore needs a `security_until`: CREED does not list a line before its dates are known. `bin/validate-policy.php` checks this rule before the schema and names the line and the fix, for example `php 9.9: the line has neither security_until nor "current": true; add security_until (...) or mark the line "current": true.` The rule matters at runtime too: the reader does not guess the state of an undated line, so `supported()` and `oldestSupported()` would throw for that whole component.
 
-### tools[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#tools)
+### tools [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#tools)
 
 `tools` is optional. Its property names must match `^[a-z][a-z0-9-]*$`, and each value is an object with one required field:
 
@@ -2008,7 +2009,7 @@ The `current` rule is the only conditional in the schema: a line with `"current"
 | --- | --- | --- |
 | `minimum` | string | Matches `^\d+\.\d+\.\d+$`, a major.minor.patch version. Required inside each tool. |
 
-### rules[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#rules)
+### rules [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#rules)
 
 `rules` allows exactly three properties, all required:
 
@@ -2018,7 +2019,7 @@ The `current` rule is the only conditional in the schema: a line with `"current"
 | `banned_constraints` | array of strings | Required. |
 | `eol_grace_days` | integer | Minimum `0`. Required. |
 
-### policy/sources.json[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#policy-sources-json)
+### policy/sources.json [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#policy-sources-json)
 
 The schema titles `policy/sources.json` the "CREED refresh provenance ledger". It records, per observed value, which source said it and the first and last day it was seen.
 
@@ -2036,11 +2037,11 @@ Each leaf record carries exactly three fields:
 | `first_seen` | string | A date in `YYYY-MM-DD` form. Required. |
 | `last_seen` | string | A date in `YYYY-MM-DD` form. Required. |
 
-### Schema version and older readers[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#schema-version-and-older-readers)
+### Schema version and older readers [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#schema-version-and-older-readers)
 
 The schema is `version: 1`. Optional new fields keep it at 1; a breaking schema change needs a new version and a release of every reader. The schema is strict: unknown keys fail CREED's own CI. Readers are tolerant: unknown keys are ignored, so older readers keep working on a newer file. The older-reader contract is pinned by `tests/OlderReaderContractTest.php`; change the fixture only with a `schema_version` bump.
 
-### A real excerpt[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#a-real-excerpt)
+### A real excerpt [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#a-real-excerpt)
 
 One real line from `policy/policy.json`, verbatim (the PHP 8.2 entry):
 
@@ -2057,7 +2058,7 @@ Note
 
 Creed Bratton's past is a mystery. Ours is in `policy/policy.json`, where it belongs.
 
-### Related[#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#related)
+### Related [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#related)
 
 - [Commands and exit codes](https://creed.apps.wayne.edu/docs/reference/commands.html)
 - [Configuration](https://creed.apps.wayne.edu/docs/reference/configuration.html)
@@ -2069,11 +2070,11 @@ Creed Bratton's past is a mystery. Ours is in `policy/policy.json`, where it bel
 
 Source: https://creed.apps.wayne.edu/docs/reference/proof.html
 
-## Proof[#](https://creed.apps.wayne.edu/docs/reference/proof.html#proof)
+## Proof [#](https://creed.apps.wayne.edu/docs/reference/proof.html#proof)
 
 This page shows where CREED proves itself against real Wayne State applications and what the `composer ci` gate checks before anything ships.
 
-### Where the proof runs[#](https://creed.apps.wayne.edu/docs/reference/proof.html#where-the-proof-runs)
+### Where the proof runs [#](https://creed.apps.wayne.edu/docs/reference/proof.html#where-the-proof-runs)
 
 Proof runs against real Wayne State applications are on a private site, [proof.apps.wayne.edu/creed](https://proof.apps.wayne.edu/creed/), behind a Wayne State employee sign-in.
 
@@ -2083,7 +2084,7 @@ Note
 
 The front page, [`site/index.html`](https://creed.apps.wayne.edu/), is a static page you can open in a browser or serve from `site/`. On Citadel it is served by the raw-PHP deploy layer in `deploy/`: a Squire kit whose front controller serves `site/` behind HELMET's security headers. For local development, keep serving `site/` directly.
 
-### What `composer ci` proves[#](https://creed.apps.wayne.edu/docs/reference/proof.html#what-composer-ci-proves)
+### What `composer ci` proves [#](https://creed.apps.wayne.edu/docs/reference/proof.html#what-composer-ci-proves)
 
 `composer ci` is the same command on GitLab and GitHub. It validates `composer.json`, runs the test suite (294 tests in 25 files on 2026-11-08), validates `policy/policy.json` and `policy/sources.json` against their schemas, checks style with Pint, lints the handbook, runs PHPStan and `composer audit`, and fails when the handbook site, the agent-ready files or the docs pages go stale, so the site you are reading cannot drift from `docs/`.
 
@@ -2091,7 +2092,7 @@ Where it runs: GitHub runs `composer ci` on PHP 8.3, 8.4 and 8.5. GitLab runs th
 
 The policy itself is proved every Monday: the [policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html) re-reads the upstream sources and, when anything moved, pushes the refresh to `main` if `composer ci` is green, or opens a merge request for a person if it is red.
 
-### The badges[#](https://creed.apps.wayne.edu/docs/reference/proof.html#the-badges)
+### The badges [#](https://creed.apps.wayne.edu/docs/reference/proof.html#the-badges)
 
 The README carries four badges:
 
@@ -2102,7 +2103,7 @@ The README carries four badges:
 
 Creed Bratton keeps his records in a filing cabinet nobody can find; ours are in `docs/`, where anyone can.
 
-### Related[#](https://creed.apps.wayne.edu/docs/reference/proof.html#related)
+### Related [#](https://creed.apps.wayne.edu/docs/reference/proof.html#related)
 
 - [Install](https://creed.apps.wayne.edu/docs/install.html)
 - [Troubleshooting](https://creed.apps.wayne.edu/docs/troubleshooting.html)
@@ -2113,45 +2114,45 @@ Creed Bratton keeps his records in a filing cabinet nobody can find; ours are in
 
 Source: https://creed.apps.wayne.edu/docs/troubleshooting.html
 
-## Troubleshooting[#](https://creed.apps.wayne.edu/docs/troubleshooting.html#troubleshooting)
+## Troubleshooting [#](https://creed.apps.wayne.edu/docs/troubleshooting.html#troubleshooting)
 
 Answers to the failures that look alarming but are expected, each with the page that explains the behavior.
 
-### Why did the scheduled `refresh-patches` job fail?[#](https://creed.apps.wayne.edu/docs/troubleshooting.html#why-did-the-scheduled-refresh-patches-job-fail)
+### Why did the scheduled `refresh-patches` job fail? [#](https://creed.apps.wayne.edu/docs/troubleshooting.html#why-did-the-scheduled-refresh-patches-job-fail)
 
 A scheduled `refresh-patches` failure is expected whenever upstream ships a patch. The scheduled job is check-only: when the policy changed, the tool exits 3 and the job fails on the diff. Treat the red run as a to-do, not an outage. On GitLab the policy robot's Monday run usually lands the same patch on `main` by itself (or, in a red week, carries it in its fallback merge request): check `main` first. Otherwise run `php bin/refresh-patches.php`, read the diff, run `composer ci`, add a CHANGELOG line, and commit. The [Changelog](https://creed.apps.wayne.edu/docs/changelog.html) is where that line goes.
 
-### Why does the `policy-bot` job print "CREED_BOT_TOKEN not set; skipping the policy robot" and stay green?[#](https://creed.apps.wayne.edu/docs/troubleshooting.html#why-does-the-policy-bot-job-print-creed-bot-token-not-set-skipping-the-policy-robot-and-stay-green)
+### Why does the `policy-bot` job print "CREED_BOT_TOKEN not set; skipping the policy robot" and stay green? [#](https://creed.apps.wayne.edu/docs/troubleshooting.html#why-does-the-policy-bot-job-print-creed-bot-token-not-set-skipping-the-policy-robot-and-stay-green)
 
 That is the designed behavior when the masked `CREED_BOT_TOKEN` CI variable is not set: the job prints the line and stays green. Missing CI variables stop the run before any push, so nothing is committed. The job runs on its dedicated schedule (the one carrying `CREED_JOB=policy-bot`) and by hand from the web. It landed in 0.1.6; see the [Changelog](https://creed.apps.wayne.edu/docs/changelog.html).
 
-### Why can the robot not push when `auto/policy-refresh` is protected?[#](https://creed.apps.wayne.edu/docs/troubleshooting.html#why-can-the-robot-not-push-when-auto-policy-refresh-is-protected)
+### Why can the robot not push when `auto/policy-refresh` is protected? [#](https://creed.apps.wayne.edu/docs/troubleshooting.html#why-can-the-robot-not-push-when-auto-policy-refresh-is-protected)
 
 The branch `auto/policy-refresh` must not be protected, or the robot cannot push it. It is the red-week fallback: when `composer ci` fails on the refresh, the robot force-pushes the commit there as a merge request labeled `auto-data`. A green week pushes to `main` with the job token instead, which needs "Allow Git push requests to the repository" (CI/CD > Job token permissions) and a schedule owner who may push to the protected `main`. Branch protection is a project setting, not a file in this repo; [The policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html) has the whole setup.
 
-### Why did the robot open a merge request instead of pushing to `main`?[#](https://creed.apps.wayne.edu/docs/troubleshooting.html#why-did-the-robot-open-a-merge-request-instead-of-pushing-to-main)
+### Why did the robot open a merge request instead of pushing to `main`? [#](https://creed.apps.wayne.edu/docs/troubleshooting.html#why-did-the-robot-open-a-merge-request-instead-of-pushing-to-main)
 
 Because the gate went red, on purpose. The robot runs `composer ci` on its refresh in its own job, and only a green gate pushes straight to `main`. A red one force-pushes the commit to `auto/policy-refresh` as a merge request labeled `auto-data` and fails the job, so the schedule owner gets mail. The failure may have nothing to do with the policy (a fresh security advisory in `composer audit`, say). Read the failed job, fix the failure on `main`, then start the robot by hand on `main`: a green gate pushes the refresh itself, and the stale merge request can be closed. Held and refused items are in the body and each still has an `auto-alert` issue, red or green. Never commit to `auto/policy-refresh`: the next red run overwrites it. [Reviewing what it does](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#reviewing-what-it-does) walks through it.
 
-### Tests fail oddly on Windows after a Docker install[#](https://creed.apps.wayne.edu/docs/troubleshooting.html#tests-fail-oddly-on-windows-after-a-docker-install)
+### Tests fail oddly on Windows after a Docker install [#](https://creed.apps.wayne.edu/docs/troubleshooting.html#tests-fail-oddly-on-windows-after-a-docker-install)
 
 Delete `vendor/` and install again. The install and Docker paths are in [Install](https://creed.apps.wayne.edu/docs/install.html).
 
-### `composer ci` fails because the docs site or handbook site is stale[#](https://creed.apps.wayne.edu/docs/troubleshooting.html#composer-ci-fails-because-the-docs-site-or-handbook-site-is-stale)
+### `composer ci` fails because the docs site or handbook site is stale [#](https://creed.apps.wayne.edu/docs/troubleshooting.html#composer-ci-fails-because-the-docs-site-or-handbook-site-is-stale)
 
 Rebuild the stale side: `composer docs` rebuilds the docs site from `docs/`, and `composer site:handbook` rebuilds the handbook site. [Proof](https://creed.apps.wayne.edu/docs/reference/proof.html) covers what `composer ci` checks, including the stale-page failure.
 
-### What is the difference between `refresh-policy` exit 3 and exit 4?[#](https://creed.apps.wayne.edu/docs/troubleshooting.html#what-is-the-difference-between-refresh-policy-exit-3-and-exit-4)
+### What is the difference between `refresh-policy` exit 3 and exit 4? [#](https://creed.apps.wayne.edu/docs/troubleshooting.html#what-is-the-difference-between-refresh-policy-exit-3-and-exit-4)
 
 Exit 3 means something was written to `policy/policy.json` or `policy/sources.json`, including a released `loosen-fail` (the policy robot raises the alert from the report). Exit 4 means something was held or refused: whatever could be written was written, the held or refused items stayed out, and the policy robot runs its gate on whatever was written, as for exit 3, with an `auto-alert` issue per held or refused item. The refresher itself never commits. Exit 0 means nothing worth committing, and exit 1 is a hard failure. Version 0.1.2 changed a released loosening from exit 4 to exit 3; see the [Changelog](https://creed.apps.wayne.edu/docs/changelog.html).
 
-### Why does the reader throw for a version between listed lines, or one that does not parse?[#](https://creed.apps.wayne.edu/docs/troubleshooting.html#why-does-the-reader-throw-for-a-version-between-listed-lines-or-one-that-does-not-parse)
+### Why does the reader throw for a version between listed lines, or one that does not parse? [#](https://creed.apps.wayne.edu/docs/troubleshooting.html#why-does-the-reader-throw-for-a-version-between-listed-lines-or-one-that-does-not-parse)
 
 The reader refuses what it does not know, except the newest thing and the oldest. A version that sorts above every line the policy lists is `Active`, and a version that parses and sorts below every listed line is `Eol`, with the reason from `belowOldestLineReason()`. A version that falls between listed lines, or that does not parse, is still unknown, and still throws. Unlisted components are refused the same way. Current versions are never refused. The handbook's [Dependencies](https://creed.apps.wayne.edu/handbook/dependencies.html) chapter explains the states.
 
 Creed Bratton would not care, but he is not reviewing the merge request.
 
-### Related[#](https://creed.apps.wayne.edu/docs/troubleshooting.html#related)
+### Related [#](https://creed.apps.wayne.edu/docs/troubleshooting.html#related)
 
 - [Install](https://creed.apps.wayne.edu/docs/install.html)
 - [Changelog](https://creed.apps.wayne.edu/docs/changelog.html)
@@ -2162,11 +2163,11 @@ Creed Bratton would not care, but he is not reviewing the merge request.
 
 Source: https://creed.apps.wayne.edu/docs/upgrading.html
 
-## Upgrading[#](https://creed.apps.wayne.edu/docs/upgrading.html#upgrading)
+## Upgrading [#](https://creed.apps.wayne.edu/docs/upgrading.html#upgrading)
 
 How CREED versions are cut, what each release changed that a consumer notices, and which consumers must refresh a generated copy after a policy change.
 
-### How versions are cut[#](https://creed.apps.wayne.edu/docs/upgrading.html#how-versions-are-cut)
+### How versions are cut [#](https://creed.apps.wayne.edu/docs/upgrading.html#how-versions-are-cut)
 
 1. Move the lines under `## Unreleased` in `CHANGELOG.md` to a new `## X.Y.Z (YYYY-MM-DD)` heading, leaving an empty `## Unreleased`. (0.1.0 predates the heading convention, so it has none.)
 2. `composer ci` green locally, then on both pipelines for that commit.
@@ -2175,11 +2176,11 @@ How CREED versions are cut, what each release changed that a consumer notices, a
 5. A release needs a maintainer's approval. Never move or delete a published tag.
 6. Then bump `waynestate/creed` where the stack pins it, and refresh the generated copies.
 
-### 0.1.9 (2026-11-09)[#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-9-2026-11-09)
+### 0.1.9 (2026-11-09) [#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-9-2026-11-09)
 
 Nothing changes for a consumer: `policy.json`, its schema and the reader are as they were in 0.1.8, so no generated copy needs a refresh. `bin/validate-policy.php` now names a policy line that carries neither `security_until` nor `"current": true`, or both, and says how to fix it; such a file failed before too, with a message that named nothing. The rest is the handbook, BEST_PRACTICES, the front page, CREED's own CI (Composer 2.11.1, Preflight 0.5.0) and the deploy kit (Squire 0.10.2).
 
-### 0.1.8 (2026-11-09)[#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-8-2026-11-09)
+### 0.1.8 (2026-11-09) [#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-8-2026-11-09)
 
 The policy gains five optional fields, each with a reader method that falls back to a default when the field is absent, so a consumer reading an older `policy.json` sees no change:
 
@@ -2195,47 +2196,47 @@ The handbook lint now fails on a rule that uses MUST, SHOULD or MAY without sayi
 
 PROCTOR refreshes its generated copy of the reader and policy, since its gate, overrides and override-approver checks read the new fields through it, and ADVISOR refreshes its data bundle, so it serves the new policy fields and the tagged handbook rules. Booster and Rollcall read none of the new fields; they refresh their copies with their next CREED bump, as before.
 
-### 0.1.7 (2026-11-07)[#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-7-2026-11-07)
+### 0.1.7 (2026-11-07) [#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-7-2026-11-07)
 
 The policy records, per Laravel line, the PHP versions it supports and the minimum MySQL and MariaDB versions, in a new optional `requires` field on the line. A policy file that uses `requires` fails validation against the 0.1.6 schema, so a publisher updates the schema first. Readers ignore the field, so an older reader keeps working on a newer file. The same holds for the new optional `images` object on a line (`images.docker` is filled for PHP 8.3 to 8.5).
 
 Nothing changes for a consumer in how the policy is kept: the policy robot's Monday merge requests land in `policy/policy.json` like any other commit, so a consumer that carries a copy refreshes it after a release as before.
 
-### 0.1.6 (2026-11-03)[#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-6-2026-11-03)
+### 0.1.6 (2026-11-03) [#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-6-2026-11-03)
 
 A `policy-bot` CI job runs `bin/policy-bot.php run` with `CREED_BOT_TOKEN` on a weekly schedule (the one carrying `CREED_JOB=policy-bot`) or by hand; without the token it skips green, and the check-only `refresh-patches` job now skips that schedule. Docs and package metadata name nougat as the canonical repository, with git.wayne.edu and GitHub as read-only mirrors, until git.wayne.edu has CI runners.
 
-### 0.1.5 (2026-11-03)[#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-5-2026-11-03)
+### 0.1.5 (2026-11-03) [#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-5-2026-11-03)
 
 The handbook grew: new chapters Secrets and Production from the WSU developer standards (2024), WSU developer standards (2024) rules in the Code, Auth, Databases, Dependencies and CI chapters, a note on MySQL lines and auth plugin, and BEST_PRACTICES section 11 (practices 55 to 61). Handbook rules now name the PROCTOR check that enforces them. The BEST_PRACTICES statements and gap list were fixed to match the tree, schema and tests. A test pins that an older reader accepts a newer policy file. CI pulls its Docker Hub images through the GitLab Dependency Proxy, a `wayneui-copies` gate job was added, and the unused `composer/semver` dependency was removed.
 
-### 0.1.4 (2026-10-30)[#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-4-2026-10-30)
+### 0.1.4 (2026-10-30) [#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-4-2026-10-30)
 
 The bot's GitLab HTTP client failed on every API call (`stream_context_create` options were not under the `http` wrapper, a ValueError on current PHP). It now works and reads response headers from the stream's metadata, so PHP 8.5 shows no deprecation. The deploy layer's Squire kit was refreshed to 0.3.3 and then 0.3.4 (the local `.env.squire` file is now git-ignored).
 
-### 0.1.3 (2026-10-29)[#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-3-2026-10-29)
+### 0.1.3 (2026-10-29) [#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-3-2026-10-29)
 
 The proof page moved to a private site that needs a Wayne State sign-in. Project names are written as words except acronyms. A real `bin/policy-bot.php run` now commits the data allowlist on `auto/policy-refresh` and force-pushes it with GitLab merge request push options (create, target, remove source branch, label `auto-data`, title; `merge_request.auto_merge` on exit 3 only); missing variables stop the run with exit 1 naming them, and every printed line masks the token as `[masked]`. After an exit 0, a refresh whose `refreshed_on` is 7 or more days old runs the refresher again with `--touch`. The robot keeps its GitLab alert issues in line with the report, one open issue per alert key, each labelled `auto-alert`. New `src/Bot/GitLabClient.php` is a small GitLab API client over an injectable `HttpTransport`, shipped with a dependency-free PHP streams transport; the token rides only in the `PRIVATE-TOKEN` header, never in a URL. Stale capability claims in the site and docs were fixed.
 
-### 0.1.2 (2026-10-29)[#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-2-2026-10-29)
+### 0.1.2 (2026-10-29) [#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-2-2026-10-29)
 
 `bin/refresh-policy.php`: a released version that loosens a constraint now exits 3 (changes written) with an alert in the report, instead of exit 4. Reader behavior: a version of a known component that is older than the oldest listed line (PHP 5.x to 8.0, Laravel 5 to 8, Inertia 0.x) is now `Eol`, with the reason `older than the oldest listed line (8.1)` from the new `belowOldestLineReason($component, $version)`, instead of being refused as an unknown version. Unlisted components and version strings that do not parse are still refused, and a version above every listed line is still `Active`.
 
-### 0.1.1 (2026-10-29)[#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-1-2026-10-29)
+### 0.1.1 (2026-10-29) [#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-1-2026-10-29)
 
 `bin/refresh-policy.php` keeps every support date, patch and new line tied to a canonical source (php.net, the Node.js release schedule, endoflife.date, Packagist, npm). Changes are classed tighten, neutral, loosen-warning or loosen-fail; a later security date is held until two sources agree or 14 days pass; nothing is ever removed. Provenance lives in the new `policy/sources.json` (schema and validation included), and the policy gains an optional `refreshed_on` date. Policy lines may be marked `"current": true`: Active on every date, with no `security_until`; the schema rejects a current line that also carries a `security_until`, and a line that carries neither. `stateOf()` resolves a version to its policy line before judging it: a version that sorts above every listed line is `Active` (current versions are never refused), while a version between listed lines still throws. New reader method `isAheadOfPolicy($component, $version)`; `line()` reports a fifth field, `current` (true or null). The bundled policy lists Vue 3 and Inertia 2 as current lines. `bin/refresh-patches.php` reads the endoflife.date Vue feed and proposes new Vue lines alongside the patch refresh. The README's reader example is now a test: `tests/ReadmeTest.php` runs every PHP code block that uses the reader against the bundled policy and asserts the values printed beside it. The handbook is now linted for RFC 2119 capitalization, every chapter declares RFC 2119 and uses capital keywords, and `handbook/databases.md` gains a "Grace period" section spelling out the 90-day `eol_grace_days` window (`Security` on `security_until`, `Eol` for the window, `EolGraceExpired` after, no override). `handbook/dependencies.md` gains a "Private packages" section. PHPStan now includes Pinstripe's raw preset instead of carrying a hand copy.
 
-### 0.1.0 (2026-10-27)[#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-0-2026-10-27)
+### 0.1.0 (2026-10-27) [#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-0-2026-10-27)
 
 First tagged release.
 
-### Which consumers must refresh a generated copy[#](https://creed.apps.wayne.edu/docs/upgrading.html#which-consumers-must-refresh-a-generated-copy)
+### Which consumers must refresh a generated copy [#](https://creed.apps.wayne.edu/docs/upgrading.html#which-consumers-must-refresh-a-generated-copy)
 
 PROCTOR, Rollcall and Booster each carry a generated copy of the reader under their own namespace, so two tools in one app never fight over a class name; ADVISOR carries CREED's policy and handbook as a data bundle instead. After any policy change, the copies downstream are stale until refreshed. In each consumer (PROCTOR, Rollcall, Booster), run `php <creed>/bin/export.php --namespace='Waynestate\<Project>\Creed' --to=src/Creed`, then `composer creed-copy:check` with `CREED_PATH` pointing at this checkout. ADVISOR regenerates with `content:generate`.
 
 Creed Bratton would have a form for this.
 
-### Related[#](https://creed.apps.wayne.edu/docs/upgrading.html#related)
+### Related [#](https://creed.apps.wayne.edu/docs/upgrading.html#related)
 
 - [Changelog](https://creed.apps.wayne.edu/docs/changelog.html)
 - [Install](https://creed.apps.wayne.edu/docs/install.html)

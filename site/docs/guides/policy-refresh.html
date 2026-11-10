@@ -40,11 +40,11 @@
   <nav class="docs-nav docs-nav--sidebar" aria-label="Documentation"><ul class="docs-nav__list"><li class="docs-nav__group"><span class="docs-nav__label">Getting started</span><ul><li><a href="../../docs/index.html">Overview</a></li><li><a href="../../docs/install.html">Install</a></li><li><a href="../../docs/guides/quick-start.html">Quick start</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Guides</span><ul><li><a href="../../docs/guides/reading-the-policy.html">Reading the policy from PHP</a></li><li><a href="../../docs/guides/support-states.html">Support states and the grace period</a></li><li><a href="../../docs/guides/patch-refresh.html">Keeping the patches fresh</a></li><li><a href="../../docs/guides/policy-refresh.html" aria-current="page">Refreshing the policy</a></li><li><a href="../../docs/guides/policy-bot.html">The policy robot</a></li><li><a href="../../docs/guides/carrying-creed.html">Carrying CREED in another package</a></li><li><a href="../../docs/guides/handbook.html">The handbook</a></li><li><a href="../../docs/guides/instance-runner.html">The instance runner</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Reference</span><ul><li><a href="../../docs/reference/api.html">Reader API</a></li><li><a href="../../docs/reference/policy-format.html">Policy file format</a></li><li><a href="../../docs/reference/commands.html">Commands and exit codes</a></li><li><a href="../../docs/reference/configuration.html">Configuration</a></li><li><a href="../../docs/reference/proof.html">Proof</a></li></ul></li><li><a href="../../docs/troubleshooting.html">Troubleshooting</a></li><li><a href="../../docs/upgrading.html">Upgrading</a></li><li><a href="../../docs/contributing.html">Contributing</a></li><li><a href="../../docs/changelog.html">Changelog</a></li></ul></nav>
   <div class="docs-content">
     <main id="main">
-      <article class="docs-article"><h1 id="refreshing-the-policy">Refreshing the policy<a class="docs-heading-link" aria-label="Link to this section" href="#refreshing-the-policy">#</a></h1>
+      <article class="docs-article"><h1 id="refreshing-the-policy">Refreshing the <span class="docs-heading-tail"><span>policy</span><a class="docs-heading-link" aria-label="Link to this section" href="#refreshing-the-policy">#</a></span></h1>
 <p>This page explains how <code>bin/refresh-policy.php</code> keeps every support date, patch and new line in <code>policy/policy.json</code> tied to a canonical source, so nobody types a date by hand.</p>
-<h2 id="sources-per-component">Sources per component<a class="docs-heading-link" aria-label="Link to this section" href="#sources-per-component">#</a></h2>
+<h2 id="sources-per-component">Sources per <span class="docs-heading-tail"><span>component</span><a class="docs-heading-link" aria-label="Link to this section" href="#sources-per-component">#</a></span></h2>
 <p>PHP dates come from php.net, Node dates from the Node.js release schedule, and Laravel, MySQL, Vue and Composer from endoflife.date; patches come from php.net, nodejs.org, Packagist and npm.</p>
-<h2 id="change-classes">Change classes<a class="docs-heading-link" aria-label="Link to this section" href="#change-classes">#</a></h2>
+<h2 id="change-classes">Change <span class="docs-heading-tail"><span>classes</span><a class="docs-heading-link" aria-label="Link to this section" href="#change-classes">#</a></span></h2>
 <p>Each run sorts every change into a class:</p>
 <div class="docs-table" role="region" aria-label="Table" tabindex="0"><table>
 <thead>
@@ -82,18 +82,18 @@
 </tr>
 </tbody>
 </table></div>
-<h2 id="when-a-source-is-down">When a source is down<a class="docs-heading-link" aria-label="Link to this section" href="#when-a-source-is-down">#</a></h2>
+<h2 id="when-a-source-is-down">When a source is <span class="docs-heading-tail"><span>down</span><a class="docs-heading-link" aria-label="Link to this section" href="#when-a-source-is-down">#</a></span></h2>
 <p>A source that is down, slow or returns something unreadable changes nothing: its fields keep their last good value. A line missing from a feed is never removed. Where a first-party source and endoflife.date disagree, the first party wins and the disagreement is reported.</p>
-<h2 id="running-the-refresher">Running the refresher<a class="docs-heading-link" aria-label="Link to this section" href="#running-the-refresher">#</a></h2>
+<h2 id="running-the-refresher">Running the <span class="docs-heading-tail"><span>refresher</span><a class="docs-heading-link" aria-label="Link to this section" href="#running-the-refresher">#</a></span></h2>
 <pre tabindex="0"><code>php bin/refresh-policy.php [--dry-run] [--offline &lt;dir&gt;] [--policy &lt;path&gt;]
     [--sources &lt;path&gt;] [--report &lt;file&gt;] [--today YYYY-MM-DD] [--touch]
 </code></pre>
 <p><code>--report</code> writes JSON with <code>changes</code>, <code>held</code>, <code>refused</code>, <code>disagreements</code> and <code>source_errors</code>. <code>--touch</code> sets <code>refreshed_on</code> to today even when nothing else changed (the weekly heartbeat). <code>policy/sources.json</code> records, per value, which source said it, and the first and last day it was seen.</p>
-<h2 id="exit-codes">Exit codes<a class="docs-heading-link" aria-label="Link to this section" href="#exit-codes">#</a></h2>
+<h2 id="exit-codes">Exit <span class="docs-heading-tail"><span>codes</span><a class="docs-heading-link" aria-label="Link to this section" href="#exit-codes">#</a></span></h2>
 <p>Exit codes: <code>0</code> nothing worth committing (always <code>0</code> with <code>--dry-run</code>); <code>1</code> hard failure; <code>3</code> something was written to <code>policy/policy.json</code> or <code>policy/sources.json</code>, including a released <code>loosen-fail</code> (the policy robot raises the alert from the report); <code>4</code> something was held or refused. The refresher itself never commits: whatever it could write is written either way, and on exit 4 the held or refused items stay out of the file.</p>
 <p>What happens next is the <a href="policy-bot.html">policy robot</a>'s job: on exit 3 or exit 4 it commits what was written, runs <code>composer ci</code>, and pushes straight to <code>main</code> when that passes (or opens a merge request for a person when it fails), plus an <code>auto-alert</code> issue per held or refused item.</p>
 <p><code>bin/refresh-patches.php</code> still works as before.</p>
-<h2 id="related">Related<a class="docs-heading-link" aria-label="Link to this section" href="#related">#</a></h2>
+<h2 id="related"><span class="docs-heading-tail"><span>Related</span><a class="docs-heading-link" aria-label="Link to this section" href="#related">#</a></span></h2>
 <ul>
 <li><a href="patch-refresh.html">Keeping the patches fresh</a></li>
 <li><a href="policy-bot.html">The policy robot</a></li>

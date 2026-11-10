@@ -6,11 +6,11 @@ llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
 ---
 
-# The policy robot[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-policy-robot)
+# The policy robot [#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-policy-robot)
 
 This page explains what the policy robot does every Monday, what it pushes or opens on the CREED project, how it is set up, and how a person handles a red week.
 
-## What the robot does[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#what-the-robot-does)
+## What the robot does [#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#what-the-robot-does)
 
 The policy robot is `bin/policy-bot.php run` (the logic is `src/Bot/PolicyBot.php`). Once a week it runs the full refresher, [`bin/refresh-policy.php`](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html), which re-reads the upstream sources for support dates, latest patches and new version lines. Then it turns the refresher's exit code and report into one of four outcomes:
 
@@ -29,7 +29,7 @@ The robot only ever stages `policy/policy.json` and `policy/sources.json`, and o
 
 What it may write is decided by the refresher's change classes: a date that moves earlier (`tighten`), a new patch or a new line (`neutral`) and a later `active_until` (`loosen-warning`) are written; a later `security_until` (`loosen-fail`) is held until two sources or 14 days of the same answer prove it; removing anything, or touching `tools` or `rules`, is refused. [Refreshing the policy](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html) has the full table.
 
-## The gate[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-gate)
+## The gate [#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-gate)
 
 The scheduled job runs as the schedule owner, so it can run the whole gate itself:
 
@@ -38,7 +38,7 @@ The scheduled job runs as the schedule owner, so it can run the whole gate itsel
 3. **Green:** it pushes the commit straight to `main` with the CI job token (`CI_JOB_TOKEN`), no force. GitLab starts no new pipeline for a job-token push, which is fine: the gate already ran. Nobody merges anything by hand. If `main` moved during the run, the push is refused and the job fails; the next run starts from the new `main`.
 4. **Red:** it pushes the commit to `auto/policy-refresh` as a [merge request](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-fallback-merge-request) for a person, and the job fails, so the schedule owner gets the pipeline mail.
 
-## The fallback merge request[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-fallback-merge-request)
+## The fallback merge request [#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-fallback-merge-request)
 
 Only a red gate opens (or updates) a merge request:
 
@@ -50,7 +50,7 @@ Only a red gate opens (or updates) a merge request:
 
 The robot force-pushes `auto/policy-refresh` each time the gate is red, so the branch always holds the latest failed refresh and an open merge request is updated rather than duplicated. Anything a person commits to that branch is overwritten on the next red run.
 
-## The alert issues[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-alert-issues)
+## The alert issues [#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-alert-issues)
 
 People hear from the robot through GitLab issues, one per alert key, labeled `auto-alert` and titled `[auto-alert] <key>`. They sync on every handled run, red or green, so a red week still shows its held and refused items:
 
@@ -63,7 +63,7 @@ People hear from the robot through GitLab issues, one per alert key, labeled `au
 
 A key that is still there on a later run gets a note on its open issue instead of a second issue. A key that is gone closes its issue with a "Cleared on" note. The logic is `src/Bot/AlertIssues.php`.
 
-## Reviewing what it does[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#reviewing-what-it-does)
+## Reviewing what it does [#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#reviewing-what-it-does)
 
 1. **A green week needs nothing.** The refresh is on `main` with `composer ci` passed on it. Read the commit if you are curious: the job log lists every change the refresher wrote.
 2. **A red week: read the failed job first.** Whether the failure is in the policy (the schema validator or a test) or unrelated (for example a new security advisory in `composer audit`), the job log shows it.
@@ -72,13 +72,13 @@ A key that is still there on a later run gets a note on its open issue instead o
 5. **Decide the held and refused items by hand.** They are in the `auto-alert` issues (and in a red week's merge request body). A held `security_until` that you can prove from the vendor's page goes in by a normal merge request that cites the source; the issue closes itself on the next run.
 6. **After a refresh lands,** the copies downstream are stale until refreshed: see [Carrying CREED in another package](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html). A release of CREED is still a person's call ([Contributing](https://creed.apps.wayne.edu/docs/contributing.html)).
 
-## How it is scheduled[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#how-it-is-scheduled)
+## How it is scheduled [#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#how-it-is-scheduled)
 
 The `policy-bot` job in `.gitlab-ci.yml` runs the robot in two cases only, both on the default branch: a scheduled pipeline whose schedule carries the variable `CREED_JOB=policy-bot`, and a pipeline started by hand from the web. CREED's schedule runs it on `main` every Monday. The check-only [`refresh-patches`](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html) job skips that schedule, so a robot pipeline runs only the robot. `GIT_DEPTH: "0"` gives the job the full history it needs to push its commit back.
 
 Without the token the job prints "CREED_BOT_TOKEN not set; skipping the policy robot" and stays green.
 
-## Setting it up[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#setting-it-up)
+## Setting it up [#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#setting-it-up)
 
 The setup lives in GitLab project settings, not in this repo. To set it up on CREED again, or on a fork:
 
@@ -94,7 +94,7 @@ Warning
 
 Every line the robot prints, including git's own errors, `composer ci` output and the command echoes, passes through one mask that replaces the job token and the bot token with `[masked]`. The job token travels only in the push URL and the bot token only in the `PRIVATE-TOKEN` header. Still: keep the variable masked, and rotate the token if a job log ever shows it.
 
-## Trying it without GitLab[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#trying-it-without-gitlab)
+## Trying it without GitLab [#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#trying-it-without-gitlab)
 
 A dry run needs no token and changes nothing. It prints the outcome it would choose, the files it would commit, the merge request title and body, and the alert issues it would open:
 
@@ -105,7 +105,7 @@ php bin/policy-bot.php run --dry-run --offline tests/fixtures/feeds
 
 `--offline` reads saved feeds instead of fetching them; `tests/fixtures/feeds/` carries a full set. Creed Bratton ran a dry run once, at the quarry. Nobody asked what it printed.
 
-## Related[#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#related)
+## Related [#](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#related)
 
 - [Refreshing the policy](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html)
 - [Keeping the patches fresh](https://creed.apps.wayne.edu/docs/guides/patch-refresh.html)

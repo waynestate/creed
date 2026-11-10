@@ -6,15 +6,15 @@ llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
 ---
 
-# Install[#](https://creed.apps.wayne.edu/docs/install.html#install)
+# Install [#](https://creed.apps.wayne.edu/docs/install.html#install)
 
 This page gets you from an empty project to a working CREED reader, and shows how to build and test CREED itself.
 
-## Requirements[#](https://creed.apps.wayne.edu/docs/install.html#requirements)
+## Requirements [#](https://creed.apps.wayne.edu/docs/install.html#requirements)
 
 CREED requires PHP `^8.3`. Its `composer.json` says so, and pins the platform to `8.3.0` so installs resolve against that floor. The reader is framework-free, so nothing else is required at runtime.
 
-## Install[#](https://creed.apps.wayne.edu/docs/install.html#install-1)
+## Install [#](https://creed.apps.wayne.edu/docs/install.html#install-1)
 
 Add the package to your project:
 
@@ -22,7 +22,7 @@ Add the package to your project:
 composer require waynestate/creed
 ```
 
-### Develop on it[#](https://creed.apps.wayne.edu/docs/install.html#develop-on-it)
+### Develop on it [#](https://creed.apps.wayne.edu/docs/install.html#develop-on-it)
 
 The same commands work in PowerShell and sh:
 
@@ -38,7 +38,7 @@ docker run --rm -v "${PWD}:/app" -w /app php:8.5-cli vendor/bin/phpunit
 
 The whole band fits in three commands, and nobody needs a solo.
 
-## Verify[#](https://creed.apps.wayne.edu/docs/install.html#verify)
+## Verify [#](https://creed.apps.wayne.edu/docs/install.html#verify)
 
 Load the bundled policy and ask it what state a version is in:
 
@@ -55,11 +55,11 @@ $state = $policy->stateOf('php', '8.2', new DateTimeImmutable('2026-10-27'));
 
 Expected result: `State::Security`. The reader answers, it does not guess, so if you get a different answer, the date or the policy file is not what you think it is.
 
-## Next steps[#](https://creed.apps.wayne.edu/docs/install.html#next-steps)
+## Next steps [#](https://creed.apps.wayne.edu/docs/install.html#next-steps)
 
 Ask the reader two questions in the [Quick start](https://creed.apps.wayne.edu/docs/guides/quick-start.html), or read every public member in the [Reader API](https://creed.apps.wayne.edu/docs/reference/api.html).
 
-## Related[#](https://creed.apps.wayne.edu/docs/install.html#related)
+## Related [#](https://creed.apps.wayne.edu/docs/install.html#related)
 
 - [Overview](https://creed.apps.wayne.edu/docs/index.html)
 - [Quick start](https://creed.apps.wayne.edu/docs/guides/quick-start.html)

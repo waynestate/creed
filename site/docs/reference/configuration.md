@@ -6,11 +6,11 @@ llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
 ---
 
-# Configuration[#](https://creed.apps.wayne.edu/docs/reference/configuration.html#configuration)
+# Configuration [#](https://creed.apps.wayne.edu/docs/reference/configuration.html#configuration)
 
 This page lists the environment CREED reads and the options of `bin/refresh-policy.php`.
 
-## Environment variables[#](https://creed.apps.wayne.edu/docs/reference/configuration.html#environment-variables)
+## Environment variables [#](https://creed.apps.wayne.edu/docs/reference/configuration.html#environment-variables)
 
 | Variable | What it is |
 | --- | --- |
@@ -23,7 +23,7 @@ Warning
 
 The token is masked, hidden and protected, and never printed. Every line the robot prints, including runner errors and command echoes, passes through one mask function that replaces the job token and bot token values with `[masked]`, so a runner error that echoes the URL back never leaks either.
 
-## refresh-policy options[#](https://creed.apps.wayne.edu/docs/reference/configuration.html#refresh-policy-options)
+## refresh-policy options [#](https://creed.apps.wayne.edu/docs/reference/configuration.html#refresh-policy-options)
 
 ```
 php bin/refresh-policy.php [--dry-run] [--offline <dir>] [--policy <path>]
@@ -40,7 +40,7 @@ php bin/refresh-policy.php [--dry-run] [--offline <dir>] [--policy <path>]
 | `--today YYYY-MM-DD` | Pretend today is this date (deterministic runs). |
 | `--touch` | Set `refreshed_on` to today even when nothing else changed: the robot's weekly heartbeat. |
 
-## Related[#](https://creed.apps.wayne.edu/docs/reference/configuration.html#related)
+## Related [#](https://creed.apps.wayne.edu/docs/reference/configuration.html#related)
 
 - [Commands and exit codes](https://creed.apps.wayne.edu/docs/reference/commands.html)
 - [Policy file format](https://creed.apps.wayne.edu/docs/reference/policy-format.html)

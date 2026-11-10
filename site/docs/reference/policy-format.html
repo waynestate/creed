@@ -40,10 +40,10 @@
   <nav class="docs-nav docs-nav--sidebar" aria-label="Documentation"><ul class="docs-nav__list"><li class="docs-nav__group"><span class="docs-nav__label">Getting started</span><ul><li><a href="../../docs/index.html">Overview</a></li><li><a href="../../docs/install.html">Install</a></li><li><a href="../../docs/guides/quick-start.html">Quick start</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Guides</span><ul><li><a href="../../docs/guides/reading-the-policy.html">Reading the policy from PHP</a></li><li><a href="../../docs/guides/support-states.html">Support states and the grace period</a></li><li><a href="../../docs/guides/patch-refresh.html">Keeping the patches fresh</a></li><li><a href="../../docs/guides/policy-refresh.html">Refreshing the policy</a></li><li><a href="../../docs/guides/policy-bot.html">The policy robot</a></li><li><a href="../../docs/guides/carrying-creed.html">Carrying CREED in another package</a></li><li><a href="../../docs/guides/handbook.html">The handbook</a></li><li><a href="../../docs/guides/instance-runner.html">The instance runner</a></li></ul></li><li class="docs-nav__group"><span class="docs-nav__label">Reference</span><ul><li><a href="../../docs/reference/api.html">Reader API</a></li><li><a href="../../docs/reference/policy-format.html" aria-current="page">Policy file format</a></li><li><a href="../../docs/reference/commands.html">Commands and exit codes</a></li><li><a href="../../docs/reference/configuration.html">Configuration</a></li><li><a href="../../docs/reference/proof.html">Proof</a></li></ul></li><li><a href="../../docs/troubleshooting.html">Troubleshooting</a></li><li><a href="../../docs/upgrading.html">Upgrading</a></li><li><a href="../../docs/contributing.html">Contributing</a></li><li><a href="../../docs/changelog.html">Changelog</a></li></ul></nav>
   <div class="docs-content">
     <main id="main">
-      <article class="docs-article"><h1 id="policy-file-format">Policy file format<a class="docs-heading-link" aria-label="Link to this section" href="#policy-file-format">#</a></h1>
+      <article class="docs-article"><h1 id="policy-file-format">Policy file <span class="docs-heading-tail"><span>format</span><a class="docs-heading-link" aria-label="Link to this section" href="#policy-file-format">#</a></span></h1>
 <p>This page shows the shape of <code>policy/policy.json</code> and <code>policy/sources.json</code>, exactly as their schemas state it.</p>
 <p>CREED is the Wayne State app stack's version policy, as data. One file, <code>policy/policy.json</code>, lists the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, plus the rules every check runs against. The schema titles the file &quot;CREED version policy&quot;, requires <code>schema_version</code>, <code>components</code> and <code>rules</code>, and allows no other top-level properties.</p>
-<h2 id="top-level-of-policy-policy-json">Top level of policy/policy.json<a class="docs-heading-link" aria-label="Link to this section" href="#top-level-of-policy-policy-json">#</a></h2>
+<h2 id="top-level-of-policy-policy-json">Top level of <span class="docs-heading-tail"><span>policy/policy.json</span><a class="docs-heading-link" aria-label="Link to this section" href="#top-level-of-policy-policy-json">#</a></span></h2>
 <div class="docs-table" role="region" aria-label="Table" tabindex="0"><table>
 <thead>
 <tr>
@@ -85,7 +85,7 @@
 </tr>
 </tbody>
 </table></div>
-<h2 id="the-line-fields">The line fields<a class="docs-heading-link" aria-label="Link to this section" href="#the-line-fields">#</a></h2>
+<h2 id="the-line-fields">The line <span class="docs-heading-tail"><span>fields</span><a class="docs-heading-link" aria-label="Link to this section" href="#the-line-fields">#</a></span></h2>
 <p>Each component holds a <code>versions</code> object that maps a version to a line. Every line may carry these fields:</p>
 <div class="docs-table" role="region" aria-label="Table" tabindex="0"><table>
 <thead>
@@ -139,7 +139,7 @@
 </tbody>
 </table></div>
 <p>The <code>current</code> rule is the only conditional in the schema: a line with <code>&quot;current&quot;: true</code> must not carry <code>security_until</code>, and every other line must. A line marked <code>&quot;current&quot;: false</code>, or with no <code>current</code> at all, therefore needs a <code>security_until</code>: CREED does not list a line before its dates are known. <code>bin/validate-policy.php</code> checks this rule before the schema and names the line and the fix, for example <code>php 9.9: the line has neither security_until nor &quot;current&quot;: true; add security_until (...) or mark the line &quot;current&quot;: true.</code> The rule matters at runtime too: the reader does not guess the state of an undated line, so <code>supported()</code> and <code>oldestSupported()</code> would throw for that whole component.</p>
-<h2 id="tools">tools<a class="docs-heading-link" aria-label="Link to this section" href="#tools">#</a></h2>
+<h2 id="tools"><span class="docs-heading-tail"><span>tools</span><a class="docs-heading-link" aria-label="Link to this section" href="#tools">#</a></span></h2>
 <p><code>tools</code> is optional. Its property names must match <code>^[a-z][a-z0-9-]*$</code>, and each value is an object with one required field:</p>
 <div class="docs-table" role="region" aria-label="Table" tabindex="0"><table>
 <thead>
@@ -157,7 +157,7 @@
 </tr>
 </tbody>
 </table></div>
-<h2 id="rules">rules<a class="docs-heading-link" aria-label="Link to this section" href="#rules">#</a></h2>
+<h2 id="rules"><span class="docs-heading-tail"><span>rules</span><a class="docs-heading-link" aria-label="Link to this section" href="#rules">#</a></span></h2>
 <p><code>rules</code> allows exactly three properties, all required:</p>
 <div class="docs-table" role="region" aria-label="Table" tabindex="0"><table>
 <thead>
@@ -185,7 +185,7 @@
 </tr>
 </tbody>
 </table></div>
-<h2 id="policy-sources-json">policy/sources.json<a class="docs-heading-link" aria-label="Link to this section" href="#policy-sources-json">#</a></h2>
+<h2 id="policy-sources-json"><span class="docs-heading-tail"><span>policy/sources.json</span><a class="docs-heading-link" aria-label="Link to this section" href="#policy-sources-json">#</a></span></h2>
 <p>The schema titles <code>policy/sources.json</code> the &quot;CREED refresh provenance ledger&quot;. It records, per observed value, which source said it and the first and last day it was seen.</p>
 <div class="docs-table" role="region" aria-label="Table" tabindex="0"><table>
 <thead>
@@ -240,9 +240,9 @@
 </tr>
 </tbody>
 </table></div>
-<h2 id="schema-version-and-older-readers">Schema version and older readers<a class="docs-heading-link" aria-label="Link to this section" href="#schema-version-and-older-readers">#</a></h2>
+<h2 id="schema-version-and-older-readers">Schema version and older <span class="docs-heading-tail"><span>readers</span><a class="docs-heading-link" aria-label="Link to this section" href="#schema-version-and-older-readers">#</a></span></h2>
 <p>The schema is <code>version: 1</code>. Optional new fields keep it at 1; a breaking schema change needs a new version and a release of every reader. The schema is strict: unknown keys fail CREED's own CI. Readers are tolerant: unknown keys are ignored, so older readers keep working on a newer file. The older-reader contract is pinned by <code>tests/OlderReaderContractTest.php</code>; change the fixture only with a <code>schema_version</code> bump.</p>
-<h2 id="a-real-excerpt">A real excerpt<a class="docs-heading-link" aria-label="Link to this section" href="#a-real-excerpt">#</a></h2>
+<h2 id="a-real-excerpt">A real <span class="docs-heading-tail"><span>excerpt</span><a class="docs-heading-link" aria-label="Link to this section" href="#a-real-excerpt">#</a></span></h2>
 <p>One real line from <code>policy/policy.json</code>, verbatim (the PHP 8.2 entry):</p>
 <pre tabindex="0"><code class="language-json">&quot;8.2&quot;: {
     &quot;active_until&quot;: &quot;2024-12-31&quot;,
@@ -252,7 +252,7 @@
 },
 </code></pre>
 <aside class="docs-callout docs-callout--note" role="note"><p class="docs-callout__label">Note</p><p>Creed Bratton's past is a mystery. Ours is in <code>policy/policy.json</code>, where it belongs.</p></aside>
-<h2 id="related">Related<a class="docs-heading-link" aria-label="Link to this section" href="#related">#</a></h2>
+<h2 id="related"><span class="docs-heading-tail"><span>Related</span><a class="docs-heading-link" aria-label="Link to this section" href="#related">#</a></span></h2>
 <ul>
 <li><a href="commands.html">Commands and exit codes</a></li>
 <li><a href="configuration.html">Configuration</a></li>

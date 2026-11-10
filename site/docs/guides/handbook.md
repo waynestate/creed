@@ -6,21 +6,21 @@ llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
 ---
 
-# The handbook[#](https://creed.apps.wayne.edu/docs/guides/handbook.html#the-handbook)
+# The handbook [#](https://creed.apps.wayne.edu/docs/guides/handbook.html#the-handbook)
 
 This page maps the CREED handbook: what it is, how to read its key words and PROCTOR check lines, and where each of the thirteen chapters lives.
 
-## What the handbook is[#](https://creed.apps.wayne.edu/docs/guides/handbook.html#what-the-handbook-is)
+## What the handbook is [#](https://creed.apps.wayne.edu/docs/guides/handbook.html#what-the-handbook-is)
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a "Not decided here" heading. The rules, chapter by chapter, live in the handbook site, built separately from `handbook/`.
 
-## How to read a rule[#](https://creed.apps.wayne.edu/docs/guides/handbook.html#how-to-read-a-rule)
+## How to read a rule [#](https://creed.apps.wayne.edu/docs/guides/handbook.html#how-to-read-a-rule)
 
 - The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in each chapter are to be interpreted as described in RFC 2119.
 - Every rule names what holds it, with one of three tags: "PROCTOR check: `<id>`" (the PROCTOR check that reports a breach), "Held by: ..." (any other point that holds it, such as a Preflight component or a runtime package's config) or "No check exists yet".
 - `composer lint-handbook` fails when a rule that uses MUST, SHOULD or MAY carries none of the three, so a rule cannot quietly lose its tag. Like any good frontman, every rule has to say who is backing it.
 
-## The chapters[#](https://creed.apps.wayne.edu/docs/guides/handbook.html#the-chapters)
+## The chapters [#](https://creed.apps.wayne.edu/docs/guides/handbook.html#the-chapters)
 
 - [Versions](https://creed.apps.wayne.edu/handbook/versions.html): the stack's version policy, the state table from active to EOL plus 90 days, with the dates in `policy/policy.json` and every tool deriving a version's state from the date.
 - [Dependencies](https://creed.apps.wayne.edu/handbook/dependencies.html): no unbounded constraints, a committed lock file, an audit with no advisories at or above the policy's severity threshold, and the private-packages registry rules.
@@ -36,7 +36,7 @@ The rules for the Wayne State app stack, chapter by chapter. Each chapter states
 - [Production](https://creed.apps.wayne.edu/handbook/production.html): pre-production and production environments, running safely with the least access needed, and who can reach an app.
 - [Overrides](https://creed.apps.wayne.edu/handbook/overrides.html): overrides are named, dated and visible, with an expiry date and a reason, and an expired override is a failure.
 
-## Related[#](https://creed.apps.wayne.edu/docs/guides/handbook.html#related)
+## Related [#](https://creed.apps.wayne.edu/docs/guides/handbook.html#related)
 
 - [Carrying CREED in another package](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html)
 - [Support states and the grace period](https://creed.apps.wayne.edu/docs/guides/support-states.html)

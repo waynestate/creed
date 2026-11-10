@@ -6,7 +6,7 @@ llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
 ---
 
-# Reader API[#](https://creed.apps.wayne.edu/docs/reference/api.html#reader-api)
+# Reader API [#](https://creed.apps.wayne.edu/docs/reference/api.html#reader-api)
 
 This page lists every public member of the `Waynestate\Creed\Policy` reader, in the order the README introduces them, with the signature from `src/Policy.php`.
 
@@ -44,7 +44,7 @@ Note
 
 The wording is the README's, one line per member; the signatures are copied from `src/Policy.php`.
 
-## Related[#](https://creed.apps.wayne.edu/docs/reference/api.html#related)
+## Related [#](https://creed.apps.wayne.edu/docs/reference/api.html#related)
 
 - [Reading the policy from PHP](https://creed.apps.wayne.edu/docs/guides/reading-the-policy.html)
 - [Support states and the grace period](https://creed.apps.wayne.edu/docs/guides/support-states.html)
