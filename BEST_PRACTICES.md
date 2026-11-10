@@ -685,12 +685,14 @@ Sources: [Packagist supply chain security update](https://blog.packagist.com/an-
 [GitHub: plan for a more secure npm supply chain](https://github.blog/security/supply-chain-security/our-plan-for-a-more-secure-npm-supply-chain/),
 [OWASP Top 10:2025](https://top10.owasp.org/2025) (A03, Software Supply Chain Failures).
 
-How the stack holds it: `Not yet`. No setting in `policy.json` or in CI delays new versions. Decided 2026-11-03: a 3 day
-cooldown once Composer 2.11 is stable and in the base images, with Sourdough apps setting it and PROCTOR warning when it
-is missing (PROCTOR plan 4.11). Composer 2.11.0 shipped on 2026-10-29 (2.11.1 on 2026-10-30) with
-`policy.cooldown.period`, but nothing sets it yet. The stack's images and CI now pin Composer 2.11.1 by digest
-(Preflight 0.5.0 installs 2.11.1 by default), so setting the cooldown is the next step. The lock file
-(practice 18) is necessary but, per Packagist, not enough.
+How the stack holds it: `Partially`. Decided 2026-11-03: a 3 day cooldown once Composer 2.11 is stable and in the base
+images, with Sourdough apps setting it and PROCTOR warning when it is missing (PROCTOR plan 4.11). Composer 2.11.0
+shipped on 2026-10-29 (2.11.1 on 2026-10-30), and the stack's images and CI pin 2.11.1 by digest (Preflight 0.5.0
+installs 2.11.1 by default). Every Sourdough shape now sets `config.policy.cooldown.period` to `"3 days"` (Sourdough
+main, 2026-11-10) and exempts the stack's own packages with `"ignore": ["waynestate/*"]`: the templates require the
+newest stack releases, which the stack's CI tested before tagging, and without the exemption a fresh app could not
+install for three days after each release. Still missing: the PROCTOR warning for an app with no cooldown, and nothing
+in `policy.json` names the period. The lock file (practice 18) is necessary but, per Packagist, not enough.
 
 ### 41. Set the front-end install options, and map severity words
 

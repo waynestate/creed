@@ -22,10 +22,11 @@ one replaces it or records an override with a reason; PROCTOR's
 
 - `composer.json` `require.php` MUST NOT allow an EOL version as its lowest
   bound (the stack's version policy). PROCTOR check: `php-floor`.
-- Apps SHOULD set a Composer cooldown of 3 days, once Composer 2.11 is stable
-  and in the base images; until then no cooldown is set (the stack's dependency
-  decision, 2026-11-03). No check exists yet: a PROCTOR check for a missing
-  cooldown is planned.
+- Apps SHOULD set a Composer cooldown of 3 days (`config.policy.cooldown.period`,
+  Composer 2.11; the stack's dependency decision, 2026-11-03) and exempt the
+  stack's own packages (`"ignore": ["waynestate/*"]`), which the stack's CI tests
+  before tagging. Sourdough's shapes set both. No check exists yet: a PROCTOR
+  check for a missing cooldown is planned.
 - Every project is a framework-free core plus thin adapters. `composer.json`
   requires only `php` and PSR packages; Laravel, Inertia and Vue are
   `suggest` (the stack's core-plus-adapters design).
