@@ -321,7 +321,8 @@ Sources: [Composer basic usage](https://getcomposer.org/doc/01-basic-usage.md).
 
 How the stack holds it: `Checked`. PROCTOR `lock-committed` fails when `composer.lock` is missing, and (since PROCTOR
 0.4.0) compares the lock's content-hash with the one Composer computes from `composer.json`, warning when they are out
-of sync. `lock-committed` is one of `proctor gate`'s checks, but the Citadel deploy gate does not run `proctor gate`
+of sync. A lock on disk is not proof it is committed (CI's install writes one), so PROCTOR's `lock-tracked` (on PROCTOR
+main, 2026-11-10) asks git and warns when it does not track the lock. `lock-committed` is one of `proctor gate`'s checks, but the Citadel deploy gate does not run `proctor gate`
 yet.
 
 ### 19. Ban open-ended constraints
@@ -691,8 +692,10 @@ shipped on 2026-10-29 (2.11.1 on 2026-10-30), and the stack's images and CI pin 
 installs 2.11.1 by default). Every Sourdough shape now sets `config.policy.cooldown.period` to `"3 days"` (Sourdough
 main, 2026-11-10) and exempts the stack's own packages with `"ignore": ["waynestate/*"]`: the templates require the
 newest stack releases, which the stack's CI tested before tagging, and without the exemption a fresh app could not
-install for three days after each release. Still missing: the PROCTOR warning for an app with no cooldown, and nothing
-in `policy.json` names the period. The lock file (practice 18) is necessary but, per Packagist, not enough.
+install for three days after each release. PROCTOR's `composer-cooldown` check (on PROCTOR main, 2026-11-10, in its
+next release) warns when `composer.json` sets no cooldown (`proctor/composer-cooldown/missing`) or turns its blocking
+off (`proctor/composer-cooldown/not-blocking`); it never fails and is not in `proctor gate`. Still missing: nothing in
+`policy.json` names the period, so the check's 3 days is written in its message, not read from the policy. The lock file (practice 18) is necessary but, per Packagist, not enough.
 
 ### 41. Set the front-end install options, and map severity words
 

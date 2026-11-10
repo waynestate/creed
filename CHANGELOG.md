@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Docs: practice 40 and the handbook's dependency rules name PROCTOR's new `composer-cooldown` warning (no cooldown, or blocking turned off), and practice 18 and the lock rule name `lock-tracked` (git does not track the lock); both are on PROCTOR main for its next release. Practice 40 stays `Partially`: `policy.json` does not name the period yet.
 - Docs: practice 40's Composer cooldown is `Partially` held (Sourdough's shapes set 3 days and exempt `waynestate/*`, so a fresh app installs right after a stack release); the handbook's dependency rule says the same. The PROCTOR warning is still planned.
 - Docs: BEST_PRACTICES and the handbook name the PROCTOR release that ships each check (0.7.0 to 0.11.0) instead of "PROCTOR main" or "its next release"; the any-component `preflight-pinned` change stays marked unreleased.
 - Site: the front page's stale facts are current (four Preflight components at 0.5.0; PROCTOR's `laravel-eol`, `node-eol` and `app-key` since 0.7.0, `repo-url-credentials` since 0.2.0, `gitattributes-eol` since 0.11.0).

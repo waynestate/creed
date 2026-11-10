@@ -5,7 +5,8 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
 - No `dev-master`, `dev-*` or `*` constraints on runtime dependencies
   (the stack's version policy). PROCTOR check: `unbounded-constraints`.
 - A lock file is required and MUST be committed (the stack's version
-  policy). PROCTOR check: `lock-committed`.
+  policy). PROCTOR checks: `lock-committed` (the lock is on disk and in sync)
+  and `lock-tracked` (git tracks it; a warning).
 - `composer audit` MUST report no advisories at or above the policy's severity
   threshold (the stack's version policy). PROCTOR check: `composer-audit`.
 - The policy's `audit_severity_threshold` uses Composer's words. npm's
@@ -25,8 +26,8 @@ one replaces it or records an override with a reason; PROCTOR's
 - Apps SHOULD set a Composer cooldown of 3 days (`config.policy.cooldown.period`,
   Composer 2.11; the stack's dependency decision, 2026-11-03) and exempt the
   stack's own packages (`"ignore": ["waynestate/*"]`), which the stack's CI tests
-  before tagging. Sourdough's shapes set both. No check exists yet: a PROCTOR
-  check for a missing cooldown is planned.
+  before tagging. Sourdough's shapes set both. PROCTOR check:
+  `composer-cooldown` (a warning, never a failure).
 - Every project is a framework-free core plus thin adapters. `composer.json`
   requires only `php` and PSR packages; Laravel, Inertia and Vue are
   `suggest` (the stack's core-plus-adapters design).
