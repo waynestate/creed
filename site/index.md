@@ -375,7 +375,7 @@ Documented
 
 Scripts ship as a `.ps1` and `.sh` pair, or as one PHP command. Every repo carries `.gitattributes` with `* text=auto eol=lf`.
 
-Gap [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `crlf-deploy-script` fails a deploy script with Windows line endings. `gitattributes-eol` (since PROCTOR 0.11.0) warns when `.gitattributes` leaves shell scripts, `.conf` files or Dockerfiles off LF, and on a CRLF Dockerfile or `.conf` under `deploy/` or `.squire/`. Nothing checks the `.ps1` and `.sh` pair yet.
+Gap [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `crlf-deploy-script` fails a deploy script with Windows line endings. `gitattributes-eol` (since PROCTOR 0.11.0) warns when `.gitattributes` leaves shell scripts, `.conf` files or Dockerfiles off LF, and on a CRLF Dockerfile or `.conf` under `deploy/` or `.squire/`. `script-pair` (since PROCTOR 0.14.0) warns when a script in `scripts/` has no `.ps1` or `.sh` twin. Nothing checks for the whole `* text=auto eol=lf` line yet.
 
 Partially
 

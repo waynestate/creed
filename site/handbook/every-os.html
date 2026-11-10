@@ -95,7 +95,7 @@
 <li>Every developer tool <strong class="kw kw--must">MUST</strong> work on Windows, macOS and Linux <span class="hb-cite">(the stack's every-OS design)</span>. No check exists yet.</li>
 <li>A developer script <strong class="kw kw--must">MUST</strong> ship as a <code>.ps1</code> and <code>.sh</code> pair that do the same
 thing, or as one PHP command, which works the same everywhere (the stack's
-every-OS design). No check exists yet.</li>
+every-OS design). <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>script-pair</code>.</li>
 <li>A script for Windows <strong class="kw kw--must">MUST</strong> be native PowerShell (<code>.ps1</code>), which never needs
 bash or WSL, and a script for Linux or macOS <strong class="kw kw--must">MUST</strong> be bash (<code>.sh</code>), written
 for macOS's stock bash 3.2 and its BSD tools <span class="hb-cite">(the stack's every-OS design)</span>.
@@ -103,7 +103,7 @@ No check exists yet.</li>
 <li>Every repo carries a <code>.gitattributes</code> with <code>* text=auto eol=lf</code>, and
 <code>.ps1</code>, <code>.bat</code> and <code>.cmd</code> set to CRLF. Anything that runs on a Linux host
 <strong class="kw kw--must">MUST</strong> be LF: on Citadel, and on OpenShift, Coolify or raw Docker elsewhere
-<span class="hb-cite">(the stack's every-OS design)</span>. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> checks: <code>crlf-deploy-script</code>, for
+<span class="hb-cite">(the stack's every-OS design)</span>. PROCTOR checks: <code>crlf-deploy-script</code>, for
 deploy scripts only: it fails on a CRLF deploy script and warns when
 <code>.gitattributes</code> does not pin <code>*.sh</code> to LF; and <code>gitattributes-eol</code> (since
 PROCTOR 0.11.0), which warns when <code>.gitattributes</code> does
@@ -124,7 +124,7 @@ PROCTOR check: <code>portability</code>.</li>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="accessibility.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 9</span><span class="hb-pager__name">Accessibility</span></a><a class="hb-pager__link hb-pager__link--next" href="secrets.html" rel="next"><span class="hb-pager__dir">Next · Chapter 11</span><span class="hb-pager__name">Secrets and debugging</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/every-os.md"><code>handbook/every-os.md</code> on GitHub</a>, impression <code>86778b8</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/every-os.md"><code>handbook/every-os.md</code> on GitHub</a>, impression <code>94d95b2</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

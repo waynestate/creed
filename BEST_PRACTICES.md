@@ -574,8 +574,10 @@ when the app has a deploy script and `.gitattributes` does not pin `*.sh` to LF.
 when two paths differ only by letter case. PROCTOR 0.11.0's `gitattributes-eol`
 reads `.gitattributes` the way Git applies it and warns when the app's `*.sh`, `*.conf`, `Dockerfile` or
 `*.Dockerfile` files are not pinned to `eol=lf` (`proctor/gitattributes-eol/not-pinned`), and when a Dockerfile or
-`.conf` under `deploy/` or `.squire/` has Windows line endings (`proctor/gitattributes-eol/crlf`). No check asks for
-the whole `* text=auto eol=lf` line or for the `.ps1` and `.sh` pair yet.
+`.conf` under `deploy/` or `.squire/` has Windows line endings (`proctor/gitattributes-eol/crlf`). PROCTOR 0.14.0's
+`script-pair` warns when a script under `scripts/` has no twin (`proctor/script-pair/missing-ps1`,
+`proctor/script-pair/missing-sh`). No check asks for the whole `* text=auto eol=lf` line yet, and scripts outside
+`scripts/` are not paired.
 
 ### 35. Run the test suite on every supported PHP version
 
@@ -1139,8 +1141,9 @@ These are places where a source disagrees with the repository or with an earlier
 16. Partly done: PROCTOR's `crlf-deploy-script` fails on CRLF in deploy scripts and warns when `.gitattributes` does
     not pin them to LF, PROCTOR 0.9.0's `case-clash` fails on file-name case collisions, and PROCTOR 0.11.0's
     `gitattributes-eol` warns when shell scripts, `.conf` files and Dockerfiles are not pinned to
-    LF and on a CRLF Dockerfile or `.conf` under `deploy/` or `.squire/`; a check for the `.ps1` and `.sh` pair is still
-    to add (practice 34).
+    LF and on a CRLF Dockerfile or `.conf` under `deploy/` or `.squire/`; done in PROCTOR 0.14.0: `script-pair` warns
+    when a script under `scripts/` has no `.ps1` or `.sh` twin. Only a check for the whole `* text=auto eol=lf` line in
+    `.gitattributes` is still to add (practice 34).
 17. Done in PROCTOR 0.12.0: `preflight-pinned` warns when any CI component include, Preflight's or another
     project's, is not pinned to a full release tag (such as `@0.4.0`) or a 40-hex commit SHA (practice 23).
 18. Partly done: the accessibility chapter is written, with the WCAG 2.2 AA target (practices 30 and 54); the Title
