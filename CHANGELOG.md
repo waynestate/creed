@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Docs: 23 handbook rules that were written as plain statements now say MUST or SHOULD and name what holds them (a PROCTOR check, a named component, or "No check exists yet"), so the handbook lint covers them too.
 - Changed: the deploy kit is Squire 0.10.7 (was 0.10.6): it ships a `.gitattributes` that pins line endings, so the deploy layer clears PROCTOR's line-ending warnings.
 - Docs: BEST_PRACTICES says Preflight's `secret-detection` and `a11y` components arrived in 0.2.0 and the pin is 0.5.0, and that git.wayne.edu is the home of every repo (nougat keeps only the container registry).
 - Changed: the PROCTOR job on the deploy layer blocks; it was allowed to fail, but PROCTOR passes deploy/ (its notes are warnings, which never fail the job).

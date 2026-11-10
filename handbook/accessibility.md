@@ -19,11 +19,12 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
 
 - An automated accessibility check SHOULD run in CI on the app's key pages (the stack's accessibility design).
   Held by: Preflight's `a11y` component, below.
-- An automated tool catches regressions; it is not proof of conformance, and it never replaces a manual keyboard and
-  screen reader pass before launch (the stack's accessibility design).
+- A manual keyboard and screen reader pass MUST happen before launch. An automated tool catches regressions; it is
+  not proof of conformance, and it never replaces the pass (the stack's accessibility design). No check exists yet.
 - Preflight's `a11y` component (0.5.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core
-  in light and dark at 320 and 1280 px, and fails the pipeline on any violation. Add `wcag22aa` to its tags for the
-  WCAG 2.2 AA target above.
+  in light and dark at 320 and 1280 px, and fails the pipeline on any violation. An app SHOULD add `wcag22aa` to its
+  tags for the WCAG 2.2 AA target above.
+  Held by: Preflight's a11y component (templates/a11y/template.yml).
 
 ## Not decided here
 

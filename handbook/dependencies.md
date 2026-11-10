@@ -23,7 +23,7 @@ one replaces it or records an override with a reason; PROCTOR's
 - Every project is a framework-free core plus thin adapters. `composer.json`
   requires only `php` and PSR packages; Laravel, Inertia and Vue are
   `suggest` (the stack's core-plus-adapters design).
-- Adapters call the core and never re-implement it (the stack's core-plus-adapters design).
+- Adapters MUST call the core and MUST NOT re-implement it (the stack's core-plus-adapters design). No check exists yet.
 - Before adding a third-party package, check it comes from a trusted source, and where the source is open, read enough of it to judge it sound and fit (SHOULD). The audit and abandoned-package rules in this chapter apply after that choice (WSU developer standards, 2024). No check exists yet.
 
 ## Private packages

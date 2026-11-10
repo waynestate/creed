@@ -51,9 +51,9 @@ second support window: the fix is still the upgrade. PROCTOR check:
 - Set `Schema::defaultStringLength(191)` in `AppServiceProvider::boot()`,
   before any migration runs. 5.6 caps an indexed `utf8mb4` column at 767
   bytes, which is 191 characters. PROCTOR check: `mysql56`.
-- Keep `utf8mb4` and `utf8mb4_unicode_ci`, the defaults. Never use an
-  8.0-only collation such as `utf8mb4_0900_ai_ci` (not yet confirmed on a
-  5.6 server).
+- An app MUST keep `utf8mb4` and `utf8mb4_unicode_ci`, the defaults, and MUST
+  NOT use an 8.0-only collation such as `utf8mb4_0900_ai_ci` (not yet
+  confirmed on a 5.6 server). No check exists yet.
 - Store JSON as `text` or `longText`, with Eloquent `array` or `json` casts,
   and filter in PHP. 5.6 has no JSON column type. PROCTOR check: `mysql56`.
 - Leave `use_upsert_alias` unset, so `upsert()` uses `VALUES()`. The row
@@ -63,9 +63,10 @@ second support window: the fix is still the upgrade. PROCTOR check:
   PROCTOR check: `mysql56`.
 - Use `Schema::hasTable` only. Column introspection is not reliable on 5.6
   (not yet confirmed on a 5.6 server).
-- Skip `db:show` and `db:monitor`, and run one database-queue worker (or
-  another driver if the platform offers one). 5.6 has no `SKIP LOCKED`, so a
-  single worker avoids double-processing.
+- Skip `db:show` and `db:monitor`. PROCTOR check: `mysql56`.
+- An app SHOULD run one database-queue worker (or another driver if the
+  platform offers one). 5.6 has no `SKIP LOCKED`, so a single worker avoids
+  double-processing. No check exists yet.
 - Use `timestamp`, not `date`, for `useCurrent()`. A `date` column cannot
   take a current-timestamp default on 5.6.
 - Run migrations in CI against a real 5.6 container. SQLite-only tests pass

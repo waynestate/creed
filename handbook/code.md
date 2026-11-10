@@ -7,11 +7,11 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
 - Laravel apps use Pint's `laravel` preset (the stack's coding standard).
 - Raw PHP apps and the stack's own packages use the `per` preset, PER Coding
   Style 3.1 (the stack's coding standard).
-- One formatter per repo, never two (the stack's coding standard).
+- A repo MUST use one formatter, never two (the stack's coding standard). No check exists yet.
 - An app points Pint at the preset in `vendor/waynestate/pinstripe/pint/`
   with `--config` (the stack's coding standard).
-- Files are UTF-8 without a BOM, with LF line endings (the stack's
-  every-OS design).
+- Files MUST be UTF-8 without a BOM, with LF line endings (the stack's
+  every-OS design). No check exists yet.
 
 ## Reading the code
 
@@ -23,9 +23,9 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
 
 - All source is kept in git. Access to a repo MUST be removed when someone leaves the project or the university (WSU developer standards, 2024). No check exists yet.
 - The stack's code has its primary home on git.wayne.edu; the standards name git.wayne.edu as the preferred home.
-- Register the project in the catalog Enterprise Apps names, and keep its environments current. Stack apps also register with Rollcall, the stack's census (WSU developer standards, 2024).
+- A project SHOULD register in the catalog Enterprise Apps names, and keep its environments current. Stack apps also register with Rollcall, the stack's census (WSU developer standards, 2024). No check exists yet.
 - Every repo's README MUST say how to install, configure and deploy the code for local development, on every OS (see `every-os.md`), and how to update an existing deployment (WSU developer standards, 2024). No check exists yet.
-- If the Help Desk might be contacted about the project, keep an overview in the repo: what it does, who uses it, known common issues and who to call for an incident; deliver changes to the Help Desk when it changes (WSU developer standards, 2024).
+- If the Help Desk might be contacted about the project, the repo SHOULD keep an overview: what it does, who uses it, known common issues and who to call for an incident, and changes SHOULD be delivered to the Help Desk when it changes (WSU developer standards, 2024). No check exists yet.
 
 ## Static analysis
 
@@ -39,7 +39,7 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
   baseline that MUST NOT grow, then raise the level one step at a time
   (the stack's coding standard). No check exists yet. Like the band says,
   the only way is Higher.
-- New packages have no baseline (the stack's coding standard).
+- New packages MUST have no baseline (the stack's coding standard). No check exists yet.
 - Two reasons for level 8:
   - The starters begin clean, so new apps pass from day one (the stack's coding standard).
   - Null handling is the class of bug level 8 adds; in the stack's auth and

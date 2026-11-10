@@ -6,8 +6,8 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
   enforcement design). PROCTOR check: `ci-pipelines`.
 - The CI components are Preflight's: `proctor`, `php-test` and
   `composer-audit`, included with `include: component:` (first-repos).
-- CI judges with deterministic commands, never with a model. No gate depends
-  on a model's opinion (the stack's rule on language models).
+- CI judges with deterministic commands, never with a model. A gate MUST NOT
+  depend on a model's opinion (the stack's rule on language models). No check exists yet.
 - Components are pinned at a tag or SHA, never `~latest` (first-repos).
 - The components run on the git.wayne.edu instance runner (first-repos), and
   every product strongly recommends the instance runner.

@@ -17,5 +17,5 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
   fails, per `rules.override_self_approval`, `warn` in the policy) on a
   match, or when it cannot read who did. PROCTOR check: `override-approver`.
 - On the Citadel side, overrides are held by Citadel admins, per app and per
-  rule, with an expiry, a reason and an approver. There is no permanent
-  override (the stack's deploy-gate decision).
+  rule, and MUST carry an expiry, a reason and an approver. There MUST NOT be
+  a permanent override (the stack's deploy-gate decision). No check exists yet.
