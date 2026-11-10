@@ -9,6 +9,7 @@ description: All notable changes to this project.
 
 ## Unreleased
 
+- Docs: five handbook lines now match the code: Pint's preset comes from a root `pint.json` or `--config`, PHPStan infers `phpVersion` from composer.json, the Vue preset is `flat/recommended-error`, only the Inertia starter is TypeScript, and the Citadel release-hook gate is written as pending.
 - Docs: the handbook writes the severity word map between Composer and npm (`medium` is npm's `moderate`), and backlog item 23 is done (Preflight 0.5.0's `npm-audit` applies the map).
 - Docs: BEST_PRACTICES item 17 is done on PROCTOR main: `preflight-pinned` now warns on any unpinned CI component, not only Preflight's; the handbook's pinning and LF rules name their PROCTOR checks.
 - Docs: 23 handbook rules that were written as plain statements now say MUST or SHOULD and name what holds them (a PROCTOR check, a named component, or "No check exists yet"), so the handbook lint covers them too.

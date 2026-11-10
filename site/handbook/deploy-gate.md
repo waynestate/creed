@@ -26,7 +26,7 @@ The deploy gate runs [PROCTOR](https://proctor.apps.wayne.edu/) against the comm
 
 ## [§7.1](https://creed.apps.wayne.edu/handbook/deploy-gate.html#on-citadel) On Citadel
 
-- Citadel runs the gate in its release hook: `proctor gate` in `runGitPull()`, against the fetched commit, before it is checked out (the stack's deploy-gate decision).
+- When the Citadel team adopts it, the gate runs in the release hook: `proctor gate` in `runGitPull()`, against the fetched commit, before it is checked out (the stack's deploy-gate decision).
 - The gate is pending the Citadel team, which is still an open question. Until it is adopted, enforcement is CI on the test GitLab instance (the stack's deploy-gate decision).
 
 ## [§7.2](https://creed.apps.wayne.edu/handbook/deploy-gate.html#elsewhere) Elsewhere
@@ -38,4 +38,4 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 
 - **`gate.default_stage`**: `"block"`
 
-Set from [`handbook/deploy-gate.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/deploy-gate.md), impression `06be735`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/deploy-gate.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/deploy-gate.md), impression `2578c64`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

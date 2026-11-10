@@ -21,7 +21,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - Laravel apps use Pint's `laravel` preset (the stack's coding standard).
 - Raw PHP apps and the stack's own packages use the `per` preset, PER Coding Style 3.1 (the stack's coding standard).
 - A repo **MUST** use one formatter, never two (the stack's coding standard). No check exists yet.
-- An app points Pint at the preset in `vendor/waynestate/pinstripe/pint/` with `--config` (the stack's coding standard).
+- An app gets the preset through Pint's config: a root `pint.json` with a `preset` key (what [Sourdough](https://sourdough.apps.wayne.edu/) bakes ship), or `--config vendor/waynestate/pinstripe/pint/<preset>.json` (what [Pinstripe](https://pinstripe.apps.wayne.edu/)'s docs show) (the stack's coding standard).
 - Files **MUST** be UTF-8 without a BOM, with LF line endings (the stack's every-OS design). [PROCTOR](https://proctor.apps.wayne.edu/) check: `gitattributes-eol` (the LF pins; nothing checks for a BOM yet).
 
 ## [§3.2](https://creed.apps.wayne.edu/handbook/code.html#reading-the-code) Reading the code
@@ -40,10 +40,10 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 ## [§3.4](https://creed.apps.wayne.edu/handbook/code.html#static-analysis) Static analysis
 
-- PHPStan level 8 for new code: the stack's own packages and every app [Sourdough](https://sourdough.apps.wayne.edu/) generates (the stack's coding standard).
+- PHPStan level 8 for new code: the stack's own packages and every app Sourdough generates (the stack's coding standard).
 - Larastan loads only where Laravel is present (the stack's coding standard).
 - Every inline ignore carries an identifier and a reason; configs set `reportIgnoresWithoutComments` (the stack's coding standard).
-- PHPStan's `phpVersion` follows the policy's PHP floor (the stack's coding standard).
+- The PHPStan preset leaves `phpVersion` unset, so PHPStan infers it from the app's `composer.json` (`config.platform.php`, else `require.php`), and PROCTOR's `php-floor` keeps `require.php` off EOL versions (the stack's coding standard).
 - Existing apps start at the highest level they pass, with a committed baseline that **MUST NOT** grow, then raise the level one step at a time (the stack's coding standard). No check exists yet. Like the band says, the only way is Higher.
 - New packages **MUST** have no baseline (the stack's coding standard). No check exists yet.
 - Two reasons for level 8:
@@ -59,7 +59,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowed-calls` for plain bans, and a custom rule only when neither fits.
 
-- `env()` only in `config/` files, from Larastan's `NoEnvCallsOutsideOfConfig` rule. PROCTOR check: `env-outside-config` (a warning per call); [Pinstripe](https://pinstripe.apps.wayne.edu/)'s Laravel cut turns Larastan's rule on (`noEnvCallsOutsideOfConfig`, Pinstripe 0.1.4).
+- `env()` only in `config/` files, from Larastan's `NoEnvCallsOutsideOfConfig` rule. PROCTOR check: `env-outside-config` (a warning per call); Pinstripe's Laravel cut turns Larastan's rule on (`noEnvCallsOutsideOfConfig`, Pinstripe 0.1.4).
 - No disabled TLS verification, such as `withoutVerifying()` or `CURLOPT_SSL_VERIFYPEER` set to false (OWASP ASVS). `withoutVerifying()` is banned by `pinstripe.banned.withoutVerifying` (Pinstripe 0.2.0). Since Pinstripe 0.3.0 the rest are banned too: `CURLOPT_SSL_VERIFYPEER` set to false or `CURLOPT_SSL_VERIFYHOST` set to 0 (`pinstripe.banned.curlVerifyOff`), a stream context that skips the peer check (`pinstripe.banned.streamVerifyOff`) and Guzzle's `verify` set to false (`pinstripe.banned.verifyFalse`).
 - No SQL built by joining strings; use bindings (OWASP SQL Injection Prevention Cheat Sheet). Banned since Pinstripe 0.3.0 as `pinstripe.banned.joinedSql`: a variable joined into the SQL given to PDO, mysqli, `oci_parse()` (and the old `ociparse()`) or Laravel's `DB::` calls fails; literal SQL with bindings passes.
 - No debug leftovers or dynamic code: `eval()`, `extract()`, `var_dump()`, `dd()` and `dump()`. `phpstan-disallowed-calls` bans them as `pinstripe.banned.eval`, `pinstripe.banned.extract`, `pinstripe.banned.varDump`, `pinstripe.banned.dd` and `pinstripe.banned.dump` (Pinstripe 0.2.0, [https://pinstripe.apps.wayne.edu/docs/reference/banned-calls.html](https://pinstripe.apps.wayne.edu/docs/reference/banned-calls.html)).
@@ -67,11 +67,11 @@ Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowe
 ## [§3.7](https://creed.apps.wayne.edu/handbook/code.html#vue-and-javascript) Vue and JavaScript
 
 - ESLint flat config (the stack's coding standard).
-- `eslint-plugin-vue` `flat/recommended` (the stack's coding standard).
+- `eslint-plugin-vue` `flat/recommended-error`: the recommended rules with every warning raised to an error, so the editor, a local run and CI agree on what fails; the `-warn` presets keep warnings while an app adopts gradually (the stack's coding standard).
 - Prettier for formatting (the stack's coding standard).
 - `eslint-plugin-vuejs-accessibility` (the stack's coding standard).
 - Both JavaScript and TypeScript are linted (the stack's coding standard).
-- The stack's Vue starters use TypeScript; plain JavaScript stays fully supported (the stack's coding standard).
+- The stack's Inertia starter uses TypeScript; the raw Vue and Blade island starters use plain JavaScript, which stays fully supported (the stack's coding standard).
 - Node 22.13 or newer for the lint tools (the stack's coding standard).
 
 ## [§3.8](https://creed.apps.wayne.edu/handbook/code.html#security-analysis) Security analysis
@@ -134,4 +134,4 @@ Table 3-1
 - GitLab Code Quality: [https://docs.gitlab.com/ci/testing/code_quality/](https://docs.gitlab.com/ci/testing/code_quality/)
 - OWASP ASVS: [https://asvs.owasp.org/](https://asvs.owasp.org/)
 
-Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `fdbba82`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `1c67abc`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
