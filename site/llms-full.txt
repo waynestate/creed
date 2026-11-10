@@ -2171,7 +2171,7 @@ The front page, [`site/index.html`](https://creed.apps.wayne.edu/), is a static 
 
 ### What `composer ci` proves [#](https://creed.apps.wayne.edu/docs/reference/proof.html#what-composer-ci-proves)
 
-`composer ci` is the same command on GitLab and GitHub. It validates `composer.json`, runs the test suite (294 tests in 25 files on 2026-11-08), validates `policy/policy.json` and `policy/sources.json` against their schemas, checks style with Pint, lints the handbook, runs PHPStan and `composer audit`, and fails when the handbook site, the agent-ready files or the docs pages go stale, so the site you are reading cannot drift from `docs/`.
+`composer ci` is the same command on GitLab and GitHub. It validates `composer.json`, runs the test suite (376 tests in 35 files on 2026-11-10), validates `policy/policy.json` and `policy/sources.json` against their schemas, checks style with Pint, lints the handbook, runs PHPStan and `composer audit`, and fails when the handbook site, the agent-ready files or the docs pages go stale, so the site you are reading cannot drift from `docs/`.
 
 Where it runs: GitHub runs `composer ci` on PHP 8.3, 8.4 and 8.5. GitLab runs the test suite on all three through Preflight's `php-test` component, and `composer ci` once on the pinned Composer image (PHP 8.5). GitLab also runs PROCTOR against the front page's `deploy/` layer (a failing check fails the pipeline; warnings never do), Preflight's `a11y` component on every page in `site/` (axe-core at WCAG 2.2 AA, light and dark, at 320 and 1280 px), and the strict WayneUI copies check.
 
