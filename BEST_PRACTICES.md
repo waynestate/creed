@@ -720,7 +720,7 @@ templates/raw-vue/.gitlab-ci.yml:104-106). The rest is written down only: WELD's
 `npm ci --no-audit --no-fund` without `--ignore-scripts` and with no audit step (weld .gitlab-ci.yml:111),
 Preflight 0.5.0 adds an `npm-audit` component that audits `package-lock.json` (its fourteen templates are a11y,
 composer-audit, eslint, npm-audit, package-publish, php-test, phpstan, pint, portability, proctor, renovate, sbom,
-secret-detection and squire-kit), but no stack repo or template includes it yet, and the `audit_severity_threshold` rule is read by the Composer audit alone (proctor README.md:111), and `handbook/dependencies.md` writes the map (`medium` is npm's `moderate`), which Preflight's `npm-audit` component applies (preflight templates/npm-audit/template.yml:38,76). (Sourdough grades the same release install
+secret-detection and squire-kit), but no stack repo or template includes it yet, and the `audit_severity_threshold` rule is read by the Composer audit alone (proctor README.md:111). `handbook/dependencies.md` writes the map (`medium` is npm's `moderate`), which Preflight's `npm-audit` component applies (preflight templates/npm-audit/template.yml:38,76). (Sourdough grades the same release install
 `Documented` from its own seat, sourdough BEST_PRACTICES.md:203; the tag here counts the built code in the stack.)
 
 ### 42. Gate on tools that work on every GitLab tier
