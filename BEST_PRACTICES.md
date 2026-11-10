@@ -730,8 +730,9 @@ GitLab's docs list dependency scanning and secret push protection as Ultimate. G
 merge request approval, pipeline execution, vulnerability management, dependency firewall) are Ultimate-only, so CREED does
 not depend on them. Pipeline secret detection is listed for
 Free, Premium and Ultimate, but its findings in merge request reports and the vulnerability report are Ultimate only. GitLab
-accessibility testing (Pa11y) is listed for Free, Premium and Ultimate. Both of the stack's GitLab instances (nougat and
-git.wayne.edu) run GitLab 19.5.1 Community Edition, which is the Free tier.
+accessibility testing (Pa11y) is listed for Free, Premium and Ultimate. git.wayne.edu, the home of every stack repo, runs
+GitLab 19.5.1 Community Edition, which is the Free tier; nougat, which keeps the stack's container registry, runs the same
+version.
 
 Why: a gate that needs a license the instance may not have is a gate that never runs.
 
@@ -742,8 +743,8 @@ Sources: [GitLab dependency scanning](https://docs.gitlab.com/user/application_s
 [secret push protection](https://docs.gitlab.com/user/application_security/secret_detection/secret_push_protection/).
 
 How the stack holds it: `Documented`. The rule is written in `handbook/code.md`: the stack's GitLab instances run the
-Free tier, so nothing relies on GitLab SAST. Both instances, nougat and git.wayne.edu, are GitLab 19.5.1 Community
-Edition (the Free tier). The four components CREED uses run PHPUnit (`php-test`), `composer audit`
+Free tier, so nothing relies on GitLab SAST. git.wayne.edu (and nougat, which keeps the container registry) runs GitLab
+19.5.1 Community Edition (the Free tier). The four components CREED uses run PHPUnit (`php-test`), `composer audit`
 (`composer-audit`), PROCTOR (`proctor`) and axe-core in Playwright (`a11y`), not a GitLab scanner (Preflight 0.5.0,
 the pin in `.gitlab-ci.yml`), so they fit it.
 
@@ -1114,7 +1115,7 @@ These are places where a source disagrees with the repository or with an earlier
 8. Partly done: PROCTOR main's `mysql-eol` grades the MySQL an app names, warning only; a platform report waits for the
    platform timeline (practice 17).
 9. Done: `rules.abandoned_packages` is `fail`, and PROCTOR main's `composer-audit` applies it (practice 21).
-10. Done: Preflight 0.2.0's `secret-detection` component runs Gitleaks and fails on a match (practice 24).
+10. Done: Preflight's `secret-detection` component (since 0.2.0; the pin is 0.5.0) runs Gitleaks and fails on a match (practice 24).
 11. Done: PROCTOR main's `env-outside-config` warns on `env()` outside `config/` (practice 25). Larastan's own rule in
     Pinstripe would catch it earlier, in the editor.
 12. Done: the runtime and headers chapter is written (practice 26), PROCTOR's `app-debug` warns on a committed
@@ -1150,8 +1151,8 @@ Added in the second pass (2026-10-27):
 22. Done: decided 2026-11-03: a 3 day cooldown once Composer 2.11 is stable and in the base images; Sourdough apps set it and PROCTOR warns when it is missing (PROCTOR plan 4.11). Composer 2.11.0 shipped on 2026-10-29 (2.11.1 on 2026-10-30) with `policy.cooldown.period`; it is not set anywhere yet; the stack's images and CI pin 2.11.1 now, so setting it is the next step (practice 40).
 23. Add an npm check (`audit-level`, `ignore-scripts`, `min-release-age`) to Preflight, with a severity word map between
     Composer and npm (practice 41).
-24. Done: git.wayne.edu and nougat both run GitLab 19.5.1 Community Edition, the Free tier (the rule is written in
-    `handbook/code.md`; practice 42).
+24. Done: git.wayne.edu, the home of every stack repo, runs GitLab 19.5.1 Community Edition, the Free tier (the rule is
+    written in `handbook/code.md`; practice 42).
 25. Partly done: PROCTOR main's `app-key` warns on a committed `.env` or `APP_KEY` and the cookie session driver, on
     every OS (practice 43). The secrets chapter names the check; the general secret scan is item 10.
 26. Partly done: `images.docker` is filled for PHP 8.3 to 8.5 and the rebuild rule is in `handbook/versions.md`;
@@ -1168,7 +1169,7 @@ Added in the second pass (2026-10-27):
 33. Done: decided 2026-11-03: strict where the file is published, tolerant where it is read. The schema forbids unknown keys, so CREED's own CI fails on a stray key; readers ignore unknown keys, so an older reader keeps working on a newer file (`tests/OlderReaderContractTest.php`; practice 51, extends item 14).
 34. Ask WSU's accessibility office and counsel which Title II dates apply, then write the chapter's target level
     (practices 52 and 54).
-35. Done: Preflight 0.2.0's `a11y` component runs axe-core in Playwright and fails on a violation (practice 53).
+35. Done: Preflight's `a11y` component (since 0.2.0; the pin is 0.5.0) runs axe-core in Playwright and fails on a violation (practice 53).
 36. Done: the Laravel 13 `active_until` date (2027-09-30) carries its source, endoflife.date, in `policy/sources.json` (Checks against the web).
 37. Done: the schema requires `security_until` on every line that is not `"current": true` (`policy/policy.schema.json`),
     and `tests/PolicySchemaTest.php` rejects a line with neither (practice 2).
@@ -1179,7 +1180,7 @@ Added from the WSU developer standards (2026-11-02):
     committed under `public/` (practice 59).
 39. Partly done: PROCTOR main's `world-writable` warns on `chmod 777` in scripts and PHP; web-writable paths outside an
     allowed list need the running container (practice 59).
-40. Done: a committed-secret scan in Preflight, the `secret-detection` component (0.2.0); extends items 10 and 25 and practice 55.
+40. Done: a committed-secret scan in Preflight, the `secret-detection` component (since 0.2.0); extends items 10 and 25 and practice 55.
 41. Done: `policy.json` records the idle limits (`sessions`), and the handbook's auth chapter states them and points at
     the policy (practice 57).
 42. Deferred past 1.0: a schema version 2 with `platform_components` per target. It would be a breaking schema change and nothing needs it yet.

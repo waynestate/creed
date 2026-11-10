@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Docs: BEST_PRACTICES says Preflight's `secret-detection` and `a11y` components arrived in 0.2.0 and the pin is 0.5.0, and that git.wayne.edu is the home of every repo (nougat keeps only the container registry).
 - Changed: the PROCTOR job on the deploy layer blocks; it was allowed to fail, but PROCTOR passes deploy/ (its notes are warnings, which never fail the job).
 - Changed: the docs, agent-ready and deploy kits are Squire 0.10.6 (was 0.10.5): the docs builder and agent-ready generator see every file on Docker Desktop mounts.
 - Site: `assets/stack-env.js` knows Parity, so a pre-production page links Parity's pre-production site and a dev page links its local `site/` folder. Until now Parity, of all parts, was the one link that ignored its environment.
