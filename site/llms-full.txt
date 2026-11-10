@@ -240,7 +240,7 @@ PROCTOR, Booster and Rollcall each carry a generated copy of the reader
 under their own namespace, so two tools in one app never fight over a class
 name (the generator below keeps the copies in step). ADVISOR carries CREED's
 policy and handbook as a data bundle instead. The copies began
-because CREED was not on Packagist. It is now (`waynestate/creed`, 0.1.9 at this writing), so
+because CREED was not on Packagist. It is now (`waynestate/creed`, 0.1.10 at this writing), so
 each copy can become a real `require`, one consumer at a time; until a
 consumer switches, its copy stays. CREED owns the generator and the check:
 
@@ -736,7 +736,7 @@ Two ways in: read the policy from your own PHP tool, or clone CREED and run its 
 
 #### A.1 Read the policy from PHP
 
-Any OS with PHP 8.3 or newer and Composer. On Packagist, 0.1.9, the tenth printing
+Any OS with PHP 8.3 or newer and Composer. On Packagist, 0.1.10, the eleventh printing
 
 `$ composer require waynestate/creed`
 
@@ -927,6 +927,8 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 ## Changelog [#](https://creed.apps.wayne.edu/docs/changelog.html#changelog)
 
 ### Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
+
+### 0.1.10 (2026-11-10) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-10-2026-11-10)
 
 - Added: `Policy::toolCooldownPeriod()` and `Policy::toolCooldownIgnore()` read a tool's release cooldown (`tools.<tool>.cooldown`), so PROCTOR can take the period from the policy.
 - Added: `policy.json` names the Composer release cooldown (`tools.composer.cooldown`: `3 days`, ignoring `waynestate/*`), the period Sourdough's shapes already set; the schema allows an optional `cooldown` on any tool. Practice 40 says so and stays `Partially` until PROCTOR reads the period from the policy.
@@ -1202,7 +1204,7 @@ This page explains who carries a copy of CREED's reader and policy, what the cop
 
 ### Why the copies began [#](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html#why-the-copies-began)
 
-The copies began because CREED was not on Packagist. It is now (`waynestate/creed`, 0.1.9 at this writing), so each copy can become a real `require`, one consumer at a time; until a consumer switches, its copy stays.
+The copies began because CREED was not on Packagist. It is now (`waynestate/creed`, 0.1.10 at this writing), so each copy can become a real `require`, one consumer at a time; until a consumer switches, its copy stays.
 
 ### Generating and checking the copy [#](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html#generating-and-checking-the-copy)
 
@@ -1662,7 +1664,7 @@ $floor = $policy->oldestSupported('php', new DateTimeImmutable('2026-10-27'));
 - [Reader API](https://creed.apps.wayne.edu/docs/reference/api.html): every public member of the reader, one line each.
 - [Handbook](https://creed.apps.wayne.edu/docs/guides/handbook.html): the rules, chapter by chapter.
 
-Status: version 0.1.9, MIT license.
+Status: version 0.1.10, MIT license.
 
 Agents: fetch [https://creed.apps.wayne.edu/llms.txt](https://creed.apps.wayne.edu/llms.txt).
 
@@ -2191,6 +2193,12 @@ How CREED versions are cut, what each release changed that a consumer notices, a
 4. Tag `X.Y.Z` (no `v`) on git.wayne.edu. The mirror carries the tag to GitHub, and Packagist picks it up from there.
 5. A release needs a maintainer's approval. Never move or delete a published tag.
 6. Then bump `waynestate/creed` where the stack pins it, and refresh the generated copies.
+
+### 0.1.10 (2026-11-10) [#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-10-2026-11-10)
+
+The policy names Composer's release cooldown. `tools.composer` gains an optional `cooldown` object (`period`, such as `3 days`, and an `ignore` list of package patterns), and the bundled policy sets it to `3 days` with `waynestate/*` exempt, so the stack's own releases install the day they ship. The schema allows `cooldown` on any tool and checks the period's shape (a positive number and `hour`, `day` or `week`, singular or plural). Two reader methods read it: `Policy::toolCooldownPeriod($tool)` returns the period or null when the tool has none, and `Policy::toolCooldownIgnore($tool)` returns the list, empty when absent. A consumer reading an older `policy.json` sees null and an empty list, so nothing changes until it asks.
+
+Refresh after upgrading: PROCTOR's generated reader (`src/Creed`, via `bin/export.php`) and ADVISOR's bundled policy, so both can name the period from the policy instead of their own default. Apps set the cooldown themselves in `composer.json` (`config.policy.cooldown`); Sourdough's shapes and WELD already do.
 
 ### 0.1.9 (2026-11-09) [#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-9-2026-11-09)
 

@@ -19,6 +19,12 @@ How CREED versions are cut, what each release changed that a consumer notices, a
 5. A release needs a maintainer's approval. Never move or delete a published tag.
 6. Then bump `waynestate/creed` where the stack pins it, and refresh the generated copies.
 
+## 0.1.10 (2026-11-10) [#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-10-2026-11-10)
+
+The policy names Composer's release cooldown. `tools.composer` gains an optional `cooldown` object (`period`, such as `3 days`, and an `ignore` list of package patterns), and the bundled policy sets it to `3 days` with `waynestate/*` exempt, so the stack's own releases install the day they ship. The schema allows `cooldown` on any tool and checks the period's shape (a positive number and `hour`, `day` or `week`, singular or plural). Two reader methods read it: `Policy::toolCooldownPeriod($tool)` returns the period or null when the tool has none, and `Policy::toolCooldownIgnore($tool)` returns the list, empty when absent. A consumer reading an older `policy.json` sees null and an empty list, so nothing changes until it asks.
+
+Refresh after upgrading: PROCTOR's generated reader (`src/Creed`, via `bin/export.php`) and ADVISOR's bundled policy, so both can name the period from the policy instead of their own default. Apps set the cooldown themselves in `composer.json` (`config.policy.cooldown`); Sourdough's shapes and WELD already do.
+
 ## 0.1.9 (2026-11-09) [#](https://creed.apps.wayne.edu/docs/upgrading.html#0-1-9-2026-11-09)
 
 Nothing changes for a consumer: `policy.json`, its schema and the reader are as they were in 0.1.8, so no generated copy needs a refresh. `bin/validate-policy.php` now names a policy line that carries neither `security_until` nor `"current": true`, or both, and says how to fix it; such a file failed before too, with a message that named nothing. The rest is the handbook, BEST_PRACTICES, the front page, CREED's own CI (Composer 2.11.1, Preflight 0.5.0) and the deploy kit (Squire 0.10.2).
