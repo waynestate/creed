@@ -52,7 +52,7 @@ The `current` rule is the only conditional in the schema: a line with `"current"
 
 ## rules [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#rules)
 
-`rules` allows six properties and no others. Three are required; the other three arrived later, so a policy written before them still validates, and the reader answers the stack's default for a missing one.
+`rules` allows seven properties and no others. Three are required; the other four arrived later, so a policy written before them still validates, and the reader answers the stack's default for a missing one.
 
 | Name | Type | What the schema states |
 | --- | --- | --- |
@@ -62,6 +62,7 @@ The `current` rule is the only conditional in the schema: a line with `"current"
 | `abandoned_packages` | string | `ignore`, `report` or `fail`: Composer's own `audit.abandoned` setting. Optional; `abandonedPackages()` answers `fail` without it, Composer's default since 2.7. |
 | `override_max_days` | integer | Minimum `1`: the longest an override may run, in days past the day PROCTOR runs. Optional; `overrideMaxDays()` answers 90 without it. |
 | `override_self_approval` | string | `warn` or `fail`: what PROCTOR does when an override's `approved_by` names its own author, or the author cannot be read. Optional; `overrideSelfApproval()` answers `warn` without it. |
+| `fix_within_days` | object | Optional. Maps `critical`, `high`, `medium` and `low` (at least one, no other keys) to whole days, minimum `1`: how long an app has to ship a fix once `composer audit` reports an advisory of that severity. `fixWithinDays()` answers null for a severity with no entry. The bundled policy states none yet; the maintainers choose the numbers. |
 
 ## gate [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#gate)
 

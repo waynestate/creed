@@ -18,9 +18,10 @@ These are numbers the stack's maintainers choose. CREED ships the data model, so
    far behind an image is. Changes: set a floor (for example the patch that fixed the last critical advisory) and
    PROCTOR can compare an image or runtime against it. Leaving every line empty is also an answer; say so here.
 2. **How fast a fix must ship, per advisory severity** (practice 38, backlog item 20, front page E-10). `composer
-   audit` finds advisories, and `audit_severity_threshold` (high) decides which ones fail CI, but no rule says "fix a
-   critical within N days". Meanwhile there is no stated window. Changes: the maintainers pick N per severity
-   (`critical`, `high`, `medium`, `low`) and a check can apply it to audit output.
+   audit` finds advisories, and `audit_severity_threshold` (high) decides which ones fail CI. `policy.json` can carry
+   `rules.fix_within_days` (days per `critical`, `high`, `medium` and `low`), read by `Policy::fixWithinDays()`, but
+   no severity has a number. Meanwhile the reader answers null and there is no stated window. Changes: the maintainers
+   pick N per severity, and a check (PROCTOR, against audit output) can apply it.
 3. **The longest an override may run** (practice 27, front page E-11). `rules.override_max_days` is 90, the same
    number as `eol_grace_days`, and PROCTOR fails a longer override. Meanwhile 90 holds. Changes: confirm 90, or name
    another number; it is one value in `policy.json`.

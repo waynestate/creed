@@ -90,6 +90,13 @@ final class PolicySchemaTest extends TestCase
     }
 
     #[Test]
+    public function fixWithinDaysIsValid(): void
+    {
+        $errors = self::validateFile(__DIR__ . '/fixtures/with-fix-within-days.json');
+        self::assertSame([], $errors, 'A policy with rules.fix_within_days must validate.');
+    }
+
+    #[Test]
     public function currentOnlyLineIsValid(): void
     {
         $errors = self::validateFile(__DIR__ . '/fixtures/current-only.json');
@@ -142,6 +149,8 @@ final class PolicySchemaTest extends TestCase
             'current line with security_until' => [__DIR__ . '/fixtures/current-with-security-until.json'],
             'neither current nor security_until' => [__DIR__ . '/fixtures/no-security-until.json'],
             'current false without security_until' => [__DIR__ . '/fixtures/current-false-no-security-until.json'],
+            'zero days in fix_within_days' => [__DIR__ . '/fixtures/fix-within-days-zero.json'],
+            'unknown severity in fix_within_days' => [__DIR__ . '/fixtures/fix-within-days-unknown-severity.json'],
         ];
     }
 

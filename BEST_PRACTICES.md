@@ -644,8 +644,9 @@ Sources: [Laravel GHSA-f9x3-7vq9-cph6](https://github.com/laravel/framework/secu
 [Laravel framework advisories](https://github.com/laravel/framework/security/advisories).
 
 How the stack holds it: `Not yet`. Detection is practice 20 and is `Checked` when the advisory reaches the feed
-`composer audit` reads (this pass did not check how fast that happened). The response window is missing: `rules` in
-`policy.json` has no "fix within N days" per severity, and the number is for the maintainers to decide.
+`composer audit` reads (this pass did not check how fast that happened). The response window has a place but no number: `rules.fix_within_days` can map `critical`, `high`, `medium` and `low` to
+days, read by `Policy::fixWithinDays()`, and the bundled policy sets none, because the number is for the maintainers to
+decide. No check applies a window to `composer audit` output yet.
 
 ### 39. Keep the Composer client patched, and let it block insecure installs
 
@@ -1154,8 +1155,9 @@ Added in the second pass (2026-10-27):
 19. Partly done: `policy.json` carries an optional `minimum_patch` per PHP line, read by `Policy::minimumPatch()` and
     checked by `bin/validate-policy.php`; no values are set yet, and the PROCTOR check that compares the value with
     the image or runtime waits (practice 37).
-20. Add a response window per severity to `rules` (for example "fix within N days"; the maintainers choose N), and a
-    check that applies it to `composer audit` output (practice 38).
+20. Partly done: `rules.fix_within_days` holds a window in days per severity (`critical`, `high`, `medium`, `low`), in
+    the schema and read by `Policy::fixWithinDays()`; no value is set yet (the maintainers choose N), and the check that
+    applies it to `composer audit` output waits for the numbers (practice 38).
 21. Done: `config.policy` it is. Practice 21 is `Checked`, PROCTOR's `composer-audit` reads the `config.policy` block
     (with the legacy `audit` keys as a fallback), and the Composer the stack pins, 2.11.1, supports it (practices 21
     and 39).

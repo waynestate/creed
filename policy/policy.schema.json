@@ -274,6 +274,30 @@
                         "fail"
                     ],
                     "description": "What PROCTOR's override-approver check does when an override's approved_by names someone who wrote the entry, or when it cannot read who did: warn or fail. warn when the key is absent."
+                },
+                "fix_within_days": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "minProperties": 1,
+                    "properties": {
+                        "critical": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "high": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "medium": {
+                            "type": "integer",
+                            "minimum": 1
+                        },
+                        "low": {
+                            "type": "integer",
+                            "minimum": 1
+                        }
+                    },
+                    "description": "Days an app has to ship a fix once composer audit reports an advisory of that severity, counted from the day the advisory reaches the audit feed. Optional; a severity with no entry has no stated window."
                 }
             }
         },

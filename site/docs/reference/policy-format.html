@@ -168,7 +168,7 @@
 </tbody>
 </table></div>
 <h2 id="rules"><span class="docs-heading-tail"><span>rules</span><a class="docs-heading-link" aria-label="Link to this section" href="#rules">#</a></span></h2>
-<p><code>rules</code> allows six properties and no others. Three are required; the other three arrived later, so a policy written
+<p><code>rules</code> allows seven properties and no others. Three are required; the other four arrived later, so a policy written
 before them still validates, and the reader answers the stack's default for a missing one.</p>
 <div class="docs-table" role="region" aria-label="Table" tabindex="0"><table>
 <thead>
@@ -208,6 +208,11 @@ before them still validates, and the reader answers the stack's default for a mi
 <td><code>override_self_approval</code></td>
 <td>string</td>
 <td><code>warn</code> or <code>fail</code>: what PROCTOR does when an override's <code>approved_by</code> names its own author, or the author cannot be read. Optional; <code>overrideSelfApproval()</code> answers <code>warn</code> without it.</td>
+</tr>
+<tr>
+<td><code>fix_within_days</code></td>
+<td>object</td>
+<td>Optional. Maps <code>critical</code>, <code>high</code>, <code>medium</code> and <code>low</code> (at least one, no other keys) to whole days, minimum <code>1</code>: how long an app has to ship a fix once <code>composer audit</code> reports an advisory of that severity. <code>fixWithinDays()</code> answers null for a severity with no entry. The bundled policy states none yet; the maintainers choose the numbers.</td>
 </tr>
 </tbody>
 </table></div>

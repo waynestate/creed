@@ -105,6 +105,7 @@ The reader's public members, one line each:
 - `belowOldestLineReason($component, $version)`: the reason a version is `Eol` for sorting below every listed line, or null.
 - `hasComponent()`, `components()`, `versions($component)`, `tools()`, `toolMinimum($tool)`, `toolCooldownPeriod($tool)`, `toolCooldownIgnore($tool)`, `rules()`: the shape of the policy itself.
 - `abandonedPackages()`, `overrideMaxDays()`, `overrideSelfApproval()`: one rule each, with the stack's default when the policy predates it (`fail`, 90, `warn`).
+- `fixWithinDays($severity)`: the days an app has to ship a fix for an advisory of that severity (`critical`, `high`, `medium` or `low`), or null while the policy states none.
 - `gateStage($checkId, $on)`: the deploy-gate stage (`report`, `warn` or `block`) of one PROCTOR check on a date.
 
 One last time: the reader answers, it does not guess.

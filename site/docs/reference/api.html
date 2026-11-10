@@ -212,6 +212,11 @@
 <td><code>public function overrideSelfApproval(): string</code></td>
 </tr>
 <tr>
+<td><code>fixWithinDays($severity)</code></td>
+<td>The days an app has to ship a fix for an advisory of that severity, or null while the policy states none</td>
+<td><code>public function fixWithinDays(string $severity): ?int</code></td>
+</tr>
+<tr>
 <td><code>gateStage($checkId, $on)</code></td>
 <td>The deploy-gate stage of one PROCTOR check on a date: <code>report</code>, <code>warn</code> or <code>block</code> (<code>block</code> when the policy has no <code>gate</code> block)</td>
 <td><code>public function gateStage(string $checkId, DateTimeImmutable $on): string</code></td>

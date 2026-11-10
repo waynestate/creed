@@ -41,6 +41,7 @@ This page lists every public member of the `Waynestate\Creed\Policy` reader, in 
 | `abandonedPackages()` | How `composer audit` treats an abandoned package: `ignore`, `report` or `fail` (`fail` when the policy sets none) | `public function abandonedPackages(): string` |
 | `overrideMaxDays()` | How many days past today an override may run (90 when the policy sets none) | `public function overrideMaxDays(): int` |
 | `overrideSelfApproval()` | What PROCTOR does with a self-approved override: `warn` or `fail` (`warn` when the policy sets none) | `public function overrideSelfApproval(): string` |
+| `fixWithinDays($severity)` | The days an app has to ship a fix for an advisory of that severity, or null while the policy states none | `public function fixWithinDays(string $severity): ?int` |
 | `gateStage($checkId, $on)` | The deploy-gate stage of one PROCTOR check on a date: `report`, `warn` or `block` (`block` when the policy has no `gate` block) | `public function gateStage(string $checkId, DateTimeImmutable $on): string` |
 
 > [!NOTE]
