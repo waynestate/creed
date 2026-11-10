@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Site: Parity is out; the party list links its site.
 - Deploy kit refreshed to Squire 0.10.5
 
 ## 0.1.9 (2026-11-09)

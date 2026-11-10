@@ -10,6 +10,7 @@ generator: Squire agent-ready
 
 ## Unreleased[#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Site: Parity is out; the party list links its site.
 - Deploy kit refreshed to Squire 0.10.5
 
 ## 0.1.9 (2026-11-09)[#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-9-2026-11-09)
