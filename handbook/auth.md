@@ -8,8 +8,11 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
   `findOrImportUser(identity)`, and the protocol never holds the session
   (the stack's auth design).
 - The `gateway` driver accepts only a signed assertion, never a bare header:
-  user, attributes, issued-at, audience, an expiry of 60 seconds or less, and
-  a signature the gateway and app share (the stack's auth design).
+  user, attributes, issued-at, audience, an expiry, and a signature the
+  gateway and app share (the stack's auth design). Drawbridge issues a
+  60 second assertion by default (`assertion_ttl_seconds`, 5 to 300), and
+  SESAME refuses any assertion that lives longer than `gateway.max_lifetime`
+  (300 seconds unless the app sets it).
 - Drivers: `cas` (the default today), `gateway`, `oidc`, `oauth2`, `saml`
   (opt-in), and `fake` for local development and tests (the stack's auth design).
 - Non-EOL PHP only, with no exceptions (the stack's auth design).

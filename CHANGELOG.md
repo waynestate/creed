@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Docs: the auth handbook's gateway rule names both lifetimes: Drawbridge issues 60 second assertions by default and SESAME refuses any over `gateway.max_lifetime` (300 unless set), instead of a flat "60 seconds or less".
 - Docs: the every-OS rule (practice 34, backlog item 16, handbook `every-os.md`, front page §6.5) names PROCTOR 0.14.0's `script-pair`, which warns when a script in `scripts/` has no `.ps1` or `.sh` twin; practice 34 stays `Partially` until a check asks for the whole `* text=auto eol=lf` line.
 - Docs: practice 40 (release cooldown) is `Checked`: PROCTOR 0.13.0 reads the period and exemptions from `policy.json` and warns when an app's period is shorter; the front page tally and stamps are recounted, and backlog items 17 and 22 name what holds them today.
 - Changed: the GitHub workflow calls Preflight 0.5.0's reusable workflow (pinned to its release commit), the same release as the GitLab pipeline; it was on 0.1.4 because GitHub's copy of Preflight had no later tag.
