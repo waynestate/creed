@@ -101,7 +101,8 @@
 <li>No <code>dev-master</code>, <code>dev-*</code> or <code>*</code> constraints on runtime dependencies
 <span class="hb-cite">(the stack's version policy)</span>. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>unbounded-constraints</code>.</li>
 <li>A lock file is required and <strong class="kw kw--must">MUST</strong> be committed <span class="hb-cite">(the stack's version
-policy)</span>. PROCTOR check: <code>lock-committed</code>.</li>
+policy)</span>. PROCTOR checks: <code>lock-committed</code> (the lock is on disk and in sync)
+and <code>lock-tracked</code> (git tracks it; a warning).</li>
 <li><code>composer audit</code> <strong class="kw kw--must">MUST</strong> report no advisories at or above the policy's severity
 threshold <span class="hb-cite">(the stack's version policy)</span>. PROCTOR check: <code>composer-audit</code>.</li>
 <li>The policy's <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json" title="rules.audit_severity_threshold in policy.json"><code>audit_severity_threshold</code></a> uses Composer's words. npm's
@@ -121,8 +122,8 @@ bound <span class="hb-cite">(the stack's version policy)</span>. PROCTOR check: 
 <li>Apps <strong class="kw kw--should">SHOULD</strong> set a Composer cooldown of 3 days (<code>config.policy.cooldown.period</code>,
 Composer 2.11; the stack's dependency decision, 2026-11-03) and exempt the
 stack's own packages (<code>&quot;ignore&quot;: [&quot;waynestate/*&quot;]</code>), which the stack's CI tests
-before tagging. <a class="tool" href="https://sourdough.apps.wayne.edu/"><img src="../assets/marks/sourdough.png" alt="" width="16" height="16">Sourdough</a>'s shapes set both. No check exists yet: a PROCTOR
-check for a missing cooldown is planned.</li>
+before tagging. <a class="tool" href="https://sourdough.apps.wayne.edu/"><img src="../assets/marks/sourdough.png" alt="" width="16" height="16">Sourdough</a>'s shapes set both. PROCTOR check:
+<code>composer-cooldown</code> (a warning, never a failure).</li>
 <li>Every project is a framework-free core plus thin adapters. <code>composer.json</code>
 requires only <code>php</code> and PSR packages; Laravel, Inertia and Vue are
 <code>suggest</code> <span class="hb-cite">(the stack's core-plus-adapters design)</span>.</li>
@@ -170,7 +171,7 @@ shipped either.</p>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="versions.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 1</span><span class="hb-pager__name">Versions</span></a><a class="hb-pager__link hb-pager__link--next" href="code.html" rel="next"><span class="hb-pager__dir">Next · Chapter 3</span><span class="hb-pager__name">Code</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/dependencies.md"><code>handbook/dependencies.md</code> on GitHub</a>, impression <code>4c44752</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/dependencies.md"><code>handbook/dependencies.md</code> on GitHub</a>, impression <code>d1b0067</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 
