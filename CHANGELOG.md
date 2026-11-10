@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.1.11 (2026-11-10)
+
 - Docs: the databases rule "run migrations in CI against a real 5.6" is held: Preflight 0.6.0's `mysql56-migrate` component runs them on MySQL 5.6.51, and PROCTOR 0.15.0's `mysql56-ci` warns when an app with migrations has no such job (D-078).
 - Changed: handbook rules phrased as plain imperatives now use an RFC 2119 capital and carry a check, "Held by:" or "No check exists yet" tag (item 13 done).
 - Docs: the auth handbook's gateway rule names both lifetimes: Drawbridge issues 60 second assertions by default and SESAME refuses any over `gateway.max_lifetime` (300 unless set), instead of a flat "60 seconds or less".

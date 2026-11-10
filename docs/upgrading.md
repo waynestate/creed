@@ -16,6 +16,12 @@ How CREED versions are cut, what each release changed that a consumer notices, a
 5. A release needs a maintainer's approval. Never move or delete a published tag.
 6. Then bump `waynestate/creed` where the stack pins it, and refresh the generated copies.
 
+## 0.1.11 (2026-11-10)
+
+Nothing changes for a consumer's code: `policy.json`, its schema and the reader are as they were in 0.1.10. The handbook changed: rules phrased as plain imperatives now carry an RFC 2119 capital (MUST, SHOULD, MAY) and a tag saying what holds them ("Held by:" a named check, or "No check exists yet"); the databases rule names Preflight's `mysql56-migrate` job and PROCTOR's `mysql56-ci` check; the auth chapter names both gateway assertion lifetimes. The rest is CREED's own CI and deploy layer (PROCTOR ^0.15, Preflight 0.5.0 on GitHub).
+
+Refresh after upgrading: ADVISOR's bundled handbook, so its answers quote the new wording. PROCTOR's generated reader needs no refresh.
+
 ## 0.1.10 (2026-11-10)
 
 The policy names Composer's release cooldown. `tools.composer` gains an optional `cooldown` object (`period`, such as `3 days`, and an `ignore` list of package patterns), and the bundled policy sets it to `3 days` with `waynestate/*` exempt, so the stack's own releases install the day they ship. The schema allows `cooldown` on any tool and checks the period's shape (a positive number and `hour`, `day` or `week`, singular or plural). Two reader methods read it: `Policy::toolCooldownPeriod($tool)` returns the period or null when the tool has none, and `Policy::toolCooldownIgnore($tool)` returns the list, empty when absent. A consumer reading an older `policy.json` sees null and an empty list, so nothing changes until it asks.
