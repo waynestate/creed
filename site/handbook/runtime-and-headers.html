@@ -84,7 +84,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 6</p>
             <h1 id="page-title">Runtime and headers</h1>
-            <p class="hb-register">8 sections · 16 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 2 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1</p>
+            <p class="hb-register">8 sections · 16 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 2 · <strong class="kw kw--must">MUST</strong> 4 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -111,7 +111,7 @@
 </ul>
 <h2 id="headers"><a class="hb-sec" href="#headers">§6.2</a> Headers</h2>
 <ul>
-<li>Every response carries the same headers from <a class="tool" href="https://helmet.apps.wayne.edu/"><img src="../assets/marks/helmet.png" alt="" width="16" height="16">HELMET</a> <span class="hb-cite">(the stack's runtime and headers design)</span>:
+<li>Every response <strong class="kw kw--must">MUST</strong> carry the same headers from <a class="tool" href="https://helmet.apps.wayne.edu/"><img src="../assets/marks/helmet.png" alt="" width="16" height="16">HELMET</a> <span class="hb-cite">(the stack's runtime and headers design)</span>. Held by: HELMET, which sends the set on every response:
 <ul>
 <li>Content-Security-Policy: the <a class="tool" href="https://wayneui.apps.wayne.edu/">WayneUI</a> default policy plus a per-request nonce and <code>strict-dynamic</code>, with
 <code>frame-ancestors 'self'</code>, <code>base-uri 'self'</code>, <code>object-src 'none'</code> and <code>form-action 'self'</code> added.</li>
@@ -134,12 +134,12 @@ committed app config, server config or an example env file that does (PROCTOR 0.
 HTTPS.</p>
 <h2 id="proxy-trust"><a class="hb-sec" href="#proxy-trust">§6.3</a> Proxy trust</h2>
 <ul>
-<li>Behind a proxy the app sees the proxy's address, so <code>X-Forwarded-Proto</code> is honored only from a trusted proxy (the
-stack's runtime and headers design).</li>
+<li>Behind a proxy the app sees the proxy's address, so <code>X-Forwarded-Proto</code> <strong class="kw kw--must">MUST</strong> be honored only from a trusted proxy (the
+stack's runtime and headers design). Held by: HELMET, which honors it only from the configured trusted proxies.</li>
 <li>A platform preset (<code>citadel</code> or <code>docker</code>) names the trusted proxies; off the platform the app passes its own list.
 An unknown preset throws at boot <span class="hb-cite">(the stack's runtime and headers design)</span>.</li>
-<li>No Strict-Transport-Security is sent for a request that was not really secure <span class="hb-cite">(the stack's runtime and headers
-design)</span>.</li>
+<li>Strict-Transport-Security <strong class="kw kw--must-not">MUST NOT</strong> be sent for a request that was not really secure <span class="hb-cite">(the stack's runtime and headers
+design)</span>. Held by: HELMET, which sends it on HTTPS responses only.</li>
 </ul>
 <h2 id="sessions"><a class="hb-sec" href="#sessions">§6.4</a> Sessions</h2>
 <ul>
@@ -183,7 +183,7 @@ warning <code>helmet.debug_enabled_in_production</code> when it is true in the p
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="databases.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 5</span><span class="hb-pager__name">Databases</span></a><a class="hb-pager__link hb-pager__link--next" href="deploy-gate.html" rel="next"><span class="hb-pager__dir">Next · Chapter 7</span><span class="hb-pager__name">Deploy gate</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md"><code>handbook/runtime-and-headers.md</code> on GitHub</a>, impression <code>11ccf4a</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md"><code>handbook/runtime-and-headers.md</code> on GitHub</a>, impression <code>975949c</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

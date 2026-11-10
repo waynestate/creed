@@ -84,7 +84,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 5</p>
             <h1 id="page-title">Databases</h1>
-            <p class="hb-register">9 sections · 27 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 5 · <strong class="kw kw--should">SHOULD</strong> 2 · <strong class="kw kw--may">MAY</strong> 1</p>
+            <p class="hb-register">9 sections · 27 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 2 · <strong class="kw kw--must">MUST</strong> 14 · <strong class="kw kw--should">SHOULD</strong> 3 · <strong class="kw kw--may">MAY</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -144,34 +144,40 @@ supported MySQL <span class="hb-cite">(the stack's MySQL gate decision)</span>. 
 </ul>
 <h2 id="names-comments-and-connections"><a class="hb-sec" href="#names-comments-and-connections">§5.4</a> Names, comments and connections</h2>
 <ul>
-<li>Table and column names are descriptive. Add table and column comments (Laravel's <code>-&gt;comment()</code>) where the database supports them, to say what an element is for (<strong class="kw kw--should">SHOULD</strong>) (WSU developer standards, 2024). No check exists yet.</li>
+<li>Table and column names <strong class="kw kw--should">SHOULD</strong> be descriptive. Add table and column comments (Laravel's <code>-&gt;comment()</code>) where the database supports them, to say what an element is for (<strong class="kw kw--should">SHOULD</strong>) (WSU developer standards, 2024). No check exists yet.</li>
 <li>The connection between the app and the database <strong class="kw kw--must">MUST</strong> be encrypted. The database account <strong class="kw kw--must">MUST</strong> have only the privileges the app needs, never an administrator account (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <h2 id="conventions-that-keep-5-6-working"><a class="hb-sec" href="#conventions-that-keep-5-6-working">§5.5</a> Conventions that keep 5.6 working</h2>
 <ul>
-<li>Set <code>Schema::defaultStringLength(191)</code> in <code>AppServiceProvider::boot()</code>,
-before any migration runs. 5.6 caps an indexed <code>utf8mb4</code> column at 767
-bytes, which is 191 characters. PROCTOR check: <code>mysql56</code>.</li>
+<li>An app <strong class="kw kw--must">MUST</strong> set <code>Schema::defaultStringLength(191)</code> in
+<code>AppServiceProvider::boot()</code>, before any migration runs. 5.6 caps an indexed
+<code>utf8mb4</code> column at 767 bytes, which is 191 characters. PROCTOR check:
+<code>mysql56</code>.</li>
 <li>An app <strong class="kw kw--must">MUST</strong> keep <code>utf8mb4</code> and <code>utf8mb4_unicode_ci</code>, the defaults, and <strong class="kw kw--must">MUST</strong>
 NOT use an 8.0-only collation such as <code>utf8mb4_0900_ai_ci</code> (not yet
 confirmed on a 5.6 server). No check exists yet.</li>
-<li>Store JSON as <code>text</code> or <code>longText</code>, with Eloquent <code>array</code> or <code>json</code> casts,
-and filter in PHP. 5.6 has no JSON column type. PROCTOR check: <code>mysql56</code>.</li>
-<li>Leave <code>use_upsert_alias</code> unset, so <code>upsert()</code> uses <code>VALUES()</code>. The row
-alias that setting switches to needs MySQL 8.0.19.</li>
-<li>Rename a column with raw <code>DB::statement('ALTER TABLE ... CHANGE ...')</code>.
-Avoid <code>renameColumn</code> and <code>renameIndex</code>, which emit 5.7 syntax.
-PROCTOR check: <code>mysql56</code>.</li>
-<li>Use <code>Schema::hasTable</code> only. Column introspection is not reliable on 5.6
-(not yet confirmed on a 5.6 server).</li>
-<li>Skip <code>db:show</code> and <code>db:monitor</code>. PROCTOR check: <code>mysql56</code>.</li>
+<li>An app <strong class="kw kw--must">MUST</strong> store JSON as <code>text</code> or <code>longText</code>, with Eloquent <code>array</code> or
+<code>json</code> casts, and <strong class="kw kw--must">MUST</strong> filter in PHP. 5.6 has no JSON column type. PROCTOR
+check: <code>mysql56</code>.</li>
+<li>An app <strong class="kw kw--must">MUST</strong> leave <code>use_upsert_alias</code> unset, so <code>upsert()</code> uses <code>VALUES()</code>.
+The row alias that setting switches to needs MySQL 8.0.19. PROCTOR check:
+<code>mysql56</code>.</li>
+<li>An app <strong class="kw kw--must">MUST</strong> rename a column with raw
+<code>DB::statement('ALTER TABLE ... CHANGE ...')</code>, and <strong class="kw kw--must-not">MUST NOT</strong> use
+<code>renameColumn</code> or <code>renameIndex</code>, which emit 5.7 syntax. PROCTOR check:
+<code>mysql56</code>.</li>
+<li>An app <strong class="kw kw--must">MUST</strong> use <code>Schema::hasTable</code> only. Column introspection is not
+reliable on 5.6 (not yet confirmed on a 5.6 server). PROCTOR check:
+<code>mysql56</code>.</li>
+<li>An app <strong class="kw kw--must">MUST</strong> skip <code>db:show</code> and <code>db:monitor</code>. PROCTOR check: <code>mysql56</code>.</li>
 <li>An app <strong class="kw kw--should">SHOULD</strong> run one database-queue worker (or another driver if the
 platform offers one). 5.6 has no <code>SKIP LOCKED</code>, so a single worker avoids
 double-processing. No check exists yet.</li>
-<li>Use <code>timestamp</code>, not <code>date</code>, for <code>useCurrent()</code>. A <code>date</code> column cannot
-take a current-timestamp default on 5.6.</li>
-<li>Run migrations in CI against a real 5.6 container. SQLite-only tests pass
-code that 5.6 rejects.</li>
+<li>An app <strong class="kw kw--must">MUST</strong> use <code>timestamp</code>, not <code>date</code>, for <code>useCurrent()</code>. A <code>date</code>
+column cannot take a current-timestamp default on 5.6. PROCTOR check:
+<code>mysql56</code>.</li>
+<li>An app <strong class="kw kw--must">MUST</strong> run migrations in CI against a real 5.6 container.
+SQLite-only tests pass code that 5.6 rejects. No check exists yet.</li>
 </ul>
 <h2 id="avoid-until-the-server-is-upgraded"><a class="hb-sec" href="#avoid-until-the-server-is-upgraded">§5.6</a> Avoid until the server is upgraded</h2>
 <h3 id="schema"><a class="hb-sec" href="#schema">§5.6.1</a> Schema</h3>
@@ -209,10 +215,14 @@ Builds older than 5.6.46 also speak only TLS 1.0, which current hosts may
 refuse (not yet confirmed on a 5.6 server). Both are reasons to plan the move
 rather than wait for it.</p>
 <h2 id="how-the-stack-checks-it"><a class="hb-sec" href="#how-the-stack-checks-it">§5.8</a> How the stack checks it</h2>
-<p>PROCTOR's <code>mysql56</code> check flags the patterns in the avoid list above that
-fail on 5.6: JSON columns, generated columns, <code>renameColumn</code>, long indexed
-strings and a missing <code>Schema::defaultStringLength(191)</code>. The rest of the
-list is not checked yet.</p>
+<p>PROCTOR's <code>mysql56</code> check warns on the patterns the shared 5.6 server
+rejects: JSON columns and queries, generated columns, <code>renameColumn</code> and
+<code>renameIndex</code>, vector, invisible and spatial columns, column introspection,
+the raw-SQL syntax, the upsert row alias, indexed strings over 191
+characters, a missing <code>Schema::defaultStringLength(191)</code>, <code>date</code> columns
+defaulting to the current time, and the <code>db:show</code> and <code>db:monitor</code> commands.
+It warns rather than fails: an app on its own newer database is not
+affected.</p>
 <h2 id="sources"><a class="hb-sec" href="#sources">§5.9</a> Sources</h2>
 <ul class="hb-sources">
 <li>Laravel 13 database docs: <a href="https://laravel.com/docs/13.x/database">https://laravel.com/docs/13.x/database</a></li>
@@ -253,7 +263,7 @@ list is not checked yet.</p>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="auth.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 4</span><span class="hb-pager__name">Auth</span></a><a class="hb-pager__link hb-pager__link--next" href="runtime-and-headers.html" rel="next"><span class="hb-pager__dir">Next · Chapter 6</span><span class="hb-pager__name">Runtime and headers</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/databases.md"><code>handbook/databases.md</code> on GitHub</a>, impression <code>a84dd91</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/databases.md"><code>handbook/databases.md</code> on GitHub</a>, impression <code>17340ec</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

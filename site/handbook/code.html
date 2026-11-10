@@ -84,7 +84,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 3</p>
             <h1 id="page-title">Code</h1>
-            <p class="hb-register">13 sections · 43 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 9 · <strong class="kw kw--should">SHOULD</strong> 5</p>
+            <p class="hb-register">13 sections · 43 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 7 · <strong class="kw kw--must">MUST</strong> 23 · <strong class="kw kw--should">SHOULD</strong> 5 · <strong class="kw kw--may">MAY</strong> 1</p>
           </div>
           <span class="stamp stamp--checked hb-status">Partly decided</span>
         </header>
@@ -111,9 +111,9 @@
 <div class="hb-rfc" role="note"><p><span class="hb-rfc__label">Key words</span> The key words <strong class="kw kw--must">MUST</strong>, <strong class="kw kw--must-not">MUST NOT</strong>, <strong class="kw kw--should">SHOULD</strong>, <strong class="kw kw--should-not">SHOULD NOT</strong> and <strong class="kw kw--may">MAY</strong> in this chapter are to be interpreted as described in <a href="https://www.rfc-editor.org/rfc/rfc2119">RFC 2119</a>.</p></div>
 <h2 id="php-style"><a class="hb-sec" href="#php-style">§3.1</a> PHP style</h2>
 <ul>
-<li>Laravel apps use Pint's <code>laravel</code> preset <span class="hb-cite">(the stack's coding standard)</span>.</li>
-<li>Raw PHP apps and the stack's own packages use the <code>per</code> preset, PER Coding
-Style 3.1 <span class="hb-cite">(the stack's coding standard)</span>.</li>
+<li>Laravel apps <strong class="kw kw--must">MUST</strong> use Pint's <code>laravel</code> preset <span class="hb-cite">(the stack's coding standard)</span>. No check exists yet.</li>
+<li>Raw PHP apps and the stack's own packages <strong class="kw kw--must">MUST</strong> use the <code>per</code> preset, PER
+Coding Style 3.1 <span class="hb-cite">(the stack's coding standard)</span>. No check exists yet.</li>
 <li>A repo <strong class="kw kw--must">MUST</strong> use one formatter, never two <span class="hb-cite">(the stack's coding standard)</span>. No check exists yet.</li>
 <li>An app gets the preset through Pint's config: a root <code>pint.json</code> with a
 <code>preset</code> key (what <a class="tool" href="https://sourdough.apps.wayne.edu/"><img src="../assets/marks/sourdough.png" alt="" width="16" height="16">Sourdough</a> bakes ship), or <code>--config vendor/waynestate/pinstripe/pint/&lt;preset&gt;.json</code> (what <a class="tool" href="https://pinstripe.apps.wayne.edu/"><img src="../assets/marks/pinstripe.png" alt="" width="16" height="16">Pinstripe</a>'s docs show)
@@ -123,13 +123,13 @@ every-OS design). <a class="tool" href="https://proctor.apps.wayne.edu/"><img sr
 </ul>
 <h2 id="reading-the-code"><a class="hb-sec" href="#reading-the-code">§3.2</a> Reading the code</h2>
 <ul>
-<li>Comment where it helps: complex logic, areas that could improve, business rules that would otherwise be a mystery (<strong class="kw kw--should">SHOULD</strong>). Do not keep version history in comments; git is the change log (WSU developer standards, 2024). No check exists yet.</li>
+<li>Comment where it helps: complex logic, areas that could improve, business rules that would otherwise be a mystery (<strong class="kw kw--should">SHOULD</strong>). Version history <strong class="kw kw--must-not">MUST NOT</strong> live in comments; git is the change log (WSU developer standards, 2024). No check exists yet.</li>
 <li>Code that no longer runs <strong class="kw kw--must">MUST</strong> be removed, not commented out; git keeps it (WSU developer standards, 2024). No check exists yet.</li>
 <li>Variable, class and database names <strong class="kw kw--should">SHOULD</strong> be complete and descriptive; avoid ambiguous abbreviations (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <h2 id="source-control-and-documentation"><a class="hb-sec" href="#source-control-and-documentation">§3.3</a> Source control and documentation</h2>
 <ul>
-<li>All source is kept in git. Access to a repo <strong class="kw kw--must">MUST</strong> be removed when someone leaves the project or the university (WSU developer standards, 2024). No check exists yet.</li>
+<li>All source <strong class="kw kw--must">MUST</strong> be kept in git. Access to a repo <strong class="kw kw--must">MUST</strong> be removed when someone leaves the project or the university (WSU developer standards, 2024). No check exists yet.</li>
 <li>The stack's code has its primary home on git.wayne.edu; the standards name git.wayne.edu as the preferred home.</li>
 <li>A project <strong class="kw kw--should">SHOULD</strong> register in the catalog Enterprise Apps names, and keep its environments current. Stack apps also register with <a class="tool" href="https://rollcall.apps.wayne.edu/"><img src="../assets/marks/rollcall.png" alt="" width="16" height="16">Rollcall</a>, the stack's census (WSU developer standards, 2024). No check exists yet.</li>
 <li>Every repo's README <strong class="kw kw--must">MUST</strong> say how to install, configure and deploy the code for local development, on every OS (see <code>every-os.md</code>), and how to update an existing deployment (WSU developer standards, 2024). No check exists yet.</li>
@@ -137,11 +137,14 @@ every-OS design). <a class="tool" href="https://proctor.apps.wayne.edu/"><img sr
 </ul>
 <h2 id="static-analysis"><a class="hb-sec" href="#static-analysis">§3.4</a> Static analysis</h2>
 <ul>
-<li>PHPStan level 8 for new code: the stack's own packages and every app
-Sourdough generates <span class="hb-cite">(the stack's coding standard)</span>.</li>
+<li>New code <strong class="kw kw--must">MUST</strong> run PHPStan at level 8: the stack's own packages and every
+app Sourdough generates <span class="hb-cite">(the stack's coding standard)</span>. Held by: <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s
+<code>phpstan</code> component, running Pinstripe's level 8 preset.</li>
 <li>Larastan loads only where Laravel is present <span class="hb-cite">(the stack's coding standard)</span>.</li>
-<li>Every inline ignore carries an identifier and a reason; configs set
-<code>reportIgnoresWithoutComments</code> <span class="hb-cite">(the stack's coding standard)</span>.</li>
+<li>Every inline ignore <strong class="kw kw--must">MUST</strong> carry an identifier and a reason, and configs <strong class="kw kw--must">MUST</strong>
+set <code>reportIgnoresWithoutComments</code> <span class="hb-cite">(the stack's coding standard)</span>. Held by:
+PHPStan itself, which reports an ignore without a comment when the setting
+is on.</li>
 <li>The PHPStan preset leaves <code>phpVersion</code> unset, so PHPStan infers it from the
 app's <code>composer.json</code> (<code>config.platform.php</code>, else <code>require.php</code>), and
 PROCTOR's <code>php-floor</code> keeps <code>require.php</code> off EOL versions <span class="hb-cite">(the stack's coding
@@ -168,55 +171,59 @@ header code, a null bug is a security bug <span class="hb-cite">(the stack's cod
 <p>Each ban becomes a PHPStan rule: Larastan's where it has one, <code>phpstan-disallowed-calls</code>
 for plain bans, and a custom rule only when neither fits.</p>
 <ul>
-<li><code>env()</code> only in <code>config/</code> files, from Larastan's
+<li>Code <strong class="kw kw--must">MUST</strong> call <code>env()</code> only in <code>config/</code> files, from Larastan's
 <code>NoEnvCallsOutsideOfConfig</code> rule. PROCTOR check: <code>env-outside-config</code>
 (a warning per call); Pinstripe's Laravel cut turns Larastan's rule on
 (<code>noEnvCallsOutsideOfConfig</code>, Pinstripe 0.1.4).</li>
-<li>No disabled TLS verification, such as <code>withoutVerifying()</code> or
-<code>CURLOPT_SSL_VERIFYPEER</code> set to false (OWASP ASVS).
-<code>withoutVerifying()</code> is banned by <code>pinstripe.banned.withoutVerifying</code>
-(Pinstripe 0.2.0). Since Pinstripe 0.3.0 the rest are banned too:
-<code>CURLOPT_SSL_VERIFYPEER</code> set to false or <code>CURLOPT_SSL_VERIFYHOST</code> set to 0
-(<code>pinstripe.banned.curlVerifyOff</code>), a stream context that skips the peer
-check (<code>pinstripe.banned.streamVerifyOff</code>) and Guzzle's <code>verify</code> set to
-false (<code>pinstripe.banned.verifyFalse</code>).</li>
-<li>No SQL built by joining strings; use bindings (OWASP SQL Injection
-Prevention Cheat Sheet). Banned since Pinstripe 0.3.0 as
-<code>pinstripe.banned.joinedSql</code>: a variable joined into the SQL given to PDO,
-mysqli, <code>oci_parse()</code> (and the old <code>ociparse()</code>) or Laravel's <code>DB::</code> calls
-fails; literal SQL with bindings passes.</li>
-<li>No debug leftovers or dynamic code: <code>eval()</code>, <code>extract()</code>, <code>var_dump()</code>,
-<code>dd()</code> and <code>dump()</code>. <code>phpstan-disallowed-calls</code> bans them as
-<code>pinstripe.banned.eval</code>, <code>pinstripe.banned.extract</code>,
+<li>TLS verification <strong class="kw kw--must-not">MUST NOT</strong> be disabled, such as <code>withoutVerifying()</code> or
+<code>CURLOPT_SSL_VERIFYPEER</code> set to false (OWASP ASVS). Held by: Pinstripe's
+banned-call rules: <code>withoutVerifying()</code> is banned by
+<code>pinstripe.banned.withoutVerifying</code> (Pinstripe 0.2.0), and since Pinstripe
+0.3.0 the rest are banned too: <code>CURLOPT_SSL_VERIFYPEER</code> set to false or
+<code>CURLOPT_SSL_VERIFYHOST</code> set to 0 (<code>pinstripe.banned.curlVerifyOff</code>), a
+stream context that skips the peer check
+(<code>pinstripe.banned.streamVerifyOff</code>) and Guzzle's <code>verify</code> set to false
+(<code>pinstripe.banned.verifyFalse</code>).</li>
+<li>SQL <strong class="kw kw--must-not">MUST NOT</strong> be built by joining strings; use bindings (OWASP SQL Injection
+Prevention Cheat Sheet). Held by: Pinstripe's banned-call rule
+<code>pinstripe.banned.joinedSql</code> (since Pinstripe 0.3.0): a variable joined
+into the SQL given to PDO, mysqli, <code>oci_parse()</code> (and the old <code>ociparse()</code>)
+or Laravel's <code>DB::</code> calls fails; literal SQL with bindings passes.</li>
+<li>Debug leftovers and dynamic code <strong class="kw kw--must-not">MUST NOT</strong> appear: <code>eval()</code>, <code>extract()</code>,
+<code>var_dump()</code>, <code>dd()</code> and <code>dump()</code>. Held by: <code>phpstan-disallowed-calls</code>,
+which bans them as <code>pinstripe.banned.eval</code>, <code>pinstripe.banned.extract</code>,
 <code>pinstripe.banned.varDump</code>, <code>pinstripe.banned.dd</code> and
 <code>pinstripe.banned.dump</code> (Pinstripe 0.2.0,
 <a href="https://pinstripe.apps.wayne.edu/docs/reference/banned-calls.html">https://pinstripe.apps.wayne.edu/docs/reference/banned-calls.html</a>).</li>
 </ul>
 <h2 id="vue-and-javascript"><a class="hb-sec" href="#vue-and-javascript">§3.7</a> Vue and JavaScript</h2>
 <ul>
-<li>ESLint flat config <span class="hb-cite">(the stack's coding standard)</span>.</li>
-<li><code>eslint-plugin-vue</code> <code>flat/recommended-error</code>: the recommended rules with
-every warning raised to an error, so the editor, a local run and CI agree on
-what fails; the <code>-warn</code> presets keep warnings while an app adopts gradually
-<span class="hb-cite">(the stack's coding standard)</span>.</li>
-<li>Prettier for formatting <span class="hb-cite">(the stack's coding standard)</span>.</li>
-<li><code>eslint-plugin-vuejs-accessibility</code> <span class="hb-cite">(the stack's coding standard)</span>.</li>
-<li>Both JavaScript and TypeScript are linted <span class="hb-cite">(the stack's coding standard)</span>.</li>
+<li>JavaScript <strong class="kw kw--must">MUST</strong> use ESLint's flat config <span class="hb-cite">(the stack's coding standard)</span>.
+Held by: Pinstripe's flat configs, run in CI by Preflight's <code>eslint</code> component.</li>
+<li>Vue apps <strong class="kw kw--must">MUST</strong> use <code>eslint-plugin-vue</code>'s <code>flat/recommended-error</code>: the
+recommended rules with every warning raised to an error, so the editor, a
+local run and CI agree on what fails; the <code>-warn</code> presets keep warnings
+while an app adopts gradually <span class="hb-cite">(the stack's coding standard)</span>. Held by:
+Pinstripe's flat configs, run in CI by Preflight's <code>eslint</code> component.</li>
+<li>Formatting <strong class="kw kw--must">MUST</strong> use Prettier <span class="hb-cite">(the stack's coding standard)</span>. No check exists yet.</li>
+<li>Vue apps <strong class="kw kw--must">MUST</strong> use <code>eslint-plugin-vuejs-accessibility</code> <span class="hb-cite">(the stack's coding standard)</span>. No check exists yet.</li>
+<li>Both JavaScript and TypeScript <strong class="kw kw--must">MUST</strong> be linted <span class="hb-cite">(the stack's coding standard)</span>.
+Held by: Pinstripe's flat configs, run in CI by Preflight's <code>eslint</code> component.</li>
 <li>The stack's Inertia starter uses TypeScript; the raw Vue and Blade island
 starters use plain JavaScript, which stays fully supported (the stack's
 coding standard).</li>
-<li>Node 22.13 or newer for the lint tools <span class="hb-cite">(the stack's coding standard)</span>.</li>
+<li>The lint tools <strong class="kw kw--must">MUST</strong> run on Node 22.13 or newer <span class="hb-cite">(the stack's coding standard)</span>. No check exists yet.</li>
 </ul>
 <h2 id="security-analysis"><a class="hb-sec" href="#security-analysis">§3.8</a> Security analysis</h2>
 <ul>
-<li>The stack's GitLab instances run the Free tier,
-so nothing relies on GitLab SAST <span class="hb-cite">(the stack's coding standard)</span>.</li>
+<li>Nothing <strong class="kw kw--may">MAY</strong> rely on GitLab SAST: the stack's GitLab instances run the Free
+tier <span class="hb-cite">(the stack's coding standard)</span>. No check exists yet.</li>
 <li>The open tools instead: Larastan's env rule, <code>phpstan-disallowed-calls</code>,
 and a Psalm taint-analysis pilot on one app <span class="hb-cite">(the stack's coding standard)</span>.</li>
 </ul>
 <h2 id="how-it-is-enforced"><a class="hb-sec" href="#how-it-is-enforced">§3.9</a> How it is enforced</h2>
 <ul>
-<li>Pint, PHPStan, Rector dry-runs and ESLint run in CI through <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>
+<li>Pint, PHPStan, Rector dry-runs and ESLint run in CI through Preflight
 components, not in the deploy gate <span class="hb-cite">(the stack's coding standard)</span>. Preflight 0.5.0
 ships the <code>pint</code>, <code>phpstan</code> and <code>eslint</code> components; a Rector dry-run component
 is Planned.</li>
@@ -279,8 +286,8 @@ report is Planned.</li>
 </table></div></figure>
 <h2 id="not-adopted"><a class="hb-sec" href="#not-adopted">§3.11</a> Not adopted</h2>
 <ul>
-<li>Mago and PHP_CodeSniffer 4 are not adopted; Pint is the only formatter
-<span class="hb-cite">(the stack's coding standard)</span>.</li>
+<li>Mago and PHP_CodeSniffer 4 are not adopted; apps <strong class="kw kw--must">MUST</strong> use Pint as their
+only formatter <span class="hb-cite">(the stack's coding standard)</span>. No check exists yet.</li>
 <li>Mago is looked at again before Pinstripe 1.0 <span class="hb-cite">(the stack's coding standard)</span>.</li>
 </ul>
 <h2 id="to-be-decided" class="hb-h-tbd"><a class="hb-sec" href="#to-be-decided">§3.12</a> To be decided</h2>
@@ -323,7 +330,7 @@ the stack's coding standard does not decide it.</li>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="dependencies.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 2</span><span class="hb-pager__name">Dependencies</span></a><a class="hb-pager__link hb-pager__link--next" href="auth.html" rel="next"><span class="hb-pager__dir">Next · Chapter 4</span><span class="hb-pager__name">Auth</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/code.md"><code>handbook/code.md</code> on GitHub</a>, impression <code>1c67abc</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/code.md"><code>handbook/code.md</code> on GitHub</a>, impression <code>cbd002d</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

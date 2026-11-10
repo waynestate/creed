@@ -4,8 +4,8 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
 
 ## Environments
 
-- Every environment more than one person can reach follows the whole handbook; only a developer's own machine is exempt (WSU developer standards, 2024).
-- Keep at least a pre-production and a production environment, each with its own working copy of every piece, database and supporting services included (WSU developer standards, 2024).
+- Every environment more than one person can reach MUST follow the whole handbook; only a developer's own machine is exempt (WSU developer standards, 2024). No check exists yet.
+- An app MUST keep at least a pre-production and a production environment, each with its own working copy of every piece, database and supporting services included (WSU developer standards, 2024). No check exists yet.
 - Each deployment SHOULD be isolated from the others (one container per app), so one compromise does not become many. This holds on Citadel, OpenShift, Coolify and plain Docker (WSU developer standards, 2024). No check exists yet.
 - Whether a deployment is in disaster-recovery scope SHOULD be decided early, and the decision written in the README (WSU developer standards, 2024). No check exists yet.
 - Anything kept outside source control, databases included, MUST be backed up. The README MUST say how to restore one app (WSU developer standards, 2024). No check exists yet.
@@ -20,7 +20,7 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
 - Debugging and diagnostic files, scripts, dumps and backups MUST NOT sit in the served folder (WSU developer standards, 2024).
   PROCTOR check: `served-folder` (`phpinfo()`, dumps, backups, logs, env files and `adminer*.php` under `public/`).
 - On failure the app MUST degrade predictably and fail closed: an authentication error withholds access (WSU developer standards, 2024). No check exists yet.
-- A person is told when something fails: a monitor calls `/up` on a schedule and alerts someone (WSU developer standards, 2024).
+- A person MUST be told when something fails: a monitor calls `/up` on a schedule and alerts someone (WSU developer standards, 2024). No check exists yet.
 - Logs are rotated or removed at a set interval; temporary files are cleaned up; uploaded files have a retention rule. Citadel rotates container logs; elsewhere the platform or the app MUST (WSU developer standards, 2024). No check exists yet.
 - Where it is practical, an app SHOULD record an audit trail of changes to data and of successful and failed access to sensitive data (WSU developer standards, 2024). No check exists yet.
 

@@ -4,18 +4,20 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
 
 - One protocol-neutral library, named for what it does, not how. It returns a
   verified identity and leaves the session to the app (the stack's auth design).
-- The app always owns its session. Every driver ends in the app's
+- The app MUST own its session. Every driver ends in the app's
   `findOrImportUser(identity)`, and the protocol never holds the session
-  (the stack's auth design).
-- The `gateway` driver accepts only a signed assertion, never a bare header:
+  (the stack's auth design). Held by: SESAME, whose drivers end in the app's
+  `findOrImportUser` and hold no session of their own.
+- The `gateway` driver MUST accept only a signed assertion, never a bare header:
   user, attributes, issued-at, audience, an expiry, and a signature the
   gateway and app share (the stack's auth design). Drawbridge issues a
   60 second assertion by default (`assertion_ttl_seconds`, 5 to 300), and
   SESAME refuses any assertion that lives longer than `gateway.max_lifetime`
-  (300 seconds unless the app sets it).
+  (300 seconds unless the app sets it). Held by: SESAME, which refuses a bare
+  header and an assertion past `gateway.max_lifetime`.
 - Drivers: `cas` (the default today), `gateway`, `oidc`, `oauth2`, `saml`
   (opt-in), and `fake` for local development and tests (the stack's auth design).
-- Non-EOL PHP only, with no exceptions (the stack's auth design).
+- Apps MUST use non-EOL PHP only, with no exceptions (the stack's auth design).
   PROCTOR check: `php-floor`.
 - The gateway's public keys reach apps as one key set file (JWKS) that holds
   the current key and the next one. Drawbridge writes it (`keys:jwks`),

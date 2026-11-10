@@ -10,7 +10,7 @@ Chapter 3
 
 # Code
 
-13 sections · 43 provisions · **MUST NOT** 3 · **MUST** 9 · **SHOULD** 5
+13 sections · 43 provisions · **MUST NOT** 7 · **MUST** 23 · **SHOULD** 5 · **MAY** 1
 
 Partly decided
 
@@ -18,21 +18,21 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 ## [§3.1](https://creed.apps.wayne.edu/handbook/code.html#php-style) PHP style
 
-- Laravel apps use Pint's `laravel` preset (the stack's coding standard).
-- Raw PHP apps and the stack's own packages use the `per` preset, PER Coding Style 3.1 (the stack's coding standard).
+- Laravel apps **MUST** use Pint's `laravel` preset (the stack's coding standard). No check exists yet.
+- Raw PHP apps and the stack's own packages **MUST** use the `per` preset, PER Coding Style 3.1 (the stack's coding standard). No check exists yet.
 - A repo **MUST** use one formatter, never two (the stack's coding standard). No check exists yet.
 - An app gets the preset through Pint's config: a root `pint.json` with a `preset` key (what [Sourdough](https://sourdough.apps.wayne.edu/) bakes ship), or `--config vendor/waynestate/pinstripe/pint/<preset>.json` (what [Pinstripe](https://pinstripe.apps.wayne.edu/)'s docs show) (the stack's coding standard).
 - Files **MUST** be UTF-8 without a BOM, with LF line endings (the stack's every-OS design). [PROCTOR](https://proctor.apps.wayne.edu/) check: `gitattributes-eol` (the LF pins; nothing checks for a BOM yet).
 
 ## [§3.2](https://creed.apps.wayne.edu/handbook/code.html#reading-the-code) Reading the code
 
-- Comment where it helps: complex logic, areas that could improve, business rules that would otherwise be a mystery (**SHOULD**). Do not keep version history in comments; git is the change log (WSU developer standards, 2024). No check exists yet.
+- Comment where it helps: complex logic, areas that could improve, business rules that would otherwise be a mystery (**SHOULD**). Version history **MUST NOT** live in comments; git is the change log (WSU developer standards, 2024). No check exists yet.
 - Code that no longer runs **MUST** be removed, not commented out; git keeps it (WSU developer standards, 2024). No check exists yet.
 - Variable, class and database names **SHOULD** be complete and descriptive; avoid ambiguous abbreviations (WSU developer standards, 2024). No check exists yet.
 
 ## [§3.3](https://creed.apps.wayne.edu/handbook/code.html#source-control-and-documentation) Source control and documentation
 
-- All source is kept in git. Access to a repo **MUST** be removed when someone leaves the project or the university (WSU developer standards, 2024). No check exists yet.
+- All source **MUST** be kept in git. Access to a repo **MUST** be removed when someone leaves the project or the university (WSU developer standards, 2024). No check exists yet.
 - The stack's code has its primary home on git.wayne.edu; the standards name git.wayne.edu as the preferred home.
 - A project **SHOULD** register in the catalog Enterprise Apps names, and keep its environments current. Stack apps also register with [Rollcall](https://rollcall.apps.wayne.edu/), the stack's census (WSU developer standards, 2024). No check exists yet.
 - Every repo's README **MUST** say how to install, configure and deploy the code for local development, on every OS (see `every-os.md`), and how to update an existing deployment (WSU developer standards, 2024). No check exists yet.
@@ -40,9 +40,9 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 ## [§3.4](https://creed.apps.wayne.edu/handbook/code.html#static-analysis) Static analysis
 
-- PHPStan level 8 for new code: the stack's own packages and every app Sourdough generates (the stack's coding standard).
+- New code **MUST** run PHPStan at level 8: the stack's own packages and every app Sourdough generates (the stack's coding standard). Held by: [Preflight](https://preflight.apps.wayne.edu/)'s `phpstan` component, running Pinstripe's level 8 preset.
 - Larastan loads only where Laravel is present (the stack's coding standard).
-- Every inline ignore carries an identifier and a reason; configs set `reportIgnoresWithoutComments` (the stack's coding standard).
+- Every inline ignore **MUST** carry an identifier and a reason, and configs **MUST** set `reportIgnoresWithoutComments` (the stack's coding standard). Held by: PHPStan itself, which reports an ignore without a comment when the setting is on.
 - The PHPStan preset leaves `phpVersion` unset, so PHPStan infers it from the app's `composer.json` (`config.platform.php`, else `require.php`), and PROCTOR's `php-floor` keeps `require.php` off EOL versions (the stack's coding standard).
 - Existing apps start at the highest level they pass, with a committed baseline that **MUST NOT** grow, then raise the level one step at a time (the stack's coding standard). No check exists yet. Like the band says, the only way is Higher.
 - New packages **MUST** have no baseline (the stack's coding standard). No check exists yet.
@@ -59,29 +59,29 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowed-calls` for plain bans, and a custom rule only when neither fits.
 
-- `env()` only in `config/` files, from Larastan's `NoEnvCallsOutsideOfConfig` rule. PROCTOR check: `env-outside-config` (a warning per call); Pinstripe's Laravel cut turns Larastan's rule on (`noEnvCallsOutsideOfConfig`, Pinstripe 0.1.4).
-- No disabled TLS verification, such as `withoutVerifying()` or `CURLOPT_SSL_VERIFYPEER` set to false (OWASP ASVS). `withoutVerifying()` is banned by `pinstripe.banned.withoutVerifying` (Pinstripe 0.2.0). Since Pinstripe 0.3.0 the rest are banned too: `CURLOPT_SSL_VERIFYPEER` set to false or `CURLOPT_SSL_VERIFYHOST` set to 0 (`pinstripe.banned.curlVerifyOff`), a stream context that skips the peer check (`pinstripe.banned.streamVerifyOff`) and Guzzle's `verify` set to false (`pinstripe.banned.verifyFalse`).
-- No SQL built by joining strings; use bindings (OWASP SQL Injection Prevention Cheat Sheet). Banned since Pinstripe 0.3.0 as `pinstripe.banned.joinedSql`: a variable joined into the SQL given to PDO, mysqli, `oci_parse()` (and the old `ociparse()`) or Laravel's `DB::` calls fails; literal SQL with bindings passes.
-- No debug leftovers or dynamic code: `eval()`, `extract()`, `var_dump()`, `dd()` and `dump()`. `phpstan-disallowed-calls` bans them as `pinstripe.banned.eval`, `pinstripe.banned.extract`, `pinstripe.banned.varDump`, `pinstripe.banned.dd` and `pinstripe.banned.dump` (Pinstripe 0.2.0, [https://pinstripe.apps.wayne.edu/docs/reference/banned-calls.html](https://pinstripe.apps.wayne.edu/docs/reference/banned-calls.html)).
+- Code **MUST** call `env()` only in `config/` files, from Larastan's `NoEnvCallsOutsideOfConfig` rule. PROCTOR check: `env-outside-config` (a warning per call); Pinstripe's Laravel cut turns Larastan's rule on (`noEnvCallsOutsideOfConfig`, Pinstripe 0.1.4).
+- TLS verification **MUST NOT** be disabled, such as `withoutVerifying()` or `CURLOPT_SSL_VERIFYPEER` set to false (OWASP ASVS). Held by: Pinstripe's banned-call rules: `withoutVerifying()` is banned by `pinstripe.banned.withoutVerifying` (Pinstripe 0.2.0), and since Pinstripe 0.3.0 the rest are banned too: `CURLOPT_SSL_VERIFYPEER` set to false or `CURLOPT_SSL_VERIFYHOST` set to 0 (`pinstripe.banned.curlVerifyOff`), a stream context that skips the peer check (`pinstripe.banned.streamVerifyOff`) and Guzzle's `verify` set to false (`pinstripe.banned.verifyFalse`).
+- SQL **MUST NOT** be built by joining strings; use bindings (OWASP SQL Injection Prevention Cheat Sheet). Held by: Pinstripe's banned-call rule `pinstripe.banned.joinedSql` (since Pinstripe 0.3.0): a variable joined into the SQL given to PDO, mysqli, `oci_parse()` (and the old `ociparse()`) or Laravel's `DB::` calls fails; literal SQL with bindings passes.
+- Debug leftovers and dynamic code **MUST NOT** appear: `eval()`, `extract()`, `var_dump()`, `dd()` and `dump()`. Held by: `phpstan-disallowed-calls`, which bans them as `pinstripe.banned.eval`, `pinstripe.banned.extract`, `pinstripe.banned.varDump`, `pinstripe.banned.dd` and `pinstripe.banned.dump` (Pinstripe 0.2.0, [https://pinstripe.apps.wayne.edu/docs/reference/banned-calls.html](https://pinstripe.apps.wayne.edu/docs/reference/banned-calls.html)).
 
 ## [§3.7](https://creed.apps.wayne.edu/handbook/code.html#vue-and-javascript) Vue and JavaScript
 
-- ESLint flat config (the stack's coding standard).
-- `eslint-plugin-vue` `flat/recommended-error`: the recommended rules with every warning raised to an error, so the editor, a local run and CI agree on what fails; the `-warn` presets keep warnings while an app adopts gradually (the stack's coding standard).
-- Prettier for formatting (the stack's coding standard).
-- `eslint-plugin-vuejs-accessibility` (the stack's coding standard).
-- Both JavaScript and TypeScript are linted (the stack's coding standard).
+- JavaScript **MUST** use ESLint's flat config (the stack's coding standard). Held by: Pinstripe's flat configs, run in CI by Preflight's `eslint` component.
+- Vue apps **MUST** use `eslint-plugin-vue`'s `flat/recommended-error`: the recommended rules with every warning raised to an error, so the editor, a local run and CI agree on what fails; the `-warn` presets keep warnings while an app adopts gradually (the stack's coding standard). Held by: Pinstripe's flat configs, run in CI by Preflight's `eslint` component.
+- Formatting **MUST** use Prettier (the stack's coding standard). No check exists yet.
+- Vue apps **MUST** use `eslint-plugin-vuejs-accessibility` (the stack's coding standard). No check exists yet.
+- Both JavaScript and TypeScript **MUST** be linted (the stack's coding standard). Held by: Pinstripe's flat configs, run in CI by Preflight's `eslint` component.
 - The stack's Inertia starter uses TypeScript; the raw Vue and Blade island starters use plain JavaScript, which stays fully supported (the stack's coding standard).
-- Node 22.13 or newer for the lint tools (the stack's coding standard).
+- The lint tools **MUST** run on Node 22.13 or newer (the stack's coding standard). No check exists yet.
 
 ## [§3.8](https://creed.apps.wayne.edu/handbook/code.html#security-analysis) Security analysis
 
-- The stack's GitLab instances run the Free tier, so nothing relies on GitLab SAST (the stack's coding standard).
+- Nothing **MAY** rely on GitLab SAST: the stack's GitLab instances run the Free tier (the stack's coding standard). No check exists yet.
 - The open tools instead: Larastan's env rule, `phpstan-disallowed-calls`, and a Psalm taint-analysis pilot on one app (the stack's coding standard).
 
 ## [§3.9](https://creed.apps.wayne.edu/handbook/code.html#how-it-is-enforced) How it is enforced
 
-- Pint, PHPStan, Rector dry-runs and ESLint run in CI through [Preflight](https://preflight.apps.wayne.edu/) components, not in the deploy gate (the stack's coding standard). Preflight 0.5.0 ships the `pint`, `phpstan` and `eslint` components; a Rector dry-run component is Planned.
+- Pint, PHPStan, Rector dry-runs and ESLint run in CI through Preflight components, not in the deploy gate (the stack's coding standard). Preflight 0.5.0 ships the `pint`, `phpstan` and `eslint` components; a Rector dry-run component is Planned.
 - New rules arrive as warnings and become errors on a stated date, the same staging as PHP versions (the stack's enforcement design).
 - PROCTOR reports whether an app uses the presets (the stack's coding standard). The PROCTOR report is Planned.
 
@@ -102,7 +102,7 @@ Table 3-1
 
 ## [§3.11](https://creed.apps.wayne.edu/handbook/code.html#not-adopted) Not adopted
 
-- Mago and PHP_CodeSniffer 4 are not adopted; Pint is the only formatter (the stack's coding standard).
+- Mago and PHP_CodeSniffer 4 are not adopted; apps **MUST** use Pint as their only formatter (the stack's coding standard). No check exists yet.
 - Mago is looked at again before Pinstripe 1.0 (the stack's coding standard).
 
 ## [§3.12](https://creed.apps.wayne.edu/handbook/code.html#to-be-decided) To be decided
@@ -134,4 +134,4 @@ Table 3-1
 - GitLab Code Quality: [https://docs.gitlab.com/ci/testing/code_quality/](https://docs.gitlab.com/ci/testing/code_quality/)
 - OWASP ASVS: [https://asvs.owasp.org/](https://asvs.owasp.org/)
 
-Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `1c67abc`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `cbd002d`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

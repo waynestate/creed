@@ -84,7 +84,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 1</p>
             <h1 id="page-title">Versions</h1>
-            <p class="hb-register">4 sections · 4 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 2 · <strong class="kw kw--must">MUST</strong> 3</p>
+            <p class="hb-register">4 sections · 4 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 2 · <strong class="kw kw--must">MUST</strong> 5</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -138,13 +138,14 @@
 </tbody>
 </table></div></figure>
 <ul>
-<li>The dates live in <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json"><code>policy/policy.json</code></a>. Every tool derives a version's state
-from the date, through the CREED reader. No other code decides state
-<span class="hb-cite">(the stack's version policy)</span>.</li>
+<li>The dates live in <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json"><code>policy/policy.json</code></a>. Every tool <strong class="kw kw--must">MUST</strong> derive a version's
+state from the date, through the CREED reader; no other code decides state
+<span class="hb-cite">(the stack's version policy)</span>. No check exists yet.</li>
 <li>The PHP floor is <code>^8.2</code>, the oldest non-EOL version today <span class="hb-cite">(the stack's version policy)</span>. It
 moves to <code>^8.3</code> on 2027-01-01. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>php-floor</code>.</li>
-<li>Stack packages raise their own <code>php</code> floor in a new major when a PHP version
-reaches EOL, so security fixes require the upgrade <span class="hb-cite">(the stack's version policy)</span>.</li>
+<li>Stack packages <strong class="kw kw--must">MUST</strong> raise their own <code>php</code> floor in a new major when a PHP
+version reaches EOL, so security fixes require the upgrade (the stack's
+version policy). No check exists yet.</li>
 <li><code>policy.json</code> is a contract, versioned like <a class="tool" href="https://wayneui.apps.wayne.edu/">WayneUI</a>'s <code>/v2/</code>. Older Check
 versions <strong class="kw kw--must">MUST</strong> still read newer policy files <span class="hb-cite">(the stack's version policy)</span>.
 Held by: CREED's own CI, where <code>tests/OlderReaderContractTest.php</code> reads a
@@ -201,7 +202,7 @@ ceiling: we do not go lower, no matter how the crowd sings for more.</p>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="./"><span class="hb-pager__dir">Back to</span><span class="hb-pager__name">Contents</span></a><a class="hb-pager__link hb-pager__link--next" href="dependencies.html" rel="next"><span class="hb-pager__dir">Next · Chapter 2</span><span class="hb-pager__name">Dependencies</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/versions.md"><code>handbook/versions.md</code> on GitHub</a>, impression <code>228dd00</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/versions.md"><code>handbook/versions.md</code> on GitHub</a>, impression <code>e0de232</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

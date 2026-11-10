@@ -10,7 +10,7 @@ Chapter 6
 
 # Runtime and headers
 
-8 sections · 16 provisions · **MUST NOT** 1 · **MUST** 2 · **SHOULD NOT** 1
+8 sections · 16 provisions · **MUST NOT** 2 · **MUST** 4 · **SHOULD NOT** 1
 
 Decided
 
@@ -22,7 +22,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 ## [§6.2](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#headers) Headers
 
-- Every response carries the same headers from [HELMET](https://helmet.apps.wayne.edu/) (the stack's runtime and headers design):
+- Every response **MUST** carry the same headers from [HELMET](https://helmet.apps.wayne.edu/) (the stack's runtime and headers design). Held by: HELMET, which sends the set on every response:
   - Content-Security-Policy: the [WayneUI](https://wayneui.apps.wayne.edu/) default policy plus a per-request nonce and `strict-dynamic`, with `frame-ancestors 'self'`, `base-uri 'self'`, `object-src 'none'` and `form-action 'self'` added.
   - X-Content-Type-Options `nosniff`.
   - X-Frame-Options `SAMEORIGIN`.
@@ -37,9 +37,9 @@ The headers are the setlist: the same one on every response. The HSTS encore pla
 
 ## [§6.3](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#proxy-trust) Proxy trust
 
-- Behind a proxy the app sees the proxy's address, so `X-Forwarded-Proto` is honored only from a trusted proxy (the stack's runtime and headers design).
+- Behind a proxy the app sees the proxy's address, so `X-Forwarded-Proto` **MUST** be honored only from a trusted proxy (the stack's runtime and headers design). Held by: HELMET, which honors it only from the configured trusted proxies.
 - A platform preset (`citadel` or `docker`) names the trusted proxies; off the platform the app passes its own list. An unknown preset throws at boot (the stack's runtime and headers design).
-- No Strict-Transport-Security is sent for a request that was not really secure (the stack's runtime and headers design).
+- Strict-Transport-Security **MUST NOT** be sent for a request that was not really secure (the stack's runtime and headers design). Held by: HELMET, which sends it on HTTPS responses only.
 
 ## [§6.4](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#sessions) Sessions
 
@@ -65,4 +65,4 @@ The headers are the setlist: the same one on every response. The HSTS encore pla
 
 - The Content-Security-Policy report endpoints.
 
-Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `11ccf4a`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `975949c`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

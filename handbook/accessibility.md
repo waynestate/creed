@@ -4,7 +4,8 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
 
 ## Target
 
-- Every public page of a stack app targets WCAG 2.2 Level AA (the stack's accessibility design).
+- Every public page of a stack app MUST target WCAG 2.2 Level AA (the stack's accessibility design).
+  Held by: Preflight's `a11y` component, when the app carries the `wcag22aa` tag.
 - W3C says content conforming to 2.2 also conforms to 2.1 and 2.0, so the target meets the WCAG 2.1 AA floor named in
   the ADA Title II web rule (the stack's accessibility design).
 

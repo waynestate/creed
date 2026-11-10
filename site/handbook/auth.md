@@ -10,17 +10,17 @@ Chapter 4
 
 # Auth
 
-14 provisions · **MUST** 8 · **SHOULD** 1
+14 provisions · **MUST** 11 · **SHOULD** 1
 
 Decided
 
 Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and **MAY** in this chapter are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
 - One protocol-neutral library, named for what it does, not how. It returns a verified identity and leaves the session to the app (the stack's auth design).
-- The app always owns its session. Every driver ends in the app's `findOrImportUser(identity)`, and the protocol never holds the session (the stack's auth design).
-- The `gateway` driver accepts only a signed assertion, never a bare header: user, attributes, issued-at, audience, an expiry, and a signature the gateway and app share (the stack's auth design). [Drawbridge](https://drawbridge.apps.wayne.edu/) issues a 60 second assertion by default (`assertion_ttl_seconds`, 5 to 300), and [SESAME](https://sesame.apps.wayne.edu/) refuses any assertion that lives longer than `gateway.max_lifetime` (300 seconds unless the app sets it).
+- The app **MUST** own its session. Every driver ends in the app's `findOrImportUser(identity)`, and the protocol never holds the session (the stack's auth design). Held by: [SESAME](https://sesame.apps.wayne.edu/), whose drivers end in the app's `findOrImportUser` and hold no session of their own.
+- The `gateway` driver **MUST** accept only a signed assertion, never a bare header: user, attributes, issued-at, audience, an expiry, and a signature the gateway and app share (the stack's auth design). [Drawbridge](https://drawbridge.apps.wayne.edu/) issues a 60 second assertion by default (`assertion_ttl_seconds`, 5 to 300), and SESAME refuses any assertion that lives longer than `gateway.max_lifetime` (300 seconds unless the app sets it). Held by: SESAME, which refuses a bare header and an assertion past `gateway.max_lifetime`.
 - Drivers: `cas` (the default today), `gateway`, `oidc`, `oauth2`, `saml` (opt-in), and `fake` for local development and tests (the stack's auth design).
-- Non-EOL PHP only, with no exceptions (the stack's auth design). [PROCTOR](https://proctor.apps.wayne.edu/) check: `php-floor`.
+- Apps **MUST** use non-EOL PHP only, with no exceptions (the stack's auth design). [PROCTOR](https://proctor.apps.wayne.edu/) check: `php-floor`.
 - The gateway's public keys reach apps as one key set file (JWKS) that holds the current key and the next one. Drawbridge writes it (`keys:jwks`), Playbook carries WSU's copy (public keys only), and the app points SESAME's `gateway.jwks_file` (`SESAME_GATEWAY_JWKS_FILE`) at it. An app **SHOULD** read that file rather than copy keys into config values, and the `gateway` driver never fetches keys over the network at sign-in (the stack's signing-key decision). Held by: SESAME config, which checks the file at boot: a missing file, private key material or a repeated `kid` stops the app.
 - The gateway's signing key **MUST** be rotated every 12 months, and at once when a private key could have been exposed. A retired key **MUST** stay in the key set for at least 5 minutes after the switch, so assertions signed just before it still verify (the stack's signing-key decision). No check exists yet. Still open: where the private keys live on Citadel and who runs the yearly rotation.
 - The `saml` driver is built on `onelogin/php-saml`, is opt-in, sets no default WSU identity provider, and requires the provider to sign its assertions (the stack's SAML decision). SESAME config: the `saml` block.
@@ -31,4 +31,4 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - Access that is due to end when a person's status changes (for example an ended employment) **MUST** be removed by an automated process, not by memory (WSU developer standards, 2024). No check exists yet.
 - Idle sessions **MUST** time out after a configurable period of inactivity (WSU developer standards, 2024). The stack's numbers are in [`policy/policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.json), under `sessions`, which is the source for them: SESAME signs a user out after 120 minutes idle and 720 minutes in all (`sessions.sesame`), and Drawbridge after 3600 seconds idle and 28800 seconds in all (`sessions.gateway`). Held by: SESAME config, `session.idle_minutes` (`SESAME_SESSION_IDLE_MINUTES`) and `session.absolute_minutes` (`SESAME_SESSION_ABSOLUTE_MINUTES`), with those defaults. An app that does not use SESAME sets its own idle limit; that is documented only.
 
-Set from [`handbook/auth.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/auth.md), impression `cd86362`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/auth.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/auth.md), impression `31b87e5`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

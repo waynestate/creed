@@ -84,7 +84,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 9</p>
             <h1 id="page-title">Accessibility</h1>
-            <p class="hb-register">4 sections · 9 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 2</p>
+            <p class="hb-register">4 sections · 9 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 2 · <strong class="kw kw--should">SHOULD</strong> 2</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -102,7 +102,8 @@
 <div class="hb-rfc" role="note"><p><span class="hb-rfc__label">Key words</span> The key words <strong class="kw kw--must">MUST</strong>, <strong class="kw kw--must-not">MUST NOT</strong>, <strong class="kw kw--should">SHOULD</strong>, <strong class="kw kw--should-not">SHOULD NOT</strong> and <strong class="kw kw--may">MAY</strong> in this chapter are to be interpreted as described in <a href="https://www.rfc-editor.org/rfc/rfc2119">RFC 2119</a>.</p></div>
 <h2 id="target"><a class="hb-sec" href="#target">§9.1</a> Target</h2>
 <ul>
-<li>Every public page of a stack app targets WCAG 2.2 Level AA <span class="hb-cite">(the stack's accessibility design)</span>.</li>
+<li>Every public page of a stack app <strong class="kw kw--must">MUST</strong> target WCAG 2.2 Level AA <span class="hb-cite">(the stack's accessibility design)</span>.
+Held by: <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s <code>a11y</code> component, when the app carries the <code>wcag22aa</code> tag.</li>
 <li>W3C says content conforming to 2.2 also conforms to 2.1 and 2.0, so the target meets the WCAG 2.1 AA floor named in
 the ADA Title II web rule <span class="hb-cite">(the stack's accessibility design)</span>.</li>
 </ul>
@@ -116,7 +117,7 @@ checked by WayneUI's own runnable accessibility gate <span class="hb-cite">(the 
 <h2 id="checks"><a class="hb-sec" href="#checks">§9.3</a> Checks</h2>
 <ul>
 <li>An automated accessibility check <strong class="kw kw--should">SHOULD</strong> run in CI on the app's key pages <span class="hb-cite">(the stack's accessibility design)</span>.
-Held by: <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s <code>a11y</code> component, below.</li>
+Held by: Preflight's <code>a11y</code> component, below.</li>
 <li>A manual keyboard and screen reader pass <strong class="kw kw--must">MUST</strong> happen before launch. An automated tool catches regressions; it is
 not proof of conformance, and it never replaces the pass <span class="hb-cite">(the stack's accessibility design)</span>. No check exists yet.</li>
 <li>Preflight's <code>a11y</code> component (0.5.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core
@@ -136,7 +137,7 @@ this chapter does not decide it.</li>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="ci.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 8</span><span class="hb-pager__name">CI</span></a><a class="hb-pager__link hb-pager__link--next" href="every-os.html" rel="next"><span class="hb-pager__dir">Next · Chapter 10</span><span class="hb-pager__name">Every OS</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/accessibility.md"><code>handbook/accessibility.md</code> on GitHub</a>, impression <code>5ec0e84</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/accessibility.md"><code>handbook/accessibility.md</code> on GitHub</a>, impression <code>6c77492</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

@@ -84,7 +84,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 13</p>
             <h1 id="page-title">Overrides</h1>
-            <p class="hb-register">7 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 2</p>
+            <p class="hb-register">7 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 6</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -92,13 +92,15 @@
           <div class="hb-prose" data-hb-prose>
 <div class="hb-rfc" role="note"><p><span class="hb-rfc__label">Key words</span> The key words <strong class="kw kw--must">MUST</strong>, <strong class="kw kw--must-not">MUST NOT</strong>, <strong class="kw kw--should">SHOULD</strong>, <strong class="kw kw--should-not">SHOULD NOT</strong> and <strong class="kw kw--may">MAY</strong> in this chapter are to be interpreted as described in <a href="https://www.rfc-editor.org/rfc/rfc2119">RFC 2119</a>.</p></div>
 <ul>
-<li>Overrides are named, dated and visible <span class="hb-cite">(the stack's version policy)</span>.</li>
-<li>An app keeps a <code>policy-overrides.json</code> with an expiry date and a reason
-<span class="hb-cite">(the stack's version policy)</span>. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>overrides</code>.</li>
+<li>Overrides <strong class="kw kw--must">MUST</strong> be named, dated and visible <span class="hb-cite">(the stack's version policy)</span>.
+<a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>overrides</code> (its file parse requires a name, a date and a
+reason).</li>
+<li>An app <strong class="kw kw--must">MUST</strong> keep a <code>policy-overrides.json</code> with an expiry date and a reason
+<span class="hb-cite">(the stack's version policy)</span>. PROCTOR check: <code>overrides</code>.</li>
 <li>Check prints every override on every run, and Fleet lists them <span class="hb-cite">(the stack's version policy)</span>.</li>
-<li>An expired override is a failure <span class="hb-cite">(first-repos)</span>. PROCTOR check: <code>overrides</code>.</li>
-<li>An override runs at most <code>rules.override_max_days</code> days past today (90
-in the policy). A longer one is a failure and does not apply.
+<li>An expired override <strong class="kw kw--must">MUST</strong> fail the run <span class="hb-cite">(first-repos)</span>. PROCTOR check: <code>overrides</code>.</li>
+<li>An override <strong class="kw kw--must">MUST</strong> run at most <code>rules.override_max_days</code> days past today (90
+in the policy); a longer one is a failure and does not apply.
 PROCTOR check: <code>overrides</code>.</li>
 <li>An override <strong class="kw kw--must">MUST</strong> be approved by someone who did not write it. The merge
 request that adds or changes <code>policy-overrides.json</code> is the human
@@ -115,7 +117,7 @@ a permanent override <span class="hb-cite">(the stack's deploy-gate decision)</s
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="production.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 12</span><span class="hb-pager__name">Production</span></a><a class="hb-pager__link hb-pager__link--next" href="print.html"><span class="hb-pager__dir">End of the book</span><span class="hb-pager__name">The whole book on one page</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/overrides.md"><code>handbook/overrides.md</code> on GitHub</a>, impression <code>7814d7d</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/overrides.md"><code>handbook/overrides.md</code> on GitHub</a>, impression <code>2ec4741</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

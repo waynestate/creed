@@ -2,8 +2,9 @@
 
 The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to be interpreted as described in RFC 2119.
 
-- No `dev-master`, `dev-*` or `*` constraints on runtime dependencies
-  (the stack's version policy). PROCTOR check: `unbounded-constraints`.
+- Runtime dependencies MUST NOT use `dev-master`, `dev-*` or `*`
+  constraints (the stack's version policy). PROCTOR check:
+  `unbounded-constraints`.
 - A lock file is required and MUST be committed (the stack's version
   policy). PROCTOR checks: `lock-committed` (the lock is on disk and in sync)
   and `lock-tracked` (git tracks it; a warning).
@@ -18,8 +19,10 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
 
 CREED's `abandoned_packages` rule is `fail`, matching Composer's default since
 2.7, so `composer audit` fails on an abandoned package. An app that has to keep
-one replaces it or records an override with a reason; PROCTOR's
-`composer-audit` check applies the same setting.
+one MUST replace it or record an override with a reason; PROCTOR's
+`composer-audit` check applies the same setting. PROCTOR checks:
+`composer-audit` (fails on the abandoned package) and `overrides` (validates
+the recorded one).
 
 - `composer.json` `require.php` MUST NOT allow an EOL version as its lowest
   bound (the stack's version policy). PROCTOR check: `php-floor`.
@@ -28,9 +31,10 @@ one replaces it or records an override with a reason; PROCTOR's
   stack's own packages (`"ignore": ["waynestate/*"]`), which the stack's CI tests
   before tagging. Sourdough's shapes set both. PROCTOR check:
   `composer-cooldown` (a warning, never a failure).
-- Every project is a framework-free core plus thin adapters. `composer.json`
-  requires only `php` and PSR packages; Laravel, Inertia and Vue are
-  `suggest` (the stack's core-plus-adapters design).
+- Every project MUST be a framework-free core plus thin adapters, and its
+  `composer.json` MUST require only `php` and PSR packages; Laravel, Inertia
+  and Vue are `suggest` (the stack's core-plus-adapters design). No check
+  exists yet.
 - Adapters MUST call the core and MUST NOT re-implement it (the stack's core-plus-adapters design). No check exists yet.
 - Before adding a third-party package, check it comes from a trusted source, and where the source is open, read enough of it to judge it sound and fit (SHOULD). The audit and abandoned-package rules in this chapter apply after that choice (WSU developer standards, 2024). No check exists yet.
 

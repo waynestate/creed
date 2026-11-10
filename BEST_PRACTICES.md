@@ -1131,9 +1131,9 @@ These are places where a source disagrees with the repository or with an earlier
 12. Done: the runtime and headers chapter is written (practice 26), PROCTOR's `app-debug` warns on a committed
     production template, deploy file or CI pipeline that sets `APP_DEBUG` to true, and HELMET warns at boot when it is
     on in production; `app-debug` shipped in PROCTOR 0.10.0.
-13. Partly done: every handbook rule that uses an RFC 2119 capital carries a tag (a PROCTOR check ID, "Held by:" or
-    "No check exists yet"), and the handbook lint fails on an untagged one; rules phrased without a capital are still
-    to walk (practices 29 and 32).
+13. Done: every handbook rule that uses an RFC 2119 capital carries a tag (a PROCTOR check ID, "Held by:" or
+    "No check exists yet"), and the handbook lint fails on an untagged one; the imperative rules were walked on
+    2026-11-10 and now carry a capital and a tag too (practices 29 and 32).
 14. Done: `tests/OlderReaderContractTest.php` loads a future-shaped policy file with the reader and asserts every
     known line still answers the same (practice 10).
 15. Done: the policy's `gate` block carries per-check stages (`report`, `warn`, `block`) with `from` dates, in the
