@@ -20,7 +20,7 @@ Public pages never count or name the applications. When CREED's public copy spea
 
 `composer ci` is the same command on GitLab and GitHub. It validates `composer.json`, runs the test suite (294 tests in 25 files on 2026-11-08), validates `policy/policy.json` and `policy/sources.json` against their schemas, checks style with Pint, lints the handbook, runs PHPStan and `composer audit`, and fails when the handbook site, the agent-ready files or the docs pages go stale, so the site you are reading cannot drift from `docs/`.
 
-Where it runs: GitHub runs `composer ci` on PHP 8.3, 8.4 and 8.5. GitLab runs the test suite on all three through Preflight's `php-test` component, and `composer ci` once on the pinned Composer image (PHP 8.5). GitLab also runs PROCTOR against the front page's `deploy/` layer (allowed to fail while its known findings stand) and the strict WayneUI copies check.
+Where it runs: GitHub runs `composer ci` on PHP 8.3, 8.4 and 8.5. GitLab runs the test suite on all three through Preflight's `php-test` component, and `composer ci` once on the pinned Composer image (PHP 8.5). GitLab also runs PROCTOR against the front page's `deploy/` layer (a failing check fails the pipeline; warnings never do), Preflight's `a11y` component on every page in `site/` (axe-core at WCAG 2.2 AA, light and dark, at 320 and 1280 px), and the strict WayneUI copies check.
 
 The policy itself is proved every Monday: the [policy robot](../guides/policy-bot.md) re-reads the upstream sources and, when anything moved, pushes the refresh to `main` if `composer ci` is green, or opens a merge request for a person if it is red.
 

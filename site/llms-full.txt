@@ -940,6 +940,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Docs: BEST_PRACTICES, MAINTAINING, the contributing page and the proof page no longer say the `proctor` job is allowed to fail (it blocks since 0.1.10), and the CI lists name the `a11y` component that checks every page in `site/`.
 - Docs: `OPEN_QUESTIONS.md` lists what CREED does not know before 1.0 (the minimum patch floors, a fix window per advisory severity, the override cap, the Title II dates, git.wayne.edu's patch routine, PHP image targets, the MySQL 5.6 timeline, the deploy gate in Citadel's release hook, a CSP report endpoint), with what ships meanwhile and who can answer. The front page's errata slip gains rows E-9 to E-15 and links the file, and `OpenQuestionsTest` keeps the two level.
 - Docs: the reference pages catch up with the code. The README and the Reader API page list `minimumPatch()`, `requires()`, `phpRange()`, `abandonedPackages()`, `overrideMaxDays()`, `overrideSelfApproval()` and `gateStage()`; the policy format page lists all six `rules` (it said three) and documents the `gate` and `sessions` blocks. A new `ReferenceDocsTest` fails CI when a public reader method or a schema property in `rules`, `gate` or `sessions` has no line on those pages.
 
@@ -1170,7 +1171,7 @@ The documentation site is built by `composer docs` and checked by `composer docs
 
 ### CI [#](https://creed.apps.wayne.edu/docs/contributing.html#ci)
 
-- **GitLab:** Preflight components (`php-test` on PHP 8.3, 8.4 and 8.5, `composer-audit`, and `proctor` for the `deploy/` layer), plus a `composer-ci` job and a `wayneui-copies` job. On scheduled pipelines, `refresh-patches` (check-only) runs on a schedule without `CREED_JOB`, and `policy-bot` runs on the Monday schedule that carries `CREED_JOB=policy-bot` (and by hand from the web).
+- **GitLab:** Preflight components (`php-test` on PHP 8.3, 8.4 and 8.5, `composer-audit`, `proctor` for the `deploy/` layer, which blocks on a failing check, and `a11y`, which runs axe-core on every page in `site/`), plus a `composer-ci` job and a `wayneui-copies` job. On scheduled pipelines, `refresh-patches` (check-only) runs on a schedule without `CREED_JOB`, and `policy-bot` runs on the Monday schedule that carries `CREED_JOB=policy-bot` (and by hand from the web).
 - **GitHub:** `.github/workflows/ci.yml` calls Preflight's reusable workflow with `composer ci`, and runs `refresh-patches` weekly (Mondays) and on demand.
 - Green means the tests passed on all three PHP versions on both, and `composer ci` passed (on all three on GitHub, once on GitLab).
 
@@ -2164,7 +2165,7 @@ The front page, [`site/index.html`](https://creed.apps.wayne.edu/), is a static 
 
 `composer ci` is the same command on GitLab and GitHub. It validates `composer.json`, runs the test suite (294 tests in 25 files on 2026-11-08), validates `policy/policy.json` and `policy/sources.json` against their schemas, checks style with Pint, lints the handbook, runs PHPStan and `composer audit`, and fails when the handbook site, the agent-ready files or the docs pages go stale, so the site you are reading cannot drift from `docs/`.
 
-Where it runs: GitHub runs `composer ci` on PHP 8.3, 8.4 and 8.5. GitLab runs the test suite on all three through Preflight's `php-test` component, and `composer ci` once on the pinned Composer image (PHP 8.5). GitLab also runs PROCTOR against the front page's `deploy/` layer (allowed to fail while its known findings stand) and the strict WayneUI copies check.
+Where it runs: GitHub runs `composer ci` on PHP 8.3, 8.4 and 8.5. GitLab runs the test suite on all three through Preflight's `php-test` component, and `composer ci` once on the pinned Composer image (PHP 8.5). GitLab also runs PROCTOR against the front page's `deploy/` layer (a failing check fails the pipeline; warnings never do), Preflight's `a11y` component on every page in `site/` (axe-core at WCAG 2.2 AA, light and dark, at 320 and 1280 px), and the strict WayneUI copies check.
 
 The policy itself is proved every Monday: the [policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html) re-reads the upstream sources and, when anything moved, pushes the refresh to `main` if `composer ci` is green, or opens a merge request for a person if it is red.
 

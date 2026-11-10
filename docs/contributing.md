@@ -39,7 +39,7 @@ The documentation site is built by `composer docs` and checked by `composer docs
 
 ## CI
 
-- **GitLab:** Preflight components (`php-test` on PHP 8.3, 8.4 and 8.5, `composer-audit`, and `proctor` for the `deploy/` layer), plus a `composer-ci` job and a `wayneui-copies` job. On scheduled pipelines, `refresh-patches` (check-only) runs on a schedule without `CREED_JOB`, and `policy-bot` runs on the Monday schedule that carries `CREED_JOB=policy-bot` (and by hand from the web).
+- **GitLab:** Preflight components (`php-test` on PHP 8.3, 8.4 and 8.5, `composer-audit`, `proctor` for the `deploy/` layer, which blocks on a failing check, and `a11y`, which runs axe-core on every page in `site/`), plus a `composer-ci` job and a `wayneui-copies` job. On scheduled pipelines, `refresh-patches` (check-only) runs on a schedule without `CREED_JOB`, and `policy-bot` runs on the Monday schedule that carries `CREED_JOB=policy-bot` (and by hand from the web).
 - **GitHub:** `.github/workflows/ci.yml` calls Preflight's reusable workflow with `composer ci`, and runs `refresh-patches` weekly (Mondays) and on demand.
 - Green means the tests passed on all three PHP versions on both, and `composer ci` passed (on all three on GitHub, once on GitLab).
 

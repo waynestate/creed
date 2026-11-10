@@ -46,8 +46,8 @@ handbook site and agent-ready freshness checks, PHPStan, `composer audit` and th
 
 ## CI
 
-- **GitLab:** Preflight components (`php-test` on PHP 8.3, 8.4 and 8.5, `composer-audit`, and `proctor` for the
-  `deploy/` layer), plus `composer-ci` and `wayneui-copies` jobs. On scheduled pipelines, `refresh-patches`
+- **GitLab:** Preflight components (`php-test` on PHP 8.3, 8.4 and 8.5, `composer-audit`, `proctor` for the
+  `deploy/` layer, which blocks on a failing check, and `a11y`, which runs axe-core on every page in `site/`), plus `composer-ci` and `wayneui-copies` jobs. On scheduled pipelines, `refresh-patches`
   (check-only) runs on a schedule without `CREED_JOB`, and `policy-bot` on the Monday schedule that carries
   `CREED_JOB=policy-bot` (and by hand from the web).
 - **GitHub:** `.github/workflows/ci.yml` calls Preflight's reusable workflow with `composer ci`, and runs
