@@ -10,7 +10,7 @@ generator: Squire agent-ready
 
 This page shows the shape of `policy/policy.json` and `policy/sources.json`, exactly as their schemas state it.
 
-CREED is the Wayne State app stack's version policy, as data. One file, `policy/policy.json`, lists the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, plus the rules every check runs against. The schema titles the file "CREED version policy", requires `schema_version`, `components` and `rules`, and allows no other top-level properties.
+CREED is the Wayne State app stack's version policy, as data. One file, `policy/policy.json`, lists the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, plus the rules every check runs against. The schema titles the file "CREED version policy", requires `schema_version`, `components` and `rules`, and allows no top-level properties beyond the seven in the table below.
 
 ## Top level of policy/policy.json [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#top-level-of-policy-policy-json)
 
@@ -22,6 +22,7 @@ CREED is the Wayne State app stack's version policy, as data. One file, `policy/
 | `tools` | object | Maps tool names to a minimum version each, and optionally a release cooldown. Optional. |
 | `sessions` | object | Records the session lifetimes the stack sets elsewhere: SESAME in minutes (`sesame.idle_minutes`, `sesame.absolute_minutes`) and the Drawbridge gateway in seconds (`gateway.idle_seconds`, `gateway.session_seconds`), each entry carrying a `source` that names the file in that repo where the default is set. Optional. |
 | `rules` | object | The rules every check runs against. Required. |
+| `gate` | object | The deploy-gate stage of each PROCTOR check, with the date each stage starts. Optional. |
 
 ## The line fields [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#the-line-fields)
 
@@ -51,13 +52,36 @@ The `current` rule is the only conditional in the schema: a line with `"current"
 
 ## rules [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#rules)
 
-`rules` allows exactly three properties, all required:
+`rules` allows six properties and no others. Three are required; the other three arrived later, so a policy written before them still validates, and the reader answers the stack's default for a missing one.
 
 | Name | Type | What the schema states |
 | --- | --- | --- |
-| `audit_severity_threshold` | string | Required. |
-| `banned_constraints` | array of strings | Required. |
-| `eol_grace_days` | integer | Minimum `0`. Required. |
+| `audit_severity_threshold` | string | Required. The bundled policy says `high`. |
+| `banned_constraints` | array of strings | Required. The bundled policy bans `dev-*` and `*`. |
+| `eol_grace_days` | integer | Minimum `0`. Required. The bundled policy says 90. |
+| `abandoned_packages` | string | `ignore`, `report` or `fail`: Composer's own `audit.abandoned` setting. Optional; `abandonedPackages()` answers `fail` without it, Composer's default since 2.7. |
+| `override_max_days` | integer | Minimum `1`: the longest an override may run, in days past the day PROCTOR runs. Optional; `overrideMaxDays()` answers 90 without it. |
+| `override_self_approval` | string | `warn` or `fail`: what PROCTOR does when an override's `approved_by` names its own author, or the author cannot be read. Optional; `overrideSelfApproval()` answers `warn` without it. |
+
+## gate [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#gate)
+
+`gate` is optional. It stages PROCTOR's checks in the deploy gate, so a new check can report first, warn next and block last, each from a stated date. `gateStage($checkId, $on)` reads it.
+
+| Name | Type | What the schema states |
+| --- | --- | --- |
+| `default_stage` | string | `report`, `warn` or `block`: the stage of a check with no entry in `stages` that applies yet. Optional; `block` without it, so a policy shaped before stages existed keeps today's gate. |
+| `stages` | object | Maps a check ID (`^[a-z0-9-]+$`) to a list of at least one `{"stage", "from"}` entry, both required; `from` is a `YYYY-MM-DD` date. The entry with the latest `from` on or before the run date wins. Optional. |
+
+The bundled policy sets `default_stage` to `block` and stages no check yet.
+
+## sessions [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#sessions)
+
+`sessions` is optional. It records the session lifetimes other parts of the stack set, so the auth chapter can point at one place; nothing in CREED enforces them.
+
+| Name | Type | What the schema states |
+| --- | --- | --- |
+| `sesame` | object | `idle_minutes` and `absolute_minutes` (integers, minimum `1`) and `source` (the file in SESAME that sets the default), all required. The bundled policy says 120 and 720. |
+| `gateway` | object | `idle_seconds` and `session_seconds` (integers, minimum `1`) and `source` (the file in Drawbridge that sets the default), all required. The bundled policy says 3600 and 28800. |
 
 ## policy/sources.json [#](https://creed.apps.wayne.edu/docs/reference/policy-format.html#policy-sources-json)
 

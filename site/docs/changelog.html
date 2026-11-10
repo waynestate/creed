@@ -43,6 +43,9 @@
       <article class="docs-article"><!-- Generated from CHANGELOG.md by bin/docs-site.php. Edit CHANGELOG.md, not this file. -->
 <h1 id="changelog"><span class="docs-heading-tail"><span>Changelog</span><a class="docs-heading-link" aria-label="Link to this section" href="#changelog">#</a></span></h1>
 <h2 id="unreleased"><span class="docs-heading-tail"><span>Unreleased</span><a class="docs-heading-link" aria-label="Link to this section" href="#unreleased">#</a></span></h2>
+<ul>
+<li>Docs: the reference pages catch up with the code. The README and the Reader API page list <code>minimumPatch()</code>, <code>requires()</code>, <code>phpRange()</code>, <code>abandonedPackages()</code>, <code>overrideMaxDays()</code>, <code>overrideSelfApproval()</code> and <code>gateStage()</code>; the policy format page lists all six <code>rules</code> (it said three) and documents the <code>gate</code> and <code>sessions</code> blocks. A new <code>ReferenceDocsTest</code> fails CI when a public reader method or a schema property in <code>rules</code>, <code>gate</code> or <code>sessions</code> has no line on those pages.</li>
+</ul>
 <h2 id="0-1-11-2026-11-10">0.1.11 <span class="docs-heading-tail"><span>(2026-11-10)</span><a class="docs-heading-link" aria-label="Link to this section" href="#0-1-11-2026-11-10">#</a></span></h2>
 <ul>
 <li>Docs: the databases rule &quot;run migrations in CI against a real 5.6&quot; is held: Preflight 0.6.0's <code>mysql56-migrate</code> component runs them on MySQL 5.6.51, and PROCTOR 0.15.0's <code>mysql56-ci</code> warns when an app with migrations has no such job (D-078).</li>

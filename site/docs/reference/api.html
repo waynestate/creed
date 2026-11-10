@@ -196,9 +196,29 @@
 <td>The shape of the policy itself</td>
 <td><code>public function rules(): array</code></td>
 </tr>
+<tr>
+<td><code>abandonedPackages()</code></td>
+<td>How <code>composer audit</code> treats an abandoned package: <code>ignore</code>, <code>report</code> or <code>fail</code> (<code>fail</code> when the policy sets none)</td>
+<td><code>public function abandonedPackages(): string</code></td>
+</tr>
+<tr>
+<td><code>overrideMaxDays()</code></td>
+<td>How many days past today an override may run (90 when the policy sets none)</td>
+<td><code>public function overrideMaxDays(): int</code></td>
+</tr>
+<tr>
+<td><code>overrideSelfApproval()</code></td>
+<td>What PROCTOR does with a self-approved override: <code>warn</code> or <code>fail</code> (<code>warn</code> when the policy sets none)</td>
+<td><code>public function overrideSelfApproval(): string</code></td>
+</tr>
+<tr>
+<td><code>gateStage($checkId, $on)</code></td>
+<td>The deploy-gate stage of one PROCTOR check on a date: <code>report</code>, <code>warn</code> or <code>block</code> (<code>block</code> when the policy has no <code>gate</code> block)</td>
+<td><code>public function gateStage(string $checkId, DateTimeImmutable $on): string</code></td>
+</tr>
 </tbody>
 </table></div>
-<aside class="docs-callout docs-callout--note" role="note"><p class="docs-callout__label">Note</p><p>The wording is the README's, one line per member; the signatures are copied from <code>src/Policy.php</code>.</p></aside>
+<aside class="docs-callout docs-callout--note" role="note"><p class="docs-callout__label">Note</p><p>The wording is the README's, one line per member; the signatures are copied from <code>src/Policy.php</code>. <code>tests/ReferenceDocsTest.php</code> fails CI when a public method has no row here, or no line in the README.</p></aside>
 <h2 id="related"><span class="docs-heading-tail"><span>Related</span><a class="docs-heading-link" aria-label="Link to this section" href="#related">#</a></span></h2>
 <ul>
 <li><a href="../guides/reading-the-policy.html">Reading the policy from PHP</a></li>

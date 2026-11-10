@@ -10,6 +10,8 @@ generator: Squire agent-ready
 
 ## Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Docs: the reference pages catch up with the code. The README and the Reader API page list `minimumPatch()`, `requires()`, `phpRange()`, `abandonedPackages()`, `overrideMaxDays()`, `overrideSelfApproval()` and `gateStage()`; the policy format page lists all six `rules` (it said three) and documents the `gate` and `sessions` blocks. A new `ReferenceDocsTest` fails CI when a public reader method or a schema property in `rules`, `gate` or `sessions` has no line on those pages.
+
 ## 0.1.11 (2026-11-10) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-11-2026-11-10)
 
 - Docs: the databases rule "run migrations in CI against a real 5.6" is held: Preflight 0.6.0's `mysql56-migrate` component runs them on MySQL 5.6.51, and PROCTOR 0.15.0's `mysql56-ci` warns when an app with migrations has no such job (D-078).

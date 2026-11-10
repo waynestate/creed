@@ -38,9 +38,13 @@ This page lists every public member of the `Waynestate\Creed\Policy` reader, in 
 | `toolCooldownPeriod($tool)` | The shape of the policy itself | `public function toolCooldownPeriod(string $tool): ?string` |
 | `toolCooldownIgnore($tool)` | The shape of the policy itself | `public function toolCooldownIgnore(string $tool): array` |
 | `rules()` | The shape of the policy itself | `public function rules(): array` |
+| `abandonedPackages()` | How `composer audit` treats an abandoned package: `ignore`, `report` or `fail` (`fail` when the policy sets none) | `public function abandonedPackages(): string` |
+| `overrideMaxDays()` | How many days past today an override may run (90 when the policy sets none) | `public function overrideMaxDays(): int` |
+| `overrideSelfApproval()` | What PROCTOR does with a self-approved override: `warn` or `fail` (`warn` when the policy sets none) | `public function overrideSelfApproval(): string` |
+| `gateStage($checkId, $on)` | The deploy-gate stage of one PROCTOR check on a date: `report`, `warn` or `block` (`block` when the policy has no `gate` block) | `public function gateStage(string $checkId, DateTimeImmutable $on): string` |
 
 > [!NOTE]
-> The wording is the README's, one line per member; the signatures are copied from `src/Policy.php`.
+> The wording is the README's, one line per member; the signatures are copied from `src/Policy.php`. `tests/ReferenceDocsTest.php` fails CI when a public method has no row here, or no line in the README.
 
 ## Related
 
