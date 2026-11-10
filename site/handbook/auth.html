@@ -98,15 +98,18 @@ verified identity and leaves the session to the app <span class="hb-cite">(the s
 <code>findOrImportUser(identity)</code>, and the protocol never holds the session
 <span class="hb-cite">(the stack's auth design)</span>.</li>
 <li>The <code>gateway</code> driver accepts only a signed assertion, never a bare header:
-user, attributes, issued-at, audience, an expiry of 60 seconds or less, and
-a signature the gateway and app share <span class="hb-cite">(the stack's auth design)</span>.</li>
+user, attributes, issued-at, audience, an expiry, and a signature the
+gateway and app share <span class="hb-cite">(the stack's auth design)</span>. <a class="tool" href="https://drawbridge.apps.wayne.edu/"><img src="../assets/marks/drawbridge.png" alt="" width="16" height="16">Drawbridge</a> issues a
+60 second assertion by default (<code>assertion_ttl_seconds</code>, 5 to 300), and
+<a class="tool" href="https://sesame.apps.wayne.edu/"><img src="../assets/marks/sesame.png" alt="" width="16" height="16">SESAME</a> refuses any assertion that lives longer than <code>gateway.max_lifetime</code>
+(300 seconds unless the app sets it).</li>
 <li>Drivers: <code>cas</code> (the default today), <code>gateway</code>, <code>oidc</code>, <code>oauth2</code>, <code>saml</code>
 (opt-in), and <code>fake</code> for local development and tests <span class="hb-cite">(the stack's auth design)</span>.</li>
 <li>Non-EOL PHP only, with no exceptions <span class="hb-cite">(the stack's auth design)</span>.
 <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>php-floor</code>.</li>
 <li>The gateway's public keys reach apps as one key set file (JWKS) that holds
-the current key and the next one. <a class="tool" href="https://drawbridge.apps.wayne.edu/"><img src="../assets/marks/drawbridge.png" alt="" width="16" height="16">Drawbridge</a> writes it (<code>keys:jwks</code>),
-Playbook carries WSU's copy (public keys only), and the app points <a class="tool" href="https://sesame.apps.wayne.edu/"><img src="../assets/marks/sesame.png" alt="" width="16" height="16">SESAME</a>'s
+the current key and the next one. Drawbridge writes it (<code>keys:jwks</code>),
+Playbook carries WSU's copy (public keys only), and the app points SESAME's
 <code>gateway.jwks_file</code> (<code>SESAME_GATEWAY_JWKS_FILE</code>) at it. An app <strong class="kw kw--should">SHOULD</strong> read
 that file rather than copy keys into config values, and the <code>gateway</code> driver
 never fetches keys over the network at sign-in <span class="hb-cite">(the stack's signing-key
@@ -134,7 +137,7 @@ assertions <span class="hb-cite">(the stack's SAML decision)</span>. SESAME conf
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="code.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 3</span><span class="hb-pager__name">Code</span></a><a class="hb-pager__link hb-pager__link--next" href="databases.html" rel="next"><span class="hb-pager__dir">Next · Chapter 5</span><span class="hb-pager__name">Databases</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/auth.md"><code>handbook/auth.md</code> on GitHub</a>, impression <code>7ff1f4b</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/auth.md"><code>handbook/auth.md</code> on GitHub</a>, impression <code>cd86362</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 
