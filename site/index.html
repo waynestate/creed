@@ -272,6 +272,8 @@
             <div><dt>Inspected on</dt><dd data-cert-day>2026-10-29</dd></div>
             <div><dt>Reader call</dt><dd><code data-cert-call>$policy-&gt;stateOf('php', '8.2', new DateTimeImmutable('2026-10-29'))</code></dd></div>
             <div><dt>Returns</dt><dd><code data-cert-returns>State::Security</code></dd></div>
+            <!-- Shown for a line with a requires object (the Laravel lines): the reader's requires(), checked against the PHP lines on that day. The static text is what the Markdown twin reads. -->
+            <div class="certificate__requires" data-cert-requires-row hidden><dt>Runs on</dt><dd data-cert-requires>For a Laravel line: its PHP range and database floor, from <code>requires()</code></dd></div>
           </dl>
           <p class="certificate__finding" data-cert-finding>Security fixes only, until 2026-12-31: 63 days left. Plan the move to PHP 8.4 now.</p>
           <p class="certificate__clause">Applicable clause: <a href="#c-2-2" data-cert-clause>§2.2 Treat security-only as a countdown, not a resting place</a></p>

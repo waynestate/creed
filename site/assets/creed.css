@@ -470,6 +470,8 @@ img { max-width: 100%; height: auto; }
 .certificate__rows dd { margin: 0; font-family: var(--serif); font-size: 1.08rem; min-width: 0; }
 .certificate__rows dd code { font-size: .8rem; background: none; padding: 0; }
 @media (max-width: 520px) { .certificate__rows div { grid-template-columns: minmax(0, 1fr); gap: .1rem; } }
+/* A row the inspector has not filled stays out of the grid: the author display above would otherwise beat [hidden]. */
+.certificate__rows div[hidden] { display: none; }
 .certificate__finding { font-family: var(--serif); font-size: 1.15rem; line-height: 1.45; margin: 0 0 .75rem; max-width: 30rem; min-height: 3.2em; }
 .certificate__clause { margin: 0 0 1.25rem; font-size: .98rem; max-width: 26rem; }
 .certificate__sign { display: flex; flex-wrap: wrap; gap: .25rem 1rem; align-items: baseline; margin: 0; font-family: var(--mono); font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); max-width: 22rem; }

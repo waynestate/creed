@@ -12,10 +12,10 @@ use Waynestate\Creed\Policy;
  * The front page's "Inspect a version" form runs the reader's rules in the
  * browser, on a copy of the dates in policy/policy.json kept in
  * site/assets/creed.js (the static page has no PHP to ask). This test holds
- * the copy to the file: every component, line and date, and the grace
- * period, must match, so a policy change cannot leave the page answering
- * from last month's dates. When it fails, it prints the components block to
- * paste.
+ * the copy to the file: every component, line and date, the grace period,
+ * and what each line requires (the certificate's "Runs on" row), must match,
+ * so a policy change cannot leave the page answering from last month's
+ * dates. When it fails, it prints the block to paste.
  *
  * Creed Bratton's driver's license and his memory disagree on his birthday.
  * The front page and the policy file are not allowed that luxury.
@@ -42,6 +42,14 @@ final class FrontPageInspectorTest extends TestCase
             $copy['components'] ?? null,
             "site/assets/creed.js: the inspector's dates differ from policy.json. Paste these lines into POLICY.components:\n"
             . self::asScript($expected),
+        );
+
+        $requires = self::expectedRequires($policy);
+        self::assertSame(
+            $requires,
+            $copy['requires'] ?? null,
+            "site/assets/creed.js: the inspector's requires copy differs from policy.json. Paste these lines into POLICY.requires:\n"
+            . self::asScript($requires),
         );
     }
 
@@ -99,12 +107,40 @@ final class FrontPageInspectorTest extends TestCase
         return $components;
     }
 
-    /** @param array<string, array<string, string|list<string|null>>> $components */
+    /**
+     * What the "Runs on" row reads: per component, the lines with a requires
+     * object, as php [min, max] plus the other keys as they stand in the file.
+     *
+     * @return array<string, array<string, array<string, mixed>>>
+     */
+    private static function expectedRequires(Policy $policy): array
+    {
+        $requires = [];
+        foreach ($policy->components() as $component) {
+            foreach ($policy->versions($component) as $version) {
+                $line = $policy->requires($component, $version);
+                if ($line === null) {
+                    continue;
+                }
+                $range = $policy->phpRange($component, $version);
+                if ($range !== null) {
+                    $line['php'] = [$range['min'], $range['max']];
+                }
+                $requires[$component][$version] = $line;
+            }
+        }
+
+        return $requires;
+    }
+
+    /** @param array<string, array<string, mixed>> $components */
     private static function asScript(array $components): string
     {
         $lines = [];
         foreach ($components as $component => $versions) {
             $json = str_replace(['":', '","', '],"'], ['": ', '", "', '], "'], (string) json_encode($versions, JSON_UNESCAPED_SLASHES));
+            // Nested objects (a requires line) get bare keys and the script's spacing.
+            $json = (string) preg_replace(['~([{,]) ?"([a-z_]+)": ~', '~"\}(?!$)~', '~\},"~'], ['$1 $2: ', '" }', '}, "'], $json);
             $lines[] = '      ' . $component . ': { ' . substr($json, 1, -1) . ' }';
         }
 

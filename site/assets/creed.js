@@ -98,6 +98,9 @@
       mysql: { "5.6": ["2018-02-28", "2021-02-28"], "5.7": ["2020-10-31", "2023-10-31"], "8.0": ["2025-04-30", "2026-04-30"], "8.4": ["2029-04-30", "2032-04-30"], "9.7": ["2031-04-30", "2034-04-30"] },
       vue: { "2": ["2023-12-31", "2023-12-31"], "3": "current" },
       inertia: { "2": "current", "3": "current" }
+    },
+    requires: {
+      laravel: { "10": { php: ["8.1", "8.3"], mysql: "5.7", mariadb: "10.10" }, "11": { php: ["8.2", "8.4"], mysql: "5.7", mariadb: "10.3" }, "12": { php: ["8.2", "8.5"], mysql: "5.7", mariadb: "10.3" }, "13": { php: ["8.3", "8.5"], mysql: "5.7", mariadb: "10.3" } }
     }
   };
   var NAMES = { php: "PHP", laravel: "Laravel", node: "Node", mysql: "MySQL", vue: "Vue", inertia: "Inertia" };
@@ -187,6 +190,21 @@
   }
   function plural(n, word) { return n + " " + word + (n === 1 ? "" : "s"); }
 
+  // What a line runs on (Policy::requires), and which of those PHP lines
+  // still pass on the day. A supported Laravel on an end-of-life PHP is not
+  // a supported app (practice 14), so the certificate says both. Null for a
+  // line with no requires object, which today is every line but Laravel's.
+  function requiresFor(c, line, day) {
+    var r = POLICY.requires[c] && POLICY.requires[c][line];
+    if (!r) return null;
+    var php = versionsOf("php").filter(function (p) { return cmpVersion(p, r.php[0]) >= 0 && cmpVersion(p, r.php[1]) <= 0; });
+    var pass = php.filter(function (p) { var s = stateOf("php", p, day); return s === "active" || s === "security"; });
+    var onDay = pass.length === 0 ? "none of them passes on this day"
+      : pass.length === php.length ? "all of them pass on this day"
+      : (pass.length === 1 ? pass[0] + " passes" : pass[0] + " to " + pass[pass.length - 1] + " pass") + " on this day";
+    return "PHP " + r.php[0] + " to " + r.php[1] + " (" + onDay + "); MySQL " + r.mysql + " or MariaDB " + r.mariadb + " and up";
+  }
+
   /* ------------------------------------------- 5. Form CR-1: the stamp */
   var form = $("[data-inspect-form]");
   if (form) {
@@ -199,7 +217,8 @@
     var out = {
       what: $("[data-cert-what]"), day: $("[data-cert-day]"), call: $("[data-cert-call]"),
       returns: $("[data-cert-returns]"), finding: $("[data-cert-finding]"), clause: $("[data-cert-clause]"),
-      serial: $("[data-cert-serial]"), top: $("[data-ink-top]"), word: $("[data-ink-word]"), sub: $("[data-ink-sub]")
+      serial: $("[data-cert-serial]"), top: $("[data-ink-top]"), word: $("[data-ink-word]"), sub: $("[data-ink-sub]"),
+      requiresRow: $("[data-cert-requires-row]"), requires: $("[data-cert-requires]")
     };
     var serial = 1;
     var DEFAULTS = { php: "8.2", laravel: "12", node: "24", mysql: "8.0", vue: "3", inertia: "2" };
@@ -257,7 +276,7 @@
       }
       if (state === "eol") {
         var g = graceEnd(c, v);
-        return "End of life since " + addDays(e[1], 1) + ". In the 90-day grace until " + g + " (" + plural(daysBetween(day, g), "day") + " left); a named, dated override can carry an app that far.";
+        return "End of life since " + addDays(e[1], 1) + ". In the " + POLICY.eol_grace_days + "-day grace until " + g + " (" + plural(daysBetween(day, g), "day") + " left); a named, dated override can carry an app that far.";
       }
       return "Past grace since " + addDays(graceEnd(c, v), 1) + ". No override applies." + (floor ? " The oldest " + name + " that passes on this day is " + floor + "." : "");
     }
@@ -301,6 +320,8 @@
       var title = clauseEl ? $(".clause__title", clauseEl).textContent.trim().replace(/\.$/, "") : "";
       var sec = title.split(" ")[0];
       var finding = findingFor(c, v, day, state);
+      var line = state === "refused" ? null : resolveVersion(c, v);
+      var runsOn = line === null ? null : requiresFor(c, line, day);
 
       if (thunk) ghost();
       serial += thunk ? 1 : 0;
@@ -310,6 +331,10 @@
       out.call.textContent = "$policy->stateOf('" + c + "', '" + v + "', new DateTimeImmutable('" + day + "'))";
       out.returns.textContent = returns;
       out.finding.textContent = finding;
+      if (out.requiresRow) {
+        out.requiresRow.hidden = runsOn === null;
+        out.requires.textContent = runsOn || "";
+      }
       out.clause.textContent = title;
       out.clause.setAttribute("href", "#" + clauseId);
 
@@ -329,7 +354,7 @@
       if (row) row.classList.add("is-inspected");
 
       if (thunk) {
-        live.textContent = "Stamped " + WORDS[state].toUpperCase() + (state === "eol_grace_expired" ? ", grace expired" : "") + ". " + NAMES[c] + " " + v + " on " + day + ". " + finding + " Applicable clause: " + title + ".";
+        live.textContent = "Stamped " + WORDS[state].toUpperCase() + (state === "eol_grace_expired" ? ", grace expired" : "") + ". " + NAMES[c] + " " + v + " on " + day + ". " + finding + (runsOn ? " Runs on " + runsOn + "." : "") + " Applicable clause: " + title + ".";
         if (motion) {
           stamp.classList.remove("is-thunk"); cert.classList.remove("is-jolt");
           void stamp.offsetWidth;

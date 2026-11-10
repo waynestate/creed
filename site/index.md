@@ -88,6 +88,7 @@ No. 0001
 - **Inspected on**: 2026-10-29
 - **Reader call**: `$policy->stateOf('php', '8.2', new DateTimeImmutable('2026-10-29'))`
 - **Returns**: `State::Security`
+- **Runs on**: For a Laravel line: its PHP range and database floor, from `requires()`
 
 Security fixes only, until 2026-12-31: 63 days left. Plan the move to PHP 8.4 now.
 

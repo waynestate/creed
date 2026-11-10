@@ -6,6 +6,8 @@
 
 - Docs: BEST_PRACTICES, MAINTAINING, the contributing page and the proof page no longer say the `proctor` job is allowed to fail (it blocks since 0.1.10), and the CI lists name the `a11y` component that checks every page in `site/`.
 
+- Site: the front page's certificate gains a "Runs on" row for a Laravel line: the PHP range and database floor from the reader's `requires()`, and which of those PHP lines still pass on the chosen day. `FrontPageInspectorTest` holds that copy to `policy.json` too. The grace period in the finding now reads from the policy instead of a written 90.
+
 - Docs: `OPEN_QUESTIONS.md` lists what CREED does not know before 1.0 (the minimum patch floors, a fix window per advisory severity, the override cap, the Title II dates, git.wayne.edu's patch routine, PHP image targets, the MySQL 5.6 timeline, the deploy gate in Citadel's release hook, a CSP report endpoint), with what ships meanwhile and who can answer. The front page's errata slip gains rows E-9 to E-15 and links the file, and `OpenQuestionsTest` keeps the two level.
 
 - Added: an optional `rules.fix_within_days` (days to ship a fix per advisory severity: critical, high, medium, low) in the schema, read by `Policy::fixWithinDays()`; the bundled policy sets no value yet, so nothing changes for a reader (backlog item 20).
