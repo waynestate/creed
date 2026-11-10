@@ -101,7 +101,7 @@ The reader's public members, one line each:
 - `resolveVersion($component, $version)`: the policy line a full version like `8.3.12` belongs to.
 - `isAheadOfPolicy($component, $version)`: whether a version sorts above every line the policy lists.
 - `belowOldestLineReason($component, $version)`: the reason a version is `Eol` for sorting below every listed line, or null.
-- `hasComponent()`, `components()`, `versions($component)`, `tools()`, `toolMinimum($tool)`, `rules()`: the shape of the policy itself.
+- `hasComponent()`, `components()`, `versions($component)`, `tools()`, `toolMinimum($tool)`, `toolCooldownPeriod($tool)`, `toolCooldownIgnore($tool)`, `rules()`: the shape of the policy itself.
 
 One last time: the reader answers, it does not guess.
 

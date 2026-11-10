@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Added: `Policy::toolCooldownPeriod()` and `Policy::toolCooldownIgnore()` read a tool's release cooldown (`tools.<tool>.cooldown`), so PROCTOR can take the period from the policy.
 - Added: `policy.json` names the Composer release cooldown (`tools.composer.cooldown`: `3 days`, ignoring `waynestate/*`), the period Sourdough's shapes already set; the schema allows an optional `cooldown` on any tool. Practice 40 says so and stays `Partially` until PROCTOR reads the period from the policy.
 - Docs: practice 40 and the handbook's dependency rules name PROCTOR's new `composer-cooldown` warning (no cooldown, or blocking turned off), and practice 18 and the lock rule name `lock-tracked` (git does not track the lock); both are on PROCTOR main for its next release. Practice 40 stays `Partially`.
 - Docs: practice 40's Composer cooldown is `Partially` held (Sourdough's shapes set 3 days and exempt `waynestate/*`, so a fresh app installs right after a stack release); the handbook's dependency rule says the same. The PROCTOR warning is still planned.

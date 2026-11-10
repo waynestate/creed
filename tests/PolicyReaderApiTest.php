@@ -58,7 +58,7 @@ final class PolicyReaderApiTest extends TestCase
                 'empty' => ['versions' => []],
             ],
             'tools' => [
-                'composer' => ['minimum' => '2.8.0'],
+                'composer' => ['minimum' => '2.8.0', 'cooldown' => ['period' => '3 days', 'ignore' => ['waynestate/*']]],
                 'node' => ['minimum' => '22.0.0'],
             ],
             'rules' => ['eol_grace_days' => 90],
@@ -185,6 +185,66 @@ final class PolicyReaderApiTest extends TestCase
     public function toolsListsEveryToolInFileOrder(): void
     {
         self::assertSame(['composer', 'node'], $this->testPolicy()->tools());
+    }
+
+    #[Test]
+    public function toolCooldownPeriodReadsThePeriod(): void
+    {
+        self::assertSame('3 days', $this->testPolicy()->toolCooldownPeriod('composer'));
+    }
+
+    #[Test]
+    public function toolCooldownPeriodIsNullWithoutACooldown(): void
+    {
+        self::assertNull($this->testPolicy()->toolCooldownPeriod('node'));
+        self::assertNull($this->testPolicy()->toolCooldownPeriod('yarn'));
+    }
+
+    #[Test]
+    public function toolCooldownIgnoreListsThePatterns(): void
+    {
+        self::assertSame(['waynestate/*'], $this->testPolicy()->toolCooldownIgnore('composer'));
+    }
+
+    #[Test]
+    public function toolCooldownIgnoreIsEmptyWithoutACooldown(): void
+    {
+        self::assertSame([], $this->testPolicy()->toolCooldownIgnore('node'));
+        self::assertSame([], $this->testPolicy()->toolCooldownIgnore('yarn'));
+    }
+
+    #[Test]
+    public function tempCooldownEdgeCases(): void
+    {
+        $policy = Policy::fromArray([
+            'schema_version' => 1,
+            'tools' => [
+                'a' => ['cooldown' => ['period' => 3]],
+                'b' => ['cooldown' => '3 days'],
+                'c' => ['cooldown' => []],
+                'd' => ['cooldown' => ['period' => '1 week', 'ignore' => ['x/*', '', 7, null, ['z'], 'y/*']]],
+                'e' => ['cooldown' => ['period' => '2 days']],
+                'f' => ['cooldown' => ['period' => '2 days', 'ignore' => 'not-a-list']],
+                'g' => ['minimum' => '1.0'],
+            ],
+        ]);
+        self::assertNull($policy->toolCooldownPeriod('a'), 'a: non-string period');
+        self::assertNull($policy->toolCooldownPeriod('b'), 'b: cooldown not an array');
+        self::assertNull($policy->toolCooldownPeriod('c'), 'c: cooldown without period');
+        self::assertSame('1 week', $policy->toolCooldownPeriod('d'), 'd: period');
+        self::assertSame(['x/*', 'y/*'], $policy->toolCooldownIgnore('d'), 'd: ignore keeps non-empty strings in file order');
+        self::assertSame([], $policy->toolCooldownIgnore('a'), 'a: ignore without list');
+        self::assertSame([], $policy->toolCooldownIgnore('b'), 'b: ignore without cooldown array');
+        self::assertSame([], $policy->toolCooldownIgnore('c'), 'c: ignore without list');
+        self::assertSame([], $policy->toolCooldownIgnore('e'), 'e: ignore absent');
+        self::assertSame([], $policy->toolCooldownIgnore('f'), 'f: ignore not an array');
+        self::assertSame([], $policy->toolCooldownIgnore('g'), 'g: no cooldown');
+        self::assertNull($policy->toolCooldownPeriod('nope'), 'unlisted tool period');
+        self::assertSame([], $policy->toolCooldownIgnore('nope'), 'unlisted tool ignore');
+
+        $bundled = Policy::bundled();
+        self::assertSame('3 days', $bundled->toolCooldownPeriod('composer'), 'bundled composer period');
+        self::assertSame(['waynestate/*'], $bundled->toolCooldownIgnore('composer'), 'bundled composer ignore');
     }
 
     // --- versions ---
