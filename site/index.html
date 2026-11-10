@@ -692,10 +692,17 @@
               <tr><th scope="row">E-6</th><td>Ch. 10</td><td>The accessibility chapter aims at WCAG 2.2 AA. Which ADA Title II dates apply to a given WSU unit is for counsel and the accessibility office.</td><td><span class="open">Open</span></td></tr>
               <tr><th scope="row">E-7</th><td>Handbook</td><td>Runtime and headers: the CSP report endpoints. The Cross-Origin-Resource-Policy default is settled as opt-in: HELMET 1.0.0 sends no header until the app sets one.</td><td><span class="open">Open</span></td></tr>
               <tr><th scope="row">E-8</th><td>Handbook</td><td>Gateway keys, SAML and metrics: settled 2026-11-07 and 2026-11-08. Apps read one key set file holding the current and the next key, rotated every 12 months; the <code>saml</code> driver is built on <code>onelogin/php-saml</code>; metrics speak Prometheus and stay off by default.</td><td><span class="settled">Settled</span></td></tr>
+              <tr><th scope="row">E-9</th><td><a href="#c-7-1">§7.1</a></td><td>The oldest acceptable patch per PHP line. <code>policy.json</code> can carry a <code>minimum_patch</code> per line, but none is set, so nothing fails on an old patch yet. Floors, or empty on purpose, is for the maintainers.</td><td><span class="open">Open</span></td></tr>
+              <tr><th scope="row">E-10</th><td>§7.2</td><td>How fast a fix must ship, per advisory severity. <code>composer audit</code> finds the advisory; no rule yet says "critical within N days". The maintainers pick N.</td><td><span class="open">Open</span></td></tr>
+              <tr><th scope="row">E-11</th><td><a href="#c-5-1">§5.1</a></td><td>The longest an override may run: 90 days today (<code>override_max_days</code>), the same as the grace period. Confirm 90, or name another number.</td><td><span class="open">Open</span></td></tr>
+              <tr><th scope="row">E-12</th><td>§7.9</td><td>git.wayne.edu runs GitLab 19.5.1 Community Edition. Its owners have not published a patch level and routine for the clause to cite.</td><td><span class="open">Open</span></td></tr>
+              <tr><th scope="row">E-13</th><td>§8.3</td><td>How soon the platform adds a new PHP image, how much notice comes before one is dropped, and Citadel's image names for <code>images.citadel</code>.</td><td><span class="open">Open</span></td></tr>
+              <tr><th scope="row">E-14</th><td><a href="#c-2-7">§2.7</a></td><td>The shared MySQL 5.6 server's replacement timeline. PROCTOR warns on an end-of-life MySQL and Preflight migrates on 5.6 in CI; the platform report waits for the date.</td><td><span class="open">Open</span></td></tr>
+              <tr><th scope="row">E-15</th><td>Handbook</td><td>The deploy gate in Citadel's release hook: proposed, not adopted. Until then PROCTOR gates in CI, and every check's stage in <code>policy.json</code> is <code>block</code>.</td><td><span class="open">Open</span></td></tr>
             </tbody>
           </table>
         </div>
-        <p class="errata__foot">The full backlog, 42 items, is at the end of <a href="https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#gaps-for-the-backlog">BEST_PRACTICES.md</a>.</p>
+        <p class="errata__foot">Who can answer each open row, and what changes when they do, is in <a href="https://github.com/waynestate/creed/blob/main/OPEN_QUESTIONS.md">OPEN_QUESTIONS.md</a>. The full backlog, 42 items, is at the end of <a href="https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#gaps-for-the-backlog">BEST_PRACTICES.md</a>.</p>
       </div>
     </div>
   </section>

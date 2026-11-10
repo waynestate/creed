@@ -420,8 +420,15 @@ The questions the 2026 edition hasn't answered. Each one names the clause it aff
 | E-6 | Ch. 10 | The accessibility chapter aims at WCAG 2.2 AA. Which ADA Title II dates apply to a given WSU unit is for counsel and the accessibility office. | Open |
 | E-7 | Handbook | Runtime and headers: the CSP report endpoints. The Cross-Origin-Resource-Policy default is settled as opt-in: HELMET 1.0.0 sends no header until the app sets one. | Open |
 | E-8 | Handbook | Gateway keys, SAML and metrics: settled 2026-11-07 and 2026-11-08. Apps read one key set file holding the current and the next key, rotated every 12 months; the `saml` driver is built on `onelogin/php-saml`; metrics speak Prometheus and stay off by default. | Settled |
+| E-9 | [§7.1](https://creed.apps.wayne.edu/#c-7-1) | The oldest acceptable patch per PHP line. `policy.json` can carry a `minimum_patch` per line, but none is set, so nothing fails on an old patch yet. Floors, or empty on purpose, is for the maintainers. | Open |
+| E-10 | §7.2 | How fast a fix must ship, per advisory severity. `composer audit` finds the advisory; no rule yet says "critical within N days". The maintainers pick N. | Open |
+| E-11 | [§5.1](https://creed.apps.wayne.edu/#c-5-1) | The longest an override may run: 90 days today (`override_max_days`), the same as the grace period. Confirm 90, or name another number. | Open |
+| E-12 | §7.9 | git.wayne.edu runs GitLab 19.5.1 Community Edition. Its owners have not published a patch level and routine for the clause to cite. | Open |
+| E-13 | §8.3 | How soon the platform adds a new PHP image, how much notice comes before one is dropped, and Citadel's image names for `images.citadel`. | Open |
+| E-14 | [§2.7](https://creed.apps.wayne.edu/#c-2-7) | The shared MySQL 5.6 server's replacement timeline. PROCTOR warns on an end-of-life MySQL and Preflight migrates on 5.6 in CI; the platform report waits for the date. | Open |
+| E-15 | Handbook | The deploy gate in Citadel's release hook: proposed, not adopted. Until then PROCTOR gates in CI, and every check's stage in `policy.json` is `block`. | Open |
 
-The full backlog, 42 items, is at the end of [BEST_PRACTICES.md](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#gaps-for-the-backlog).
+Who can answer each open row, and what changes when they do, is in [OPEN_QUESTIONS.md](https://github.com/waynestate/creed/blob/main/OPEN_QUESTIONS.md). The full backlog, 42 items, is at the end of [BEST_PRACTICES.md](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#gaps-for-the-backlog).
 
 Referenced tools
 

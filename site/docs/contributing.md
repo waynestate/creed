@@ -72,6 +72,10 @@ This is CREED's real maintenance job.
 
 When a stamp in `BEST_PRACTICES.md` changes, or a practice is added, update the front page in the same commit: the tally on the title page, the contents heading, that chapter's stamp bar and clause range, and the stamp on any clause the page reprints. `FrontPageTallyTest` recounts the stamps from `BEST_PRACTICES.md` and fails `composer ci` until `site/index.html` agrees; then run `composer site:agent-ready` so `site/index.md` and `llms-full.txt` follow.
 
+## Open questions [#](https://creed.apps.wayne.edu/docs/contributing.html#open-questions)
+
+`OPEN_QUESTIONS.md` lists what CREED does not know yet, and the front page prints the same list as its errata slip. `OpenQuestionsTest` keeps the two level: every open errata row on the front page is named in the file, and every row the file names is open on the page. Closing a question deletes its entry, moves the row to Settled with the date, and adds a CHANGELOG line, in one merge request.
+
 ## Things that trip people up [#](https://creed.apps.wayne.edu/docs/contributing.html#things-that-trip-people-up)
 
 - `composer.json` pins Pinstripe for dev; PROCTOR warns on any `dev-main` pin.
