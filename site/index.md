@@ -25,8 +25,8 @@ These are the stack's written standards. The handbook has the practices, and `po
 [Inspect a version](https://creed.apps.wayne.edu/#inspection) [Read the handbook](https://creed.apps.wayne.edu/handbook/)
 
 - **Enforced**: 7
-- **Checked**: 18
-- **Partially**: 14
+- **Checked**: 19
+- **Partially**: 13
 - **Documented**: 18
 - **Not yet**: 4
 
@@ -395,7 +395,7 @@ Chapter 7 · Added in the second pass
 
 ## Patching and the supply chain
 
-Nine practices, two checked so far. Chapters 8 to 11 (platform and database, policy data, accessibility, and the WSU developer standards of 2024) are in the book, with their stamps in the contents.
+Nine practices, three checked so far. Chapters 8 to 11 (platform and database, policy data, accessibility, and the WSU developer standards of 2024) are in the book, with their stamps in the contents.
 
 ### §7.1 Track the PHP patch release, not only the branch.
 

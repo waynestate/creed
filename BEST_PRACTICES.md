@@ -31,7 +31,8 @@ Preflight 0.3.0, and the practices that name it (23 and 42) were re-read against
 `first-repos.md` and its checks are named below as specified. CREED's own pipeline includes the `php-test`,
 `composer-audit`, `proctor` and `a11y` components, pinned to Preflight 0.5.0; the `proctor` job checks `deploy/` and is
 allowed to fail while its current findings are fixed. Later on 2026-11-08, after a re-read of PROCTOR main and HELMET
-main, two more tags moved: practice 26 to `Checked` and practice 28 to `Partially`.
+main, two more tags moved: practice 26 to `Checked` and practice 28 to `Partially`. On 2026-11-10 practice 40 moved
+to `Checked` after PROCTOR 0.13.0.
 
 ## 1. The version policy as data
 
@@ -686,7 +687,7 @@ Sources: [Packagist supply chain security update](https://blog.packagist.com/an-
 [GitHub: plan for a more secure npm supply chain](https://github.blog/security/supply-chain-security/our-plan-for-a-more-secure-npm-supply-chain/),
 [OWASP Top 10:2025](https://top10.owasp.org/2025) (A03, Software Supply Chain Failures).
 
-How the stack holds it: `Partially`. Decided 2026-11-03: a 3 day cooldown once Composer 2.11 is stable and in the base
+How the stack holds it: `Checked`. Decided 2026-11-03: a 3 day cooldown once Composer 2.11 is stable and in the base
 images, with Sourdough apps setting it and PROCTOR warning when it is missing (PROCTOR plan 4.11). Composer 2.11.0
 shipped on 2026-10-29 (2.11.1 on 2026-10-30), and the stack's images and CI pin 2.11.1 by digest (Preflight 0.5.0
 installs 2.11.1 by default). Every Sourdough shape now sets `config.policy.cooldown.period` to `"3 days"` (Sourdough
@@ -696,8 +697,9 @@ install for three days after each release. PROCTOR's `composer-cooldown` check (
 warns when `composer.json` sets no cooldown (`proctor/composer-cooldown/missing`) or turns its blocking off
 (`proctor/composer-cooldown/not-blocking`); it never fails and is not in `proctor gate`. `policy.json` names the period
 and the exemption (`tools.composer.cooldown`: `"3 days"`, ignoring `waynestate/*`), and the schema allows a `cooldown`
-on any tool. Still missing: PROCTOR does not read the period from the policy (its message writes 3 days) and does not
-warn on a period shorter than the policy's. The lock file (practice 18) is necessary but, per Packagist, not enough.
+on any tool. Since PROCTOR 0.13.0 (2026-11-10), `composer-cooldown` reads the period and the exemptions from the
+policy (`Policy::toolCooldownPeriod()` and `toolCooldownIgnore()`), names them in its advice, and warns
+(`proctor/composer-cooldown/too-short`) when an app's period is shorter than the policy's. The lock file (practice 18) is necessary but, per Packagist, not enough.
 
 ### 41. Set the front-end install options, and map severity words
 
@@ -1139,7 +1141,7 @@ These are places where a source disagrees with the repository or with an earlier
     `gitattributes-eol` warns when shell scripts, `.conf` files and Dockerfiles are not pinned to
     LF and on a CRLF Dockerfile or `.conf` under `deploy/` or `.squire/`; a check for the `.ps1` and `.sh` pair is still
     to add (practice 34).
-17. Done on PROCTOR main (unreleased): `preflight-pinned` warns when any CI component include, Preflight's or another
+17. Done in PROCTOR 0.12.0: `preflight-pinned` warns when any CI component include, Preflight's or another
     project's, is not pinned to a full release tag (such as `@0.4.0`) or a 40-hex commit SHA (practice 23).
 18. Partly done: the accessibility chapter is written, with the WCAG 2.2 AA target (practices 30 and 54); the Title
     II dates stay open (practice 52).
@@ -1154,7 +1156,7 @@ Added in the second pass (2026-10-27):
 21. Done: `config.policy` it is. Practice 21 is `Checked`, PROCTOR's `composer-audit` reads the `config.policy` block
     (with the legacy `audit` keys as a fallback), and the Composer the stack pins, 2.11.1, supports it (practices 21
     and 39).
-22. Done: decided 2026-11-03: a 3 day cooldown once Composer 2.11 is stable and in the base images; Sourdough apps set it and PROCTOR warns when it is missing (PROCTOR plan 4.11). Composer 2.11.0 shipped on 2026-10-29 (2.11.1 on 2026-10-30) with `policy.cooldown.period`; it is not set anywhere yet; the stack's images and CI pin 2.11.1 now, so setting it is the next step (practice 40).
+22. Done: decided 2026-11-03: a 3 day cooldown once Composer 2.11 is stable and in the base images; Sourdough apps set it and PROCTOR warns when it is missing (PROCTOR plan 4.11). Composer 2.11.0 shipped on 2026-10-29 (2.11.1 on 2026-10-30) with `policy.cooldown.period`, and the stack's images and CI pin 2.11.1. What holds it now: every Sourdough shape sets `"3 days"` with `waynestate/*` exempt, `policy.json` names the period and the exemption (`tools.composer.cooldown`), PROCTOR 0.12.0's `composer-cooldown` warns when an app sets none, and PROCTOR 0.13.0 reads the policy and warns when an app's period is shorter (practice 40).
 23. Done: Preflight 0.5.0 has the `npm-audit` component (`audit_level`, default `high`), and
     `handbook/dependencies.md` writes the severity word map between Composer and npm (practice 41).
     `ignore-scripts` and `min-release-age` are set by Squire's release script and the Vue `.npmrc`.

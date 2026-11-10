@@ -10,6 +10,7 @@ generator: Squire agent-ready
 
 ## Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Docs: practice 40 (release cooldown) is `Checked`: PROCTOR 0.13.0 reads the period and exemptions from `policy.json` and warns when an app's period is shorter; the front page tally and stamps are recounted, and backlog items 17 and 22 name what holds them today.
 - Changed: the GitHub workflow calls Preflight 0.5.0's reusable workflow (pinned to its release commit), the same release as the GitLab pipeline; it was on 0.1.4 because GitHub's copy of Preflight had no later tag.
 - Changed: the deploy layer requires PROCTOR ^0.12 (locked 0.12.0, was ^0.11): two new warning-only checks, nothing breaks.
 
