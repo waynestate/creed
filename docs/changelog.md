@@ -9,6 +9,7 @@ description: All notable changes to this project.
 
 ## Unreleased
 
+- Docs: BEST_PRACTICES and the handbook name the PROCTOR release that ships each check (0.7.0 to 0.11.0) instead of "PROCTOR main" or "its next release"; the any-component `preflight-pinned` change stays marked unreleased.
 - Site: the front page's stale facts are current (four Preflight components at 0.5.0; PROCTOR's `laravel-eol`, `node-eol` and `app-key` since 0.7.0, `repo-url-credentials` since 0.2.0, `gitattributes-eol` since 0.11.0).
 - Docs: five handbook lines now match the code: Pint's preset comes from a root `pint.json` or `--config`, PHPStan infers `phpVersion` from composer.json, the Vue preset is `flat/recommended-error`, only the Inertia starter is TypeScript, and the Citadel release-hook gate is written as pending.
 - Docs: the handbook writes the severity word map between Composer and npm (`medium` is npm's `moderate`), and backlog item 23 is done (Preflight 0.5.0's `npm-audit` applies the map).

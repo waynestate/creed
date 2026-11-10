@@ -583,7 +583,7 @@ assertions <span class="hb-cite">(the stack's SAML decision)</span>. SESAME conf
 dates. The shared server runs 5.6, which is past security support; its
 <code>security_until</code> is 2021-02-28. Laravel 13 documents MySQL 5.7 or later, and
 each Laravel line in the policy records the oldest MySQL and MariaDB it needs
-(<code>requires.mysql</code> and <code>requires.mariadb</code>); <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> main's <code>mysql-minimum</code>
+(<code>requires.mysql</code> and <code>requires.mariadb</code>); <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> 0.10.0's <code>mysql-minimum</code>
 warns when an app's declared database image is below that minimum. The
 conventions below keep an app working on the shared server until it is
 upgraded. They are a bridge, not the fix: the fix is the upgrade. Code that
@@ -798,7 +798,7 @@ HELMET neither sets nor checks it). PROCTOR check: <code>display-errors</code> w
 .user.ini or .htaccess that turns <code>display_errors</code> on or <code>log_errors</code> off (PROCTOR 0.10.0).</li>
 <li>Laravel <code>APP_DEBUG</code> <strong class="kw kw--must">MUST</strong> be <code>false</code> in production (WSU developer standards, 2024). The Laravel adapter writes one
 warning <code>helmet.debug_enabled_in_production</code> when it is true in the production environment. PROCTOR check:
-<code>app-debug</code>, on PROCTOR main: it warns when a committed production env template, deploy file or CI pipeline sets
+<code>app-debug</code> (since PROCTOR 0.10.0): it warns when a committed production env template, deploy file or CI pipeline sets
 <code>APP_DEBUG</code> to true (<code>.env.example</code> is the local template and is skipped).</li>
 </ul>
 <h3 id="runtime-and-headers--not-decided-here"><a class="hb-sec" href="#runtime-and-headers--not-decided-here">§6.8</a> Not decided here</h3>
@@ -955,8 +955,8 @@ No check exists yet.</li>
 <strong class="kw kw--must">MUST</strong> be LF: on Citadel, and on OpenShift, Coolify or raw Docker elsewhere
 <span class="hb-cite">(the stack's every-OS design)</span>. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> checks: <code>crlf-deploy-script</code>, for
 deploy scripts only: it fails on a CRLF deploy script and warns when
-<code>.gitattributes</code> does not pin <code>*.sh</code> to LF; and <code>gitattributes-eol</code> (on
-PROCTOR main, in its next release), which warns when <code>.gitattributes</code> does
+<code>.gitattributes</code> does not pin <code>*.sh</code> to LF; and <code>gitattributes-eol</code> (since
+PROCTOR 0.11.0), which warns when <code>.gitattributes</code> does
 not pin the repo's <code>*.sh</code>, <code>*.conf</code>, <code>Dockerfile</code> and <code>*.Dockerfile</code> files
 to <code>eol=lf</code>, and on a CRLF Dockerfile or <code>.conf</code> under <code>deploy/</code> or
 <code>.squire/</code>.</li>
@@ -1081,7 +1081,7 @@ a permanent override <span class="hb-cite">(the stack's deploy-gate decision)</s
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>63ad61d</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>0791f31</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

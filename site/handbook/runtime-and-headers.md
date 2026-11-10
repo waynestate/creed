@@ -59,10 +59,10 @@ The headers are the setlist: the same one on every response. The HSTS encore pla
 ## [§6.7](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#errors-in-production) Errors in production
 
 - PHP `display_errors` **MUST** be `Off` and `log_errors` `On` in production ([Squire](https://squire.apps.wayne.edu/)'s deploy kit ships that php.ini; HELMET neither sets nor checks it). PROCTOR check: `display-errors` warns on a committed php.ini, .user.ini or .htaccess that turns `display_errors` on or `log_errors` off (PROCTOR 0.10.0).
-- Laravel `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment. PROCTOR check: `app-debug`, on PROCTOR main: it warns when a committed production env template, deploy file or CI pipeline sets `APP_DEBUG` to true (`.env.example` is the local template and is skipped).
+- Laravel `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment. PROCTOR check: `app-debug` (since PROCTOR 0.10.0): it warns when a committed production env template, deploy file or CI pipeline sets `APP_DEBUG` to true (`.env.example` is the local template and is skipped).
 
 ## [§6.8](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#not-decided-here) Not decided here
 
 - The Content-Security-Policy report endpoints.
 
-Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `596925f`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `11ccf4a`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

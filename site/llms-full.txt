@@ -928,6 +928,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Docs: BEST_PRACTICES and the handbook name the PROCTOR release that ships each check (0.7.0 to 0.11.0) instead of "PROCTOR main" or "its next release"; the any-component `preflight-pinned` change stays marked unreleased.
 - Site: the front page's stale facts are current (four Preflight components at 0.5.0; PROCTOR's `laravel-eol`, `node-eol` and `app-key` since 0.7.0, `repo-url-credentials` since 0.2.0, `gitattributes-eol` since 0.11.0).
 - Docs: five handbook lines now match the code: Pint's preset comes from a root `pint.json` or `--config`, PHPStan infers `phpVersion` from composer.json, the Vue preset is `flat/recommended-error`, only the Inertia starter is TypeScript, and the Citadel release-hook gate is written as pending.
 - Docs: the handbook writes the severity word map between Composer and npm (`medium` is npm's `moderate`), and backlog item 23 is done (Preflight 0.5.0's `npm-audit` applies the map).
@@ -2494,7 +2495,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 ### [§5.1](https://creed.apps.wayne.edu/handbook/databases.html#what-the-stack-supports) What the stack supports
 
-The policy lists the MySQL versions in [`policy/policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.json), under `mysql`: 5.6, 5.7, 8.0, 8.4 and 9.7, each with its [`active_until`](https://github.com/waynestate/creed/blob/main/policy/policy.json) and [`security_until`](https://github.com/waynestate/creed/blob/main/policy/policy.json) dates. The shared server runs 5.6, which is past security support; its `security_until` is 2021-02-28. Laravel 13 documents MySQL 5.7 or later, and each Laravel line in the policy records the oldest MySQL and MariaDB it needs (`requires.mysql` and `requires.mariadb`); [PROCTOR](https://proctor.apps.wayne.edu/) main's `mysql-minimum` warns when an app's declared database image is below that minimum. The conventions below keep an app working on the shared server until it is upgraded. They are a bridge, not the fix: the fix is the upgrade. Code that follows them runs unchanged on 8.4, so the move can be made With Arms Wide Open.
+The policy lists the MySQL versions in [`policy/policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.json), under `mysql`: 5.6, 5.7, 8.0, 8.4 and 9.7, each with its [`active_until`](https://github.com/waynestate/creed/blob/main/policy/policy.json) and [`security_until`](https://github.com/waynestate/creed/blob/main/policy/policy.json) dates. The shared server runs 5.6, which is past security support; its `security_until` is 2021-02-28. Laravel 13 documents MySQL 5.7 or later, and each Laravel line in the policy records the oldest MySQL and MariaDB it needs (`requires.mysql` and `requires.mariadb`); [PROCTOR](https://proctor.apps.wayne.edu/) 0.10.0's `mysql-minimum` warns when an app's declared database image is below that minimum. The conventions below keep an app working on the shared server until it is upgraded. They are a bridge, not the fix: the fix is the upgrade. Code that follows them runs unchanged on 8.4, so the move can be made With Arms Wide Open.
 
 ### [§5.2](https://creed.apps.wayne.edu/handbook/databases.html#which-mysql-lines-the-policy-lists) Which MySQL lines the policy lists
 
@@ -2586,7 +2587,7 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`rules.eol_grace_days`**: `90`
 - **`components.*.versions.*.security_until`**: set per version
 
-Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `9801767`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `a84dd91`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2689,11 +2690,11 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - Every developer tool **MUST** work on Windows, macOS and Linux (the stack's every-OS design). No check exists yet.
 - A developer script **MUST** ship as a `.ps1` and `.sh` pair that do the same thing, or as one PHP command, which works the same everywhere (the stack's every-OS design). No check exists yet.
 - A script for Windows **MUST** be native PowerShell (`.ps1`), which never needs bash or WSL, and a script for Linux or macOS **MUST** be bash (`.sh`), written for macOS's stock bash 3.2 and its BSD tools (the stack's every-OS design). No check exists yet.
-- Every repo carries a `.gitattributes` with `* text=auto eol=lf`, and `.ps1`, `.bat` and `.cmd` set to CRLF. Anything that runs on a Linux host **MUST** be LF: on Citadel, and on OpenShift, Coolify or raw Docker elsewhere (the stack's every-OS design). [PROCTOR](https://proctor.apps.wayne.edu/) checks: `crlf-deploy-script`, for deploy scripts only: it fails on a CRLF deploy script and warns when `.gitattributes` does not pin `*.sh` to LF; and `gitattributes-eol` (on PROCTOR main, in its next release), which warns when `.gitattributes` does not pin the repo's `*.sh`, `*.conf`, `Dockerfile` and `*.Dockerfile` files to `eol=lf`, and on a CRLF Dockerfile or `.conf` under `deploy/` or `.squire/`.
+- Every repo carries a `.gitattributes` with `* text=auto eol=lf`, and `.ps1`, `.bat` and `.cmd` set to CRLF. Anything that runs on a Linux host **MUST** be LF: on Citadel, and on OpenShift, Coolify or raw Docker elsewhere (the stack's every-OS design). [PROCTOR](https://proctor.apps.wayne.edu/) checks: `crlf-deploy-script`, for deploy scripts only: it fails on a CRLF deploy script and warns when `.gitattributes` does not pin `*.sh` to LF; and `gitattributes-eol` (since PROCTOR 0.11.0), which warns when `.gitattributes` does not pin the repo's `*.sh`, `*.conf`, `Dockerfile` and `*.Dockerfile` files to `eol=lf`, and on a CRLF Dockerfile or `.conf` under `deploy/` or `.squire/`.
 - Two paths in a repo **MUST NOT** differ only by letter case (`Docs/Guide.md` and `docs/guide.md`): Windows and macOS ignore case, so one checkout silently overwrites the other, and a Linux host then loads a file nobody edited (BEST_PRACTICES practice 34). PROCTOR check: `case-clash`, since PROCTOR 0.9.0.
 - Paths are built with the language's path functions, and subprocesses start with argument arrays, never shell strings (the stack's every-OS design). PROCTOR check: `portability`.
 
-Set from [`handbook/every-os.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/every-os.md), impression `adde353`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/every-os.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/every-os.md), impression `86778b8`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2861,13 +2862,13 @@ The headers are the setlist: the same one on every response. The HSTS encore pla
 ### [§6.7](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#errors-in-production) Errors in production
 
 - PHP `display_errors` **MUST** be `Off` and `log_errors` `On` in production ([Squire](https://squire.apps.wayne.edu/)'s deploy kit ships that php.ini; HELMET neither sets nor checks it). PROCTOR check: `display-errors` warns on a committed php.ini, .user.ini or .htaccess that turns `display_errors` on or `log_errors` off (PROCTOR 0.10.0).
-- Laravel `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment. PROCTOR check: `app-debug`, on PROCTOR main: it warns when a committed production env template, deploy file or CI pipeline sets `APP_DEBUG` to true (`.env.example` is the local template and is skipped).
+- Laravel `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment. PROCTOR check: `app-debug` (since PROCTOR 0.10.0): it warns when a committed production env template, deploy file or CI pipeline sets `APP_DEBUG` to true (`.env.example` is the local template and is skipped).
 
 ### [§6.8](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#not-decided-here) Not decided here
 
 - The Content-Security-Policy report endpoints.
 
-Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `596925f`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `11ccf4a`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 

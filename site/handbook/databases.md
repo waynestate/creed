@@ -18,7 +18,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 ## [§5.1](https://creed.apps.wayne.edu/handbook/databases.html#what-the-stack-supports) What the stack supports
 
-The policy lists the MySQL versions in [`policy/policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.json), under `mysql`: 5.6, 5.7, 8.0, 8.4 and 9.7, each with its [`active_until`](https://github.com/waynestate/creed/blob/main/policy/policy.json) and [`security_until`](https://github.com/waynestate/creed/blob/main/policy/policy.json) dates. The shared server runs 5.6, which is past security support; its `security_until` is 2021-02-28. Laravel 13 documents MySQL 5.7 or later, and each Laravel line in the policy records the oldest MySQL and MariaDB it needs (`requires.mysql` and `requires.mariadb`); [PROCTOR](https://proctor.apps.wayne.edu/) main's `mysql-minimum` warns when an app's declared database image is below that minimum. The conventions below keep an app working on the shared server until it is upgraded. They are a bridge, not the fix: the fix is the upgrade. Code that follows them runs unchanged on 8.4, so the move can be made With Arms Wide Open.
+The policy lists the MySQL versions in [`policy/policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.json), under `mysql`: 5.6, 5.7, 8.0, 8.4 and 9.7, each with its [`active_until`](https://github.com/waynestate/creed/blob/main/policy/policy.json) and [`security_until`](https://github.com/waynestate/creed/blob/main/policy/policy.json) dates. The shared server runs 5.6, which is past security support; its `security_until` is 2021-02-28. Laravel 13 documents MySQL 5.7 or later, and each Laravel line in the policy records the oldest MySQL and MariaDB it needs (`requires.mysql` and `requires.mariadb`); [PROCTOR](https://proctor.apps.wayne.edu/) 0.10.0's `mysql-minimum` warns when an app's declared database image is below that minimum. The conventions below keep an app working on the shared server until it is upgraded. They are a bridge, not the fix: the fix is the upgrade. Code that follows them runs unchanged on 8.4, so the move can be made With Arms Wide Open.
 
 ## [§5.2](https://creed.apps.wayne.edu/handbook/databases.html#which-mysql-lines-the-policy-lists) Which MySQL lines the policy lists
 
@@ -110,4 +110,4 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`rules.eol_grace_days`**: `90`
 - **`components.*.versions.*.security_until`**: set per version
 
-Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `9801767`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `a84dd91`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
