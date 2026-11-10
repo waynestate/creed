@@ -86,6 +86,10 @@ This is CREED's real maintenance job.
   Booster), run `php <creed>/bin/export.php --namespace='Waynestate\<Project>\Creed' --to=src/Creed`, then
   `composer creed-copy:check` with `CREED_PATH` pointing at this checkout. ADVISOR regenerates with
   `content:generate`. See "Carrying CREED in another package" in the README.
+- **A support date that moves also moves on the front page.** The "Inspect a version" form runs the reader's rules
+  in the browser on a copy of the dates in `site/assets/creed.js`. `FrontPageInspectorTest` fails `composer ci` until
+  the copy matches `policy.json` and prints the lines to paste, so a robot refresh that moves a date opens a merge
+  request for a person instead of pushing. Patch levels are not in the copy, so the weekly patch refresh never trips it.
 - The schema is `version: 1`. Optional new fields keep it at 1; a breaking schema change needs a new version and a
   release of every reader.
 

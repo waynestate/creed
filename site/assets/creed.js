@@ -82,11 +82,13 @@
   }
 
   /* ------------------------------------ 4. the policy reader, in the browser */
-  /* A copy of the dates in policy/policy.json (2026-10-29), for this page
-     only. The policy file is the source; real tools read it through
+  /* A copy of the dates in policy/policy.json, for this page only. The
+     policy file is the source; real tools read it through
      Waynestate\Creed\Policy, never through a copy like this one. We know.
      [active_until, security_until], or "current" for a line the policy
-     marks "current": true. The rules mirror src/Policy.php. */
+     marks "current": true. The rules mirror src/Policy.php, and
+     tests/FrontPageInspectorTest.php fails CI the day this copy and the
+     file disagree, printing the lines to paste here. */
   var POLICY = {
     eol_grace_days: 90,
     components: {

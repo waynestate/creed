@@ -52,6 +52,7 @@ This is CREED's real maintenance job.
 - **Support dates move only through review.** The robot writes a date that moves earlier or a later `active_until`, and holds a later `security_until` until two sources or 14 days agree. A person who edits a date by hand puts the upstream source in the commit message. End days are inclusive.
 - **A red scheduled run is a to-do, not an outage:** run `php bin/refresh-patches.php`, read the diff, `composer ci`, add a CHANGELOG line, commit.
 - **After any policy change,** the copies downstream are stale until refreshed. In each consumer (PROCTOR, Rollcall, Booster), run `php <creed>/bin/export.php --namespace='Waynestate\<Project>\Creed' --to=src/Creed`, then `composer creed-copy:check` with `CREED_PATH` pointing at this checkout. ADVISOR regenerates with `content:generate`.
+- **A support date that moves also moves on the front page.** The "Inspect a version" form runs the reader's rules in the browser on a copy of the dates in `site/assets/creed.js`. `FrontPageInspectorTest` fails `composer ci` until the copy matches `policy.json` and prints the lines to paste, so a robot refresh that moves a date opens a merge request for a person instead of pushing. Patch levels are not in the copy, so the weekly patch refresh never trips it.
 - The schema is `version: 1`. Optional new fields keep it at 1; a breaking schema change needs a new version and a release of every reader. The older-reader contract is pinned by `tests/OlderReaderContractTest.php`; change the fixture only with a `schema_version` bump.
 
 ## Releasing
