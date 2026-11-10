@@ -9,7 +9,7 @@ The policy lists the MySQL versions in `policy/policy.json`, under `mysql`:
 dates. The shared server runs 5.6, which is past security support; its
 `security_until` is 2021-02-28. Laravel 13 documents MySQL 5.7 or later, and
 each Laravel line in the policy records the oldest MySQL and MariaDB it needs
-(`requires.mysql` and `requires.mariadb`); PROCTOR main's `mysql-minimum`
+(`requires.mysql` and `requires.mariadb`); PROCTOR 0.10.0's `mysql-minimum`
 warns when an app's declared database image is below that minimum. The
 conventions below keep an app working on the shared server until it is
 upgraded. They are a bridge, not the fix: the fix is the upgrade. Code that

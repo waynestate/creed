@@ -67,7 +67,7 @@ HTTPS.
   .user.ini or .htaccess that turns `display_errors` on or `log_errors` off (PROCTOR 0.10.0).
 - Laravel `APP_DEBUG` MUST be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one
   warning `helmet.debug_enabled_in_production` when it is true in the production environment. PROCTOR check:
-  `app-debug`, on PROCTOR main: it warns when a committed production env template, deploy file or CI pipeline sets
+  `app-debug` (since PROCTOR 0.10.0): it warns when a committed production env template, deploy file or CI pipeline sets
   `APP_DEBUG` to true (`.env.example` is the local template and is skipped).
 
 ## Not decided here

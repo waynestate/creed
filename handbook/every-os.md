@@ -15,8 +15,8 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
   MUST be LF: on Citadel, and on OpenShift, Coolify or raw Docker elsewhere
   (the stack's every-OS design). PROCTOR checks: `crlf-deploy-script`, for
   deploy scripts only: it fails on a CRLF deploy script and warns when
-  `.gitattributes` does not pin `*.sh` to LF; and `gitattributes-eol` (on
-  PROCTOR main, in its next release), which warns when `.gitattributes` does
+  `.gitattributes` does not pin `*.sh` to LF; and `gitattributes-eol` (since
+  PROCTOR 0.11.0), which warns when `.gitattributes` does
   not pin the repo's `*.sh`, `*.conf`, `Dockerfile` and `*.Dockerfile` files
   to `eol=lf`, and on a CRLF Dockerfile or `.conf` under `deploy/` or
   `.squire/`.

@@ -256,7 +256,7 @@ Why: an app that cannot move PHP also cannot move Laravel, and the reverse.
 Sources: [Laravel release notes](https://laravel.com/docs/13.x/releases).
 
 How the stack holds it: `Checked`. `policy.json` records the PHP range each Laravel release supports (Laravel 10 to
-13), and the reader exposes it through `phpRange()`; `tests/PolicyRequiresTest.php` pins the values. PROCTOR main's
+13), and the reader exposes it through `phpRange()`; `tests/PolicyRequiresTest.php` pins the values. PROCTOR 0.7.0's
 `proctor/laravel-php` reads the app's `require.php` and its locked `laravel/framework`, and fails when the PHP
 constraint allows no PHP in the policy's range for that Laravel release, or allows PHP below the release's floor.
 
@@ -271,7 +271,7 @@ Sources: [Laravel release notes](https://laravel.com/docs/13.x/releases).
 
 How the stack holds it: `Checked`. The reader can classify Laravel 10, 11, 12 and 13 (second pass: 13 was added after
 the first pass). PROCTOR `unpatched` reads `laravel/framework` from `composer.lock` and warns when the locked patch
-trails the policy's `latest_patch`; PROCTOR main's `proctor/laravel-eol` classifies the locked Laravel line through
+trails the policy's `latest_patch`; PROCTOR 0.7.0's `proctor/laravel-eol` classifies the locked Laravel line through
 the policy, where an active line passes, a security-only line warns and an EOL line fails. A supported branch is not
 enough on its own: see practice 38 for the October 2026 Laravel advisory.
 
@@ -287,7 +287,7 @@ Sources: [Node.js release schedule](https://github.com/nodejs/Release),
 [Node release schedule data](https://raw.githubusercontent.com/nodejs/Release/main/schedule.json).
 
 How the stack holds it: `Checked`. The dates for 20, 22, 24 and 26 are in `policy.json` (second pass: 26 was added after
-the first pass, and its dates match the Node schedule). PROCTOR main's `proctor/node-eol` reads every Node version an app
+the first pass, and its dates match the Node schedule). PROCTOR 0.7.0's `proctor/node-eol` reads every Node version an app
 pins (`.nvmrc`, `.node-version`, package.json `volta.node`, the `node` image in `.gitlab-ci.yml` or a Dockerfile) and
 grades it through the policy: an active line passes, a security-only line warns and an EOL line fails. `engines.node`
 and odd majors warn. Node 27 changes the schedule shape: see practice 49.
@@ -302,7 +302,7 @@ Why: a database that no longer gets fixes holds everything above it back.
 Sources: [endoflife.date MySQL](https://endoflife.date/mysql).
 
 How the stack holds it: `Partially`. `policy.json` lists MySQL 5.6, 5.7, 8.0, 8.4 and 9.7 (second pass: 9.7 was added
-after the first pass). PROCTOR main's `proctor/mysql-eol` grades every MySQL or MariaDB version an app names (an
+after the first pass). PROCTOR 0.8.0's `proctor/mysql-eol` grades every MySQL or MariaDB version an app names (an
 official image in a root compose file, or `SQUIRE_MYSQL_IMAGE` in an example env file) through the policy: a
 security-only line warns, and an EOL line warns too, never fails, until the platform offers a supported MySQL. The
 platform's own MySQL timeline is still an open question, so the "say when the platform lags" half is not held. The
@@ -374,7 +374,7 @@ working only while the matching `policy` section is absent. So the stack should 
 uses, and which of the two config styles it follows.
 
 How the stack holds it: `Checked`. The policy's `rules.abandoned_packages` is `fail` (see `handbook/dependencies.md`),
-and PROCTOR main's `proctor/composer-audit/abandoned` applies it.
+and PROCTOR 0.7.0's `proctor/composer-audit/abandoned` applies it.
 
 ### 22. Keep the core free of framework dependencies
 
@@ -419,7 +419,7 @@ Why: a repository is copied to many machines and outlives any one password.
 Sources: [OWASP Secrets Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html),
 [Laravel configuration docs](https://laravel.com/docs/13.x/configuration).
 
-How the stack holds it: `Partially`. `handbook/secrets.md` writes the rules. PROCTOR main warns on two kinds of committed
+How the stack holds it: `Partially`. `handbook/secrets.md` writes the rules. PROCTOR warns on two kinds of committed
 secret: a real `.env` file or a real `APP_KEY` (`proctor/app-key/committed-env` and `committed-key`, practice 43) and a
 token written into a package source URL or `.npmrc` (`proctor/repo-url-credentials`). Preflight 0.5.0's
 `secret-detection` component runs Gitleaks over the checked-out tree and fails the pipeline on a match, so an API key
@@ -435,7 +435,7 @@ Why: it works on a laptop and breaks in production.
 
 Sources: [Laravel configuration docs](https://laravel.com/docs/13.x/configuration).
 
-How the stack holds it: `Checked`. PROCTOR main's `proctor/env-outside-config` warns for every `env()` call in a Laravel
+How the stack holds it: `Checked`. PROCTOR 0.7.0's `proctor/env-outside-config` warns for every `env()` call in a Laravel
 app outside `config/`, in PHP and in Blade templates. A call that carries Larastan's own ignore marker for the same rule
 (`larastan.noEnvCallsOutsideOfConfig`) is reported as reviewed, not counted. `handbook/code.md` names the rule.
 
@@ -569,7 +569,7 @@ How the stack holds it: `Partially`. The stack's every-OS design and `every-os.m
 `.gitattributes`. PROCTOR 0.10.0's `proctor/crlf-deploy-script` fails when a deploy script (`build.sh`, `release.sh`, or
 a `.sh` file under `deploy/`, `deployments/`, `deploy_scripts/` or `scripts/`) has Windows line endings, and warns
 when the app has a deploy script and `.gitattributes` does not pin `*.sh` to LF. PROCTOR 0.9.0's `case-clash` fails
-when two paths differ only by letter case. PROCTOR main's `gitattributes-eol`, which ships in PROCTOR's next release,
+when two paths differ only by letter case. PROCTOR 0.11.0's `gitattributes-eol`
 reads `.gitattributes` the way Git applies it and warns when the app's `*.sh`, `*.conf`, `Dockerfile` or
 `*.Dockerfile` files are not pinned to `eol=lf` (`proctor/gitattributes-eol/not-pinned`), and when a Dockerfile or
 `.conf` under `deploy/` or `.squire/` has Windows line endings (`proctor/gitattributes-eol/crlf`). No check asks for
@@ -763,7 +763,7 @@ Sources: [GitGuardian, exploiting public APP_KEY leaks](https://blog.gitguardian
 patches only. It is one option, not an endorsement. Windows support is not stated on the page, so check it before
 adopting).
 
-How the stack holds it: `Checked`. PROCTOR main's `proctor/app-key` warns when a real env file is committed
+How the stack holds it: `Checked`. PROCTOR 0.7.0's `proctor/app-key` warns when a real env file is committed
 (`committed-env`), when a committed env file or `config/app.php` carries a real `APP_KEY` or `APP_PREVIOUS_KEYS`
 (`committed-key`; the key is never printed), and when the session driver is `cookie` (`cookie-sessions`). An
 uncommitted `.env` on a laptop is never graded. Rotating a key that leaked stays a process: the check names
@@ -969,7 +969,7 @@ wrote it. A leaked password is a bad encore: everyone remembers it, and nobody a
 
 Sources: the WSU developer standards, 2024 (an internal WSU document), [OWASP ASVS](https://asvs.owasp.org/).
 
-How the stack holds it: `Partially`. `handbook/secrets.md` writes the rule. PROCTOR main warns on committed env files and
+How the stack holds it: `Partially`. `handbook/secrets.md` writes the rule. PROCTOR warns on committed env files and
 APP_KEYs (`proctor/app-key`, practice 43), on tokens in package source URLs (`proctor/repo-url-credentials`), and on
 dumps, backups, logs and env files in the served folder (`proctor/served-folder`, practice 59), and Preflight 0.5.0's
 `secret-detection` component fails a pipeline on a committed secret Gitleaks recognizes. What a log or an
@@ -1030,7 +1030,7 @@ are read by strangers.
 
 Sources: the WSU developer standards, 2024 (an internal WSU document).
 
-How the stack holds it: `Partially`. `handbook/production.md` writes the rule. PROCTOR main's `proctor/served-folder`
+How the stack holds it: `Partially`. `handbook/production.md` writes the rule. PROCTOR 0.7.0's `proctor/served-folder`
 warns when a committed file under `public/` is a dump, a backup or editor copy, a log, an env file or `adminer*.php`, or
 calls `phpinfo()`, and `proctor/world-writable` warns on `chmod 777` in scripts, Dockerfiles, CI and composer or npm
 scripts, and on a PHP `chmod()` with `0777`. Whether the app runs as a non-root user is a fact of the running
@@ -1107,15 +1107,15 @@ These are places where a source disagrees with the repository or with an earlier
    merge request when it is red; its first refresh landed on 2026-11-08 (practice 8).
 3. Done: the schema allows `"current": true` lines with no end date, and Vue 3, Inertia 2 and Inertia 3 are listed (practice 9).
 4. Done: `policy/sources.json` records each source with its first_seen and last_seen, and `policy.json` keeps `latest_patch_checked` (practice 6).
-5. Done: policy.json records the supported PHP range per Laravel release, and PROCTOR main's `laravel-php` compares an app's `require.php` with it (practice 14).
-6. Done: PROCTOR main's `laravel-eol` reads the Laravel line from `composer.lock` and grades it through the policy (practice 15).
-7. Done: PROCTOR main's `node-eol` grades the Node version in `.nvmrc`, `.node-version`, `volta.node`, CI and
+5. Done: policy.json records the supported PHP range per Laravel release, and PROCTOR 0.7.0's `laravel-php` compares an app's `require.php` with it (practice 14).
+6. Done: PROCTOR 0.7.0's `laravel-eol` reads the Laravel line from `composer.lock` and grades it through the policy (practice 15).
+7. Done: PROCTOR 0.7.0's `node-eol` grades the Node version in `.nvmrc`, `.node-version`, `volta.node`, CI and
    Dockerfile images, and `engines` (practice 16).
-8. Partly done: PROCTOR main's `mysql-eol` grades the MySQL an app names, warning only; a platform report waits for the
+8. Partly done: PROCTOR 0.8.0's `mysql-eol` grades the MySQL an app names, warning only; a platform report waits for the
    platform timeline (practice 17).
-9. Done: `rules.abandoned_packages` is `fail`, and PROCTOR main's `composer-audit` applies it (practice 21).
+9. Done: `rules.abandoned_packages` is `fail`, and PROCTOR 0.7.0's `composer-audit` applies it (practice 21).
 10. Done: Preflight's `secret-detection` component (since 0.2.0; the pin is 0.5.0) runs Gitleaks and fails on a match (practice 24).
-11. Done: PROCTOR main's `env-outside-config` warns on `env()` outside `config/` (practice 25). Larastan's own rule in
+11. Done: PROCTOR 0.7.0's `env-outside-config` warns on `env()` outside `config/` (practice 25). Larastan's own rule in
     Pinstripe would catch it earlier, in the editor.
 12. Done: the runtime and headers chapter is written (practice 26), PROCTOR's `app-debug` warns on a committed
     production template, deploy file or CI pipeline that sets `APP_DEBUG` to true, and HELMET warns at boot when it is
@@ -1128,8 +1128,8 @@ These are places where a source disagrees with the repository or with an earlier
 15. Done: the policy's `gate` block carries per-check stages (`report`, `warn`, `block`) with `from` dates, in the
     schema and the reader, and `proctor gate` (PROCTOR 0.9.0) applies them; no rule is staged yet (practice 28).
 16. Partly done: PROCTOR's `crlf-deploy-script` fails on CRLF in deploy scripts and warns when `.gitattributes` does
-    not pin them to LF, PROCTOR 0.9.0's `case-clash` fails on file-name case collisions, and PROCTOR main's
-    `gitattributes-eol` (in its next release) warns when shell scripts, `.conf` files and Dockerfiles are not pinned to
+    not pin them to LF, PROCTOR 0.9.0's `case-clash` fails on file-name case collisions, and PROCTOR 0.11.0's
+    `gitattributes-eol` warns when shell scripts, `.conf` files and Dockerfiles are not pinned to
     LF and on a CRLF Dockerfile or `.conf` under `deploy/` or `.squire/`; a check for the `.ps1` and `.sh` pair is still
     to add (practice 34).
 17. Done on PROCTOR main (unreleased): `preflight-pinned` warns when any CI component include, Preflight's or another
@@ -1153,7 +1153,7 @@ Added in the second pass (2026-10-27):
     `ignore-scripts` and `min-release-age` are set by Squire's release script and the Vue `.npmrc`.
 24. Done: git.wayne.edu, the home of every stack repo, runs GitLab 19.5.1 Community Edition, the Free tier (the rule is
     written in `handbook/code.md`; practice 42).
-25. Partly done: PROCTOR main's `app-key` warns on a committed `.env` or `APP_KEY` and the cookie session driver, on
+25. Partly done: PROCTOR 0.7.0's `app-key` warns on a committed `.env` or `APP_KEY` and the cookie session driver, on
     every OS (practice 43). The secrets chapter names the check; the general secret scan is item 10.
 26. Partly done: `images.docker` is filled for PHP 8.3 to 8.5 and the rebuild rule is in `handbook/versions.md`;
     `citadel` waits for Citadel's image names.
@@ -1176,9 +1176,9 @@ Added in the second pass (2026-10-27):
 
 Added from the WSU developer standards (2026-11-02):
 
-38. Done: PROCTOR main's `served-folder` warns on `phpinfo()`, dumps, backups, logs, env files and `adminer*.php`
+38. Done: PROCTOR 0.7.0's `served-folder` warns on `phpinfo()`, dumps, backups, logs, env files and `adminer*.php`
     committed under `public/` (practice 59).
-39. Partly done: PROCTOR main's `world-writable` warns on `chmod 777` in scripts and PHP; web-writable paths outside an
+39. Partly done: PROCTOR 0.7.0's `world-writable` warns on `chmod 777` in scripts and PHP; web-writable paths outside an
     allowed list need the running container (practice 59).
 40. Done: a committed-secret scan in Preflight, the `secret-detection` component (since 0.2.0); extends items 10 and 25 and practice 55.
 41. Done: `policy.json` records the idle limits (`sessions`), and the handbook's auth chapter states them and points at
