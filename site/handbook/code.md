@@ -10,7 +10,7 @@ Chapter 3
 
 # Code
 
-13 sections · 43 provisions · **MUST NOT** 7 · **MUST** 23 · **SHOULD** 5 · **MAY** 1
+13 sections · 43 provisions · **MUST NOT** 8 · **MUST** 23 · **SHOULD** 5
 
 Partly decided
 
@@ -76,7 +76,7 @@ Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowe
 
 ## [§3.8](https://creed.apps.wayne.edu/handbook/code.html#security-analysis) Security analysis
 
-- Nothing **MAY** rely on GitLab SAST: the stack's GitLab instances run the Free tier (the stack's coding standard). No check exists yet.
+- An app **MUST NOT** rely on GitLab SAST: the stack's GitLab instances run the Free tier (the stack's coding standard). No check exists yet.
 - The open tools instead: Larastan's env rule, `phpstan-disallowed-calls`, and a Psalm taint-analysis pilot on one app (the stack's coding standard).
 
 ## [§3.9](https://creed.apps.wayne.edu/handbook/code.html#how-it-is-enforced) How it is enforced
@@ -134,4 +134,4 @@ Table 3-1
 - GitLab Code Quality: [https://docs.gitlab.com/ci/testing/code_quality/](https://docs.gitlab.com/ci/testing/code_quality/)
 - OWASP ASVS: [https://asvs.owasp.org/](https://asvs.owasp.org/)
 
-Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `cbd002d`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `bdbb4b4`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
