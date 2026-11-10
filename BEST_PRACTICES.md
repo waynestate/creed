@@ -692,10 +692,12 @@ shipped on 2026-10-29 (2.11.1 on 2026-10-30), and the stack's images and CI pin 
 installs 2.11.1 by default). Every Sourdough shape now sets `config.policy.cooldown.period` to `"3 days"` (Sourdough
 main, 2026-11-10) and exempts the stack's own packages with `"ignore": ["waynestate/*"]`: the templates require the
 newest stack releases, which the stack's CI tested before tagging, and without the exemption a fresh app could not
-install for three days after each release. PROCTOR's `composer-cooldown` check (on PROCTOR main, 2026-11-10, in its
-next release) warns when `composer.json` sets no cooldown (`proctor/composer-cooldown/missing`) or turns its blocking
-off (`proctor/composer-cooldown/not-blocking`); it never fails and is not in `proctor gate`. Still missing: nothing in
-`policy.json` names the period, so the check's 3 days is written in its message, not read from the policy. The lock file (practice 18) is necessary but, per Packagist, not enough.
+install for three days after each release. PROCTOR's `composer-cooldown` check (since PROCTOR 0.12.0, 2026-11-10)
+warns when `composer.json` sets no cooldown (`proctor/composer-cooldown/missing`) or turns its blocking off
+(`proctor/composer-cooldown/not-blocking`); it never fails and is not in `proctor gate`. `policy.json` names the period
+and the exemption (`tools.composer.cooldown`: `"3 days"`, ignoring `waynestate/*`), and the schema allows a `cooldown`
+on any tool. Still missing: PROCTOR does not read the period from the policy (its message writes 3 days) and does not
+warn on a period shorter than the policy's. The lock file (practice 18) is necessary but, per Packagist, not enough.
 
 ### 41. Set the front-end install options, and map severity words
 
