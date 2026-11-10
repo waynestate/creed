@@ -225,7 +225,7 @@ From `policy/policy.json`, schema version 1, patches checked 2026-10-28 to 2026-
 
 Laravel gives bug fixes for 18 months and security fixes for two years. Laravel 11 and older are EOL. Laravel 12 gets security fixes until 2027-02-24; Laravel 13 until 2028-03-17.
 
-Held by The reader can classify 10 to 13. PROCTOR `unpatched` reads `laravel/framework` from `composer.lock` and warns when the locked patch trails the policy's `latest_patch`; PROCTOR main's `proctor/laravel-eol` classifies the locked Laravel line through the policy, where an active line passes, a security-only line warns and an EOL line fails.
+Held by The reader can classify 10 to 13. PROCTOR `unpatched` reads `laravel/framework` from `composer.lock` and warns when the locked patch trails the policy's `latest_patch`; PROCTOR's `proctor/laravel-eol` (since 0.7.0) classifies the locked Laravel line through the policy, where an active line passes, a security-only line warns and an EOL line fails.
 
 Checked
 
@@ -235,7 +235,7 @@ Checked
 
 Build front ends on a Node line that has not reached end of life: 22, 24 and 26. Node 20 reached end of life on 2026-04-30.
 
-Held by The dates are in `policy.json`. PROCTOR main's `proctor/node-eol` reads the Node version an app pins in `.nvmrc`, `volta.node`, CI and Dockerfiles, and grades it through the policy: an active line passes, a security-only line warns and an EOL line fails.
+Held by The dates are in `policy.json`. PROCTOR's `proctor/node-eol` (since 0.7.0) reads the Node version an app pins in `.nvmrc`, `volta.node`, CI and Dockerfiles, and grades it through the policy: an active line passes, a security-only line warns and an EOL line fails.
 
 Checked
 
@@ -289,7 +289,7 @@ Checked
 
 ### §3.6 Pin CI components to a tag or SHA.
 
-Include shared CI components at a tag or a full commit SHA, never `~latest`. CREED's own pipeline pins its three Preflight components to the 0.3.0 tag.
+Include shared CI components at a tag or a full commit SHA, never `~latest`. CREED's own pipeline pins its four Preflight components to the 0.5.0 tag.
 
 Gap `ci.md` writes the rule. [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `preflight-pinned` warns when a [Preflight](https://creed.apps.wayne.edu/#ahj-preflight) include is not pinned to a full release tag or a commit SHA; components from anywhere else are not checked.
 
@@ -307,7 +307,7 @@ Of the three practices in this chapter, two are checked and one is partly checke
 
 Do not commit `.env`, keys, tokens or passwords. Commit `.env.example` with placeholders. Rotate a secret that was ever exposed.
 
-Gap The handbook's secrets chapter writes the rules. PROCTOR main warns on a committed `.env` or `APP_KEY` (`proctor/app-key`) and on a token in a package source URL (`proctor/repo-url-credentials`). [Preflight](https://creed.apps.wayne.edu/#ahj-preflight) `secret-detection` runs Gitleaks and fails a pipeline on a committed secret; rotation stays a process.
+Gap The handbook's secrets chapter writes the rules. PROCTOR warns on a committed `.env` or `APP_KEY` (`proctor/app-key`, since 0.7.0) and on a token in a package source URL (`proctor/repo-url-credentials`, since 0.2.0). [Preflight](https://creed.apps.wayne.edu/#ahj-preflight) `secret-detection` runs Gitleaks and fails a pipeline on a committed secret; rotation stays a process.
 
 Partially
 
@@ -375,7 +375,7 @@ Documented
 
 Scripts ship as a `.ps1` and `.sh` pair, or as one PHP command. Every repo carries `.gitattributes` with `* text=auto eol=lf`.
 
-Gap [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `crlf-deploy-script` fails a deploy script with Windows line endings. `gitattributes-eol`, on PROCTOR main and in its next release, warns when `.gitattributes` leaves shell scripts, `.conf` files or Dockerfiles off LF, and on a CRLF Dockerfile or `.conf` under `deploy/` or `.squire/`. Nothing checks the `.ps1` and `.sh` pair yet.
+Gap [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `crlf-deploy-script` fails a deploy script with Windows line endings. `gitattributes-eol` (since PROCTOR 0.11.0) warns when `.gitattributes` leaves shell scripts, `.conf` files or Dockerfiles off LF, and on a CRLF Dockerfile or `.conf` under `deploy/` or `.squire/`. Nothing checks the `.ps1` and `.sh` pair yet.
 
 Partially
 
