@@ -442,6 +442,7 @@ CREED writes the rules down. These are the other projects in the stack, and the 
 - ![Booster logo: a syringe with rocket fins and a gold flame](https://creed.apps.wayne.edu/assets/marks/booster.png)[Booster](https://booster.apps.wayne.edu/) *new*Upgrades PHP and Laravel one version at a time.Gets you off a Grace expired row
 - ![ADVISOR logo: a speech bubble with a gold compass needle](https://creed.apps.wayne.edu/assets/marks/advisor.png)[ADVISOR](https://advisor.apps.wayne.edu/) *new*An MCP server your agent can ask about the rules and dates.Explains; never gates (§6.4)
 - ![Squire logo: a satchel with a gold buckle](https://creed.apps.wayne.edu/assets/marks/squire.png)[Squire](https://squire.apps.wayne.edu/) *new*Carries the release to Citadel. This page deploys with it.The deploy gate, proposed
+- ![Parity logo: a spirit level with a gold bubble](https://creed.apps.wayne.edu/assets/marks/parity.png)Parity *new*Runs Citadel on your computer: its PHP image, its proxy and MySQL 5.6. Version 0.1.0 and its site are coming.[§6.5](https://creed.apps.wayne.edu/#c-6-5)
 - ![Drawbridge logo: a castle tower with its bridge down on a gold chain](https://creed.apps.wayne.edu/assets/marks/drawbridge.png)[Drawbridge](https://drawbridge.apps.wayne.edu/) *new*The Citadel sign-in gateway.Erratum E-8
 
 Appendix A
