@@ -10,7 +10,7 @@ Chapter 3
 
 # Code
 
-13 sections · 43 provisions · **MUST NOT** 3 · **MUST** 6 · **SHOULD** 2
+13 sections · 43 provisions · **MUST NOT** 3 · **MUST** 9 · **SHOULD** 5
 
 Partly decided
 
@@ -20,9 +20,9 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 - Laravel apps use Pint's `laravel` preset (the stack's coding standard).
 - Raw PHP apps and the stack's own packages use the `per` preset, PER Coding Style 3.1 (the stack's coding standard).
-- One formatter per repo, never two (the stack's coding standard).
+- A repo **MUST** use one formatter, never two (the stack's coding standard). No check exists yet.
 - An app points Pint at the preset in `vendor/waynestate/pinstripe/pint/` with `--config` (the stack's coding standard).
-- Files are UTF-8 without a BOM, with LF line endings (the stack's every-OS design).
+- Files **MUST** be UTF-8 without a BOM, with LF line endings (the stack's every-OS design). [PROCTOR](https://proctor.apps.wayne.edu/) check: `gitattributes-eol` (the LF pins; nothing checks for a BOM yet).
 
 ## [§3.2](https://creed.apps.wayne.edu/handbook/code.html#reading-the-code) Reading the code
 
@@ -34,9 +34,9 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 - All source is kept in git. Access to a repo **MUST** be removed when someone leaves the project or the university (WSU developer standards, 2024). No check exists yet.
 - The stack's code has its primary home on git.wayne.edu; the standards name git.wayne.edu as the preferred home.
-- Register the project in the catalog Enterprise Apps names, and keep its environments current. Stack apps also register with [Rollcall](https://rollcall.apps.wayne.edu/), the stack's census (WSU developer standards, 2024).
+- A project **SHOULD** register in the catalog Enterprise Apps names, and keep its environments current. Stack apps also register with [Rollcall](https://rollcall.apps.wayne.edu/), the stack's census (WSU developer standards, 2024). No check exists yet.
 - Every repo's README **MUST** say how to install, configure and deploy the code for local development, on every OS (see `every-os.md`), and how to update an existing deployment (WSU developer standards, 2024). No check exists yet.
-- If the Help Desk might be contacted about the project, keep an overview in the repo: what it does, who uses it, known common issues and who to call for an incident; deliver changes to the Help Desk when it changes (WSU developer standards, 2024).
+- If the Help Desk might be contacted about the project, the repo **SHOULD** keep an overview: what it does, who uses it, known common issues and who to call for an incident, and changes **SHOULD** be delivered to the Help Desk when it changes (WSU developer standards, 2024). No check exists yet.
 
 ## [§3.4](https://creed.apps.wayne.edu/handbook/code.html#static-analysis) Static analysis
 
@@ -45,7 +45,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - Every inline ignore carries an identifier and a reason; configs set `reportIgnoresWithoutComments` (the stack's coding standard).
 - PHPStan's `phpVersion` follows the policy's PHP floor (the stack's coding standard).
 - Existing apps start at the highest level they pass, with a committed baseline that **MUST NOT** grow, then raise the level one step at a time (the stack's coding standard). No check exists yet. Like the band says, the only way is Higher.
-- New packages have no baseline (the stack's coding standard).
+- New packages **MUST** have no baseline (the stack's coding standard). No check exists yet.
 - Two reasons for level 8:
   - The starters begin clean, so new apps pass from day one (the stack's coding standard).
   - Null handling is the class of bug level 8 adds; in the stack's auth and header code, a null bug is a security bug (the stack's coding standard).
@@ -59,7 +59,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowed-calls` for plain bans, and a custom rule only when neither fits.
 
-- `env()` only in `config/` files, from Larastan's `NoEnvCallsOutsideOfConfig` rule. [PROCTOR](https://proctor.apps.wayne.edu/) check: `env-outside-config` (a warning per call); [Pinstripe](https://pinstripe.apps.wayne.edu/)'s Laravel cut turns Larastan's rule on (`noEnvCallsOutsideOfConfig`, Pinstripe 0.1.4).
+- `env()` only in `config/` files, from Larastan's `NoEnvCallsOutsideOfConfig` rule. PROCTOR check: `env-outside-config` (a warning per call); [Pinstripe](https://pinstripe.apps.wayne.edu/)'s Laravel cut turns Larastan's rule on (`noEnvCallsOutsideOfConfig`, Pinstripe 0.1.4).
 - No disabled TLS verification, such as `withoutVerifying()` or `CURLOPT_SSL_VERIFYPEER` set to false (OWASP ASVS). `withoutVerifying()` is banned by `pinstripe.banned.withoutVerifying` (Pinstripe 0.2.0). Since Pinstripe 0.3.0 the rest are banned too: `CURLOPT_SSL_VERIFYPEER` set to false or `CURLOPT_SSL_VERIFYHOST` set to 0 (`pinstripe.banned.curlVerifyOff`), a stream context that skips the peer check (`pinstripe.banned.streamVerifyOff`) and Guzzle's `verify` set to false (`pinstripe.banned.verifyFalse`).
 - No SQL built by joining strings; use bindings (OWASP SQL Injection Prevention Cheat Sheet). Banned since Pinstripe 0.3.0 as `pinstripe.banned.joinedSql`: a variable joined into the SQL given to PDO, mysqli, `oci_parse()` (and the old `ociparse()`) or Laravel's `DB::` calls fails; literal SQL with bindings passes.
 - No debug leftovers or dynamic code: `eval()`, `extract()`, `var_dump()`, `dd()` and `dump()`. `phpstan-disallowed-calls` bans them as `pinstripe.banned.eval`, `pinstripe.banned.extract`, `pinstripe.banned.varDump`, `pinstripe.banned.dd` and `pinstripe.banned.dump` (Pinstripe 0.2.0, [https://pinstripe.apps.wayne.edu/docs/reference/banned-calls.html](https://pinstripe.apps.wayne.edu/docs/reference/banned-calls.html)).
@@ -134,4 +134,4 @@ Table 3-1
 - GitLab Code Quality: [https://docs.gitlab.com/ci/testing/code_quality/](https://docs.gitlab.com/ci/testing/code_quality/)
 - OWASP ASVS: [https://asvs.owasp.org/](https://asvs.owasp.org/)
 
-Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `bb6b472`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `fdbba82`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

@@ -84,7 +84,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 5</p>
             <h1 id="page-title">Databases</h1>
-            <p class="hb-register">9 sections · 26 provisions · <strong class="kw kw--must">MUST</strong> 4 · <strong class="kw kw--should">SHOULD</strong> 1 · <strong class="kw kw--may">MAY</strong> 1</p>
+            <p class="hb-register">9 sections · 27 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 5 · <strong class="kw kw--should">SHOULD</strong> 2 · <strong class="kw kw--may">MAY</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -152,9 +152,9 @@ supported MySQL <span class="hb-cite">(the stack's MySQL gate decision)</span>. 
 <li>Set <code>Schema::defaultStringLength(191)</code> in <code>AppServiceProvider::boot()</code>,
 before any migration runs. 5.6 caps an indexed <code>utf8mb4</code> column at 767
 bytes, which is 191 characters. PROCTOR check: <code>mysql56</code>.</li>
-<li>Keep <code>utf8mb4</code> and <code>utf8mb4_unicode_ci</code>, the defaults. Never use an
-8.0-only collation such as <code>utf8mb4_0900_ai_ci</code> (not yet confirmed on a
-5.6 server).</li>
+<li>An app <strong class="kw kw--must">MUST</strong> keep <code>utf8mb4</code> and <code>utf8mb4_unicode_ci</code>, the defaults, and <strong class="kw kw--must">MUST</strong>
+NOT use an 8.0-only collation such as <code>utf8mb4_0900_ai_ci</code> (not yet
+confirmed on a 5.6 server). No check exists yet.</li>
 <li>Store JSON as <code>text</code> or <code>longText</code>, with Eloquent <code>array</code> or <code>json</code> casts,
 and filter in PHP. 5.6 has no JSON column type. PROCTOR check: <code>mysql56</code>.</li>
 <li>Leave <code>use_upsert_alias</code> unset, so <code>upsert()</code> uses <code>VALUES()</code>. The row
@@ -164,9 +164,10 @@ Avoid <code>renameColumn</code> and <code>renameIndex</code>, which emit 5.7 syn
 PROCTOR check: <code>mysql56</code>.</li>
 <li>Use <code>Schema::hasTable</code> only. Column introspection is not reliable on 5.6
 (not yet confirmed on a 5.6 server).</li>
-<li>Skip <code>db:show</code> and <code>db:monitor</code>, and run one database-queue worker (or
-another driver if the platform offers one). 5.6 has no <code>SKIP LOCKED</code>, so a
-single worker avoids double-processing.</li>
+<li>Skip <code>db:show</code> and <code>db:monitor</code>. PROCTOR check: <code>mysql56</code>.</li>
+<li>An app <strong class="kw kw--should">SHOULD</strong> run one database-queue worker (or another driver if the
+platform offers one). 5.6 has no <code>SKIP LOCKED</code>, so a single worker avoids
+double-processing. No check exists yet.</li>
 <li>Use <code>timestamp</code>, not <code>date</code>, for <code>useCurrent()</code>. A <code>date</code> column cannot
 take a current-timestamp default on 5.6.</li>
 <li>Run migrations in CI against a real 5.6 container. SQLite-only tests pass
@@ -252,7 +253,7 @@ list is not checked yet.</p>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="auth.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 4</span><span class="hb-pager__name">Auth</span></a><a class="hb-pager__link hb-pager__link--next" href="runtime-and-headers.html" rel="next"><span class="hb-pager__dir">Next · Chapter 6</span><span class="hb-pager__name">Runtime and headers</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/databases.md"><code>handbook/databases.md</code> on GitHub</a>, impression <code>76a165f</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/databases.md"><code>handbook/databases.md</code> on GitHub</a>, impression <code>9801767</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

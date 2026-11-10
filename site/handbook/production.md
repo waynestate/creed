@@ -10,7 +10,7 @@ Chapter 12
 
 # Production
 
-3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 5 · **SHOULD** 3
+3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 8 · **SHOULD** 4
 
 Decided
 
@@ -21,8 +21,8 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - Every environment more than one person can reach follows the whole handbook; only a developer's own machine is exempt (WSU developer standards, 2024).
 - Keep at least a pre-production and a production environment, each with its own working copy of every piece, database and supporting services included (WSU developer standards, 2024).
 - Each deployment **SHOULD** be isolated from the others (one container per app), so one compromise does not become many. This holds on Citadel, OpenShift, Coolify and plain Docker (WSU developer standards, 2024). No check exists yet.
-- Decide early whether the deployment is in disaster-recovery scope, and write the decision in the README (WSU developer standards, 2024).
-- Back up anything kept outside source control, databases included. Say in the README how to restore one app (WSU developer standards, 2024).
+- Whether a deployment is in disaster-recovery scope **SHOULD** be decided early, and the decision written in the README (WSU developer standards, 2024). No check exists yet.
+- Anything kept outside source control, databases included, **MUST** be backed up. The README **MUST** say how to restore one app (WSU developer standards, 2024). No check exists yet.
 - An app **SHOULD** be load tested in each environment where heavy use is expected (WSU developer standards, 2024). No check exists yet.
 
 ## [§12.2](https://creed.apps.wayne.edu/handbook/production.html#running-safely) Running safely
@@ -31,7 +31,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - The web server **MUST NOT** list directory contents (WSU developer standards, 2024). [PROCTOR](https://proctor.apps.wayne.edu/) check: `directory-listing` warns on committed server config that turns listing on (PROCTOR 0.10.0).
 - File permissions **MUST** be set per path; write access for the web server is granted only to specific files or folders, and mode `777` **MUST NOT** be used (WSU developer standards, 2024). PROCTOR check: `world-writable` (`chmod 777` in scripts, Dockerfiles, CI and PHP).
 - Debugging and diagnostic files, scripts, dumps and backups **MUST NOT** sit in the served folder (WSU developer standards, 2024). PROCTOR check: `served-folder` (`phpinfo()`, dumps, backups, logs, env files and `adminer*.php` under `public/`).
-- On failure the app degrades predictably and fails closed: an authentication error withholds access (WSU developer standards, 2024).
+- On failure the app **MUST** degrade predictably and fail closed: an authentication error withholds access (WSU developer standards, 2024). No check exists yet.
 - A person is told when something fails: a monitor calls `/up` on a schedule and alerts someone (WSU developer standards, 2024).
 - Logs are rotated or removed at a set interval; temporary files are cleaned up; uploaded files have a retention rule. Citadel rotates container logs; elsewhere the platform or the app **MUST** (WSU developer standards, 2024). No check exists yet.
 - Where it is practical, an app **SHOULD** record an audit trail of changes to data and of successful and failed access to sensitive data (WSU developer standards, 2024). No check exists yet.
@@ -44,4 +44,4 @@ Production is the encore. Keep the lights on and the doors locked, and the band 
 - Every app **MUST** limit access by network address to the audience it serves, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024). No check exists yet.
 - The one named exception: the stack's own public front pages are crawlable by design (the stack's agent-ready sites decision). It is a special case for those pages, not a general exemption for public pages.
 
-Set from [`handbook/production.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/production.md), impression `5c75d99`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/production.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/production.md), impression `3730817`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

@@ -404,8 +404,8 @@ stack's own, from the first-repos design.
 
 How the stack holds it: `Partially`. `ci.md` states it, and CREED's `.gitlab-ci.yml` pins its four Preflight
 components (`php-test`, `composer-audit`, `proctor` and `a11y`) to the 0.5.0 tag. PROCTOR main's `proctor/preflight-pinned`
-warns when an app includes a Preflight component at a branch, `~latest`, a partial version such as `0.3` or no ref; a
-full release tag (such as `@0.3.0`) or a full commit SHA passes. Components from anywhere else are not checked.
+warns when an app includes any CI component (Preflight's or anyone else's) at a branch, `~latest`, a partial version
+such as `0.3` or no ref; a full release tag (such as `@0.3.0`) or a full commit SHA passes.
 
 ## 4. Secrets and configuration
 
@@ -1133,8 +1133,8 @@ These are places where a source disagrees with the repository or with an earlier
     `gitattributes-eol` (in its next release) warns when shell scripts, `.conf` files and Dockerfiles are not pinned to
     LF and on a CRLF Dockerfile or `.conf` under `deploy/` or `.squire/`; a check for the `.ps1` and `.sh` pair is still
     to add (practice 34).
-17. Partly done: PROCTOR's `preflight-pinned` warns when a Preflight include is not pinned to a full release tag (such
-    as `@0.4.0`) or a 40-hex commit SHA; components from outside Preflight are not checked (practice 23).
+17. Done on PROCTOR main (unreleased): `preflight-pinned` warns when any CI component include, Preflight's or another
+    project's, is not pinned to a full release tag (such as `@0.4.0`) or a 40-hex commit SHA (practice 23).
 18. Partly done: the accessibility chapter is written, with the WCAG 2.2 AA target (practices 30 and 54); the Title
     II dates stay open (practice 52).
 

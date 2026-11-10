@@ -84,7 +84,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 3</p>
             <h1 id="page-title">Code</h1>
-            <p class="hb-register">13 sections · 43 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 6 · <strong class="kw kw--should">SHOULD</strong> 2</p>
+            <p class="hb-register">13 sections · 43 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 9 · <strong class="kw kw--should">SHOULD</strong> 5</p>
           </div>
           <span class="stamp stamp--checked hb-status">Partly decided</span>
         </header>
@@ -114,11 +114,11 @@
 <li>Laravel apps use Pint's <code>laravel</code> preset <span class="hb-cite">(the stack's coding standard)</span>.</li>
 <li>Raw PHP apps and the stack's own packages use the <code>per</code> preset, PER Coding
 Style 3.1 <span class="hb-cite">(the stack's coding standard)</span>.</li>
-<li>One formatter per repo, never two <span class="hb-cite">(the stack's coding standard)</span>.</li>
+<li>A repo <strong class="kw kw--must">MUST</strong> use one formatter, never two <span class="hb-cite">(the stack's coding standard)</span>. No check exists yet.</li>
 <li>An app points Pint at the preset in <code>vendor/waynestate/pinstripe/pint/</code>
 with <code>--config</code> <span class="hb-cite">(the stack's coding standard)</span>.</li>
-<li>Files are UTF-8 without a BOM, with LF line endings (the stack's
-every-OS design).</li>
+<li>Files <strong class="kw kw--must">MUST</strong> be UTF-8 without a BOM, with LF line endings (the stack's
+every-OS design). <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>gitattributes-eol</code> (the LF pins; nothing checks for a BOM yet).</li>
 </ul>
 <h2 id="reading-the-code"><a class="hb-sec" href="#reading-the-code">§3.2</a> Reading the code</h2>
 <ul>
@@ -130,9 +130,9 @@ every-OS design).</li>
 <ul>
 <li>All source is kept in git. Access to a repo <strong class="kw kw--must">MUST</strong> be removed when someone leaves the project or the university (WSU developer standards, 2024). No check exists yet.</li>
 <li>The stack's code has its primary home on git.wayne.edu; the standards name git.wayne.edu as the preferred home.</li>
-<li>Register the project in the catalog Enterprise Apps names, and keep its environments current. Stack apps also register with <a class="tool" href="https://rollcall.apps.wayne.edu/"><img src="../assets/marks/rollcall.png" alt="" width="16" height="16">Rollcall</a>, the stack's census (WSU developer standards, 2024).</li>
+<li>A project <strong class="kw kw--should">SHOULD</strong> register in the catalog Enterprise Apps names, and keep its environments current. Stack apps also register with <a class="tool" href="https://rollcall.apps.wayne.edu/"><img src="../assets/marks/rollcall.png" alt="" width="16" height="16">Rollcall</a>, the stack's census (WSU developer standards, 2024). No check exists yet.</li>
 <li>Every repo's README <strong class="kw kw--must">MUST</strong> say how to install, configure and deploy the code for local development, on every OS (see <code>every-os.md</code>), and how to update an existing deployment (WSU developer standards, 2024). No check exists yet.</li>
-<li>If the Help Desk might be contacted about the project, keep an overview in the repo: what it does, who uses it, known common issues and who to call for an incident; deliver changes to the Help Desk when it changes (WSU developer standards, 2024).</li>
+<li>If the Help Desk might be contacted about the project, the repo <strong class="kw kw--should">SHOULD</strong> keep an overview: what it does, who uses it, known common issues and who to call for an incident, and changes <strong class="kw kw--should">SHOULD</strong> be delivered to the Help Desk when it changes (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <h2 id="static-analysis"><a class="hb-sec" href="#static-analysis">§3.4</a> Static analysis</h2>
 <ul>
@@ -146,7 +146,7 @@ every-OS design).</li>
 baseline that <strong class="kw kw--must-not">MUST NOT</strong> grow, then raise the level one step at a time
 <span class="hb-cite">(the stack's coding standard)</span>. No check exists yet. Like the band says,
 the only way is Higher.</li>
-<li>New packages have no baseline <span class="hb-cite">(the stack's coding standard)</span>.</li>
+<li>New packages <strong class="kw kw--must">MUST</strong> have no baseline <span class="hb-cite">(the stack's coding standard)</span>. No check exists yet.</li>
 <li>Two reasons for level 8:
 <ul>
 <li>The starters begin clean, so new apps pass from day one <span class="hb-cite">(the stack's coding standard)</span>.</li>
@@ -165,7 +165,7 @@ header code, a null bug is a security bug <span class="hb-cite">(the stack's cod
 for plain bans, and a custom rule only when neither fits.</p>
 <ul>
 <li><code>env()</code> only in <code>config/</code> files, from Larastan's
-<code>NoEnvCallsOutsideOfConfig</code> rule. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>env-outside-config</code>
+<code>NoEnvCallsOutsideOfConfig</code> rule. PROCTOR check: <code>env-outside-config</code>
 (a warning per call); <a class="tool" href="https://pinstripe.apps.wayne.edu/"><img src="../assets/marks/pinstripe.png" alt="" width="16" height="16">Pinstripe</a>'s Laravel cut turns Larastan's rule on
 (<code>noEnvCallsOutsideOfConfig</code>, Pinstripe 0.1.4).</li>
 <li>No disabled TLS verification, such as <code>withoutVerifying()</code> or
@@ -315,7 +315,7 @@ the stack's coding standard does not decide it.</li>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="dependencies.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 2</span><span class="hb-pager__name">Dependencies</span></a><a class="hb-pager__link hb-pager__link--next" href="auth.html" rel="next"><span class="hb-pager__dir">Next · Chapter 4</span><span class="hb-pager__name">Auth</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/code.md"><code>handbook/code.md</code> on GitHub</a>, impression <code>bb6b472</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/code.md"><code>handbook/code.md</code> on GitHub</a>, impression <code>fdbba82</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

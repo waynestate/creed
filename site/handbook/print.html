@@ -215,7 +215,7 @@ ceiling: we do not go lower, no matter how the crowd sings for more.</p>
           <div>
             <p class="chap-head__kicker">Chapter 2</p>
             <h2 id="dependencies-title" class="hb-book__title">Dependencies</h2>
-            <p class="hb-register">1 section · 15 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 4 · <strong class="kw kw--must">MUST</strong> 6 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 3</p>
+            <p class="hb-register">1 section · 15 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 5 · <strong class="kw kw--must">MUST</strong> 7 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 3</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -243,7 +243,7 @@ cooldown is planned.</li>
 <li>Every project is a framework-free core plus thin adapters. <code>composer.json</code>
 requires only <code>php</code> and PSR packages; Laravel, Inertia and Vue are
 <code>suggest</code> <span class="hb-cite">(the stack's core-plus-adapters design)</span>.</li>
-<li>Adapters call the core and never re-implement it <span class="hb-cite">(the stack's core-plus-adapters design)</span>.</li>
+<li>Adapters <strong class="kw kw--must">MUST</strong> call the core and <strong class="kw kw--must-not">MUST NOT</strong> re-implement it <span class="hb-cite">(the stack's core-plus-adapters design)</span>. No check exists yet.</li>
 <li>Before adding a third-party package, check it comes from a trusted source, and where the source is open, read enough of it to judge it sound and fit (<strong class="kw kw--should">SHOULD</strong>). The audit and abandoned-package rules in this chapter apply after that choice (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <h3 id="dependencies--private-packages"><a class="hb-sec" href="#dependencies--private-packages">§2.1</a> Private packages</h3>
@@ -290,7 +290,7 @@ shipped either.</p>
           <div>
             <p class="chap-head__kicker">Chapter 3</p>
             <h2 id="code-title" class="hb-book__title">Code</h2>
-            <p class="hb-register">13 sections · 43 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 6 · <strong class="kw kw--should">SHOULD</strong> 2</p>
+            <p class="hb-register">13 sections · 43 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 9 · <strong class="kw kw--should">SHOULD</strong> 5</p>
           </div>
           <span class="stamp stamp--checked hb-status">Partly decided</span>
         </header>
@@ -301,11 +301,11 @@ shipped either.</p>
 <li>Laravel apps use Pint's <code>laravel</code> preset <span class="hb-cite">(the stack's coding standard)</span>.</li>
 <li>Raw PHP apps and the stack's own packages use the <code>per</code> preset, PER Coding
 Style 3.1 <span class="hb-cite">(the stack's coding standard)</span>.</li>
-<li>One formatter per repo, never two <span class="hb-cite">(the stack's coding standard)</span>.</li>
+<li>A repo <strong class="kw kw--must">MUST</strong> use one formatter, never two <span class="hb-cite">(the stack's coding standard)</span>. No check exists yet.</li>
 <li>An app points Pint at the preset in <code>vendor/waynestate/pinstripe/pint/</code>
 with <code>--config</code> <span class="hb-cite">(the stack's coding standard)</span>.</li>
-<li>Files are UTF-8 without a BOM, with LF line endings (the stack's
-every-OS design).</li>
+<li>Files <strong class="kw kw--must">MUST</strong> be UTF-8 without a BOM, with LF line endings (the stack's
+every-OS design). <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>gitattributes-eol</code> (the LF pins; nothing checks for a BOM yet).</li>
 </ul>
 <h3 id="code--reading-the-code"><a class="hb-sec" href="#code--reading-the-code">§3.2</a> Reading the code</h3>
 <ul>
@@ -317,9 +317,9 @@ every-OS design).</li>
 <ul>
 <li>All source is kept in git. Access to a repo <strong class="kw kw--must">MUST</strong> be removed when someone leaves the project or the university (WSU developer standards, 2024). No check exists yet.</li>
 <li>The stack's code has its primary home on git.wayne.edu; the standards name git.wayne.edu as the preferred home.</li>
-<li>Register the project in the catalog Enterprise Apps names, and keep its environments current. Stack apps also register with <a class="tool" href="https://rollcall.apps.wayne.edu/"><img src="../assets/marks/rollcall.png" alt="" width="16" height="16">Rollcall</a>, the stack's census (WSU developer standards, 2024).</li>
+<li>A project <strong class="kw kw--should">SHOULD</strong> register in the catalog Enterprise Apps names, and keep its environments current. Stack apps also register with <a class="tool" href="https://rollcall.apps.wayne.edu/"><img src="../assets/marks/rollcall.png" alt="" width="16" height="16">Rollcall</a>, the stack's census (WSU developer standards, 2024). No check exists yet.</li>
 <li>Every repo's README <strong class="kw kw--must">MUST</strong> say how to install, configure and deploy the code for local development, on every OS (see <code>every-os.md</code>), and how to update an existing deployment (WSU developer standards, 2024). No check exists yet.</li>
-<li>If the Help Desk might be contacted about the project, keep an overview in the repo: what it does, who uses it, known common issues and who to call for an incident; deliver changes to the Help Desk when it changes (WSU developer standards, 2024).</li>
+<li>If the Help Desk might be contacted about the project, the repo <strong class="kw kw--should">SHOULD</strong> keep an overview: what it does, who uses it, known common issues and who to call for an incident, and changes <strong class="kw kw--should">SHOULD</strong> be delivered to the Help Desk when it changes (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <h3 id="code--static-analysis"><a class="hb-sec" href="#code--static-analysis">§3.4</a> Static analysis</h3>
 <ul>
@@ -333,7 +333,7 @@ every-OS design).</li>
 baseline that <strong class="kw kw--must-not">MUST NOT</strong> grow, then raise the level one step at a time
 <span class="hb-cite">(the stack's coding standard)</span>. No check exists yet. Like the band says,
 the only way is Higher.</li>
-<li>New packages have no baseline <span class="hb-cite">(the stack's coding standard)</span>.</li>
+<li>New packages <strong class="kw kw--must">MUST</strong> have no baseline <span class="hb-cite">(the stack's coding standard)</span>. No check exists yet.</li>
 <li>Two reasons for level 8:
 <ul>
 <li>The starters begin clean, so new apps pass from day one <span class="hb-cite">(the stack's coding standard)</span>.</li>
@@ -352,7 +352,7 @@ header code, a null bug is a security bug <span class="hb-cite">(the stack's cod
 for plain bans, and a custom rule only when neither fits.</p>
 <ul>
 <li><code>env()</code> only in <code>config/</code> files, from Larastan's
-<code>NoEnvCallsOutsideOfConfig</code> rule. <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>env-outside-config</code>
+<code>NoEnvCallsOutsideOfConfig</code> rule. PROCTOR check: <code>env-outside-config</code>
 (a warning per call); <a class="tool" href="https://pinstripe.apps.wayne.edu/"><img src="../assets/marks/pinstripe.png" alt="" width="16" height="16">Pinstripe</a>'s Laravel cut turns Larastan's rule on
 (<code>noEnvCallsOutsideOfConfig</code>, Pinstripe 0.1.4).</li>
 <li>No disabled TLS verification, such as <code>withoutVerifying()</code> or
@@ -505,7 +505,7 @@ the stack's coding standard does not decide it.</li>
           <div>
             <p class="chap-head__kicker">Chapter 4</p>
             <h2 id="auth-title" class="hb-book__title">Auth</h2>
-            <p class="hb-register">14 provisions · <strong class="kw kw--must">MUST</strong> 5 · <strong class="kw kw--should">SHOULD</strong> 1</p>
+            <p class="hb-register">14 provisions · <strong class="kw kw--must">MUST</strong> 8 · <strong class="kw kw--should">SHOULD</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -542,9 +542,9 @@ rotation.</li>
 <li>The <code>saml</code> driver is built on <code>onelogin/php-saml</code>, is opt-in, sets no
 default WSU identity provider, and requires the provider to sign its
 assertions <span class="hb-cite">(the stack's SAML decision)</span>. SESAME config: the <code>saml</code> block.</li>
-<li>API and other stateless requests are authenticated with signed, short-lived bearer tokens in an <code>Authorization</code> header, verified on every request. A token is signed, not merely encrypted; JSON Web Tokens are a good fit (WSU developer standards, 2024).</li>
-<li>Authentication is checked before any content is shown or any script function runs, on every request. Deny by default: routes are protected unless listed as public, and an unauthenticated person is sent to sign in (WSU developer standards, 2024).</li>
-<li>When authentication or an authorization lookup fails, the result is fail closed: access is withheld (WSU developer standards, 2024).</li>
+<li>API and other stateless requests <strong class="kw kw--must">MUST</strong> be authenticated with signed, short-lived bearer tokens in an <code>Authorization</code> header, verified on every request. A token is signed, not merely encrypted; JSON Web Tokens are a good fit (WSU developer standards, 2024). No check exists yet.</li>
+<li>Authentication <strong class="kw kw--must">MUST</strong> be checked before any content is shown or any script function runs, on every request. Deny by default: routes are protected unless listed as public, and an unauthenticated person is sent to sign in (WSU developer standards, 2024). No check exists yet.</li>
+<li>When authentication or an authorization lookup fails, the app <strong class="kw kw--must">MUST</strong> fail closed: access is withheld (WSU developer standards, 2024). No check exists yet.</li>
 <li>Administrative access <strong class="kw kw--must">MUST</strong> be limited to named users or roles, and access that is due to end is revoked on a regular schedule (WSU developer standards, 2024). No check exists yet.</li>
 <li>Access that is due to end when a person's status changes (for example an ended employment) <strong class="kw kw--must">MUST</strong> be removed by an automated process, not by memory (WSU developer standards, 2024). No check exists yet.</li>
 <li>Idle sessions <strong class="kw kw--must">MUST</strong> time out after a configurable period of inactivity (WSU developer standards, 2024). The stack's numbers are in <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json"><code>policy/policy.json</code></a>, under <code>sessions</code>, which is the source for them: SESAME signs a user out after 120 minutes idle and 720 minutes in all (<code>sessions.sesame</code>), and Drawbridge after 3600 seconds idle and 28800 seconds in all (<code>sessions.gateway</code>). Held by: SESAME config, <code>session.idle_minutes</code> (<code>SESAME_SESSION_IDLE_MINUTES</code>) and <code>session.absolute_minutes</code> (<code>SESAME_SESSION_ABSOLUTE_MINUTES</code>), with those defaults. An app that does not use SESAME sets its own idle limit; that is documented only.</li>
@@ -557,7 +557,7 @@ assertions <span class="hb-cite">(the stack's SAML decision)</span>. SESAME conf
           <div>
             <p class="chap-head__kicker">Chapter 5</p>
             <h2 id="databases-title" class="hb-book__title">Databases</h2>
-            <p class="hb-register">9 sections · 26 provisions · <strong class="kw kw--must">MUST</strong> 4 · <strong class="kw kw--should">SHOULD</strong> 1 · <strong class="kw kw--may">MAY</strong> 1</p>
+            <p class="hb-register">9 sections · 27 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 5 · <strong class="kw kw--should">SHOULD</strong> 2 · <strong class="kw kw--may">MAY</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -607,9 +607,9 @@ supported MySQL <span class="hb-cite">(the stack's MySQL gate decision)</span>. 
 <li>Set <code>Schema::defaultStringLength(191)</code> in <code>AppServiceProvider::boot()</code>,
 before any migration runs. 5.6 caps an indexed <code>utf8mb4</code> column at 767
 bytes, which is 191 characters. PROCTOR check: <code>mysql56</code>.</li>
-<li>Keep <code>utf8mb4</code> and <code>utf8mb4_unicode_ci</code>, the defaults. Never use an
-8.0-only collation such as <code>utf8mb4_0900_ai_ci</code> (not yet confirmed on a
-5.6 server).</li>
+<li>An app <strong class="kw kw--must">MUST</strong> keep <code>utf8mb4</code> and <code>utf8mb4_unicode_ci</code>, the defaults, and <strong class="kw kw--must">MUST</strong>
+NOT use an 8.0-only collation such as <code>utf8mb4_0900_ai_ci</code> (not yet
+confirmed on a 5.6 server). No check exists yet.</li>
 <li>Store JSON as <code>text</code> or <code>longText</code>, with Eloquent <code>array</code> or <code>json</code> casts,
 and filter in PHP. 5.6 has no JSON column type. PROCTOR check: <code>mysql56</code>.</li>
 <li>Leave <code>use_upsert_alias</code> unset, so <code>upsert()</code> uses <code>VALUES()</code>. The row
@@ -619,9 +619,10 @@ Avoid <code>renameColumn</code> and <code>renameIndex</code>, which emit 5.7 syn
 PROCTOR check: <code>mysql56</code>.</li>
 <li>Use <code>Schema::hasTable</code> only. Column introspection is not reliable on 5.6
 (not yet confirmed on a 5.6 server).</li>
-<li>Skip <code>db:show</code> and <code>db:monitor</code>, and run one database-queue worker (or
-another driver if the platform offers one). 5.6 has no <code>SKIP LOCKED</code>, so a
-single worker avoids double-processing.</li>
+<li>Skip <code>db:show</code> and <code>db:monitor</code>. PROCTOR check: <code>mysql56</code>.</li>
+<li>An app <strong class="kw kw--should">SHOULD</strong> run one database-queue worker (or another driver if the
+platform offers one). 5.6 has no <code>SKIP LOCKED</code>, so a single worker avoids
+double-processing. No check exists yet.</li>
 <li>Use <code>timestamp</code>, not <code>date</code>, for <code>useCurrent()</code>. A <code>date</code> column cannot
 take a current-timestamp default on 5.6.</li>
 <li>Run migrations in CI against a real 5.6 container. SQLite-only tests pass
@@ -847,7 +848,7 @@ packages run on any container platform)</span>.</li>
           <div>
             <p class="chap-head__kicker">Chapter 8</p>
             <h2 id="ci-title" class="hb-book__title">CI</h2>
-            <p class="hb-register">8 provisions · <strong class="kw kw--must">MUST</strong> 2 · <strong class="kw kw--should">SHOULD</strong> 1</p>
+            <p class="hb-register">8 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 2 · <strong class="kw kw--should">SHOULD</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -858,9 +859,9 @@ packages run on any container platform)</span>.</li>
 enforcement design). <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>ci-pipelines</code>.</li>
 <li>The CI components are <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s: <code>proctor</code>, <code>php-test</code> and
 <code>composer-audit</code>, included with <code>include: component:</code> <span class="hb-cite">(first-repos)</span>.</li>
-<li>CI judges with deterministic commands, never with a model. No gate depends
-on a model's opinion <span class="hb-cite">(the stack's rule on language models)</span>.</li>
-<li>Components are pinned at a tag or SHA, never <code>~latest</code> <span class="hb-cite">(first-repos)</span>.</li>
+<li>CI judges with deterministic commands, never with a model. A gate <strong class="kw kw--must-not">MUST NOT</strong>
+depend on a model's opinion <span class="hb-cite">(the stack's rule on language models)</span>. No check exists yet.</li>
+<li>Components are pinned at a tag or SHA, never <code>~latest</code> <span class="hb-cite">(first-repos)</span>. PROCTOR check: <code>preflight-pinned</code>.</li>
 <li>The components run on the git.wayne.edu instance runner <span class="hb-cite">(first-repos)</span>, and
 every product strongly recommends the instance runner.</li>
 <li>Every change lands through a merge request that another person reviews, and critical findings are addressed before merge (<strong class="kw kw--should">SHOULD</strong> for a one-person project: record the self-review in the merge request) (WSU developer standards, 2024). No check exists yet.</li>
@@ -875,7 +876,7 @@ every product strongly recommends the instance runner.</li>
           <div>
             <p class="chap-head__kicker">Chapter 9</p>
             <h2 id="accessibility-title" class="hb-book__title">Accessibility</h2>
-            <p class="hb-register">4 sections · 9 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 1</p>
+            <p class="hb-register">4 sections · 9 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 2</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -898,11 +899,12 @@ checked by WayneUI's own runnable accessibility gate <span class="hb-cite">(the 
 <ul>
 <li>An automated accessibility check <strong class="kw kw--should">SHOULD</strong> run in CI on the app's key pages <span class="hb-cite">(the stack's accessibility design)</span>.
 Held by: <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s <code>a11y</code> component, below.</li>
-<li>An automated tool catches regressions; it is not proof of conformance, and it never replaces a manual keyboard and
-screen reader pass before launch <span class="hb-cite">(the stack's accessibility design)</span>.</li>
+<li>A manual keyboard and screen reader pass <strong class="kw kw--must">MUST</strong> happen before launch. An automated tool catches regressions; it is
+not proof of conformance, and it never replaces the pass <span class="hb-cite">(the stack's accessibility design)</span>. No check exists yet.</li>
 <li>Preflight's <code>a11y</code> component (0.5.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core
-in light and dark at 320 and 1280 px, and fails the pipeline on any violation. Add <code>wcag22aa</code> to its tags for the
-WCAG 2.2 AA target above.</li>
+in light and dark at 320 and 1280 px, and fails the pipeline on any violation. An app <strong class="kw kw--should">SHOULD</strong> add <code>wcag22aa</code> to its
+tags for the WCAG 2.2 AA target above.
+Held by: Preflight's a11y component (templates/a11y/template.yml).</li>
 </ul>
 <h3 id="accessibility--not-decided-here"><a class="hb-sec" href="#accessibility--not-decided-here">§9.4</a> Not decided here</h3>
 <ul>
@@ -919,19 +921,21 @@ this chapter does not decide it.</li>
           <div>
             <p class="chap-head__kicker">Chapter 10</p>
             <h2 id="every-os-title" class="hb-book__title">Every OS</h2>
-            <p class="hb-register">6 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 1</p>
+            <p class="hb-register">6 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 5</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
         <div class="hb-prose hb-prose--book">
 <div class="hb-rfc" role="note"><p><span class="hb-rfc__label">Key words</span> The key words <strong class="kw kw--must">MUST</strong>, <strong class="kw kw--must-not">MUST NOT</strong>, <strong class="kw kw--should">SHOULD</strong>, <strong class="kw kw--should-not">SHOULD NOT</strong> and <strong class="kw kw--may">MAY</strong> in this chapter are to be interpreted as described in <a href="https://www.rfc-editor.org/rfc/rfc2119">RFC 2119</a>.</p></div>
 <ul>
-<li>Every developer tool works on Windows, macOS and Linux <span class="hb-cite">(the stack's every-OS design)</span>.</li>
-<li>A developer script ships as a <code>.ps1</code> and <code>.sh</code> pair that do the same thing,
-or as one PHP command, which works the same everywhere <span class="hb-cite">(the stack's every-OS design)</span>.</li>
-<li>Windows gets PowerShell (<code>.ps1</code>), which never needs bash or WSL. Linux and
-macOS get bash (<code>.sh</code>), written for macOS's stock bash 3.2 and its BSD tools
-<span class="hb-cite">(the stack's every-OS design)</span>.</li>
+<li>Every developer tool <strong class="kw kw--must">MUST</strong> work on Windows, macOS and Linux <span class="hb-cite">(the stack's every-OS design)</span>. No check exists yet.</li>
+<li>A developer script <strong class="kw kw--must">MUST</strong> ship as a <code>.ps1</code> and <code>.sh</code> pair that do the same
+thing, or as one PHP command, which works the same everywhere (the stack's
+every-OS design). No check exists yet.</li>
+<li>A script for Windows <strong class="kw kw--must">MUST</strong> be native PowerShell (<code>.ps1</code>), which never needs
+bash or WSL, and a script for Linux or macOS <strong class="kw kw--must">MUST</strong> be bash (<code>.sh</code>), written
+for macOS's stock bash 3.2 and its BSD tools <span class="hb-cite">(the stack's every-OS design)</span>.
+No check exists yet.</li>
 <li>Every repo carries a <code>.gitattributes</code> with <code>* text=auto eol=lf</code>, and
 <code>.ps1</code>, <code>.bat</code> and <code>.cmd</code> set to CRLF. Anything that runs on a Linux host
 <strong class="kw kw--must">MUST</strong> be LF: on Citadel, and on OpenShift, Coolify or raw Docker elsewhere
@@ -959,7 +963,7 @@ PROCTOR check: <code>portability</code>.</li>
           <div>
             <p class="chap-head__kicker">Chapter 11</p>
             <h2 id="secrets-title" class="hb-book__title">Secrets and debugging</h2>
-            <p class="hb-register">3 sections · 9 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 4 · <strong class="kw kw--must">MUST</strong> 3 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1</p>
+            <p class="hb-register">3 sections · 9 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 4 · <strong class="kw kw--must">MUST</strong> 5 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -970,8 +974,8 @@ PROCTOR check: <code>portability</code>.</li>
 <li>Credentials (database and service passwords, API keys, tokens) <strong class="kw kw--must-not">MUST NOT</strong> be committed to version control, because history keeps them forever. Commit <code>.env.example</code> with placeholders instead. A credential that was ever committed is treated as exposed and rotated (WSU developer standards, 2024). <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> checks: <code>app-key</code> (a committed <code>.env</code> or <code>APP_KEY</code>) and <code>repo-url-credentials</code> (a token in a package source URL). The general secret scan is <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s <code>secret-detection</code> component (Preflight 0.5.0), which runs Gitleaks over the tree and fails the pipeline on a match.</li>
 <li>Credentials and sensitive data <strong class="kw kw--must">MUST</strong> live outside any folder the web server serves. Laravel's <code>public/</code> is the only served folder; raw PHP apps serve one <code>public/</code> folder the same way (WSU developer standards, 2024). PROCTOR check: <code>served-folder</code> (dumps, backups, logs and env files in <code>public/</code>).</li>
 <li>The Laravel <code>APP_KEY</code> is a credential: whoever holds it can forge encrypted payloads, which can mean code execution. It <strong class="kw kw--must-not">MUST NOT</strong> be committed, a key that leaked <strong class="kw kw--must">MUST</strong> be rotated with <code>php artisan key:generate</code> on every environment that used it, and the session driver <strong class="kw kw--should-not">SHOULD NOT</strong> be <code>cookie</code>, which seals every session with the key (GitGuardian, exploiting public APP_KEY leaks). PROCTOR check: <code>app-key</code>.</li>
-<li>An app uses its own dedicated application ID, never a person's employee or student AccessID, to reach another server or service, with the fewest permissions the task needs (WSU developer standards, 2024).</li>
-<li>Real values come from the environment at deploy time (the Citadel dashboard or CI variables), never from a file in the repo (WSU developer standards, 2024).</li>
+<li>An app <strong class="kw kw--must">MUST</strong> use its own dedicated application ID, never a person's employee or student AccessID, to reach another server or service, with the fewest permissions the task needs (WSU developer standards, 2024). No check exists yet.</li>
+<li>Real values <strong class="kw kw--must">MUST</strong> come from the environment at deploy time (the Citadel dashboard or CI variables), never from a file in the repo (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <h3 id="secrets--errors-and-debug-output"><a class="hb-sec" href="#secrets--errors-and-debug-output">§11.2</a> Errors and debug output</h3>
 <ul>
@@ -992,7 +996,7 @@ PROCTOR check: <code>portability</code>.</li>
           <div>
             <p class="chap-head__kicker">Chapter 12</p>
             <h2 id="production-title" class="hb-book__title">Production</h2>
-            <p class="hb-register">3 sections · 17 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 5 · <strong class="kw kw--should">SHOULD</strong> 3</p>
+            <p class="hb-register">3 sections · 17 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 8 · <strong class="kw kw--should">SHOULD</strong> 4</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -1003,8 +1007,8 @@ PROCTOR check: <code>portability</code>.</li>
 <li>Every environment more than one person can reach follows the whole handbook; only a developer's own machine is exempt (WSU developer standards, 2024).</li>
 <li>Keep at least a pre-production and a production environment, each with its own working copy of every piece, database and supporting services included (WSU developer standards, 2024).</li>
 <li>Each deployment <strong class="kw kw--should">SHOULD</strong> be isolated from the others (one container per app), so one compromise does not become many. This holds on Citadel, OpenShift, Coolify and plain Docker (WSU developer standards, 2024). No check exists yet.</li>
-<li>Decide early whether the deployment is in disaster-recovery scope, and write the decision in the README (WSU developer standards, 2024).</li>
-<li>Back up anything kept outside source control, databases included. Say in the README how to restore one app (WSU developer standards, 2024).</li>
+<li>Whether a deployment is in disaster-recovery scope <strong class="kw kw--should">SHOULD</strong> be decided early, and the decision written in the README (WSU developer standards, 2024). No check exists yet.</li>
+<li>Anything kept outside source control, databases included, <strong class="kw kw--must">MUST</strong> be backed up. The README <strong class="kw kw--must">MUST</strong> say how to restore one app (WSU developer standards, 2024). No check exists yet.</li>
 <li>An app <strong class="kw kw--should">SHOULD</strong> be load tested in each environment where heavy use is expected (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <h3 id="production--running-safely"><a class="hb-sec" href="#production--running-safely">§12.2</a> Running safely</h3>
@@ -1015,7 +1019,7 @@ PROCTOR check: <code>portability</code>.</li>
 PROCTOR check: <code>world-writable</code> (<code>chmod 777</code> in scripts, Dockerfiles, CI and PHP).</li>
 <li>Debugging and diagnostic files, scripts, dumps and backups <strong class="kw kw--must-not">MUST NOT</strong> sit in the served folder (WSU developer standards, 2024).
 PROCTOR check: <code>served-folder</code> (<code>phpinfo()</code>, dumps, backups, logs, env files and <code>adminer*.php</code> under <code>public/</code>).</li>
-<li>On failure the app degrades predictably and fails closed: an authentication error withholds access (WSU developer standards, 2024).</li>
+<li>On failure the app <strong class="kw kw--must">MUST</strong> degrade predictably and fail closed: an authentication error withholds access (WSU developer standards, 2024). No check exists yet.</li>
 <li>A person is told when something fails: a monitor calls <code>/up</code> on a schedule and alerts someone (WSU developer standards, 2024).</li>
 <li>Logs are rotated or removed at a set interval; temporary files are cleaned up; uploaded files have a retention rule. Citadel rotates container logs; elsewhere the platform or the app <strong class="kw kw--must">MUST</strong> (WSU developer standards, 2024). No check exists yet.</li>
 <li>Where it is practical, an app <strong class="kw kw--should">SHOULD</strong> record an audit trail of changes to data and of successful and failed access to sensitive data (WSU developer standards, 2024). No check exists yet.</li>
@@ -1035,7 +1039,7 @@ PROCTOR check: <code>served-folder</code> (<code>phpinfo()</code>, dumps, backup
           <div>
             <p class="chap-head__kicker">Chapter 13</p>
             <h2 id="overrides-title" class="hb-book__title">Overrides</h2>
-            <p class="hb-register">7 provisions · <strong class="kw kw--must">MUST</strong> 1</p>
+            <p class="hb-register">7 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 2</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -1057,13 +1061,13 @@ compares <code>approved_by</code> with who git says wrote the entry and warns (o
 fails, per <code>rules.override_self_approval</code>, <code>warn</code> in the policy) on a
 match, or when it cannot read who did. PROCTOR check: <code>override-approver</code>.</li>
 <li>On the Citadel side, overrides are held by Citadel admins, per app and per
-rule, with an expiry, a reason and an approver. There is no permanent
-override <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
+rule, and <strong class="kw kw--must">MUST</strong> carry an expiry, a reason and an approver. There <strong class="kw kw--must-not">MUST NOT</strong> be
+a permanent override <span class="hb-cite">(the stack's deploy-gate decision)</span>. No check exists yet.</li>
 </ul>
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>03846c5</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>5f49db2</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

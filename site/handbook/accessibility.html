@@ -84,7 +84,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 9</p>
             <h1 id="page-title">Accessibility</h1>
-            <p class="hb-register">4 sections · 9 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 1</p>
+            <p class="hb-register">4 sections · 9 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 2</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -117,11 +117,12 @@ checked by WayneUI's own runnable accessibility gate <span class="hb-cite">(the 
 <ul>
 <li>An automated accessibility check <strong class="kw kw--should">SHOULD</strong> run in CI on the app's key pages <span class="hb-cite">(the stack's accessibility design)</span>.
 Held by: <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s <code>a11y</code> component, below.</li>
-<li>An automated tool catches regressions; it is not proof of conformance, and it never replaces a manual keyboard and
-screen reader pass before launch <span class="hb-cite">(the stack's accessibility design)</span>.</li>
+<li>A manual keyboard and screen reader pass <strong class="kw kw--must">MUST</strong> happen before launch. An automated tool catches regressions; it is
+not proof of conformance, and it never replaces the pass <span class="hb-cite">(the stack's accessibility design)</span>. No check exists yet.</li>
 <li>Preflight's <code>a11y</code> component (0.5.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core
-in light and dark at 320 and 1280 px, and fails the pipeline on any violation. Add <code>wcag22aa</code> to its tags for the
-WCAG 2.2 AA target above.</li>
+in light and dark at 320 and 1280 px, and fails the pipeline on any violation. An app <strong class="kw kw--should">SHOULD</strong> add <code>wcag22aa</code> to its
+tags for the WCAG 2.2 AA target above.
+Held by: Preflight's a11y component (templates/a11y/template.yml).</li>
 </ul>
 <h2 id="not-decided-here"><a class="hb-sec" href="#not-decided-here">§9.4</a> Not decided here</h2>
 <ul>
@@ -135,7 +136,7 @@ this chapter does not decide it.</li>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="ci.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 8</span><span class="hb-pager__name">CI</span></a><a class="hb-pager__link hb-pager__link--next" href="every-os.html" rel="next"><span class="hb-pager__dir">Next · Chapter 10</span><span class="hb-pager__name">Every OS</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/accessibility.md"><code>handbook/accessibility.md</code> on GitHub</a>, impression <code>8b9cd86</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/accessibility.md"><code>handbook/accessibility.md</code> on GitHub</a>, impression <code>5ec0e84</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

@@ -10,7 +10,7 @@ Chapter 11
 
 # Secrets and debugging
 
-3 sections · 9 provisions · **MUST NOT** 4 · **MUST** 3 · **SHOULD NOT** 1
+3 sections · 9 provisions · **MUST NOT** 4 · **MUST** 5 · **SHOULD NOT** 1
 
 Decided
 
@@ -21,8 +21,8 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - Credentials (database and service passwords, API keys, tokens) **MUST NOT** be committed to version control, because history keeps them forever. Commit `.env.example` with placeholders instead. A credential that was ever committed is treated as exposed and rotated (WSU developer standards, 2024). [PROCTOR](https://proctor.apps.wayne.edu/) checks: `app-key` (a committed `.env` or `APP_KEY`) and `repo-url-credentials` (a token in a package source URL). The general secret scan is [Preflight](https://preflight.apps.wayne.edu/)'s `secret-detection` component (Preflight 0.5.0), which runs Gitleaks over the tree and fails the pipeline on a match.
 - Credentials and sensitive data **MUST** live outside any folder the web server serves. Laravel's `public/` is the only served folder; raw PHP apps serve one `public/` folder the same way (WSU developer standards, 2024). PROCTOR check: `served-folder` (dumps, backups, logs and env files in `public/`).
 - The Laravel `APP_KEY` is a credential: whoever holds it can forge encrypted payloads, which can mean code execution. It **MUST NOT** be committed, a key that leaked **MUST** be rotated with `php artisan key:generate` on every environment that used it, and the session driver **SHOULD NOT** be `cookie`, which seals every session with the key (GitGuardian, exploiting public APP_KEY leaks). PROCTOR check: `app-key`.
-- An app uses its own dedicated application ID, never a person's employee or student AccessID, to reach another server or service, with the fewest permissions the task needs (WSU developer standards, 2024).
-- Real values come from the environment at deploy time (the Citadel dashboard or CI variables), never from a file in the repo (WSU developer standards, 2024).
+- An app **MUST** use its own dedicated application ID, never a person's employee or student AccessID, to reach another server or service, with the fewest permissions the task needs (WSU developer standards, 2024). No check exists yet.
+- Real values **MUST** come from the environment at deploy time (the Citadel dashboard or CI variables), never from a file in the repo (WSU developer standards, 2024). No check exists yet.
 
 ## [§11.2](https://creed.apps.wayne.edu/handbook/secrets.html#errors-and-debug-output) Errors and debug output
 
@@ -36,4 +36,4 @@ A leaked password is a bad encore: everyone remembers it, and nobody asked for a
 
 - The HELMET header rules and runtime refusals are written in `runtime-and-headers.md`.
 
-Set from [`handbook/secrets.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/secrets.md), impression `a3f085a`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/secrets.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/secrets.md), impression `e787b6e`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

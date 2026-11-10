@@ -10,7 +10,7 @@ Chapter 2
 
 # Dependencies
 
-1 section · 15 provisions · **MUST NOT** 4 · **MUST** 6 · **SHOULD NOT** 1 · **SHOULD** 3
+1 section · 15 provisions · **MUST NOT** 5 · **MUST** 7 · **SHOULD NOT** 1 · **SHOULD** 3
 
 Decided
 
@@ -25,7 +25,7 @@ CREED's [`abandoned_packages`](https://github.com/waynestate/creed/blob/main/pol
 - `composer.json` `require.php` **MUST NOT** allow an EOL version as its lowest bound (the stack's version policy). PROCTOR check: `php-floor`.
 - Apps **SHOULD** set a Composer cooldown of 3 days, once Composer 2.11 is stable and in the base images; until then no cooldown is set (the stack's dependency decision, 2026-11-03). No check exists yet: a PROCTOR check for a missing cooldown is planned.
 - Every project is a framework-free core plus thin adapters. `composer.json` requires only `php` and PSR packages; Laravel, Inertia and Vue are `suggest` (the stack's core-plus-adapters design).
-- Adapters call the core and never re-implement it (the stack's core-plus-adapters design).
+- Adapters **MUST** call the core and **MUST NOT** re-implement it (the stack's core-plus-adapters design). No check exists yet.
 - Before adding a third-party package, check it comes from a trusted source, and where the source is open, read enough of it to judge it sound and fit (**SHOULD**). The audit and abandoned-package rules in this chapter apply after that choice (WSU developer standards, 2024). No check exists yet.
 
 ## [§2.1](https://creed.apps.wayne.edu/handbook/dependencies.html#private-packages) Private packages
@@ -44,4 +44,4 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 
 - **`rules.abandoned_packages`**: `"fail"`
 
-Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `78b5b19`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `e265dba`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

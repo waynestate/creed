@@ -84,7 +84,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 4</p>
             <h1 id="page-title">Auth</h1>
-            <p class="hb-register">14 provisions · <strong class="kw kw--must">MUST</strong> 5 · <strong class="kw kw--should">SHOULD</strong> 1</p>
+            <p class="hb-register">14 provisions · <strong class="kw kw--must">MUST</strong> 8 · <strong class="kw kw--should">SHOULD</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -122,9 +122,9 @@ rotation.</li>
 <li>The <code>saml</code> driver is built on <code>onelogin/php-saml</code>, is opt-in, sets no
 default WSU identity provider, and requires the provider to sign its
 assertions <span class="hb-cite">(the stack's SAML decision)</span>. SESAME config: the <code>saml</code> block.</li>
-<li>API and other stateless requests are authenticated with signed, short-lived bearer tokens in an <code>Authorization</code> header, verified on every request. A token is signed, not merely encrypted; JSON Web Tokens are a good fit (WSU developer standards, 2024).</li>
-<li>Authentication is checked before any content is shown or any script function runs, on every request. Deny by default: routes are protected unless listed as public, and an unauthenticated person is sent to sign in (WSU developer standards, 2024).</li>
-<li>When authentication or an authorization lookup fails, the result is fail closed: access is withheld (WSU developer standards, 2024).</li>
+<li>API and other stateless requests <strong class="kw kw--must">MUST</strong> be authenticated with signed, short-lived bearer tokens in an <code>Authorization</code> header, verified on every request. A token is signed, not merely encrypted; JSON Web Tokens are a good fit (WSU developer standards, 2024). No check exists yet.</li>
+<li>Authentication <strong class="kw kw--must">MUST</strong> be checked before any content is shown or any script function runs, on every request. Deny by default: routes are protected unless listed as public, and an unauthenticated person is sent to sign in (WSU developer standards, 2024). No check exists yet.</li>
+<li>When authentication or an authorization lookup fails, the app <strong class="kw kw--must">MUST</strong> fail closed: access is withheld (WSU developer standards, 2024). No check exists yet.</li>
 <li>Administrative access <strong class="kw kw--must">MUST</strong> be limited to named users or roles, and access that is due to end is revoked on a regular schedule (WSU developer standards, 2024). No check exists yet.</li>
 <li>Access that is due to end when a person's status changes (for example an ended employment) <strong class="kw kw--must">MUST</strong> be removed by an automated process, not by memory (WSU developer standards, 2024). No check exists yet.</li>
 <li>Idle sessions <strong class="kw kw--must">MUST</strong> time out after a configurable period of inactivity (WSU developer standards, 2024). The stack's numbers are in <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json"><code>policy/policy.json</code></a>, under <code>sessions</code>, which is the source for them: SESAME signs a user out after 120 minutes idle and 720 minutes in all (<code>sessions.sesame</code>), and Drawbridge after 3600 seconds idle and 28800 seconds in all (<code>sessions.gateway</code>). Held by: SESAME config, <code>session.idle_minutes</code> (<code>SESAME_SESSION_IDLE_MINUTES</code>) and <code>session.absolute_minutes</code> (<code>SESAME_SESSION_ABSOLUTE_MINUTES</code>), with those defaults. An app that does not use SESAME sets its own idle limit; that is documented only.</li>
@@ -134,7 +134,7 @@ assertions <span class="hb-cite">(the stack's SAML decision)</span>. SESAME conf
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="code.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 3</span><span class="hb-pager__name">Code</span></a><a class="hb-pager__link hb-pager__link--next" href="databases.html" rel="next"><span class="hb-pager__dir">Next · Chapter 5</span><span class="hb-pager__name">Databases</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/auth.md"><code>handbook/auth.md</code> on GitHub</a>, impression <code>32f5e85</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/auth.md"><code>handbook/auth.md</code> on GitHub</a>, impression <code>7ff1f4b</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

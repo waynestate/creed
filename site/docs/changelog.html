@@ -44,6 +44,8 @@
 <h1 id="changelog"><span class="docs-heading-tail"><span>Changelog</span><a class="docs-heading-link" aria-label="Link to this section" href="#changelog">#</a></span></h1>
 <h2 id="unreleased"><span class="docs-heading-tail"><span>Unreleased</span><a class="docs-heading-link" aria-label="Link to this section" href="#unreleased">#</a></span></h2>
 <ul>
+<li>Docs: BEST_PRACTICES item 17 is done on PROCTOR main: <code>preflight-pinned</code> now warns on any unpinned CI component, not only Preflight's; the handbook's pinning and LF rules name their PROCTOR checks.</li>
+<li>Docs: 23 handbook rules that were written as plain statements now say MUST or SHOULD and name what holds them (a PROCTOR check, a named component, or &quot;No check exists yet&quot;), so the handbook lint covers them too.</li>
 <li>Changed: the deploy kit is Squire 0.10.7 (was 0.10.6): it ships a <code>.gitattributes</code> that pins line endings, so the deploy layer clears PROCTOR's line-ending warnings.</li>
 <li>Docs: BEST_PRACTICES says Preflight's <code>secret-detection</code> and <code>a11y</code> components arrived in 0.2.0 and the pin is 0.5.0, and that git.wayne.edu is the home of every repo (nougat keeps only the container registry).</li>
 <li>Changed: the PROCTOR job on the deploy layer blocks; it was allowed to fail, but PROCTOR passes deploy/ (its notes are warnings, which never fail the job).</li>

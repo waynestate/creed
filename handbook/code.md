@@ -11,7 +11,7 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
 - An app points Pint at the preset in `vendor/waynestate/pinstripe/pint/`
   with `--config` (the stack's coding standard).
 - Files MUST be UTF-8 without a BOM, with LF line endings (the stack's
-  every-OS design). No check exists yet.
+  every-OS design). PROCTOR check: `gitattributes-eol` (the LF pins; nothing checks for a BOM yet).
 
 ## Reading the code
 

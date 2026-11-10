@@ -84,7 +84,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 13</p>
             <h1 id="page-title">Overrides</h1>
-            <p class="hb-register">7 provisions · <strong class="kw kw--must">MUST</strong> 1</p>
+            <p class="hb-register">7 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 2</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -107,15 +107,15 @@ compares <code>approved_by</code> with who git says wrote the entry and warns (o
 fails, per <code>rules.override_self_approval</code>, <code>warn</code> in the policy) on a
 match, or when it cannot read who did. PROCTOR check: <code>override-approver</code>.</li>
 <li>On the Citadel side, overrides are held by Citadel admins, per app and per
-rule, with an expiry, a reason and an approver. There is no permanent
-override <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
+rule, and <strong class="kw kw--must">MUST</strong> carry an expiry, a reason and an approver. There <strong class="kw kw--must-not">MUST NOT</strong> be
+a permanent override <span class="hb-cite">(the stack's deploy-gate decision)</span>. No check exists yet.</li>
 </ul>
           </div>
         </div>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="production.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 12</span><span class="hb-pager__name">Production</span></a><a class="hb-pager__link hb-pager__link--next" href="print.html"><span class="hb-pager__dir">End of the book</span><span class="hb-pager__name">The whole book on one page</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/overrides.md"><code>handbook/overrides.md</code> on GitHub</a>, impression <code>2df7e03</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/overrides.md"><code>handbook/overrides.md</code> on GitHub</a>, impression <code>7814d7d</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

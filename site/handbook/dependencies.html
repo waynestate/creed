@@ -84,7 +84,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 2</p>
             <h1 id="page-title">Dependencies</h1>
-            <p class="hb-register">1 section · 15 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 4 · <strong class="kw kw--must">MUST</strong> 6 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 3</p>
+            <p class="hb-register">1 section · 15 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 5 · <strong class="kw kw--must">MUST</strong> 7 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 3</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -119,7 +119,7 @@ cooldown is planned.</li>
 <li>Every project is a framework-free core plus thin adapters. <code>composer.json</code>
 requires only <code>php</code> and PSR packages; Laravel, Inertia and Vue are
 <code>suggest</code> <span class="hb-cite">(the stack's core-plus-adapters design)</span>.</li>
-<li>Adapters call the core and never re-implement it <span class="hb-cite">(the stack's core-plus-adapters design)</span>.</li>
+<li>Adapters <strong class="kw kw--must">MUST</strong> call the core and <strong class="kw kw--must-not">MUST NOT</strong> re-implement it <span class="hb-cite">(the stack's core-plus-adapters design)</span>. No check exists yet.</li>
 <li>Before adding a third-party package, check it comes from a trusted source, and where the source is open, read enough of it to judge it sound and fit (<strong class="kw kw--should">SHOULD</strong>). The audit and abandoned-package rules in this chapter apply after that choice (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <h2 id="private-packages"><a class="hb-sec" href="#private-packages">§2.1</a> Private packages</h2>
@@ -163,7 +163,7 @@ shipped either.</p>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="versions.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 1</span><span class="hb-pager__name">Versions</span></a><a class="hb-pager__link hb-pager__link--next" href="code.html" rel="next"><span class="hb-pager__dir">Next · Chapter 3</span><span class="hb-pager__name">Code</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/dependencies.md"><code>handbook/dependencies.md</code> on GitHub</a>, impression <code>78b5b19</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/dependencies.md"><code>handbook/dependencies.md</code> on GitHub</a>, impression <code>e265dba</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 
