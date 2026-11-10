@@ -108,8 +108,8 @@ for plain bans, and a custom rule only when neither fits.
 
 ## Security analysis
 
-- Nothing MAY rely on GitLab SAST: the stack's GitLab instances run the Free
-  tier (the stack's coding standard). No check exists yet.
+- An app MUST NOT rely on GitLab SAST: the stack's GitLab instances run the
+  Free tier (the stack's coding standard). No check exists yet.
 - The open tools instead: Larastan's env rule, `phpstan-disallowed-calls`,
   and a Psalm taint-analysis pilot on one app (the stack's coding standard).
 
