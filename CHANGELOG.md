@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Changed: the deploy layer requires PROCTOR ^0.12 (locked 0.12.0, was ^0.11): two new warning-only checks, nothing breaks.
+
 ## 0.1.10 (2026-11-10)
 
 - Added: `Policy::toolCooldownPeriod()` and `Policy::toolCooldownIgnore()` read a tool's release cooldown (`tools.<tool>.cooldown`), so PROCTOR can take the period from the policy.
