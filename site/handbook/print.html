@@ -665,7 +665,10 @@ double-processing. No check exists yet.</li>
 column cannot take a current-timestamp default on 5.6. PROCTOR check:
 <code>mysql56</code>.</li>
 <li>An app <strong class="kw kw--must">MUST</strong> run migrations in CI against a real 5.6 container.
-SQLite-only tests pass code that 5.6 rejects. No check exists yet.</li>
+SQLite-only tests pass code that 5.6 rejects. Held by: <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s
+<code>mysql56-migrate</code> component (0.6.0), which runs the migrations against
+MySQL 5.6.51 on an amd64 runner. PROCTOR check: <code>mysql56-ci</code> (0.15.0),
+which warns when an app with migrations has no such job.</li>
 </ul>
 <h3 id="databases--avoid-until-the-server-is-upgraded"><a class="hb-sec" href="#databases--avoid-until-the-server-is-upgraded">§5.6</a> Avoid until the server is upgraded</h3>
 <h4 id="databases--schema"><a class="hb-sec" href="#databases--schema">§5.6.1</a> Schema</h4>
@@ -1113,7 +1116,7 @@ a permanent override <span class="hb-cite">(the stack's deploy-gate decision)</s
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>5405f49</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>ce6dc36</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

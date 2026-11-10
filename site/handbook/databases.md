@@ -46,7 +46,7 @@ An app **MAY** stay on a database version for 90 days after it leaves support, t
 - An app **MUST** skip `db:show` and `db:monitor`. PROCTOR check: `mysql56`.
 - An app **SHOULD** run one database-queue worker (or another driver if the platform offers one). 5.6 has no `SKIP LOCKED`, so a single worker avoids double-processing. No check exists yet.
 - An app **MUST** use `timestamp`, not `date`, for `useCurrent()`. A `date` column cannot take a current-timestamp default on 5.6. PROCTOR check: `mysql56`.
-- An app **MUST** run migrations in CI against a real 5.6 container. SQLite-only tests pass code that 5.6 rejects. No check exists yet.
+- An app **MUST** run migrations in CI against a real 5.6 container. SQLite-only tests pass code that 5.6 rejects. Held by: [Preflight](https://preflight.apps.wayne.edu/)'s `mysql56-migrate` component (0.6.0), which runs the migrations against MySQL 5.6.51 on an amd64 runner. PROCTOR check: `mysql56-ci` (0.15.0), which warns when an app with migrations has no such job.
 
 ## [§5.6](https://creed.apps.wayne.edu/handbook/databases.html#avoid-until-the-server-is-upgraded) Avoid until the server is upgraded
 
@@ -110,4 +110,4 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`rules.eol_grace_days`**: `90`
 - **`components.*.versions.*.security_until`**: set per version
 
-Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `17340ec`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `a862021`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

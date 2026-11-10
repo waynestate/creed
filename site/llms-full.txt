@@ -928,6 +928,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Docs: the databases rule "run migrations in CI against a real 5.6" is held: Preflight 0.6.0's `mysql56-migrate` component runs them on MySQL 5.6.51, and PROCTOR 0.15.0's `mysql56-ci` warns when an app with migrations has no such job (D-078).
 - Changed: handbook rules phrased as plain imperatives now use an RFC 2119 capital and carry a check, "Held by:" or "No check exists yet" tag (item 13 done).
 - Docs: the auth handbook's gateway rule names both lifetimes: Drawbridge issues 60 second assertions by default and SESAME refuses any over `gateway.max_lifetime` (300 unless set), instead of a flat "60 seconds or less".
 - Docs: the every-OS rule (practice 34, backlog item 16, handbook `every-os.md`, front page §6.5) names PROCTOR 0.14.0's `script-pair`, which warns when a script in `scripts/` has no `.ps1` or `.sh` twin; practice 34 stays `Partially` until a check asks for the whole `* text=auto eol=lf` line.
@@ -2545,7 +2546,7 @@ An app **MAY** stay on a database version for 90 days after it leaves support, t
 - An app **MUST** skip `db:show` and `db:monitor`. PROCTOR check: `mysql56`.
 - An app **SHOULD** run one database-queue worker (or another driver if the platform offers one). 5.6 has no `SKIP LOCKED`, so a single worker avoids double-processing. No check exists yet.
 - An app **MUST** use `timestamp`, not `date`, for `useCurrent()`. A `date` column cannot take a current-timestamp default on 5.6. PROCTOR check: `mysql56`.
-- An app **MUST** run migrations in CI against a real 5.6 container. SQLite-only tests pass code that 5.6 rejects. No check exists yet.
+- An app **MUST** run migrations in CI against a real 5.6 container. SQLite-only tests pass code that 5.6 rejects. Held by: [Preflight](https://preflight.apps.wayne.edu/)'s `mysql56-migrate` component (0.6.0), which runs the migrations against MySQL 5.6.51 on an amd64 runner. PROCTOR check: `mysql56-ci` (0.15.0), which warns when an app with migrations has no such job.
 
 ### [§5.6](https://creed.apps.wayne.edu/handbook/databases.html#avoid-until-the-server-is-upgraded) Avoid until the server is upgraded
 
@@ -2609,7 +2610,7 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`rules.eol_grace_days`**: `90`
 - **`components.*.versions.*.security_until`**: set per version
 
-Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `17340ec`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `a862021`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 

@@ -10,6 +10,7 @@ generator: Squire agent-ready
 
 ## Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Docs: the databases rule "run migrations in CI against a real 5.6" is held: Preflight 0.6.0's `mysql56-migrate` component runs them on MySQL 5.6.51, and PROCTOR 0.15.0's `mysql56-ci` warns when an app with migrations has no such job (D-078).
 - Changed: handbook rules phrased as plain imperatives now use an RFC 2119 capital and carry a check, "Held by:" or "No check exists yet" tag (item 13 done).
 - Docs: the auth handbook's gateway rule names both lifetimes: Drawbridge issues 60 second assertions by default and SESAME refuses any over `gateway.max_lifetime` (300 unless set), instead of a flat "60 seconds or less".
 - Docs: the every-OS rule (practice 34, backlog item 16, handbook `every-os.md`, front page §6.5) names PROCTOR 0.14.0's `script-pair`, which warns when a script in `scripts/` has no `.ps1` or `.sh` twin; practice 34 stays `Partially` until a check asks for the whole `* text=auto eol=lf` line.
