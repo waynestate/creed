@@ -15,7 +15,7 @@ This page explains who carries a copy of CREED's reader and policy, what the cop
 
 ## Why the copies began
 
-The copies began because CREED was not on Packagist. It is now (`waynestate/creed`, 0.1.9 at this writing), so each copy can become a real `require`, one consumer at a time; until a consumer switches, its copy stays.
+The copies began because CREED was not on Packagist. It is now (`waynestate/creed`, 0.1.10 at this writing), so each copy can become a real `require`, one consumer at a time; until a consumer switches, its copy stays.
 
 ## Generating and checking the copy
 
