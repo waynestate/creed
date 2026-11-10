@@ -83,6 +83,13 @@ final class PolicySchemaTest extends TestCase
     }
 
     #[Test]
+    public function toolCooldownIsValid(): void
+    {
+        $errors = self::validateFile(__DIR__ . '/fixtures/with-tools-cooldown.json');
+        self::assertSame([], $errors, 'A tool with a cooldown must validate.');
+    }
+
+    #[Test]
     public function currentOnlyLineIsValid(): void
     {
         $errors = self::validateFile(__DIR__ . '/fixtures/current-only.json');
@@ -106,6 +113,16 @@ final class PolicySchemaTest extends TestCase
         }
     }
 
+    #[Test]
+    public function bundledPolicySetsTheComposerCooldown(): void
+    {
+        $policy = json_decode((string) file_get_contents(dirname(__DIR__) . '/policy/policy.json'), true);
+
+        self::assertIsArray($policy['tools']['composer']['cooldown'] ?? null, 'The bundled policy must name the Composer cooldown.');
+        self::assertSame('3 days', $policy['tools']['composer']['cooldown']['period'] ?? null, 'tools.composer.cooldown.period must be 3 days.');
+        self::assertSame(['waynestate/*'], $policy['tools']['composer']['cooldown']['ignore'] ?? null, 'tools.composer.cooldown.ignore must exempt waynestate/*.');
+    }
+
     /**
      * @return array<string, array{0: string}>
      */
@@ -120,6 +137,7 @@ final class PolicySchemaTest extends TestCase
             'empty string inside images' => [__DIR__ . '/fixtures/images-empty-value.json'],
             'tool minimum not a full version' => [__DIR__ . '/fixtures/tools-bad-minimum.json'],
             'unknown key inside a tool' => [__DIR__ . '/fixtures/tools-unknown-key.json'],
+            'tool cooldown period not a duration' => [__DIR__ . '/fixtures/tools-bad-cooldown.json'],
             'zero idle_minutes inside sessions' => [__DIR__ . '/fixtures/sessions-zero-idle.json'],
             'current line with security_until' => [__DIR__ . '/fixtures/current-with-security-until.json'],
             'neither current nor security_until' => [__DIR__ . '/fixtures/no-security-until.json'],
