@@ -156,7 +156,7 @@ final class DistPackagingTest extends TestCase
 
         $binEntries = array_values(array_filter(
             $entries,
-            static fn(string $entry): bool => str_starts_with($entry, 'bin/'),
+            static fn(string $entry): bool => str_starts_with($entry, 'bin/') && !str_ends_with($entry, '/'),
         ));
         self::assertSame(
             ['bin/export.php'],
