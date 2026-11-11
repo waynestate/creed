@@ -45,6 +45,9 @@
 <h2 id="unreleased"><span class="docs-heading-tail"><span>Unreleased</span><a class="docs-heading-link" aria-label="Link to this section" href="#unreleased">#</a></span></h2>
 <ul>
 <li>
+<p>Added: <code>bin/export.php</code> now ships in the Composer dist (the rest of <code>bin/</code> stays maintainer-only), so a consumer runs <code>php vendor/waynestate/creed/bin/export.php --check ...</code>; held by <code>tests/DistPackagingTest.php</code>.</p>
+</li>
+<li>
 <p>Changed: the AI and LLM handbook chapter allows personal data in a prompt when it goes to WarriorGPT only and is the minimum the task needs, and bans it at any outside model provider (D-102). It replaces the blanket ban; the logging rules are unchanged.</p>
 </li>
 <li>
