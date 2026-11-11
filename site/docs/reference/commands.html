@@ -154,7 +154,7 @@
 </tr>
 <tr>
 <td><code>php bin/mysql56-probe.php [--wait=SECONDS]</code></td>
-<td>Asks a live MySQL 5.6 whether the databases chapter tells the truth about it: runs every probe in <code>tools/Mysql56/Probes.php</code> against the server named by <code>DB_HOST</code>, <code>DB_PORT</code>, <code>DB_DATABASE</code>, <code>DB_USERNAME</code> and <code>DB_PASSWORD</code>, in the session Laravel 13 opens, and prints <code>[OK]</code> or <code>[FAIL]</code> per probe. <code>--wait</code> retries the connection while the server starts. Needs <code>pdo_mysql</code>, not Composer. <code>scripts/mysql56-probe.sh</code> and <code>scripts/mysql56-probe.ps1</code> start <code>mysql:5.6.51</code> in Docker and run it; CI runs it in the <code>mysql56-probe</code> job.</td>
+<td>Asks a live MySQL 5.6 whether the databases chapter tells the truth about it: runs every probe in <code>tools/Mysql56/Probes.php</code> against the server named by <code>DB_HOST</code>, <code>DB_PORT</code>, <code>DB_DATABASE</code>, <code>DB_USERNAME</code> and <code>DB_PASSWORD</code>, in the session Laravel 13 opens, and prints <code>[OK]</code> or <code>[FAIL]</code> per probe. <code>--wait</code> retries the connection while the server starts. Needs <code>pdo_mysql</code>, not Composer. On an 8.4 server it judges each probe against its 8.4 answer. <code>scripts/mysql56-probe.sh</code> and <code>scripts/mysql56-probe.ps1</code> start <code>mysql:5.6.51</code> (or <code>mysql:8.4.13</code>) in Docker and run it; CI runs it in the <code>mysql56-probe</code> and <code>mysql84-probe</code> jobs.</td>
 </tr>
 </tbody>
 </table></div>
@@ -240,7 +240,7 @@
 <tbody>
 <tr>
 <td><code>0</code></td>
-<td>Every probe answered as <code>handbook/databases.md</code> says.</td>
+<td>Every probe answered as <code>handbook/databases.md</code> says (on 8.4, as its 8.4 answer says).</td>
 </tr>
 <tr>
 <td><code>1</code></td>
@@ -284,6 +284,12 @@ docker run --rm -v &quot;${PWD}:/app&quot; -w /app php:8.3-cli vendor/bin/phpuni
 </code></pre></div>
 <div class="docs-tabs__panel" data-tab-label="PowerShell"><p class="docs-tabs__label">PowerShell</p><pre tabindex="0"><code class="language-powershell">.\scripts\mysql56-probe.ps1
 </code></pre></div></div>
+<h3 id="probe-mysql-8-4">Probe MySQL <span class="docs-heading-tail"><span>8.4</span><a class="docs-heading-link" aria-label="Link to this section" href="#probe-mysql-8-4">#</a></span></h3>
+<p>The same probes on <code>mysql:8.4.13</code> (multi-arch), each judged against the answer 8.4 gives: the proof behind the chapter's &quot;Moving to 8.4&quot; section.</p>
+<div class="docs-tabs" data-tabs="sh|powershell"><div class="docs-tabs__panel" data-tab-label="sh"><p class="docs-tabs__label">sh</p><pre tabindex="0"><code class="language-sh">sh scripts/mysql56-probe.sh 8.4
+</code></pre></div>
+<div class="docs-tabs__panel" data-tab-label="PowerShell"><p class="docs-tabs__label">PowerShell</p><pre tabindex="0"><code class="language-powershell">.\scripts\mysql56-probe.ps1 -Server 8.4
+</code></pre></div></div>
 <h2 id="related"><span class="docs-heading-tail"><span>Related</span><a class="docs-heading-link" aria-label="Link to this section" href="#related">#</a></span></h2>
 <ul>
 <li><a href="policy-format.html">Policy file format</a></li>
@@ -297,7 +303,7 @@ docker run --rm -v &quot;${PWD}:/app&quot; -w /app php:8.3-cli vendor/bin/phpuni
     </main>
     <nav class="docs-pager" aria-label="Pages"><a class="docs-pager__link" href="../../docs/reference/policy-format.html"><span class="docs-pager__dir">Previous</span><span class="docs-pager__title">Policy file format</span></a><a class="docs-pager__link docs-pager__link--next" href="../../docs/reference/configuration.html"><span class="docs-pager__dir">Next</span><span class="docs-pager__title">Configuration</span></a></nav>
   </div>
-  <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#composer-scripts">Composer scripts</a></li><li class="docs-toc__item"><a href="#the-php-bin-php-tools">The php bin/*.php tools</a></li><li class="docs-toc__item"><a href="#exit-codes">Exit codes</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#refresh-policy">refresh-policy</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#policy-bot-run">policy-bot run</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#refresh-patches">refresh-patches</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#mysql56-probe">mysql56-probe</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#export-check">export --check</a></li><li class="docs-toc__item"><a href="#with-only-docker">With only Docker</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#install-and-run-every-check">Install and run every check</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#run-the-test-suite">Run the test suite</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#validate-the-policy-against-its-schema">Validate the policy against its schema</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#probe-mysql-5-6">Probe MySQL 5.6</a></li><li class="docs-toc__item"><a href="#related">Related</a></li></ul></nav>
+  <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#composer-scripts">Composer scripts</a></li><li class="docs-toc__item"><a href="#the-php-bin-php-tools">The php bin/*.php tools</a></li><li class="docs-toc__item"><a href="#exit-codes">Exit codes</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#refresh-policy">refresh-policy</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#policy-bot-run">policy-bot run</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#refresh-patches">refresh-patches</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#mysql56-probe">mysql56-probe</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#export-check">export --check</a></li><li class="docs-toc__item"><a href="#with-only-docker">With only Docker</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#install-and-run-every-check">Install and run every check</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#run-the-test-suite">Run the test suite</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#validate-the-policy-against-its-schema">Validate the policy against its schema</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#probe-mysql-5-6">Probe MySQL 5.6</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#probe-mysql-8-4">Probe MySQL 8.4</a></li><li class="docs-toc__item"><a href="#related">Related</a></li></ul></nav>
 </div>
 <footer class="docs-footer">
   <span>Documents CREED <span data-docs-version>0.1.11</span></span>

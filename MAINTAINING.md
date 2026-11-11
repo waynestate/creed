@@ -48,7 +48,7 @@ handbook site and agent-ready freshness checks, PHPStan, `composer audit` and th
 
 - **GitLab:** Preflight components (`php-test` on PHP 8.3, 8.4 and 8.5, `composer-audit`, `proctor` for the
   `deploy/` layer, which blocks on a failing check, `a11y`, which runs axe-core on every page in `site/`, and `mysql56-migrate` as the `mysql56-probe` job, which asks a real
-  MySQL 5.6.51 about the databases chapter on main and tag pipelines), plus `composer-ci` and `wayneui-copies` jobs. On scheduled pipelines, `refresh-patches`
+  MySQL 5.6.51 about the databases chapter on main and tag pipelines, and again as the `mysql84-probe` job, which asks MySQL 8.4.13), plus `composer-ci` and `wayneui-copies` jobs. On scheduled pipelines, `refresh-patches`
   (check-only) runs on a schedule without `CREED_JOB`, and `policy-bot` on the Monday schedule that carries
   `CREED_JOB=policy-bot` (and by hand from the web).
 - **GitHub:** `.github/workflows/ci.yml` calls Preflight's reusable workflow with `composer ci`, and runs

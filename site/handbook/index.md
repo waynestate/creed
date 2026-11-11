@@ -12,7 +12,7 @@ The handbook · 2026 Edition
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a "Not decided here" heading.
 
-Thirteen chapters · 184 provisions · **MUST** 138 · **SHOULD** 22 · **MAY** 1
+Thirteen chapters · 188 provisions · **MUST** 138 · **SHOULD** 22 · **MAY** 1
 
 ## Contents
 
@@ -20,7 +20,7 @@ Thirteen chapters · 184 provisions · **MUST** 138 · **SHOULD** 22 · **MAY** 
 2. [2 Dependencies Private packages](https://creed.apps.wayne.edu/handbook/dependencies.html)1 section · 16 provisions · **MUST NOT** 6 · **MUST** 11 · **SHOULD NOT** 1 · **SHOULD** 3Decided
 3. [3 Code PHP style · Reading the code · Source control and documentation · Static analysis · Input and files · Banned patterns · Vue and JavaScript · Security analysis · How it is enforced · Which preset enforces each rule · Not adopted · To be decided · Sources](https://creed.apps.wayne.edu/handbook/code.html)13 sections · 43 provisions · **MUST NOT** 8 · **MUST** 23 · **SHOULD** 5Partly decided
 4. [4 Auth](https://creed.apps.wayne.edu/handbook/auth.html)14 provisions · **MUST** 11 · **SHOULD** 1Decided
-5. [5 Databases What the stack supports · Which MySQL lines the policy lists · Grace period · Names, comments and connections · Conventions that keep 5.6 working · Avoid until the server is upgraded · Moving to 8.4 · How the stack checks it · How the claims are proven · Sources](https://creed.apps.wayne.edu/handbook/databases.html)10 sections · 27 provisions · **MUST NOT** 3 · **MUST** 14 · **SHOULD** 3 · **MAY** 1Decided
+5. [5 Databases What the stack supports · Which MySQL lines the policy lists · Grace period · Names, comments and connections · Conventions that keep 5.6 working · Avoid until the server is upgraded · Moving to 8.4 · How the stack checks it · How the claims are proven · Sources](https://creed.apps.wayne.edu/handbook/databases.html)10 sections · 31 provisions · **MUST NOT** 3 · **MUST** 14 · **SHOULD** 3 · **MAY** 1Decided
 6. [6 Runtime and headers Enforcement · Headers · Proxy trust · Sessions · Health · Metrics · Errors in production · Not decided here](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html)8 sections · 16 provisions · **MUST NOT** 2 · **MUST** 4 · **SHOULD NOT** 1Decided
 7. [7 Deploy gate On Citadel · Elsewhere](https://creed.apps.wayne.edu/handbook/deploy-gate.html)2 sections · 8 provisionsDecided
 8. [8 CI](https://creed.apps.wayne.edu/handbook/ci.html)8 provisions · **MUST NOT** 1 · **MUST** 6 · **SHOULD** 1Decided

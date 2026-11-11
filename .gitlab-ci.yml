@@ -34,6 +34,14 @@ include:
     inputs:
       job_name: mysql56-probe
       migrate_command: "php bin/mysql56-probe.php --wait=60"
+  # The same probes on MySQL 8.4.13, judged against their 8.4 answers: the proof behind the chapter's "Moving to
+  # 8.4" section. The 8.4 image is multi-arch, so this job needs no amd64 runner.
+  - component: $CI_SERVER_FQDN/enterprise-apps/preflight/mysql56-migrate@0.8.0
+    inputs:
+      job_name: mysql84-probe
+      service_image: "mysql:8.4.13@sha256:a81d043930e51745522bd5c430961cf8286f0a23f0a9a2a6e0108f7ea71b0902"
+      tags: []
+      migrate_command: "php bin/mysql56-probe.php --wait=60"
 
 # Dependency caching: images already come through the Dependency Proxy, and
 # every job that installs packages extends a cache under a fixed key, not a

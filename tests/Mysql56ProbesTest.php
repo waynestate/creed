@@ -13,8 +13,8 @@ use Waynestate\Creed\Tools\Mysql56\Probes;
  * Keeps the databases chapter and its MySQL 5.6 probes level. Every probe the
  * chapter cites exists, every probe is cited, the count the chapter prints is
  * the count there is, and no claim is left marked "not yet confirmed". The
- * probes themselves need a live 5.6, so they run in the mysql56-probe CI job
- * and in scripts/mysql56-probe.sh or .ps1, not here.
+ * probes themselves need a live server, so they run in the mysql56-probe and
+ * mysql84-probe CI jobs and in scripts/mysql56-probe.sh or .ps1, not here.
  *
  * Creed Bratton says he once sat in with a band nobody can prove existed. The
  * databases chapter no longer gets to say anything like that about 5.6.
@@ -27,6 +27,9 @@ final class Mysql56ProbesTest extends TestCase
     private const MYSQL_IMAGE = 'mysql:5.6.51@sha256:20575ecebe6216036d25dab5903808211f1e9ba63dc7825ac20cb975e34cfcae';
 
     private const PHP_IMAGE = 'php:8.3-cli-trixie@sha256:628102249d93494233b54490b785f12db9cd60f4dc89416dfca15973f2125f10';
+
+    /** The 8.4 the probes' second answers were read from: the multi-arch list digest, so no amd64 runner is needed. */
+    private const MYSQL84_IMAGE = 'mysql:8.4.13@sha256:a81d043930e51745522bd5c430961cf8286f0a23f0a9a2a6e0108f7ea71b0902';
 
     #[Test]
     public function everyProbeIsWellFormed(): void
@@ -74,6 +77,7 @@ final class Mysql56ProbesTest extends TestCase
         $count = count(Probes::all());
 
         self::assertMatchesRegularExpression('/All ' . $count . ' agreed/', $chapter, "The chapter's proof paragraph says how many probes agreed; there are {$count}.");
+        self::assertMatchesRegularExpression('/all ' . $count . ' agreed with their 8\.4 answers/', $chapter, "The chapter's proof paragraph says how many probes agreed on 8.4; there are {$count}.");
         self::assertMatchesRegularExpression('/\b' . $count . ' probes\b/', self::read('README.md'), "The README's Tests section counts the probes; there are {$count}.");
         self::assertStringNotContainsString('not yet confirmed', $chapter, 'A claim in handbook/databases.md is still marked "not yet confirmed": write a probe for it, or say why none can.');
     }
@@ -85,11 +89,48 @@ final class Mysql56ProbesTest extends TestCase
             $text = self::read($script);
             self::assertStringContainsString(self::MYSQL_IMAGE, $text, "{$script} does not start the mysql56-migrate component's MySQL pin.");
             self::assertStringContainsString(self::PHP_IMAGE, $text, "{$script} does not default to the mysql56-migrate component's PHP image.");
+            self::assertStringContainsString(self::MYSQL84_IMAGE, $text, "{$script} does not start the 8.4 the probes' second answers were read from.");
             self::assertStringContainsString('php bin/mysql56-probe.php', $text, "{$script} does not run the probes.");
         }
 
         $ci = self::read('.gitlab-ci.yml');
         self::assertMatchesRegularExpression('~preflight/mysql56-migrate@\d+\.\d+\.\d+\s+inputs:\s+job_name: mysql56-probe\s+migrate_command: "php bin/mysql56-probe\.php~', $ci, 'The mysql56-probe CI job is missing or no longer runs bin/mysql56-probe.php.');
+        // The 8.4 job leaves the amd64 tag off: only jobs that need amd64 carry it.
+        self::assertMatchesRegularExpression(
+            '~preflight/mysql56-migrate@\d+\.\d+\.\d+\s+inputs:\s+job_name: mysql84-probe\s+service_image: "' . preg_quote(self::MYSQL84_IMAGE, '~') . '"\s+tags: \[\]\s+migrate_command: "php bin/mysql56-probe\.php~',
+            $ci,
+            'The mysql84-probe CI job is missing, starts another MySQL, carries a runner tag, or no longer runs bin/mysql56-probe.php.',
+        );
+    }
+
+    #[Test]
+    public function whatWorksOn56StillWorksOn84(): void
+    {
+        // The chapter's "Moving to 8.4" promise: code that keeps to the conventions runs unchanged. Every statement
+        // 5.6 runs, 8.4 runs too, except the one the chapter already says to avoid: a row that breaks a CHECK, which
+        // 5.6 lets in only because it ignores the constraint. The live run in the mysql84-probe job checks the server.
+        $avoided = ['check-constraint-ignored'];
+        foreach (Probes::all() as $probe) {
+            if ($probe->expect === 'ok' && !in_array($probe->id, $avoided, true)) {
+                self::assertSame('ok', $probe->expectationFor('8.4.13'), "Probe {$probe->id} runs on 5.6 but not on 8.4, so the move would break code that follows the chapter.");
+            }
+        }
+    }
+
+    #[Test]
+    public function eachServerIsJudgedAgainstItsOwnAnswer(): void
+    {
+        $both = new Probe('x', 'X.', [], 'select 1', 'error:1064', 'ok');
+        $same = new Probe('y', 'Y.', [], 'select 1', 'error:1067');
+
+        self::assertSame('error:1064', $both->expectationFor('5.6.51'));
+        self::assertSame('ok', $both->expectationFor('8.4.13'));
+        self::assertSame('error:1064', $both->expectationFor('8.0.40'), 'A server that is neither 5.6 nor 8.4 is judged as 5.6.');
+        self::assertSame('error:1067', $same->expectationFor('8.4.13'), 'A probe without an 8.4 answer expects the 5.6 one there too.');
+
+        self::assertNull($both->verdict(null, [], null, 'ok'));
+        self::assertSame('expected ok, got error 1064', $both->verdict(1064, [], null, 'ok'));
+        self::assertFalse((new Probe('z', 'Z.', [], 'select 1', 'ok', 'maybe'))->expectIsWellFormed());
     }
 
     #[Test]

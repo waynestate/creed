@@ -43,7 +43,7 @@ The whole band fits in three commands, and nobody needs a solo.
 | `php bin/build-handbook-site.php` | Builds the handbook pages of the CREED site from `handbook/*.md`. |
 | `php bin/agent-ready.php` | Makes a static front page readable by agents: writes the Markdown twins, `llms.txt`, `llms-full.txt`, `robots.txt` and `sitemap.xml` into the site folder. |
 | `php bin/docs-site.php` | Turns every Markdown file under `docs/` into a committed, accessible, WayneUI-styled docs site under `site/docs/`, and fails CI when the committed pages are stale. |
-| `php bin/mysql56-probe.php [--wait=SECONDS]` | Asks a live MySQL 5.6 whether the databases chapter tells the truth about it: runs every probe in `tools/Mysql56/Probes.php` against the server named by `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME` and `DB_PASSWORD`, in the session Laravel 13 opens, and prints `[OK]` or `[FAIL]` per probe. `--wait` retries the connection while the server starts. Needs `pdo_mysql`, not Composer. `scripts/mysql56-probe.sh` and `scripts/mysql56-probe.ps1` start `mysql:5.6.51` in Docker and run it; CI runs it in the `mysql56-probe` job. |
+| `php bin/mysql56-probe.php [--wait=SECONDS]` | Asks a live MySQL 5.6 whether the databases chapter tells the truth about it: runs every probe in `tools/Mysql56/Probes.php` against the server named by `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME` and `DB_PASSWORD`, in the session Laravel 13 opens, and prints `[OK]` or `[FAIL]` per probe. `--wait` retries the connection while the server starts. Needs `pdo_mysql`, not Composer. On an 8.4 server it judges each probe against its 8.4 answer. `scripts/mysql56-probe.sh` and `scripts/mysql56-probe.ps1` start `mysql:5.6.51` (or `mysql:8.4.13`) in Docker and run it; CI runs it in the `mysql56-probe` and `mysql84-probe` jobs. |
 
 ## Exit codes
 
@@ -77,7 +77,7 @@ The refresher never commits; the policy robot does.
 
 | Code | Meaning |
 |---|---|
-| `0` | Every probe answered as `handbook/databases.md` says. |
+| `0` | Every probe answered as `handbook/databases.md` says (on 8.4, as its 8.4 answer says). |
 | `1` | At least one probe disagreed; its `[FAIL]` line says what the server did instead. Fix the chapter or the probe, in one commit. |
 | `2` | It could not connect before `--wait` ran out, `pdo_mysql` is missing, or an argument is unknown. |
 
@@ -137,6 +137,18 @@ sh scripts/mysql56-probe.sh
 
 ```powershell tab="PowerShell"
 .\scripts\mysql56-probe.ps1
+```
+
+### Probe MySQL 8.4
+
+The same probes on `mysql:8.4.13` (multi-arch), each judged against the answer 8.4 gives: the proof behind the chapter's "Moving to 8.4" section.
+
+```sh tab="sh"
+sh scripts/mysql56-probe.sh 8.4
+```
+
+```powershell tab="PowerShell"
+.\scripts\mysql56-probe.ps1 -Server 8.4
 ```
 
 ## Related

@@ -66,8 +66,10 @@ while (true) {
 $runner = new Runner($pdo);
 $version = $runner->serverVersion();
 echo "MySQL {$version}, session as Laravel 13 opens it (utf8mb4_unicode_ci, strict sql_mode)\n";
-if (!str_starts_with($version, '5.6.')) {
-    echo "Note: this server is not 5.6, so a [FAIL] below may only mean it is newer.\n";
+if (str_starts_with($version, '8.4.')) {
+    echo "Judged against each probe's 8.4 answer (the chapter's \"Moving to 8.4\" section).\n";
+} elseif (!str_starts_with($version, '5.6.')) {
+    echo "Note: this server is neither 5.6 nor 8.4, so it is judged as 5.6 and a [FAIL] below may only mean it is newer.\n";
 }
 
 $failed = 0;

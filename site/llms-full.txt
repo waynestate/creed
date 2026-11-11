@@ -283,8 +283,9 @@ in light and dark at 320 and 1280 pixels wide, so a page that passes locally pas
 and macOS, `scripts/a11y.ps1` on Windows.
 
 The databases chapter's MySQL 5.6 claims are checked against a real 5.6.51: `scripts/mysql56-probe.sh` (or `.ps1`)
-starts the server in Docker and runs `bin/mysql56-probe.php`, 31 probes written in the SQL Laravel 13 sends. Creed
-Bratton tells stories about 1966 that nobody can check; 5.6 gets no such courtesy.
+starts the server in Docker and runs `bin/mysql56-probe.php`, 32 probes written in the SQL Laravel 13 sends. Give it
+`8.4` (`-Server 8.4` in PowerShell) and the same probes ask MySQL 8.4.13 instead, which is how the chapter's "Moving to
+8.4" section is proven. Creed Bratton tells stories about 1966 that nobody can check; 5.6 gets no such courtesy.
 
 ### Strongly recommended: a git.wayne.edu instance runner
 
@@ -946,6 +947,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Added: the databases chapter's "Moving to 8.4" section is proven on a real MySQL 8.4.13. Each probe now records the answer 8.4 gives as well, `scripts/mysql56-probe.sh 8.4` (`-Server 8.4` in PowerShell) and the new `mysql84-probe` CI job (Preflight's `mysql56-migrate` component with the multi-arch `mysql:8.4.13` pin, no amd64 tag) judge each probe against it, and `Mysql56ProbesTest` holds that every statement 5.6 accepts, 8.4 accepts too, except a row that breaks a CHECK constraint (an avoided pattern). All 32 agreed on both servers. The section now says what the move changes: the avoided patterns work except `vector` columns and joined deletes with an order or a limit, CHECK constraints start refusing rows and DESC indexes are built descending, a `date` column's `useCurrent()` gets its `(CURDATE())` default (new probe `date-current-expression`), and large prefixes are always on. The `invisible-column` probe gained a visible column (8.4 refuses a table with none) and `check-constraint-ignored` now judges the insert itself.
 - Docs: every sentence that states CREED's Preflight pin matches `.gitlab-ci.yml` again (the front page's §3.6 said four components at 0.5.0, the accessibility chapter said 0.5.0, BEST_PRACTICES said four components), and the new `PreflightPinMentionsTest` fails CI when a present-tense pin statement ("pins its five Preflight components to the 0.8.0 tag", "the pin is", "pinned to Preflight") names another tag or another count; history mentions such as "since 0.2.0" are left alone. Practice 23 (pin CI components) is `Checked`: PROCTOR 0.12.0's `preflight-pinned` warns on any unpinned component, not only Preflight's, so the front page's tally reads 7 Enforced, 20 Checked, 12 Partially, 18 Documented and 4 Not yet.
 - Added: the databases chapter's MySQL 5.6 claims are proven on a real MySQL 5.6.51. `bin/mysql56-probe.php` runs 31 probes, each the SQL Laravel 13 sends (or the raw statement the chapter prescribes), in the session Laravel opens, and prints `[OK]` or `[FAIL]` per claim; `scripts/mysql56-probe.sh` and `.ps1` start the server in Docker, and CI runs them in a new `mysql56-probe` job on Preflight 0.8.0's `mysql56-migrate` component (main and tags, amd64 runner). `tests/Mysql56ProbesTest.php` keeps the chapter's citations and the probe list level. Every "not yet confirmed on a 5.6 server" is gone, and the chapter is more exact: column introspection (`hasColumn`, `getColumns`) fails outright on 5.6, `renameColumn` fails because it reads the column first, DESC indexes and CHECK constraints are accepted and silently ignored, Laravel drops `useCurrent()` from a `date` column on 5.6, and `ROW_FORMAT=DYNAMIC` in the engine setting falls back to COMPACT on a stock server.
 - CI pins Preflight 0.8.0.
@@ -1183,7 +1185,7 @@ The documentation site is built by `composer docs` and checked by `composer docs
 
 ### CI [#](https://creed.apps.wayne.edu/docs/contributing.html#ci)
 
-- **GitLab:** Preflight components (`php-test` on PHP 8.3, 8.4 and 8.5, `composer-audit`, `proctor` for the `deploy/` layer, which blocks on a failing check, `a11y`, which runs axe-core on every page in `site/`, and `mysql56-migrate` as the `mysql56-probe` job, which asks a real MySQL 5.6.51 about the databases chapter on main and tag pipelines), plus a `composer-ci` job and a `wayneui-copies` job. On scheduled pipelines, `refresh-patches` (check-only) runs on a schedule without `CREED_JOB`, and `policy-bot` runs on the Monday schedule that carries `CREED_JOB=policy-bot` (and by hand from the web).
+- **GitLab:** Preflight components (`php-test` on PHP 8.3, 8.4 and 8.5, `composer-audit`, `proctor` for the `deploy/` layer, which blocks on a failing check, `a11y`, which runs axe-core on every page in `site/`, and `mysql56-migrate` as the `mysql56-probe` job, which asks a real MySQL 5.6.51 about the databases chapter on main and tag pipelines, and again as the `mysql84-probe` job, which asks MySQL 8.4.13), plus a `composer-ci` job and a `wayneui-copies` job. On scheduled pipelines, `refresh-patches` (check-only) runs on a schedule without `CREED_JOB`, and `policy-bot` runs on the Monday schedule that carries `CREED_JOB=policy-bot` (and by hand from the web).
 - **GitHub:** `.github/workflows/ci.yml` calls Preflight's reusable workflow with `composer ci`, and runs `refresh-patches` weekly (Mondays) and on demand.
 - Green means the tests passed on all three PHP versions on both, and `composer ci` passed (on all three on GitHub, once on GitLab).
 
@@ -1888,7 +1890,7 @@ The whole band fits in three commands, and nobody needs a solo.
 | `php bin/build-handbook-site.php` | Builds the handbook pages of the CREED site from `handbook/*.md`. |
 | `php bin/agent-ready.php` | Makes a static front page readable by agents: writes the Markdown twins, `llms.txt`, `llms-full.txt`, `robots.txt` and `sitemap.xml` into the site folder. |
 | `php bin/docs-site.php` | Turns every Markdown file under `docs/` into a committed, accessible, WayneUI-styled docs site under `site/docs/`, and fails CI when the committed pages are stale. |
-| `php bin/mysql56-probe.php [--wait=SECONDS]` | Asks a live MySQL 5.6 whether the databases chapter tells the truth about it: runs every probe in `tools/Mysql56/Probes.php` against the server named by `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME` and `DB_PASSWORD`, in the session Laravel 13 opens, and prints `[OK]` or `[FAIL]` per probe. `--wait` retries the connection while the server starts. Needs `pdo_mysql`, not Composer. `scripts/mysql56-probe.sh` and `scripts/mysql56-probe.ps1` start `mysql:5.6.51` in Docker and run it; CI runs it in the `mysql56-probe` job. |
+| `php bin/mysql56-probe.php [--wait=SECONDS]` | Asks a live MySQL 5.6 whether the databases chapter tells the truth about it: runs every probe in `tools/Mysql56/Probes.php` against the server named by `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME` and `DB_PASSWORD`, in the session Laravel 13 opens, and prints `[OK]` or `[FAIL]` per probe. `--wait` retries the connection while the server starts. Needs `pdo_mysql`, not Composer. On an 8.4 server it judges each probe against its 8.4 answer. `scripts/mysql56-probe.sh` and `scripts/mysql56-probe.ps1` start `mysql:5.6.51` (or `mysql:8.4.13`) in Docker and run it; CI runs it in the `mysql56-probe` and `mysql84-probe` jobs. |
 
 ### Exit codes [#](https://creed.apps.wayne.edu/docs/reference/commands.html#exit-codes)
 
@@ -1922,7 +1924,7 @@ The refresher never commits; the policy robot does.
 
 | Code | Meaning |
 | --- | --- |
-| `0` | Every probe answered as `handbook/databases.md` says. |
+| `0` | Every probe answered as `handbook/databases.md` says (on 8.4, as its 8.4 answer says). |
 | `1` | At least one probe disagreed; its `[FAIL]` line says what the server did instead. Fix the chapter or the probe, in one commit. |
 | `2` | It could not connect before `--wait` ran out, `pdo_mysql` is missing, or an argument is unknown. |
 
@@ -1998,6 +2000,22 @@ PowerShell
 
 ```powershell
 .\scripts\mysql56-probe.ps1
+```
+
+#### Probe MySQL 8.4 [#](https://creed.apps.wayne.edu/docs/reference/commands.html#probe-mysql-8-4)
+
+The same probes on `mysql:8.4.13` (multi-arch), each judged against the answer 8.4 gives: the proof behind the chapter's "Moving to 8.4" section.
+
+sh
+
+```sh
+sh scripts/mysql56-probe.sh 8.4
+```
+
+PowerShell
+
+```powershell
+.\scripts\mysql56-probe.ps1 -Server 8.4
 ```
 
 ### Related [#](https://creed.apps.wayne.edu/docs/reference/commands.html#related)
@@ -2205,7 +2223,7 @@ The front page, [`site/index.html`](https://creed.apps.wayne.edu/), is a static 
 
 `composer ci` is the same command on GitLab and GitHub. It validates `composer.json`, runs the test suite (376 tests in 35 files on 2026-11-10), validates `policy/policy.json` and `policy/sources.json` against their schemas, checks style with Pint, lints the handbook, runs PHPStan and `composer audit`, and fails when the handbook site, the agent-ready files or the docs pages go stale, so the site you are reading cannot drift from `docs/`.
 
-Where it runs: GitHub runs `composer ci` on PHP 8.3, 8.4 and 8.5. GitLab runs the test suite on all three through Preflight's `php-test` component, and `composer ci` once on the pinned Composer image (PHP 8.5). GitLab also runs PROCTOR against the front page's `deploy/` layer (a failing check fails the pipeline; warnings never do), Preflight's `a11y` component on every page in `site/` (axe-core at WCAG 2.2 AA, light and dark, at 320 and 1280 px), and the strict WayneUI copies check. On main and tag pipelines the `mysql56-probe` job (Preflight's `mysql56-migrate` component on the amd64 runner) asks a real MySQL 5.6.51 whether every 5.6 claim in the databases chapter holds.
+Where it runs: GitHub runs `composer ci` on PHP 8.3, 8.4 and 8.5. GitLab runs the test suite on all three through Preflight's `php-test` component, and `composer ci` once on the pinned Composer image (PHP 8.5). GitLab also runs PROCTOR against the front page's `deploy/` layer (a failing check fails the pipeline; warnings never do), Preflight's `a11y` component on every page in `site/` (axe-core at WCAG 2.2 AA, light and dark, at 320 and 1280 px), and the strict WayneUI copies check. On main and tag pipelines the `mysql56-probe` job (Preflight's `mysql56-migrate` component on the amd64 runner) asks a real MySQL 5.6.51 whether every 5.6 claim in the databases chapter holds, and the `mysql84-probe` job (the same component with `mysql:8.4.13`, on any runner) asks 8.4 whether the chapter's "Moving to 8.4" section does.
 
 The policy itself is proved every Monday: the [policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html) re-reads the upstream sources and, when anything moved, pushes the refresh to `main` if `composer ci` is green, or opens a merge request for a person if it is red.
 
@@ -2607,7 +2625,7 @@ Chapter 5
 
 ## Databases
 
-10 sections · 27 provisions · **MUST NOT** 3 · **MUST** 14 · **SHOULD** 3 · **MAY** 1
+10 sections · 31 provisions · **MUST NOT** 3 · **MUST** 14 · **SHOULD** 3 · **MAY** 1
 
 Decided
 
@@ -2655,7 +2673,7 @@ Each claim below about what 5.6 does names the probe that shows it on MySQL 5.6.
 - Generated columns, `storedAs` and `virtualAs` (probe `generated-column`)
 - `renameIndex` and `renameColumn` (probes `rename-index`, `rename-column-syntax`)
 - Column introspection (probe `column-introspection`)
-- `invisible`, `instant` and `vector` columns (probes `invisible-column`, `vector-column`)
+- `invisible`, `instant` and `vector` columns (probes `invisible-column`, `vector-column`; 8.4 has no vector type either)
 - InnoDB `spatialIndex`, which needs 5.7.5 (probe `spatial-index-innodb`)
 - DESC indexes and CHECK constraints. These are the quiet ones: 5.6 accepts both and then ignores them, so the migration passes, a DESC index is built ascending (probe `desc-index-ignored`) and a row that breaks a CHECK goes in (probe `check-constraint-ignored`). Validate in the app instead.
 
@@ -2674,7 +2692,14 @@ Each claim below about what 5.6 does names the probe that shows it on MySQL 5.6.
 
 ### [§5.7](https://creed.apps.wayne.edu/handbook/databases.html#moving-to-8-4) Moving to 8.4
 
-Code that follows the conventions and avoids the patterns above runs unchanged on 8.4. The server-side large-prefix settings (`innodb_large_prefix=ON`, `innodb_file_format=Barracuda`, DYNAMIC rows) are a question for the database owners, not something an app sets: a stock 5.6.51 has large prefixes off (probe `large-prefix-off`). Passing `ROW_FORMAT=DYNAMIC` through the connection's `engine` setting does not get around that: on the default Antelope file format 5.6 warns and builds a COMPACT table (probe `row-format-dynamic`), and the 255 character index is still refused (probe `row-format-dynamic-index`). `defaultStringLength(191)` is the convention that works.
+Code that follows the conventions and avoids the patterns above runs unchanged on 8.4: every probe statement 5.6.51 accepts, 8.4.13 accepts too, except a row that breaks a CHECK constraint, which the list above already avoids. What the move changes, each shown on 8.4.13 by the same probe:
+
+- The patterns above start working: JSON columns and functions, generated and invisible columns, InnoDB spatial indexes, the upsert row alias, column introspection, `renameColumn` and `renameIndex`, CTEs, window functions, `SKIP LOCKED`, `NOWAIT` and `joinLateral`. Two stay out: `vector` columns and joined deletes with an order or a limit.
+- The two quiet ones turn real. 8.4 builds a DESC index descending (probe `desc-index-ignored`) and enforces a CHECK constraint, refusing the row 5.6 let in (probe `check-constraint-ignored`). A CHECK written while an app was on 5.6 has never refused anything, so test the code that writes to that table before the move.
+- `useCurrent()` on a `date` column gets its default back: from 8.0.13 Laravel 13 writes `default (CURDATE())`, which 8.4 accepts and 5.6 cannot parse (probe `date-current-expression`). A plain current-timestamp default on a `date` column is still refused (probe `date-current-default`), and the `timestamp` convention keeps working.
+- Large prefixes are always on. `innodb_large_prefix` no longer exists (probe `large-prefix-off`), `ROW_FORMAT=DYNAMIC` is honored without a warning (probe `row-format-dynamic`), and a 255 character `utf8mb4` index fits (probes `index-255`, `row-format-dynamic-index`). `defaultStringLength(191)` does no harm there, so it can stay until the app leaves 5.6 for good.
+
+On 5.6 itself, the server-side large-prefix settings (`innodb_large_prefix=ON`, `innodb_file_format=Barracuda`, DYNAMIC rows) are a question for the database owners, not something an app sets: a stock 5.6.51 has large prefixes off (probe `large-prefix-off`). Passing `ROW_FORMAT=DYNAMIC` through the connection's `engine` setting does not get around that: on the default Antelope file format 5.6 warns and builds a COMPACT table (probe `row-format-dynamic`), and the 255 character index is still refused (probe `row-format-dynamic-index`). `defaultStringLength(191)` is the convention that works.
 
 Oracle moved 5.6 to Sustaining Support on 2021-02-01, so it gets no new fixes. Builds older than 5.6.46 also speak only TLS 1.0 (MySQL 5.6.46 added TLS 1.1 and 1.2, per its release notes), which current hosts may refuse. The probes cannot show this one: the stock 5.6.51 image starts with TLS off. Both are reasons to plan the move rather than wait for it.
 
@@ -2684,9 +2709,11 @@ PROCTOR's `mysql56` check warns on the patterns the shared 5.6 server rejects: J
 
 ### [§5.9](https://creed.apps.wayne.edu/handbook/databases.html#how-the-claims-are-proven) How the claims are proven
 
-Every "probe" named in this chapter is one statement in CREED's `tools/Mysql56/Probes.php`: the SQL Laravel 13 sends (read from its MySQL grammars at 13.40.0), or the raw statement this chapter tells an app to write instead, with the answer 5.6 gives. `php bin/mysql56-probe.php` runs them against a live server, in the session Laravel 13 opens (`utf8mb4_unicode_ci`, its strict `sql_mode`), and prints `[OK]` or `[FAIL]` per probe. `scripts/mysql56-probe.sh` (Linux, macOS) and `scripts/mysql56-probe.ps1` (Windows) start `mysql:5.6.51`, the image [Squire](https://squire.apps.wayne.edu/) runs and Preflight's `mysql56-migrate` component tests against, and run them. CREED's own pipeline runs them on that component, on every main and tag pipeline. All 31 agreed with this chapter on 2026-11-11.
+Every "probe" named in this chapter is one statement in CREED's `tools/Mysql56/Probes.php`: the SQL Laravel 13 sends (read from its MySQL grammars at 13.40.0), or the raw statement this chapter tells an app to write instead, with the answer 5.6 gives. `php bin/mysql56-probe.php` runs them against a live server, in the session Laravel 13 opens (`utf8mb4_unicode_ci`, its strict `sql_mode`), and prints `[OK]` or `[FAIL]` per probe. `scripts/mysql56-probe.sh` (Linux, macOS) and `scripts/mysql56-probe.ps1` (Windows) start `mysql:5.6.51`, the image [Squire](https://squire.apps.wayne.edu/) runs and Preflight's `mysql56-migrate` component tests against, and run them. CREED's own pipeline runs them on that component, on every main and tag pipeline. All 32 agreed with this chapter on 2026-11-11.
 
-The probes read a stock 5.6.51. The shared server keeps its own settings, which its owners know; a probe that says "the default" means the image's. Pointed at MySQL 8.4 the same run fails two thirds of them, which is the point: the patterns above are 5.6 limits, and the upgrade lifts them.
+Each probe also records the answer MySQL 8.4.13 gives, which is where "Moving to 8.4" comes from. `scripts/mysql56-probe.sh 8.4` (or `scripts/mysql56-probe.ps1 -Server 8.4`) and the pipeline's `mysql84-probe` job run the same probes on `mysql:8.4.13` and judge each against that answer. On 2026-11-11 all 32 agreed with their 8.4 answers, and 22 of those answers differ from 5.6's, which is the point: the patterns above are 5.6 limits, and the upgrade lifts most of them.
+
+The probes read stock images. The shared server keeps its own settings, which its owners know; a probe that says "the default" means the image's.
 
 ### [§5.10](https://creed.apps.wayne.edu/handbook/databases.html#sources) Sources
 
@@ -2717,7 +2744,7 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`rules.eol_grace_days`**: `90`
 - **`components.*.versions.*.security_until`**: set per version
 
-Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `eb0ce51`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `6ff9960`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2836,7 +2863,7 @@ The handbook · 2026 Edition
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a "Not decided here" heading.
 
-Thirteen chapters · 184 provisions · **MUST** 138 · **SHOULD** 22 · **MAY** 1
+Thirteen chapters · 188 provisions · **MUST** 138 · **SHOULD** 22 · **MAY** 1
 
 ### Contents
 
@@ -2844,7 +2871,7 @@ Thirteen chapters · 184 provisions · **MUST** 138 · **SHOULD** 22 · **MAY** 
 2. [2 Dependencies Private packages](https://creed.apps.wayne.edu/handbook/dependencies.html)1 section · 16 provisions · **MUST NOT** 6 · **MUST** 11 · **SHOULD NOT** 1 · **SHOULD** 3Decided
 3. [3 Code PHP style · Reading the code · Source control and documentation · Static analysis · Input and files · Banned patterns · Vue and JavaScript · Security analysis · How it is enforced · Which preset enforces each rule · Not adopted · To be decided · Sources](https://creed.apps.wayne.edu/handbook/code.html)13 sections · 43 provisions · **MUST NOT** 8 · **MUST** 23 · **SHOULD** 5Partly decided
 4. [4 Auth](https://creed.apps.wayne.edu/handbook/auth.html)14 provisions · **MUST** 11 · **SHOULD** 1Decided
-5. [5 Databases What the stack supports · Which MySQL lines the policy lists · Grace period · Names, comments and connections · Conventions that keep 5.6 working · Avoid until the server is upgraded · Moving to 8.4 · How the stack checks it · How the claims are proven · Sources](https://creed.apps.wayne.edu/handbook/databases.html)10 sections · 27 provisions · **MUST NOT** 3 · **MUST** 14 · **SHOULD** 3 · **MAY** 1Decided
+5. [5 Databases What the stack supports · Which MySQL lines the policy lists · Grace period · Names, comments and connections · Conventions that keep 5.6 working · Avoid until the server is upgraded · Moving to 8.4 · How the stack checks it · How the claims are proven · Sources](https://creed.apps.wayne.edu/handbook/databases.html)10 sections · 31 provisions · **MUST NOT** 3 · **MUST** 14 · **SHOULD** 3 · **MAY** 1Decided
 6. [6 Runtime and headers Enforcement · Headers · Proxy trust · Sessions · Health · Metrics · Errors in production · Not decided here](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html)8 sections · 16 provisions · **MUST NOT** 2 · **MUST** 4 · **SHOULD NOT** 1Decided
 7. [7 Deploy gate On Citadel · Elsewhere](https://creed.apps.wayne.edu/handbook/deploy-gate.html)2 sections · 8 provisionsDecided
 8. [8 CI](https://creed.apps.wayne.edu/handbook/ci.html)8 provisions · **MUST NOT** 1 · **MUST** 6 · **SHOULD** 1Decided

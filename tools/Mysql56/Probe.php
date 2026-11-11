@@ -14,6 +14,10 @@ namespace Waynestate\Creed\Tools\Mysql56;
  *  - `warning:<code>`: it runs, and SHOW WARNINGS carries that code.
  *  - `value:<text>`: it runs, and the first column of its first row is that text.
  *
+ * `on84` is the answer MySQL 8.4.13 gives to the same SQL, in the same
+ * forms; null means 8.4 answers as 5.6 does. The chapter's "Moving to 8.4"
+ * section rests on it.
+ *
  * `setup` runs first and must succeed; only `sql` is judged. Tables are named
  * `creed_probe_*`, so the runner can sweep them before and after.
  *
@@ -22,6 +26,8 @@ namespace Waynestate\Creed\Tools\Mysql56;
  */
 final class Probe
 {
+    private const string FORM = '/^(?:ok|error:\d{4}|warning:\d{4}|value:.*)$/';
+
     /**
      * @param list<string> $setup statements that prepare the probe and must succeed
      */
@@ -31,12 +37,24 @@ final class Probe
         public readonly array $setup,
         public readonly string $sql,
         public readonly string $expect,
+        public readonly ?string $on84 = null,
     ) {}
 
-    /** True when `expect` is one of the four forms above. */
+    /** True when `expect`, and `on84` when set, are each one of the four forms above. */
     public function expectIsWellFormed(): bool
     {
-        return preg_match('/^(?:ok|error:\d{4}|warning:\d{4}|value:.*)$/', $this->expect) === 1;
+        return preg_match(self::FORM, $this->expect) === 1
+            && ($this->on84 === null || preg_match(self::FORM, $this->on84) === 1);
+    }
+
+    /**
+     * The answer a server of this version should give: the 8.4 answer on an
+     * 8.4 server, the 5.6 answer on anything else (a server that is neither
+     * is judged as 5.6, and the report says so).
+     */
+    public function expectationFor(string $serverVersion): string
+    {
+        return str_starts_with($serverVersion, '8.4.') ? ($this->on84 ?? $this->expect) : $this->expect;
     }
 
     /**
@@ -45,13 +63,15 @@ final class Probe
      * @param int|null $error the MySQL error code the statement raised, or null when it ran
      * @param list<int> $warnings the codes SHOW WARNINGS listed after it ran
      * @param string|null $value the first column of the first row, when it returned one
+     * @param string|null $expect the answer to judge against; the 5.6 answer when null
      * @return string|null null when the server agreed, else why it did not
      */
-    public function verdict(?int $error, array $warnings, ?string $value): ?string
+    public function verdict(?int $error, array $warnings, ?string $value, ?string $expect = null): ?string
     {
-        $kind = strstr($this->expect, ':', true);
-        $want = $kind === false ? '' : substr($this->expect, strlen($kind) + 1);
-        $kind = $kind === false ? $this->expect : $kind;
+        $expect ??= $this->expect;
+        $kind = strstr($expect, ':', true);
+        $want = $kind === false ? '' : substr($expect, strlen($kind) + 1);
+        $kind = $kind === false ? $expect : $kind;
 
         if ($kind === 'error') {
             if ($error === null) {
@@ -62,7 +82,7 @@ final class Probe
         }
 
         if ($error !== null) {
-            return "expected {$this->expect}, got error {$error}";
+            return "expected {$expect}, got error {$error}";
         }
 
         return match ($kind) {
@@ -71,7 +91,7 @@ final class Probe
                 ? null
                 : "expected warning {$want}, got " . ($warnings === [] ? 'none' : implode(', ', $warnings)),
             'value' => $value === $want ? null : "expected value {$want}, got " . ($value ?? 'no row'),
-            default => "unknown expectation {$this->expect}",
+            default => "unknown expectation {$expect}",
         };
     }
 }

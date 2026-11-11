@@ -39,8 +39,8 @@ final class Runner
     {
         $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $this->pdo->exec("set names 'utf8mb4' collate 'utf8mb4_unicode_ci'");
-        // Laravel drops NO_AUTO_CREATE_USER from 8.0.11; doing the same lets the probes run on a newer server too,
-        // where most of them should then fail.
+        // Laravel drops NO_AUTO_CREATE_USER from 8.0.11; doing the same lets the probes run on 8.4 too, where each
+        // is judged against its 8.4 answer.
         if (version_compare($this->serverVersion(), '8.0.11', '>=')) {
             $this->pdo->exec("set session sql_mode='" . self::SQL_MODE_80 . "'");
         } else {
@@ -48,16 +48,17 @@ final class Runner
         }
 
         $this->sweep();
+        $version = $this->serverVersion();
         $results = [];
         foreach ($probes as $probe) {
-            $results[] = ['probe' => $probe, 'failure' => $this->runOne($probe)];
+            $results[] = ['probe' => $probe, 'failure' => $this->runOne($probe, $probe->expectationFor($version))];
         }
         $this->sweep();
 
         return $results;
     }
 
-    private function runOne(Probe $probe): ?string
+    private function runOne(Probe $probe, string $expect): ?string
     {
         foreach ($probe->setup as $statement) {
             try {
@@ -74,7 +75,7 @@ final class Runner
         } catch (PDOException $e) {
             $code = self::errorCode($e);
 
-            return $code === null ? 'failed without a MySQL error code: ' . $e->getMessage() : $probe->verdict($code, [], null);
+            return $code === null ? 'failed without a MySQL error code: ' . $e->getMessage() : $probe->verdict($code, [], null, $expect);
         }
 
         $value = null;
@@ -84,7 +85,7 @@ final class Runner
             $statement->closeCursor();
         }
 
-        return $probe->verdict(null, $this->warnings(), $value);
+        return $probe->verdict(null, $this->warnings(), $value, $expect);
     }
 
     /** @return list<int> */

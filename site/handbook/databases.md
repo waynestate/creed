@@ -10,7 +10,7 @@ Chapter 5
 
 # Databases
 
-10 sections · 27 provisions · **MUST NOT** 3 · **MUST** 14 · **SHOULD** 3 · **MAY** 1
+10 sections · 31 provisions · **MUST NOT** 3 · **MUST** 14 · **SHOULD** 3 · **MAY** 1
 
 Decided
 
@@ -58,7 +58,7 @@ Each claim below about what 5.6 does names the probe that shows it on MySQL 5.6.
 - Generated columns, `storedAs` and `virtualAs` (probe `generated-column`)
 - `renameIndex` and `renameColumn` (probes `rename-index`, `rename-column-syntax`)
 - Column introspection (probe `column-introspection`)
-- `invisible`, `instant` and `vector` columns (probes `invisible-column`, `vector-column`)
+- `invisible`, `instant` and `vector` columns (probes `invisible-column`, `vector-column`; 8.4 has no vector type either)
 - InnoDB `spatialIndex`, which needs 5.7.5 (probe `spatial-index-innodb`)
 - DESC indexes and CHECK constraints. These are the quiet ones: 5.6 accepts both and then ignores them, so the migration passes, a DESC index is built ascending (probe `desc-index-ignored`) and a row that breaks a CHECK goes in (probe `check-constraint-ignored`). Validate in the app instead.
 
@@ -77,7 +77,14 @@ Each claim below about what 5.6 does names the probe that shows it on MySQL 5.6.
 
 ## [§5.7](https://creed.apps.wayne.edu/handbook/databases.html#moving-to-8-4) Moving to 8.4
 
-Code that follows the conventions and avoids the patterns above runs unchanged on 8.4. The server-side large-prefix settings (`innodb_large_prefix=ON`, `innodb_file_format=Barracuda`, DYNAMIC rows) are a question for the database owners, not something an app sets: a stock 5.6.51 has large prefixes off (probe `large-prefix-off`). Passing `ROW_FORMAT=DYNAMIC` through the connection's `engine` setting does not get around that: on the default Antelope file format 5.6 warns and builds a COMPACT table (probe `row-format-dynamic`), and the 255 character index is still refused (probe `row-format-dynamic-index`). `defaultStringLength(191)` is the convention that works.
+Code that follows the conventions and avoids the patterns above runs unchanged on 8.4: every probe statement 5.6.51 accepts, 8.4.13 accepts too, except a row that breaks a CHECK constraint, which the list above already avoids. What the move changes, each shown on 8.4.13 by the same probe:
+
+- The patterns above start working: JSON columns and functions, generated and invisible columns, InnoDB spatial indexes, the upsert row alias, column introspection, `renameColumn` and `renameIndex`, CTEs, window functions, `SKIP LOCKED`, `NOWAIT` and `joinLateral`. Two stay out: `vector` columns and joined deletes with an order or a limit.
+- The two quiet ones turn real. 8.4 builds a DESC index descending (probe `desc-index-ignored`) and enforces a CHECK constraint, refusing the row 5.6 let in (probe `check-constraint-ignored`). A CHECK written while an app was on 5.6 has never refused anything, so test the code that writes to that table before the move.
+- `useCurrent()` on a `date` column gets its default back: from 8.0.13 Laravel 13 writes `default (CURDATE())`, which 8.4 accepts and 5.6 cannot parse (probe `date-current-expression`). A plain current-timestamp default on a `date` column is still refused (probe `date-current-default`), and the `timestamp` convention keeps working.
+- Large prefixes are always on. `innodb_large_prefix` no longer exists (probe `large-prefix-off`), `ROW_FORMAT=DYNAMIC` is honored without a warning (probe `row-format-dynamic`), and a 255 character `utf8mb4` index fits (probes `index-255`, `row-format-dynamic-index`). `defaultStringLength(191)` does no harm there, so it can stay until the app leaves 5.6 for good.
+
+On 5.6 itself, the server-side large-prefix settings (`innodb_large_prefix=ON`, `innodb_file_format=Barracuda`, DYNAMIC rows) are a question for the database owners, not something an app sets: a stock 5.6.51 has large prefixes off (probe `large-prefix-off`). Passing `ROW_FORMAT=DYNAMIC` through the connection's `engine` setting does not get around that: on the default Antelope file format 5.6 warns and builds a COMPACT table (probe `row-format-dynamic`), and the 255 character index is still refused (probe `row-format-dynamic-index`). `defaultStringLength(191)` is the convention that works.
 
 Oracle moved 5.6 to Sustaining Support on 2021-02-01, so it gets no new fixes. Builds older than 5.6.46 also speak only TLS 1.0 (MySQL 5.6.46 added TLS 1.1 and 1.2, per its release notes), which current hosts may refuse. The probes cannot show this one: the stock 5.6.51 image starts with TLS off. Both are reasons to plan the move rather than wait for it.
 
@@ -87,9 +94,11 @@ PROCTOR's `mysql56` check warns on the patterns the shared 5.6 server rejects: J
 
 ## [§5.9](https://creed.apps.wayne.edu/handbook/databases.html#how-the-claims-are-proven) How the claims are proven
 
-Every "probe" named in this chapter is one statement in CREED's `tools/Mysql56/Probes.php`: the SQL Laravel 13 sends (read from its MySQL grammars at 13.40.0), or the raw statement this chapter tells an app to write instead, with the answer 5.6 gives. `php bin/mysql56-probe.php` runs them against a live server, in the session Laravel 13 opens (`utf8mb4_unicode_ci`, its strict `sql_mode`), and prints `[OK]` or `[FAIL]` per probe. `scripts/mysql56-probe.sh` (Linux, macOS) and `scripts/mysql56-probe.ps1` (Windows) start `mysql:5.6.51`, the image [Squire](https://squire.apps.wayne.edu/) runs and Preflight's `mysql56-migrate` component tests against, and run them. CREED's own pipeline runs them on that component, on every main and tag pipeline. All 31 agreed with this chapter on 2026-11-11.
+Every "probe" named in this chapter is one statement in CREED's `tools/Mysql56/Probes.php`: the SQL Laravel 13 sends (read from its MySQL grammars at 13.40.0), or the raw statement this chapter tells an app to write instead, with the answer 5.6 gives. `php bin/mysql56-probe.php` runs them against a live server, in the session Laravel 13 opens (`utf8mb4_unicode_ci`, its strict `sql_mode`), and prints `[OK]` or `[FAIL]` per probe. `scripts/mysql56-probe.sh` (Linux, macOS) and `scripts/mysql56-probe.ps1` (Windows) start `mysql:5.6.51`, the image [Squire](https://squire.apps.wayne.edu/) runs and Preflight's `mysql56-migrate` component tests against, and run them. CREED's own pipeline runs them on that component, on every main and tag pipeline. All 32 agreed with this chapter on 2026-11-11.
 
-The probes read a stock 5.6.51. The shared server keeps its own settings, which its owners know; a probe that says "the default" means the image's. Pointed at MySQL 8.4 the same run fails two thirds of them, which is the point: the patterns above are 5.6 limits, and the upgrade lifts them.
+Each probe also records the answer MySQL 8.4.13 gives, which is where "Moving to 8.4" comes from. `scripts/mysql56-probe.sh 8.4` (or `scripts/mysql56-probe.ps1 -Server 8.4`) and the pipeline's `mysql84-probe` job run the same probes on `mysql:8.4.13` and judge each against that answer. On 2026-11-11 all 32 agreed with their 8.4 answers, and 22 of those answers differ from 5.6's, which is the point: the patterns above are 5.6 limits, and the upgrade lifts most of them.
+
+The probes read stock images. The shared server keeps its own settings, which its owners know; a probe that says "the default" means the image's.
 
 ## [§5.10](https://creed.apps.wayne.edu/handbook/databases.html#sources) Sources
 
@@ -120,4 +129,4 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`rules.eol_grace_days`**: `90`
 - **`components.*.versions.*.security_until`**: set per version
 
-Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `eb0ce51`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `6ff9960`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

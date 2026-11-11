@@ -839,8 +839,10 @@ PROCTOR 0.10.0's `mysql-minimum` warns when an app's declared MySQL or MariaDB i
 5.6 conventions (`handbook/databases.md`) are no longer taken on trust: `bin/mysql56-probe.php` sends the SQL Laravel 13
 writes to a real MySQL 5.6.51 and checks each claim, in CREED's `mysql56-probe` CI job and in `scripts/mysql56-probe.sh`
 or `.ps1`. The probes turned up two quiet failures the chapter now names: 5.6 accepts DESC indexes and CHECK constraints
-and ignores both, and on 5.6 Laravel drops `useCurrent()` from a `date` column. The platform's MySQL timeline is still
-an open question.
+and ignores both, and on 5.6 Laravel drops `useCurrent()` from a `date` column. The same probes run on MySQL 8.4.13 in
+the `mysql84-probe` job, which proves the chapter's "Moving to 8.4" section: everything 5.6 accepts, 8.4 accepts too, except a row that
+breaks a CHECK constraint.
+The platform's MySQL timeline is still an open question.
 
 ### 47. Plan the MySQL move around authentication and LTS lines
 
@@ -856,7 +858,9 @@ Sources: [MySQL 9.7: native pluggable authentication](https://dev.mysql.com/doc/
 [endoflife.date MySQL](https://endoflife.date/mysql).
 
 How the stack holds it: `Documented`. `policy.json` lists the LTS lines 8.4 and 9.7 and not the short-lived ones, and
-`handbook/databases.md` writes down the rule and the authentication-plugin step.
+`handbook/databases.md` writes down the rule and the authentication-plugin step. Its "Moving to 8.4" section lists what
+the move changes for app code (CHECK constraints start refusing rows, DESC indexes are built descending, `date` columns
+get their `useCurrent()` default), each shown on MySQL 8.4.13 by a probe.
 
 ### 48. Say how fast the platform adds a new PHP, and how it announces a drop
 

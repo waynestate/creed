@@ -590,7 +590,7 @@ assertions <span class="hb-cite">(the stack's SAML decision)</span>. SESAME conf
           <div>
             <p class="chap-head__kicker">Chapter 5</p>
             <h2 id="databases-title" class="hb-book__title">Databases</h2>
-            <p class="hb-register">10 sections · 27 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 14 · <strong class="kw kw--should">SHOULD</strong> 3 · <strong class="kw kw--may">MAY</strong> 1</p>
+            <p class="hb-register">10 sections · 31 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 14 · <strong class="kw kw--should">SHOULD</strong> 3 · <strong class="kw kw--may">MAY</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -694,7 +694,7 @@ which warns when an app with migrations has no such job.</li>
 <code>rename-column-syntax</code>)</li>
 <li>Column introspection (probe <code>column-introspection</code>)</li>
 <li><code>invisible</code>, <code>instant</code> and <code>vector</code> columns (probes <code>invisible-column</code>,
-<code>vector-column</code>)</li>
+<code>vector-column</code>; 8.4 has no vector type either)</li>
 <li>InnoDB <code>spatialIndex</code>, which needs 5.7.5 (probe <code>spatial-index-innodb</code>)</li>
 <li>DESC indexes and CHECK constraints. These are the quiet ones: 5.6 accepts
 both and then ignores them, so the migration passes, a DESC index is built
@@ -718,7 +718,32 @@ out after the upgrade too)</li>
 </ul>
 <h3 id="databases--moving-to-8-4"><a class="hb-sec" href="#databases--moving-to-8-4">§5.7</a> Moving to 8.4</h3>
 <p>Code that follows the conventions and avoids the patterns above runs unchanged
-on 8.4. The server-side large-prefix settings (<code>innodb_large_prefix=ON</code>,
+on 8.4: every probe statement 5.6.51 accepts, 8.4.13 accepts too, except a
+row that breaks a CHECK constraint, which the list above already avoids. What
+the move changes, each shown on 8.4.13 by the same probe:</p>
+<ul>
+<li>The patterns above start working: JSON columns and functions, generated and
+invisible columns, InnoDB spatial indexes, the upsert row alias, column
+introspection, <code>renameColumn</code> and <code>renameIndex</code>, CTEs, window functions,
+<code>SKIP LOCKED</code>, <code>NOWAIT</code> and <code>joinLateral</code>. Two stay out: <code>vector</code> columns
+and joined deletes with an order or a limit.</li>
+<li>The two quiet ones turn real. 8.4 builds a DESC index descending (probe
+<code>desc-index-ignored</code>) and enforces a CHECK constraint, refusing the row 5.6
+let in (probe <code>check-constraint-ignored</code>). A CHECK written while an app was
+on 5.6 has never refused anything, so test the code that writes to that
+table before the move.</li>
+<li><code>useCurrent()</code> on a <code>date</code> column gets its default back: from 8.0.13
+Laravel 13 writes <code>default (CURDATE())</code>, which 8.4 accepts and 5.6 cannot
+parse (probe <code>date-current-expression</code>). A plain current-timestamp default
+on a <code>date</code> column is still refused (probe <code>date-current-default</code>), and the
+<code>timestamp</code> convention keeps working.</li>
+<li>Large prefixes are always on. <code>innodb_large_prefix</code> no longer exists (probe
+<code>large-prefix-off</code>), <code>ROW_FORMAT=DYNAMIC</code> is honored without a warning
+(probe <code>row-format-dynamic</code>), and a 255 character <code>utf8mb4</code> index fits
+(probes <code>index-255</code>, <code>row-format-dynamic-index</code>). <code>defaultStringLength(191)</code>
+does no harm there, so it can stay until the app leaves 5.6 for good.</li>
+</ul>
+<p>On 5.6 itself, the server-side large-prefix settings (<code>innodb_large_prefix=ON</code>,
 <code>innodb_file_format=Barracuda</code>, DYNAMIC rows) are a question for the database
 owners, not something an app sets: a stock 5.6.51 has large prefixes off
 (probe <code>large-prefix-off</code>). Passing <code>ROW_FORMAT=DYNAMIC</code> through the
@@ -751,12 +776,17 @@ its strict <code>sql_mode</code>), and prints <code>[OK]</code> or <code>[FAIL]<
 <code>scripts/mysql56-probe.sh</code> (Linux, macOS) and <code>scripts/mysql56-probe.ps1</code>
 (Windows) start <code>mysql:5.6.51</code>, the image <a class="tool" href="https://squire.apps.wayne.edu/"><img src="../assets/marks/squire.png" alt="" width="16" height="16">Squire</a> runs and Preflight's
 <code>mysql56-migrate</code> component tests against, and run them. CREED's own pipeline
-runs them on that component, on every main and tag pipeline. All 31 agreed
+runs them on that component, on every main and tag pipeline. All 32 agreed
 with this chapter on 2026-11-11.</p>
-<p>The probes read a stock 5.6.51. The shared server keeps its own settings,
-which its owners know; a probe that says &quot;the default&quot; means the image's.
-Pointed at MySQL 8.4 the same run fails two thirds of them, which is the
-point: the patterns above are 5.6 limits, and the upgrade lifts them.</p>
+<p>Each probe also records the answer MySQL 8.4.13 gives, which is where &quot;Moving
+to 8.4&quot; comes from. <code>scripts/mysql56-probe.sh 8.4</code> (or
+<code>scripts/mysql56-probe.ps1 -Server 8.4</code>) and the pipeline's <code>mysql84-probe</code>
+job run the same probes on <code>mysql:8.4.13</code> and judge each against that answer.
+On 2026-11-11 all 32 agreed with their 8.4 answers, and 22 of those answers
+differ from 5.6's, which is the point: the patterns above are 5.6 limits, and
+the upgrade lifts most of them.</p>
+<p>The probes read stock images. The shared server keeps its own settings, which
+its owners know; a probe that says &quot;the default&quot; means the image's.</p>
 <h3 id="databases--sources"><a class="hb-sec" href="#databases--sources">§5.10</a> Sources</h3>
 <ul class="hb-sources">
 <li>Laravel 13 database docs: <a href="https://laravel.com/docs/13.x/database">https://laravel.com/docs/13.x/database</a></li>
@@ -1163,7 +1193,7 @@ a permanent override <span class="hb-cite">(the stack's deploy-gate decision)</s
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>20519c0</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>37b8078</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

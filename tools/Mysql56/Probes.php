@@ -17,7 +17,8 @@ namespace Waynestate\Creed\Tools\Mysql56;
  * and Preflight's mysql56-migrate component tests against, with its stock
  * settings (innodb_large_prefix off, innodb_file_format Antelope). The shared
  * server's own settings are its owners' business, which is why the chapter
- * still asks them.
+ * still asks them. The second answer, where there is one, was read from
+ * mysql:8.4.13 the same way; a probe without one gets the same answer there.
  */
 final class Probes
 {
@@ -37,6 +38,7 @@ final class Probes
                 [],
                 "create table `creed_probe_collation` (`name` varchar(10) not null) default character set utf8mb4 collate 'utf8mb4_0900_ai_ci'",
                 'error:1273',
+                'ok',
             ),
             new Probe(
                 'collation-unicode',
@@ -51,6 +53,7 @@ final class Probes
                 ["create table `creed_probe_index255` (`email` varchar(255) not null) {$cs}"],
                 'alter table `creed_probe_index255` add unique `creed_probe_index255_email_unique`(`email`)',
                 'error:1071',
+                'ok',
             ),
             new Probe(
                 'index-191',
@@ -65,6 +68,7 @@ final class Probes
                 [],
                 "create table `creed_probe_json` (`data` json not null) {$cs}",
                 'error:1064',
+                'ok',
             ),
             new Probe(
                 'json-functions',
@@ -72,6 +76,7 @@ final class Probes
                 [],
                 "select json_unquote(json_extract('{\"a\": 1}', '$.\"a\"'))",
                 'error:1305',
+                'value:1',
             ),
             new Probe(
                 'upsert-alias',
@@ -79,6 +84,7 @@ final class Probes
                 ["create table `creed_probe_upsert` (`id` int not null primary key, `votes` int not null) {$cs}"],
                 'insert into `creed_probe_upsert` (`id`, `votes`) values (1, 2) as laravel_upsert_alias on duplicate key update `votes` = `laravel_upsert_alias`.`votes`',
                 'error:1064',
+                'ok',
             ),
             new Probe(
                 'upsert-values',
@@ -95,6 +101,7 @@ final class Probes
                     . 'column_default as `default`, column_comment as `comment`, generation_expression as `expression`, extra as `extra` '
                     . "from information_schema.columns where table_schema = schema() and table_name = 'creed_probe_columns' order by ordinal_position asc",
                 'error:1054',
+                'value:id',
             ),
             new Probe(
                 'has-table',
@@ -117,6 +124,7 @@ final class Probes
                 ["create table `creed_probe_rename_column` (`old_name` int null) {$cs}"],
                 'alter table `creed_probe_rename_column` rename column `old_name` to `new_name`',
                 'error:1064',
+                'ok',
             ),
             new Probe(
                 'rename-index',
@@ -124,6 +132,7 @@ final class Probes
                 ["create table `creed_probe_rename_index` (`votes` int null, index `creed_probe_rename_index_votes_index`(`votes`)) {$cs}"],
                 'alter table `creed_probe_rename_index` rename index `creed_probe_rename_index_votes_index` to `creed_probe_votes`',
                 'error:1064',
+                'ok',
             ),
             new Probe(
                 'use-current-date',
@@ -140,6 +149,14 @@ final class Probes
                 'error:1067',
             ),
             new Probe(
+                'date-current-expression',
+                'The expression default Laravel writes for a date useCurrent() from 8.0.13 is a syntax error.',
+                [],
+                "create table `creed_probe_date_expression` (`day` date not null default (CURDATE())) {$cs}",
+                'error:1064',
+                'ok',
+            ),
+            new Probe(
                 'timestamp-current-default',
                 'A timestamp column with useCurrent() works.',
                 [],
@@ -154,13 +171,15 @@ final class Probes
                 [],
                 "create table `creed_probe_generated` (`a` int not null, `b` int as (`a` + 1)) {$cs}",
                 'error:1064',
+                'ok',
             ),
             new Probe(
                 'invisible-column',
                 'There are no invisible columns.',
                 [],
-                "create table `creed_probe_invisible` (`a` int null invisible) {$cs}",
+                "create table `creed_probe_invisible` (`id` int not null, `a` int null invisible) {$cs}",
                 'error:1064',
+                'ok',
             ),
             new Probe(
                 'vector-column',
@@ -175,6 +194,7 @@ final class Probes
                 [],
                 "create table `creed_probe_spatial` (`spot` geometry not null, spatial index `creed_probe_spatial_spot_spatialindex`(`spot`)) {$cs} engine = InnoDB",
                 'error:1464',
+                'ok',
             ),
             new Probe(
                 'desc-index-ignored',
@@ -182,16 +202,15 @@ final class Probes
                 ["create table `creed_probe_desc` (`at` int not null, index `creed_probe_desc_at_index`(`at` desc)) {$cs}"],
                 "select count(*) from information_schema.statistics where table_schema = schema() and table_name = 'creed_probe_desc' and collation = 'D'",
                 'value:0',
+                'value:1',
             ),
             new Probe(
                 'check-constraint-ignored',
                 'A CHECK constraint is accepted and never enforced: a row that breaks it goes in.',
-                [
-                    "create table `creed_probe_check` (`votes` int not null, check (`votes` > 0)) {$cs}",
-                    'insert into `creed_probe_check` (`votes`) values (-1)',
-                ],
-                'select count(*) from `creed_probe_check` where `votes` < 0',
-                'value:1',
+                ["create table `creed_probe_check` (`votes` int not null, check (`votes` > 0)) {$cs}"],
+                'insert into `creed_probe_check` (`votes`) values (-1)',
+                'ok',
+                'error:3819',
             ),
             new Probe(
                 'cte',
@@ -199,6 +218,7 @@ final class Probes
                 [],
                 'with `creed_probe_cte` as (select 1 as `a`) select `a` from `creed_probe_cte`',
                 'error:1064',
+                'ok',
             ),
             new Probe(
                 'window-function',
@@ -206,6 +226,7 @@ final class Probes
                 ["create table `creed_probe_window` (`id` int not null) {$cs}"],
                 'select row_number() over (order by `id`) from `creed_probe_window`',
                 'error:1064',
+                'ok',
             ),
             new Probe(
                 'skip-locked',
@@ -213,6 +234,7 @@ final class Probes
                 ["create table `creed_probe_skip` (`id` int not null) {$cs}"],
                 'select * from `creed_probe_skip` for update skip locked',
                 'error:1064',
+                'ok',
             ),
             new Probe(
                 'nowait',
@@ -220,6 +242,7 @@ final class Probes
                 ["create table `creed_probe_nowait` (`id` int not null) {$cs}"],
                 'select * from `creed_probe_nowait` for update nowait',
                 'error:1064',
+                'ok',
             ),
             new Probe(
                 'join-lateral',
@@ -227,6 +250,7 @@ final class Probes
                 ["create table `creed_probe_lateral` (`id` int not null) {$cs}"],
                 'select * from `creed_probe_lateral` inner join lateral (select 1 as `z`) as `l` on true',
                 'error:1064',
+                'ok',
             ),
             new Probe(
                 'joined-delete-order-limit',
@@ -246,6 +270,7 @@ final class Probes
                 [],
                 "create table `creed_probe_dynamic` (`email` varchar(255) not null) {$cs} engine = InnoDB ROW_FORMAT=DYNAMIC",
                 'warning:1478',
+                'ok',
             ),
             new Probe(
                 'row-format-dynamic-index',
@@ -253,6 +278,7 @@ final class Probes
                 ["create table `creed_probe_dynamic_index` (`email` varchar(255) not null) {$cs} engine = InnoDB ROW_FORMAT=DYNAMIC"],
                 'alter table `creed_probe_dynamic_index` add unique `creed_probe_dynamic_index_email_unique`(`email`)',
                 'error:1071',
+                'ok',
             ),
             new Probe(
                 'large-prefix-off',
@@ -260,6 +286,7 @@ final class Probes
                 [],
                 'select @@innodb_large_prefix',
                 'value:0',
+                'error:1193',
             ),
         ];
     }

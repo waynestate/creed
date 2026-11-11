@@ -107,7 +107,7 @@ Each claim below about what 5.6 does names the probe that shows it on MySQL
   `rename-column-syntax`)
 - Column introspection (probe `column-introspection`)
 - `invisible`, `instant` and `vector` columns (probes `invisible-column`,
-  `vector-column`)
+  `vector-column`; 8.4 has no vector type either)
 - InnoDB `spatialIndex`, which needs 5.7.5 (probe `spatial-index-innodb`)
 - DESC indexes and CHECK constraints. These are the quiet ones: 5.6 accepts
   both and then ignores them, so the migration passes, a DESC index is built
@@ -132,7 +132,32 @@ Each claim below about what 5.6 does names the probe that shows it on MySQL
 ## Moving to 8.4
 
 Code that follows the conventions and avoids the patterns above runs unchanged
-on 8.4. The server-side large-prefix settings (`innodb_large_prefix=ON`,
+on 8.4: every probe statement 5.6.51 accepts, 8.4.13 accepts too, except a
+row that breaks a CHECK constraint, which the list above already avoids. What
+the move changes, each shown on 8.4.13 by the same probe:
+
+- The patterns above start working: JSON columns and functions, generated and
+  invisible columns, InnoDB spatial indexes, the upsert row alias, column
+  introspection, `renameColumn` and `renameIndex`, CTEs, window functions,
+  `SKIP LOCKED`, `NOWAIT` and `joinLateral`. Two stay out: `vector` columns
+  and joined deletes with an order or a limit.
+- The two quiet ones turn real. 8.4 builds a DESC index descending (probe
+  `desc-index-ignored`) and enforces a CHECK constraint, refusing the row 5.6
+  let in (probe `check-constraint-ignored`). A CHECK written while an app was
+  on 5.6 has never refused anything, so test the code that writes to that
+  table before the move.
+- `useCurrent()` on a `date` column gets its default back: from 8.0.13
+  Laravel 13 writes `default (CURDATE())`, which 8.4 accepts and 5.6 cannot
+  parse (probe `date-current-expression`). A plain current-timestamp default
+  on a `date` column is still refused (probe `date-current-default`), and the
+  `timestamp` convention keeps working.
+- Large prefixes are always on. `innodb_large_prefix` no longer exists (probe
+  `large-prefix-off`), `ROW_FORMAT=DYNAMIC` is honored without a warning
+  (probe `row-format-dynamic`), and a 255 character `utf8mb4` index fits
+  (probes `index-255`, `row-format-dynamic-index`). `defaultStringLength(191)`
+  does no harm there, so it can stay until the app leaves 5.6 for good.
+
+On 5.6 itself, the server-side large-prefix settings (`innodb_large_prefix=ON`,
 `innodb_file_format=Barracuda`, DYNAMIC rows) are a question for the database
 owners, not something an app sets: a stock 5.6.51 has large prefixes off
 (probe `large-prefix-off`). Passing `ROW_FORMAT=DYNAMIC` through the
@@ -170,13 +195,19 @@ its strict `sql_mode`), and prints `[OK]` or `[FAIL]` per probe.
 `scripts/mysql56-probe.sh` (Linux, macOS) and `scripts/mysql56-probe.ps1`
 (Windows) start `mysql:5.6.51`, the image Squire runs and Preflight's
 `mysql56-migrate` component tests against, and run them. CREED's own pipeline
-runs them on that component, on every main and tag pipeline. All 31 agreed
+runs them on that component, on every main and tag pipeline. All 32 agreed
 with this chapter on 2026-11-11.
 
-The probes read a stock 5.6.51. The shared server keeps its own settings,
-which its owners know; a probe that says "the default" means the image's.
-Pointed at MySQL 8.4 the same run fails two thirds of them, which is the
-point: the patterns above are 5.6 limits, and the upgrade lifts them.
+Each probe also records the answer MySQL 8.4.13 gives, which is where "Moving
+to 8.4" comes from. `scripts/mysql56-probe.sh 8.4` (or
+`scripts/mysql56-probe.ps1 -Server 8.4`) and the pipeline's `mysql84-probe`
+job run the same probes on `mysql:8.4.13` and judge each against that answer.
+On 2026-11-11 all 32 agreed with their 8.4 answers, and 22 of those answers
+differ from 5.6's, which is the point: the patterns above are 5.6 limits, and
+the upgrade lifts most of them.
+
+The probes read stock images. The shared server keeps its own settings, which
+its owners know; a probe that says "the default" means the image's.
 
 ## Sources
 
