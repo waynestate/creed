@@ -69,8 +69,9 @@
       <li><a href="accessibility.html"><span class="hb-nav__no">9</span><span class="hb-nav__name">Accessibility</span></a></li>
       <li><a href="every-os.html"><span class="hb-nav__no">10</span><span class="hb-nav__name">Every OS</span></a></li>
       <li><a href="secrets.html"><span class="hb-nav__no">11</span><span class="hb-nav__name">Secrets and debugging</span></a></li>
-      <li><a href="production.html"><span class="hb-nav__no">12</span><span class="hb-nav__name">Production</span></a></li>
-      <li><a href="overrides.html"><span class="hb-nav__no">13</span><span class="hb-nav__name">Overrides</span></a></li>
+      <li><a href="ai.html"><span class="hb-nav__no">12</span><span class="hb-nav__name">AI and LLM use</span></a></li>
+      <li><a href="production.html"><span class="hb-nav__no">13</span><span class="hb-nav__name">Production</span></a></li>
+      <li><a href="overrides.html"><span class="hb-nav__no">14</span><span class="hb-nav__name">Overrides</span></a></li>
   </ol>
   <p class="hb-nav__more"><a href="print.html">Whole book on one page</a></p>
 </nav>
@@ -95,8 +96,9 @@
           <li><a href="#accessibility"><span class="toc__no">9</span> Accessibility</a></li>
           <li><a href="#every-os"><span class="toc__no">10</span> Every OS</a></li>
           <li><a href="#secrets"><span class="toc__no">11</span> Secrets and debugging</a></li>
-          <li><a href="#production"><span class="toc__no">12</span> Production</a></li>
-          <li><a href="#overrides"><span class="toc__no">13</span> Overrides</a></li>
+          <li><a href="#ai"><span class="toc__no">12</span> AI and LLM use</a></li>
+          <li><a href="#production"><span class="toc__no">13</span> Production</a></li>
+          <li><a href="#overrides"><span class="toc__no">14</span> Overrides</a></li>
         </ol>
       </nav>
       <article class="hb-chapter hb-chapter--book" id="versions" aria-labelledby="versions-title">
@@ -1114,11 +1116,53 @@ design)</span>. PROCTOR check: <code>portability</code>.</li>
 </ul>
           </div>
       </article>
-      <article class="hb-chapter hb-chapter--book" id="production" aria-labelledby="production-title">
+      <article class="hb-chapter hb-chapter--book" id="ai" aria-labelledby="ai-title">
         <header class="chap-head chap-head--chapter hb-chapter__head">
           <p class="chap-head__no" aria-hidden="true">12</p>
           <div>
             <p class="chap-head__kicker">Chapter 12</p>
+            <h2 id="ai-title" class="hb-book__title">AI and LLM use</h2>
+            <p class="hb-register">5 sections · 12 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 4 · <strong class="kw kw--must">MUST</strong> 8 · <strong class="kw kw--should">SHOULD</strong> 2</p>
+          </div>
+          <span class="stamp stamp--enforced hb-status">Decided</span>
+        </header>
+        <div class="hb-prose hb-prose--book">
+<div class="hb-rfc" role="note"><p><span class="hb-rfc__label">Key words</span> The key words <strong class="kw kw--must">MUST</strong>, <strong class="kw kw--must-not">MUST NOT</strong>, <strong class="kw kw--should">SHOULD</strong>, <strong class="kw kw--should-not">SHOULD NOT</strong> and <strong class="kw kw--may">MAY</strong> in this chapter are to be interpreted as described in <a href="https://www.rfc-editor.org/rfc/rfc2119">RFC 2119</a>.</p></div>
+<h3 id="ai--where-models-are-called"><a class="hb-sec" href="#ai--where-models-are-called">§12.1</a> Where models are called</h3>
+<ul>
+<li>Model calls <strong class="kw kw--must">MUST</strong> be made server-side only, never from browser code. No check exists yet.</li>
+<li>API tokens <strong class="kw kw--must">MUST</strong> live in server configuration or the environment and <strong class="kw kw--must-not">MUST NOT</strong> appear in <code>VITE_*</code> variables or any client-side code (anything that ships in the bundle is public). Held by: the general secret scan, <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s <code>secret-detection</code> component (Preflight 0.8.0), for committed tokens only; a token in a <code>VITE_*</code> variable is not checked yet.</li>
+<li>Rate limits <strong class="kw kw--must">MUST</strong> apply per signed-in user, so one person cannot spend the whole app's budget. No check exists yet.</li>
+</ul>
+<h3 id="ai--which-service"><a class="hb-sec" href="#ai--which-service">§12.2</a> Which service</h3>
+<ul>
+<li>WarriorGPT, the university-run service, comes first: an app <strong class="kw kw--should">SHOULD</strong> use it before any outside provider. No check exists yet.</li>
+<li>Outside model providers (OpenAI, Anthropic, Google and the like) <strong class="kw kw--must">MUST</strong> only ever receive public data (D-099). Any university data, whether internal or confidential, <strong class="kw kw--must">MUST</strong> go to WarriorGPT only. No check exists yet.</li>
+</ul>
+<h3 id="ai--data-in-prompts-and-logs"><a class="hb-sec" href="#ai--data-in-prompts-and-logs">§12.3</a> Data in prompts and logs</h3>
+<ul>
+<li>Prompts <strong class="kw kw--must-not">MUST NOT</strong> contain personal data: student, employee or patient records, or identifiers such as AccessIDs, student IDs or Social Security numbers. No check exists yet.</li>
+<li>Logs <strong class="kw kw--should">SHOULD</strong> keep metadata (user, model, token counts, latency) and <strong class="kw kw--must-not">MUST NOT</strong> keep prompt or answer bodies by default. No check exists yet.</li>
+<li>If bodies are kept for debugging, retention <strong class="kw kw--must">MUST</strong> be short and personal data <strong class="kw kw--must">MUST</strong> be stripped first. No check exists yet.</li>
+</ul>
+<h3 id="ai--what-people-see-and-decide"><a class="hb-sec" href="#ai--what-people-see-and-decide">§12.4</a> What people see and decide</h3>
+<ul>
+<li>AI-written output <strong class="kw kw--must">MUST</strong> be labelled as AI-written in the UI. No check exists yet.</li>
+<li>A model <strong class="kw kw--must-not">MUST NOT</strong> make the final call on a decision about a person; a person makes it and is accountable. No check exists yet.</li>
+</ul>
+<p>WarriorGPT opens the show; the outside bands play only what is public.</p>
+<h3 id="ai--not-decided-here"><a class="hb-sec" href="#ai--not-decided-here">§12.5</a> Not decided here</h3>
+<ul>
+<li>Prompt-injection handling is not decided here.</li>
+<li>Evaluation of model quality is not decided here.</li>
+</ul>
+          </div>
+      </article>
+      <article class="hb-chapter hb-chapter--book" id="production" aria-labelledby="production-title">
+        <header class="chap-head chap-head--chapter hb-chapter__head">
+          <p class="chap-head__no" aria-hidden="true">13</p>
+          <div>
+            <p class="chap-head__kicker">Chapter 13</p>
             <h2 id="production-title" class="hb-book__title">Production</h2>
             <p class="hb-register">3 sections · 17 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 11 · <strong class="kw kw--should">SHOULD</strong> 4</p>
           </div>
@@ -1126,7 +1170,7 @@ design)</span>. PROCTOR check: <code>portability</code>.</li>
         </header>
         <div class="hb-prose hb-prose--book">
 <div class="hb-rfc" role="note"><p><span class="hb-rfc__label">Key words</span> The key words <strong class="kw kw--must">MUST</strong>, <strong class="kw kw--must-not">MUST NOT</strong>, <strong class="kw kw--should">SHOULD</strong>, <strong class="kw kw--should-not">SHOULD NOT</strong> and <strong class="kw kw--may">MAY</strong> in this chapter are to be interpreted as described in <a href="https://www.rfc-editor.org/rfc/rfc2119">RFC 2119</a>.</p></div>
-<h3 id="production--environments"><a class="hb-sec" href="#production--environments">§12.1</a> Environments</h3>
+<h3 id="production--environments"><a class="hb-sec" href="#production--environments">§13.1</a> Environments</h3>
 <ul>
 <li>Every environment more than one person can reach <strong class="kw kw--must">MUST</strong> follow the whole handbook; only a developer's own machine is exempt (WSU developer standards, 2024). No check exists yet.</li>
 <li>An app <strong class="kw kw--must">MUST</strong> keep at least a pre-production and a production environment, each with its own working copy of every piece, database and supporting services included (WSU developer standards, 2024). No check exists yet.</li>
@@ -1135,7 +1179,7 @@ design)</span>. PROCTOR check: <code>portability</code>.</li>
 <li>Anything kept outside source control, databases included, <strong class="kw kw--must">MUST</strong> be backed up. The README <strong class="kw kw--must">MUST</strong> say how to restore one app (WSU developer standards, 2024). No check exists yet.</li>
 <li>An app <strong class="kw kw--should">SHOULD</strong> be load tested in each environment where heavy use is expected (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
-<h3 id="production--running-safely"><a class="hb-sec" href="#production--running-safely">§12.2</a> Running safely</h3>
+<h3 id="production--running-safely"><a class="hb-sec" href="#production--running-safely">§13.2</a> Running safely</h3>
 <ul>
 <li>The app and its scripts <strong class="kw kw--must">MUST</strong> run as a non-root, non-administrator user with the least access they need (WSU developer standards, 2024). No check exists yet.</li>
 <li>The web server <strong class="kw kw--must-not">MUST NOT</strong> list directory contents (WSU developer standards, 2024). <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>directory-listing</code> warns on committed server config that turns listing on (PROCTOR 0.10.0).</li>
@@ -1149,7 +1193,7 @@ PROCTOR check: <code>served-folder</code> (<code>phpinfo()</code>, dumps, backup
 <li>Where it is practical, an app <strong class="kw kw--should">SHOULD</strong> record an audit trail of changes to data and of successful and failed access to sensitive data (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <p>Production is the encore. Keep the lights on and the doors locked, and the band plays on.</p>
-<h3 id="production--who-can-reach-it"><a class="hb-sec" href="#production--who-can-reach-it">§12.3</a> Who can reach it</h3>
+<h3 id="production--who-can-reach-it"><a class="hb-sec" href="#production--who-can-reach-it">§13.3</a> Who can reach it</h3>
 <ul>
 <li>Every app <strong class="kw kw--must">MUST</strong> set <code>robots.txt</code> to keep spiders out unless crawling is wanted (WSU developer standards, 2024). An app that wants crawling says so in the file with <code>Allow: /</code> for <code>User-agent: *</code>; keeping spiders out is <code>Disallow: /</code>. PROCTOR check: <code>robots-txt</code> warns when a served app commits no <code>public/robots.txt</code>, or one that decides neither (PROCTOR 0.10.0).</li>
 <li>Every app <strong class="kw kw--must">MUST</strong> limit access by network address to the audience it serves, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024). No check exists yet.</li>
@@ -1159,9 +1203,9 @@ PROCTOR check: <code>served-folder</code> (<code>phpinfo()</code>, dumps, backup
       </article>
       <article class="hb-chapter hb-chapter--book" id="overrides" aria-labelledby="overrides-title">
         <header class="chap-head chap-head--chapter hb-chapter__head">
-          <p class="chap-head__no" aria-hidden="true">13</p>
+          <p class="chap-head__no" aria-hidden="true">14</p>
           <div>
-            <p class="chap-head__kicker">Chapter 13</p>
+            <p class="chap-head__kicker">Chapter 14</p>
             <h2 id="overrides-title" class="hb-book__title">Overrides</h2>
             <p class="hb-register">7 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 6</p>
           </div>
@@ -1193,7 +1237,7 @@ a permanent override <span class="hb-cite">(the stack's deploy-gate decision)</s
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>37b8078</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>84fd398</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

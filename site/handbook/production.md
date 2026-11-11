@@ -1,12 +1,12 @@
 ---
-title: "CREED Handbook: 12 Production"
-description: "Chapter 12 of the CREED handbook, the written rules for the Wayne State app stack: Production."
+title: "CREED Handbook: 13 Production"
+description: "Chapter 13 of the CREED handbook, the written rules for the Wayne State app stack: Production."
 url: https://creed.apps.wayne.edu/handbook/production.html
 llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
 ---
 
-Chapter 12
+Chapter 13
 
 # Production
 
@@ -16,7 +16,7 @@ Decided
 
 Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and **MAY** in this chapter are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
-## [§12.1](https://creed.apps.wayne.edu/handbook/production.html#environments) Environments
+## [§13.1](https://creed.apps.wayne.edu/handbook/production.html#environments) Environments
 
 - Every environment more than one person can reach **MUST** follow the whole handbook; only a developer's own machine is exempt (WSU developer standards, 2024). No check exists yet.
 - An app **MUST** keep at least a pre-production and a production environment, each with its own working copy of every piece, database and supporting services included (WSU developer standards, 2024). No check exists yet.
@@ -25,7 +25,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - Anything kept outside source control, databases included, **MUST** be backed up. The README **MUST** say how to restore one app (WSU developer standards, 2024). No check exists yet.
 - An app **SHOULD** be load tested in each environment where heavy use is expected (WSU developer standards, 2024). No check exists yet.
 
-## [§12.2](https://creed.apps.wayne.edu/handbook/production.html#running-safely) Running safely
+## [§13.2](https://creed.apps.wayne.edu/handbook/production.html#running-safely) Running safely
 
 - The app and its scripts **MUST** run as a non-root, non-administrator user with the least access they need (WSU developer standards, 2024). No check exists yet.
 - The web server **MUST NOT** list directory contents (WSU developer standards, 2024). [PROCTOR](https://proctor.apps.wayne.edu/) check: `directory-listing` warns on committed server config that turns listing on (PROCTOR 0.10.0).
@@ -38,7 +38,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 Production is the encore. Keep the lights on and the doors locked, and the band plays on.
 
-## [§12.3](https://creed.apps.wayne.edu/handbook/production.html#who-can-reach-it) Who can reach it
+## [§13.3](https://creed.apps.wayne.edu/handbook/production.html#who-can-reach-it) Who can reach it
 
 - Every app **MUST** set `robots.txt` to keep spiders out unless crawling is wanted (WSU developer standards, 2024). An app that wants crawling says so in the file with `Allow: /` for `User-agent: *`; keeping spiders out is `Disallow: /`. PROCTOR check: `robots-txt` warns when a served app commits no `public/robots.txt`, or one that decides neither (PROCTOR 0.10.0).
 - Every app **MUST** limit access by network address to the audience it serves, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024). No check exists yet.

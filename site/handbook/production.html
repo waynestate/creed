@@ -6,8 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="stack-env" content="auto">
 <script src="../assets/stack-env.js" defer></script>
-<title>CREED Handbook: 12 Production</title>
-<meta name="description" content="Chapter 12 of the CREED handbook, the written rules for the Wayne State app stack: Production.">
+<title>CREED Handbook: 13 Production</title>
+<meta name="description" content="Chapter 13 of the CREED handbook, the written rules for the Wayne State app stack: Production.">
 <meta name="theme-color" content="#0c5449" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1a1b18" media="(prefers-color-scheme: dark)">
 <meta name="color-scheme" content="light dark">
@@ -70,19 +70,20 @@
       <li><a href="accessibility.html"><span class="hb-nav__no">9</span><span class="hb-nav__name">Accessibility</span></a></li>
       <li><a href="every-os.html"><span class="hb-nav__no">10</span><span class="hb-nav__name">Every OS</span></a></li>
       <li><a href="secrets.html"><span class="hb-nav__no">11</span><span class="hb-nav__name">Secrets and debugging</span></a></li>
-      <li class="is-here"><a href="production.html" aria-current="page"><span class="hb-nav__no">12</span><span class="hb-nav__name">Production</span></a><ol class="hb-nav__sub"><li><a href="#environments" data-toc="environments">Environments</a></li><li><a href="#running-safely" data-toc="running-safely">Running safely</a></li><li><a href="#who-can-reach-it" data-toc="who-can-reach-it">Who can reach it</a></li></ol></li>
-      <li><a href="overrides.html"><span class="hb-nav__no">13</span><span class="hb-nav__name">Overrides</span></a></li>
+      <li><a href="ai.html"><span class="hb-nav__no">12</span><span class="hb-nav__name">AI and LLM use</span></a></li>
+      <li class="is-here"><a href="production.html" aria-current="page"><span class="hb-nav__no">13</span><span class="hb-nav__name">Production</span></a><ol class="hb-nav__sub"><li><a href="#environments" data-toc="environments">Environments</a></li><li><a href="#running-safely" data-toc="running-safely">Running safely</a></li><li><a href="#who-can-reach-it" data-toc="who-can-reach-it">Who can reach it</a></li></ol></li>
+      <li><a href="overrides.html"><span class="hb-nav__no">14</span><span class="hb-nav__name">Overrides</span></a></li>
   </ol>
   <p class="hb-nav__more"><a href="print.html">Whole book on one page</a></p>
 </nav>
 <main id="main" class="hb-main" tabindex="-1">
-  <nav class="hb-crumbs" aria-label="Breadcrumb"><ol><li><a href="../">CREED</a></li><li><a href="./">Handbook</a></li><li><span aria-current="page">Chapter 12: Production</span></li></ol></nav>
+  <nav class="hb-crumbs" aria-label="Breadcrumb"><ol><li><a href="../">CREED</a></li><li><a href="./">Handbook</a></li><li><span aria-current="page">Chapter 13: Production</span></li></ol></nav>
       <article class="hb-chapter" aria-labelledby="page-title">
-        <p class="folio-head" aria-hidden="true"><span>CREED 2026 · Handbook</span><span>Chapter 12 · Production</span></p>
+        <p class="folio-head" aria-hidden="true"><span>CREED 2026 · Handbook</span><span>Chapter 13 · Production</span></p>
         <header class="chap-head chap-head--chapter hb-chapter__head">
-          <p class="chap-head__no" aria-hidden="true">12</p>
+          <p class="chap-head__no" aria-hidden="true">13</p>
           <div>
-            <p class="chap-head__kicker">Chapter 12</p>
+            <p class="chap-head__kicker">Chapter 13</p>
             <h1 id="page-title">Production</h1>
             <p class="hb-register">3 sections · 17 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 11 · <strong class="kw kw--should">SHOULD</strong> 4</p>
           </div>
@@ -92,14 +93,14 @@
       <nav class="hb-toc" aria-label="On this page">
         <p class="hb-toc__title">On this page</p>
         <ol>
-            <li class="hb-toc__l2"><a href="#environments" data-toc="environments"><span class="hb-toc__no">12.1</span> Environments</a></li>
-            <li class="hb-toc__l2"><a href="#running-safely" data-toc="running-safely"><span class="hb-toc__no">12.2</span> Running safely</a></li>
-            <li class="hb-toc__l2"><a href="#who-can-reach-it" data-toc="who-can-reach-it"><span class="hb-toc__no">12.3</span> Who can reach it</a></li>
+            <li class="hb-toc__l2"><a href="#environments" data-toc="environments"><span class="hb-toc__no">13.1</span> Environments</a></li>
+            <li class="hb-toc__l2"><a href="#running-safely" data-toc="running-safely"><span class="hb-toc__no">13.2</span> Running safely</a></li>
+            <li class="hb-toc__l2"><a href="#who-can-reach-it" data-toc="who-can-reach-it"><span class="hb-toc__no">13.3</span> Who can reach it</a></li>
         </ol>
       </nav>
           <div class="hb-prose" data-hb-prose>
 <div class="hb-rfc" role="note"><p><span class="hb-rfc__label">Key words</span> The key words <strong class="kw kw--must">MUST</strong>, <strong class="kw kw--must-not">MUST NOT</strong>, <strong class="kw kw--should">SHOULD</strong>, <strong class="kw kw--should-not">SHOULD NOT</strong> and <strong class="kw kw--may">MAY</strong> in this chapter are to be interpreted as described in <a href="https://www.rfc-editor.org/rfc/rfc2119">RFC 2119</a>.</p></div>
-<h2 id="environments"><a class="hb-sec" href="#environments">§12.1</a> Environments</h2>
+<h2 id="environments"><a class="hb-sec" href="#environments">§13.1</a> Environments</h2>
 <ul>
 <li>Every environment more than one person can reach <strong class="kw kw--must">MUST</strong> follow the whole handbook; only a developer's own machine is exempt (WSU developer standards, 2024). No check exists yet.</li>
 <li>An app <strong class="kw kw--must">MUST</strong> keep at least a pre-production and a production environment, each with its own working copy of every piece, database and supporting services included (WSU developer standards, 2024). No check exists yet.</li>
@@ -108,7 +109,7 @@
 <li>Anything kept outside source control, databases included, <strong class="kw kw--must">MUST</strong> be backed up. The README <strong class="kw kw--must">MUST</strong> say how to restore one app (WSU developer standards, 2024). No check exists yet.</li>
 <li>An app <strong class="kw kw--should">SHOULD</strong> be load tested in each environment where heavy use is expected (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
-<h2 id="running-safely"><a class="hb-sec" href="#running-safely">§12.2</a> Running safely</h2>
+<h2 id="running-safely"><a class="hb-sec" href="#running-safely">§13.2</a> Running safely</h2>
 <ul>
 <li>The app and its scripts <strong class="kw kw--must">MUST</strong> run as a non-root, non-administrator user with the least access they need (WSU developer standards, 2024). No check exists yet.</li>
 <li>The web server <strong class="kw kw--must-not">MUST NOT</strong> list directory contents (WSU developer standards, 2024). <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> check: <code>directory-listing</code> warns on committed server config that turns listing on (PROCTOR 0.10.0).</li>
@@ -122,7 +123,7 @@ PROCTOR check: <code>served-folder</code> (<code>phpinfo()</code>, dumps, backup
 <li>Where it is practical, an app <strong class="kw kw--should">SHOULD</strong> record an audit trail of changes to data and of successful and failed access to sensitive data (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <p>Production is the encore. Keep the lights on and the doors locked, and the band plays on.</p>
-<h2 id="who-can-reach-it"><a class="hb-sec" href="#who-can-reach-it">§12.3</a> Who can reach it</h2>
+<h2 id="who-can-reach-it"><a class="hb-sec" href="#who-can-reach-it">§13.3</a> Who can reach it</h2>
 <ul>
 <li>Every app <strong class="kw kw--must">MUST</strong> set <code>robots.txt</code> to keep spiders out unless crawling is wanted (WSU developer standards, 2024). An app that wants crawling says so in the file with <code>Allow: /</code> for <code>User-agent: *</code>; keeping spiders out is <code>Disallow: /</code>. PROCTOR check: <code>robots-txt</code> warns when a served app commits no <code>public/robots.txt</code>, or one that decides neither (PROCTOR 0.10.0).</li>
 <li>Every app <strong class="kw kw--must">MUST</strong> limit access by network address to the audience it serves, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024). No check exists yet.</li>
@@ -131,7 +132,7 @@ PROCTOR check: <code>served-folder</code> (<code>phpinfo()</code>, dumps, backup
           </div>
         </div>
       </article>
-      <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="secrets.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 11</span><span class="hb-pager__name">Secrets and debugging</span></a><a class="hb-pager__link hb-pager__link--next" href="overrides.html" rel="next"><span class="hb-pager__dir">Next · Chapter 13</span><span class="hb-pager__name">Overrides</span></a></nav>
+      <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="ai.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 12</span><span class="hb-pager__name">AI and LLM use</span></a><a class="hb-pager__link hb-pager__link--next" href="overrides.html" rel="next"><span class="hb-pager__dir">Next · Chapter 14</span><span class="hb-pager__name">Overrides</span></a></nav>
 
   <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/production.md"><code>handbook/production.md</code> on GitHub</a>, impression <code>ba45e60</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>

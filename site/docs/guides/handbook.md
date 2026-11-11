@@ -8,7 +8,7 @@ generator: Squire agent-ready
 
 # The handbook [#](https://creed.apps.wayne.edu/docs/guides/handbook.html#the-handbook)
 
-This page maps the CREED handbook: what it is, how to read its key words and PROCTOR check lines, and where each of the thirteen chapters lives.
+This page maps the CREED handbook: what it is, how to read its key words and PROCTOR check lines, and where each of the fourteen chapters lives.
 
 ## What the handbook is [#](https://creed.apps.wayne.edu/docs/guides/handbook.html#what-the-handbook-is)
 
@@ -33,6 +33,7 @@ The rules for the Wayne State app stack, chapter by chapter. Each chapter states
 - [Accessibility](https://creed.apps.wayne.edu/handbook/accessibility.html): WCAG 2.2 Level AA as the target for every public page, WayneUI components as the checked starting point, Preflight's automated axe-core check in CI, and the open Title II question.
 - [Every OS](https://creed.apps.wayne.edu/handbook/every-os.html): every developer tool works on Windows, macOS and Linux, with `.ps1` and `.sh` pairs, LF line endings and portable paths.
 - [Secrets](https://creed.apps.wayne.edu/handbook/secrets.html): credentials never in version control and never in the served folder, with errors and debug output that hide them.
+- [AI and LLM use](https://creed.apps.wayne.edu/handbook/ai.html): model calls server-side only, tokens out of client code, outside providers receiving public data only, personal data out of prompts, and a person, not a model, making the final call.
 - [Production](https://creed.apps.wayne.edu/handbook/production.html): pre-production and production environments, running safely with the least access needed, and who can reach an app.
 - [Overrides](https://creed.apps.wayne.edu/handbook/overrides.html): overrides are named, dated and visible, with an expiry date and a reason, and an expired override is a failure.
 
