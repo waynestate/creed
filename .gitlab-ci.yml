@@ -27,6 +27,13 @@ include:
       site_dir: site
       pages: ["**/*.html"]
       wcag_tags: ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"]
+  # The databases chapter's MySQL 5.6 claims, asked of a real 5.6.51: Preflight's mysql56-migrate component starts
+  # the server and installs pdo_mysql, and instead of an app's migrations it runs bin/mysql56-probe.php. The 5.6
+  # images are amd64 only, so the job takes the component's amd64 runner tag; it runs on main and tag pipelines.
+  - component: $CI_SERVER_FQDN/enterprise-apps/preflight/mysql56-migrate@0.8.0
+    inputs:
+      job_name: mysql56-probe
+      migrate_command: "php bin/mysql56-probe.php --wait=60"
 
 # Dependency caching: images already come through the Dependency Proxy, and
 # every job that installs packages extends a cache under a fixed key, not a

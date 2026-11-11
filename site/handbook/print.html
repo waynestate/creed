@@ -590,7 +590,7 @@ assertions <span class="hb-cite">(the stack's SAML decision)</span>. SESAME conf
           <div>
             <p class="chap-head__kicker">Chapter 5</p>
             <h2 id="databases-title" class="hb-book__title">Databases</h2>
-            <p class="hb-register">9 sections · 27 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 2 · <strong class="kw kw--must">MUST</strong> 14 · <strong class="kw kw--should">SHOULD</strong> 3 · <strong class="kw kw--may">MAY</strong> 1</p>
+            <p class="hb-register">10 sections · 27 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 3 · <strong class="kw kw--must">MUST</strong> 14 · <strong class="kw kw--should">SHOULD</strong> 3 · <strong class="kw kw--may">MAY</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -636,34 +636,49 @@ supported MySQL <span class="hb-cite">(the stack's MySQL gate decision)</span>. 
 <li>The connection between the app and the database <strong class="kw kw--must">MUST</strong> be encrypted. The database account <strong class="kw kw--must">MUST</strong> have only the privileges the app needs, never an administrator account (WSU developer standards, 2024). No check exists yet.</li>
 </ul>
 <h3 id="databases--conventions-that-keep-5-6-working"><a class="hb-sec" href="#databases--conventions-that-keep-5-6-working">§5.5</a> Conventions that keep 5.6 working</h3>
+<p>Each claim below about what 5.6 does names the probe that shows it on MySQL
+5.6.51 (see &quot;How the claims are proven&quot;, below).</p>
 <ul>
 <li>An app <strong class="kw kw--must">MUST</strong> set <code>Schema::defaultStringLength(191)</code> in
 <code>AppServiceProvider::boot()</code>, before any migration runs. 5.6 caps an indexed
-<code>utf8mb4</code> column at 767 bytes, which is 191 characters. PROCTOR check:
-<code>mysql56</code>.</li>
-<li>An app <strong class="kw kw--must">MUST</strong> keep <code>utf8mb4</code> and <code>utf8mb4_unicode_ci</code>, the defaults, and <strong class="kw kw--must">MUST</strong>
-NOT use an 8.0-only collation such as <code>utf8mb4_0900_ai_ci</code> (not yet
-confirmed on a 5.6 server). No check exists yet.</li>
+<code>utf8mb4</code> column at 767 bytes, which is 191 characters: an index on a 255
+character string is refused (probe <code>index-255</code>) and one on 191 fits (probe
+<code>index-191</code>). PROCTOR check: <code>mysql56</code>.</li>
+<li>An app <strong class="kw kw--must">MUST</strong> keep <code>utf8mb4</code> and <code>utf8mb4_unicode_ci</code>, the defaults (probe
+<code>collation-unicode</code>), and <strong class="kw kw--must-not">MUST NOT</strong> use an 8.0-only collation such as
+<code>utf8mb4_0900_ai_ci</code>, which 5.6 does not know (probe <code>collation-0900</code>). No
+check exists yet.</li>
 <li>An app <strong class="kw kw--must">MUST</strong> store JSON as <code>text</code> or <code>longText</code>, with Eloquent <code>array</code> or
-<code>json</code> casts, and <strong class="kw kw--must">MUST</strong> filter in PHP. 5.6 has no JSON column type. PROCTOR
+<code>json</code> casts, and <strong class="kw kw--must">MUST</strong> filter in PHP. 5.6 has no JSON column type (probe
+<code>json-column</code>) and no JSON functions (probe <code>json-functions</code>). PROCTOR
 check: <code>mysql56</code>.</li>
-<li>An app <strong class="kw kw--must">MUST</strong> leave <code>use_upsert_alias</code> unset, so <code>upsert()</code> uses <code>VALUES()</code>.
-The row alias that setting switches to needs MySQL 8.0.19. PROCTOR check:
-<code>mysql56</code>.</li>
+<li>An app <strong class="kw kw--must">MUST</strong> leave <code>use_upsert_alias</code> unset, so <code>upsert()</code> uses <code>VALUES()</code>
+(probe <code>upsert-values</code>). The row alias that setting switches to needs MySQL
+8.0.19 (probe <code>upsert-alias</code>). PROCTOR check: <code>mysql56</code>.</li>
 <li>An app <strong class="kw kw--must">MUST</strong> rename a column with raw
-<code>DB::statement('ALTER TABLE ... CHANGE ...')</code>, and <strong class="kw kw--must-not">MUST NOT</strong> use
-<code>renameColumn</code> or <code>renameIndex</code>, which emit 5.7 syntax. PROCTOR check:
+<code>DB::statement('ALTER TABLE ... CHANGE ...')</code> (probe <code>rename-column-change</code>),
+and <strong class="kw kw--must-not">MUST NOT</strong> use <code>renameColumn</code> or <code>renameIndex</code>. On a 5.6 server Laravel 13's
+<code>renameColumn</code> first reads the column through the query 5.6 rejects (probe
+<code>column-introspection</code>), and on a newer one it writes <code>RENAME COLUMN</code>, which
+5.6 cannot parse (probe <code>rename-column-syntax</code>); <code>renameIndex</code> writes
+<code>RENAME INDEX</code>, which arrived in 5.7 (probe <code>rename-index</code>). PROCTOR check:
 <code>mysql56</code>.</li>
-<li>An app <strong class="kw kw--must">MUST</strong> use <code>Schema::hasTable</code> only. Column introspection is not
-reliable on 5.6 (not yet confirmed on a 5.6 server). PROCTOR check:
-<code>mysql56</code>.</li>
+<li>An app <strong class="kw kw--must">MUST</strong> use <code>Schema::hasTable</code> (probe <code>has-table</code>) and <strong class="kw kw--must-not">MUST NOT</strong> use
+column introspection: <code>hasColumn</code>, <code>hasColumns</code>, <code>getColumns</code>,
+<code>getColumnListing</code> and <code>getColumnType</code>. Laravel 13 reads them from
+<code>information_schema.columns.generation_expression</code>, a column 5.6 does not
+have, so the call fails outright (probe <code>column-introspection</code>). PROCTOR
+check: <code>mysql56</code>.</li>
 <li>An app <strong class="kw kw--must">MUST</strong> skip <code>db:show</code> and <code>db:monitor</code>. PROCTOR check: <code>mysql56</code>.</li>
 <li>An app <strong class="kw kw--should">SHOULD</strong> run one database-queue worker (or another driver if the
-platform offers one). 5.6 has no <code>SKIP LOCKED</code>, so a single worker avoids
-double-processing. No check exists yet.</li>
-<li>An app <strong class="kw kw--must">MUST</strong> use <code>timestamp</code>, not <code>date</code>, for <code>useCurrent()</code>. A <code>date</code>
-column cannot take a current-timestamp default on 5.6. PROCTOR check:
-<code>mysql56</code>.</li>
+platform offers one). 5.6 has no <code>SKIP LOCKED</code> (probe <code>skip-locked</code>), so a
+single worker avoids double-processing. No check exists yet.</li>
+<li>An app <strong class="kw kw--must">MUST</strong> use <code>timestamp</code>, not <code>date</code>, for <code>useCurrent()</code> (probe
+<code>timestamp-current-default</code>). On a 5.6 server Laravel 13 drops <code>useCurrent()</code>
+from a <code>date</code> column without a word, so the migration passes, the column has
+no default, and an insert that leaves it out fails (probe
+<code>use-current-date</code>); 5.6 refuses a current-timestamp default on a <code>date</code>
+column in any case (probe <code>date-current-default</code>). PROCTOR check: <code>mysql56</code>.</li>
 <li>An app <strong class="kw kw--must">MUST</strong> run migrations in CI against a real 5.6 container.
 SQLite-only tests pass code that 5.6 rejects. Held by: <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s
 <code>mysql56-migrate</code> component (0.6.0), which runs the migrations against
@@ -673,21 +688,28 @@ which warns when an app with migrations has no such job.</li>
 <h3 id="databases--avoid-until-the-server-is-upgraded"><a class="hb-sec" href="#databases--avoid-until-the-server-is-upgraded">§5.6</a> Avoid until the server is upgraded</h3>
 <h4 id="databases--schema"><a class="hb-sec" href="#databases--schema">§5.6.1</a> Schema</h4>
 <ul>
-<li>JSON and jsonb columns</li>
-<li>Generated columns</li>
-<li><code>renameIndex</code> and <code>renameColumn</code></li>
-<li>Column introspection</li>
-<li><code>invisible</code>, <code>instant</code> and <code>vector</code> columns</li>
-<li>InnoDB <code>spatialIndex</code> (needs 5.7.5, not yet confirmed on a 5.6 server)</li>
-<li>DESC indexes and CHECK constraints</li>
+<li>JSON and jsonb columns (probe <code>json-column</code>)</li>
+<li>Generated columns, <code>storedAs</code> and <code>virtualAs</code> (probe <code>generated-column</code>)</li>
+<li><code>renameIndex</code> and <code>renameColumn</code> (probes <code>rename-index</code>,
+<code>rename-column-syntax</code>)</li>
+<li>Column introspection (probe <code>column-introspection</code>)</li>
+<li><code>invisible</code>, <code>instant</code> and <code>vector</code> columns (probes <code>invisible-column</code>,
+<code>vector-column</code>)</li>
+<li>InnoDB <code>spatialIndex</code>, which needs 5.7.5 (probe <code>spatial-index-innodb</code>)</li>
+<li>DESC indexes and CHECK constraints. These are the quiet ones: 5.6 accepts
+both and then ignores them, so the migration passes, a DESC index is built
+ascending (probe <code>desc-index-ignored</code>) and a row that breaks a CHECK goes in
+(probe <code>check-constraint-ignored</code>). Validate in the app instead.</li>
 </ul>
 <h4 id="databases--queries"><a class="hb-sec" href="#databases--queries">§5.6.2</a> Queries</h4>
 <ul>
-<li><code>whereJson*</code> and JSON-path updates</li>
-<li>Window functions and CTEs</li>
-<li><code>SKIP LOCKED</code> and <code>NOWAIT</code> in raw SQL</li>
-<li><code>joinLateral</code></li>
-<li>Joined deletes with an order or a limit</li>
+<li><code>whereJson*</code> and JSON-path updates (probe <code>json-functions</code>)</li>
+<li>Window functions and CTEs (probes <code>window-function</code>, <code>cte</code>)</li>
+<li><code>SKIP LOCKED</code> and <code>NOWAIT</code> in raw SQL (probes <code>skip-locked</code>, <code>nowait</code>)</li>
+<li><code>joinLateral</code> (probe <code>join-lateral</code>)</li>
+<li>Joined deletes with an order or a limit (probe
+<code>joined-delete-order-limit</code>; no MySQL release accepts these, so they stay
+out after the upgrade too)</li>
 </ul>
 <h4 id="databases--commands"><a class="hb-sec" href="#databases--commands">§5.6.3</a> Commands</h4>
 <ul>
@@ -698,13 +720,18 @@ which warns when an app with migrations has no such job.</li>
 <p>Code that follows the conventions and avoids the patterns above runs unchanged
 on 8.4. The server-side large-prefix settings (<code>innodb_large_prefix=ON</code>,
 <code>innodb_file_format=Barracuda</code>, DYNAMIC rows) are a question for the database
-owners, not something an app sets (not yet confirmed on a 5.6 server). Passing
-<code>ROW_FORMAT=DYNAMIC</code> through the <code>engine</code> config is likewise not yet confirmed
-on a 5.6 server.</p>
+owners, not something an app sets: a stock 5.6.51 has large prefixes off
+(probe <code>large-prefix-off</code>). Passing <code>ROW_FORMAT=DYNAMIC</code> through the
+connection's <code>engine</code> setting does not get around that: on the default
+Antelope file format 5.6 warns and builds a COMPACT table (probe
+<code>row-format-dynamic</code>), and the 255 character index is still refused (probe
+<code>row-format-dynamic-index</code>). <code>defaultStringLength(191)</code> is the convention
+that works.</p>
 <p>Oracle moved 5.6 to Sustaining Support on 2021-02-01, so it gets no new fixes.
-Builds older than 5.6.46 also speak only TLS 1.0, which current hosts may
-refuse (not yet confirmed on a 5.6 server). Both are reasons to plan the move
-rather than wait for it.</p>
+Builds older than 5.6.46 also speak only TLS 1.0 (MySQL 5.6.46 added TLS 1.1
+and 1.2, per its release notes), which current hosts may refuse.
+The probes cannot show this one: the stock 5.6.51 image starts with TLS off.
+Both are reasons to plan the move rather than wait for it.</p>
 <h3 id="databases--how-the-stack-checks-it"><a class="hb-sec" href="#databases--how-the-stack-checks-it">§5.8</a> How the stack checks it</h3>
 <p>PROCTOR's <code>mysql56</code> check warns on the patterns the shared 5.6 server
 rejects: JSON columns and queries, generated columns, <code>renameColumn</code> and
@@ -714,7 +741,23 @@ characters, a missing <code>Schema::defaultStringLength(191)</code>, <code>date<
 defaulting to the current time, and the <code>db:show</code> and <code>db:monitor</code> commands.
 It warns rather than fails: an app on its own newer database is not
 affected.</p>
-<h3 id="databases--sources"><a class="hb-sec" href="#databases--sources">§5.9</a> Sources</h3>
+<h3 id="databases--how-the-claims-are-proven"><a class="hb-sec" href="#databases--how-the-claims-are-proven">§5.9</a> How the claims are proven</h3>
+<p>Every &quot;probe&quot; named in this chapter is one statement in CREED's
+<code>tools/Mysql56/Probes.php</code>: the SQL Laravel 13 sends (read from its MySQL
+grammars at 13.40.0), or the raw statement this chapter tells an app to write
+instead, with the answer 5.6 gives. <code>php bin/mysql56-probe.php</code> runs them
+against a live server, in the session Laravel 13 opens (<code>utf8mb4_unicode_ci</code>,
+its strict <code>sql_mode</code>), and prints <code>[OK]</code> or <code>[FAIL]</code> per probe.
+<code>scripts/mysql56-probe.sh</code> (Linux, macOS) and <code>scripts/mysql56-probe.ps1</code>
+(Windows) start <code>mysql:5.6.51</code>, the image <a class="tool" href="https://squire.apps.wayne.edu/"><img src="../assets/marks/squire.png" alt="" width="16" height="16">Squire</a> runs and Preflight's
+<code>mysql56-migrate</code> component tests against, and run them. CREED's own pipeline
+runs them on that component, on every main and tag pipeline. All 31 agreed
+with this chapter on 2026-11-11.</p>
+<p>The probes read a stock 5.6.51. The shared server keeps its own settings,
+which its owners know; a probe that says &quot;the default&quot; means the image's.
+Pointed at MySQL 8.4 the same run fails two thirds of them, which is the
+point: the patterns above are 5.6 limits, and the upgrade lifts them.</p>
+<h3 id="databases--sources"><a class="hb-sec" href="#databases--sources">§5.10</a> Sources</h3>
 <ul class="hb-sources">
 <li>Laravel 13 database docs: <a href="https://laravel.com/docs/13.x/database">https://laravel.com/docs/13.x/database</a></li>
 <li>Laravel docs, <code>migrations.md</code> (index-length section):
@@ -743,6 +786,10 @@ affected.</p>
 <li>MySQL INSERT ... ON DUPLICATE KEY UPDATE (row alias from 8.0.19):
 <a href="https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html">https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html</a></li>
 <li>Oracle MySQL end-of-life notices: <a href="https://www.mysql.com/support/eol-notice.html">https://www.mysql.com/support/eol-notice.html</a></li>
+<li>Laravel MySQL schema grammar (column, table and rename queries):
+<a href="https://github.com/laravel/framework/blob/13.x/src/Illuminate/Database/Schema/Grammars/MySqlGrammar.php">https://github.com/laravel/framework/blob/13.x/src/Illuminate/Database/Schema/Grammars/MySqlGrammar.php</a></li>
+<li>MySQL 5.6.46 release notes (TLS 1.1 and 1.2, yaSSL dropped):
+<a href="https://dev.mysql.com/doc/relnotes/mysql/5.6/en/news-5-6-46.html">https://dev.mysql.com/doc/relnotes/mysql/5.6/en/news-5-6-46.html</a></li>
 <li>MySQL 5.6 TLS protocols:
 <a href="https://docs.oracle.com/cd/E17952_01/mysql-5.6-en/encrypted-connection-protocols-ciphers.html">https://docs.oracle.com/cd/E17952_01/mysql-5.6-en/encrypted-connection-protocols-ciphers.html</a></li>
 <li>MySQL 9.7, native pluggable authentication:
@@ -1116,7 +1163,7 @@ a permanent override <span class="hb-cite">(the stack's deploy-gate decision)</s
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>13a6cf1</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>5b7fd82</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

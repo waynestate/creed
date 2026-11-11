@@ -9,6 +9,7 @@ description: All notable changes to this project.
 
 ## Unreleased
 
+- Added: the databases chapter's MySQL 5.6 claims are proven on a real MySQL 5.6.51. `bin/mysql56-probe.php` runs 31 probes, each the SQL Laravel 13 sends (or the raw statement the chapter prescribes), in the session Laravel opens, and prints `[OK]` or `[FAIL]` per claim; `scripts/mysql56-probe.sh` and `.ps1` start the server in Docker, and CI runs them in a new `mysql56-probe` job on Preflight 0.8.0's `mysql56-migrate` component (main and tags, amd64 runner). `tests/Mysql56ProbesTest.php` keeps the chapter's citations and the probe list level. Every "not yet confirmed on a 5.6 server" is gone, and the chapter is more exact: column introspection (`hasColumn`, `getColumns`) fails outright on 5.6, `renameColumn` fails because it reads the column first, DESC indexes and CHECK constraints are accepted and silently ignored, Laravel drops `useCurrent()` from a `date` column on 5.6, and `ROW_FORMAT=DYNAMIC` in the engine setting falls back to COMPACT on a stock server.
 - CI pins Preflight 0.8.0.
 - Site: the front page's "Inspect a version" form answers from a copy of the policy dates in `site/assets/creed.js`; `FrontPageInspectorTest` now fails CI when that copy and `policy.json` disagree, and prints the lines to paste. The copy matches today.
 

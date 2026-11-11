@@ -833,8 +833,12 @@ Sources: [Laravel 13 database docs](https://laravel.com/docs/13.x/database), [en
 How the stack holds it: `Partially`. `policy.json` records the minimum MySQL and MariaDB for each Laravel release
 (Laravel 10 to 13), and the reader exposes them through `requires()`; `tests/PolicyRequiresTest.php` pins the values.
 PROCTOR 0.10.0's `mysql-minimum` warns when an app's declared MySQL or MariaDB image (in a compose file,
-`.env.squire.example` or `.env.example`) is below its locked Laravel line's minimum; it warns only and is not in the deploy gate. The platform's
-MySQL timeline is still an open question.
+`.env.squire.example` or `.env.example`) is below its locked Laravel line's minimum; it warns only and is not in the deploy gate. The handbook's
+5.6 conventions (`handbook/databases.md`) are no longer taken on trust: `bin/mysql56-probe.php` sends the SQL Laravel 13
+writes to a real MySQL 5.6.51 and checks each claim, in CREED's `mysql56-probe` CI job and in `scripts/mysql56-probe.sh`
+or `.ps1`. The probes turned up two quiet failures the chapter now names: 5.6 accepts DESC indexes and CHECK constraints
+and ignores both, and on 5.6 Laravel drops `useCurrent()` from a `date` column. The platform's MySQL timeline is still
+an open question.
 
 ### 47. Plan the MySQL move around authentication and LTS lines
 

@@ -47,6 +47,7 @@ The whole band fits in three commands, and nobody needs a solo.
 | `php bin/build-handbook-site.php` | Builds the handbook pages of the CREED site from `handbook/*.md`. |
 | `php bin/agent-ready.php` | Makes a static front page readable by agents: writes the Markdown twins, `llms.txt`, `llms-full.txt`, `robots.txt` and `sitemap.xml` into the site folder. |
 | `php bin/docs-site.php` | Turns every Markdown file under `docs/` into a committed, accessible, WayneUI-styled docs site under `site/docs/`, and fails CI when the committed pages are stale. |
+| `php bin/mysql56-probe.php [--wait=SECONDS]` | Asks a live MySQL 5.6 whether the databases chapter tells the truth about it: runs every probe in `tools/Mysql56/Probes.php` against the server named by `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME` and `DB_PASSWORD`, in the session Laravel 13 opens, and prints `[OK]` or `[FAIL]` per probe. `--wait` retries the connection while the server starts. Needs `pdo_mysql`, not Composer. `scripts/mysql56-probe.sh` and `scripts/mysql56-probe.ps1` start `mysql:5.6.51` in Docker and run it; CI runs it in the `mysql56-probe` job. |
 
 ## Exit codes [#](https://creed.apps.wayne.edu/docs/reference/commands.html#exit-codes)
 
@@ -75,6 +76,14 @@ The refresher never commits; the policy robot does.
 | `0` | Nothing to change (or `--dry-run` with nothing to change). |
 | `1` | A feed could not be fetched or parsed. |
 | `3` | The policy was updated (or `--dry-run` with changes to show). In CI the scheduled job is check-only: when the policy changed, the tool exits 3 and the job fails on the diff. |
+
+### mysql56-probe [#](https://creed.apps.wayne.edu/docs/reference/commands.html#mysql56-probe)
+
+| Code | Meaning |
+| --- | --- |
+| `0` | Every probe answered as `handbook/databases.md` says. |
+| `1` | At least one probe disagreed; its `[FAIL]` line says what the server did instead. Fix the chapter or the probe, in one commit. |
+| `2` | It could not connect before `--wait` ran out, `pdo_mysql` is missing, or an argument is unknown. |
 
 ### export --check [#](https://creed.apps.wayne.edu/docs/reference/commands.html#export-check)
 
@@ -132,6 +141,22 @@ PowerShell
 
 ```powershell
 docker run --rm -v "${PWD}:/app" -w /app composer:2.11.1@sha256:8de2184c6de224f4689e8f80ed5f5edaf0030b6b8b7839a22a2bcb6722ac87d0 composer validate-policy
+```
+
+### Probe MySQL 5.6 [#](https://creed.apps.wayne.edu/docs/reference/commands.html#probe-mysql-5-6)
+
+Starts `mysql:5.6.51` (amd64 only; Apple Silicon runs it under emulation), runs the probes in the databases chapter, and removes the server again:
+
+sh
+
+```sh
+sh scripts/mysql56-probe.sh
+```
+
+PowerShell
+
+```powershell
+.\scripts\mysql56-probe.ps1
 ```
 
 ## Related [#](https://creed.apps.wayne.edu/docs/reference/commands.html#related)

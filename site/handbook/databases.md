@@ -10,7 +10,7 @@ Chapter 5
 
 # Databases
 
-9 sections · 27 provisions · **MUST NOT** 2 · **MUST** 14 · **SHOULD** 3 · **MAY** 1
+10 sections · 27 provisions · **MUST NOT** 3 · **MUST** 14 · **SHOULD** 3 · **MAY** 1
 
 Decided
 
@@ -37,36 +37,38 @@ An app **MAY** stay on a database version for 90 days after it leaves support, t
 
 ## [§5.5](https://creed.apps.wayne.edu/handbook/databases.html#conventions-that-keep-5-6-working) Conventions that keep 5.6 working
 
-- An app **MUST** set `Schema::defaultStringLength(191)` in `AppServiceProvider::boot()`, before any migration runs. 5.6 caps an indexed `utf8mb4` column at 767 bytes, which is 191 characters. PROCTOR check: `mysql56`.
-- An app **MUST** keep `utf8mb4` and `utf8mb4_unicode_ci`, the defaults, and **MUST** NOT use an 8.0-only collation such as `utf8mb4_0900_ai_ci` (not yet confirmed on a 5.6 server). No check exists yet.
-- An app **MUST** store JSON as `text` or `longText`, with Eloquent `array` or `json` casts, and **MUST** filter in PHP. 5.6 has no JSON column type. PROCTOR check: `mysql56`.
-- An app **MUST** leave `use_upsert_alias` unset, so `upsert()` uses `VALUES()`. The row alias that setting switches to needs MySQL 8.0.19. PROCTOR check: `mysql56`.
-- An app **MUST** rename a column with raw `DB::statement('ALTER TABLE ... CHANGE ...')`, and **MUST NOT** use `renameColumn` or `renameIndex`, which emit 5.7 syntax. PROCTOR check: `mysql56`.
-- An app **MUST** use `Schema::hasTable` only. Column introspection is not reliable on 5.6 (not yet confirmed on a 5.6 server). PROCTOR check: `mysql56`.
+Each claim below about what 5.6 does names the probe that shows it on MySQL 5.6.51 (see "How the claims are proven", below).
+
+- An app **MUST** set `Schema::defaultStringLength(191)` in `AppServiceProvider::boot()`, before any migration runs. 5.6 caps an indexed `utf8mb4` column at 767 bytes, which is 191 characters: an index on a 255 character string is refused (probe `index-255`) and one on 191 fits (probe `index-191`). PROCTOR check: `mysql56`.
+- An app **MUST** keep `utf8mb4` and `utf8mb4_unicode_ci`, the defaults (probe `collation-unicode`), and **MUST NOT** use an 8.0-only collation such as `utf8mb4_0900_ai_ci`, which 5.6 does not know (probe `collation-0900`). No check exists yet.
+- An app **MUST** store JSON as `text` or `longText`, with Eloquent `array` or `json` casts, and **MUST** filter in PHP. 5.6 has no JSON column type (probe `json-column`) and no JSON functions (probe `json-functions`). PROCTOR check: `mysql56`.
+- An app **MUST** leave `use_upsert_alias` unset, so `upsert()` uses `VALUES()` (probe `upsert-values`). The row alias that setting switches to needs MySQL 8.0.19 (probe `upsert-alias`). PROCTOR check: `mysql56`.
+- An app **MUST** rename a column with raw `DB::statement('ALTER TABLE ... CHANGE ...')` (probe `rename-column-change`), and **MUST NOT** use `renameColumn` or `renameIndex`. On a 5.6 server Laravel 13's `renameColumn` first reads the column through the query 5.6 rejects (probe `column-introspection`), and on a newer one it writes `RENAME COLUMN`, which 5.6 cannot parse (probe `rename-column-syntax`); `renameIndex` writes `RENAME INDEX`, which arrived in 5.7 (probe `rename-index`). PROCTOR check: `mysql56`.
+- An app **MUST** use `Schema::hasTable` (probe `has-table`) and **MUST NOT** use column introspection: `hasColumn`, `hasColumns`, `getColumns`, `getColumnListing` and `getColumnType`. Laravel 13 reads them from `information_schema.columns.generation_expression`, a column 5.6 does not have, so the call fails outright (probe `column-introspection`). PROCTOR check: `mysql56`.
 - An app **MUST** skip `db:show` and `db:monitor`. PROCTOR check: `mysql56`.
-- An app **SHOULD** run one database-queue worker (or another driver if the platform offers one). 5.6 has no `SKIP LOCKED`, so a single worker avoids double-processing. No check exists yet.
-- An app **MUST** use `timestamp`, not `date`, for `useCurrent()`. A `date` column cannot take a current-timestamp default on 5.6. PROCTOR check: `mysql56`.
+- An app **SHOULD** run one database-queue worker (or another driver if the platform offers one). 5.6 has no `SKIP LOCKED` (probe `skip-locked`), so a single worker avoids double-processing. No check exists yet.
+- An app **MUST** use `timestamp`, not `date`, for `useCurrent()` (probe `timestamp-current-default`). On a 5.6 server Laravel 13 drops `useCurrent()` from a `date` column without a word, so the migration passes, the column has no default, and an insert that leaves it out fails (probe `use-current-date`); 5.6 refuses a current-timestamp default on a `date` column in any case (probe `date-current-default`). PROCTOR check: `mysql56`.
 - An app **MUST** run migrations in CI against a real 5.6 container. SQLite-only tests pass code that 5.6 rejects. Held by: [Preflight](https://preflight.apps.wayne.edu/)'s `mysql56-migrate` component (0.6.0), which runs the migrations against MySQL 5.6.51 on an amd64 runner. PROCTOR check: `mysql56-ci` (0.15.0), which warns when an app with migrations has no such job.
 
 ## [§5.6](https://creed.apps.wayne.edu/handbook/databases.html#avoid-until-the-server-is-upgraded) Avoid until the server is upgraded
 
 ### [§5.6.1](https://creed.apps.wayne.edu/handbook/databases.html#schema) Schema
 
-- JSON and jsonb columns
-- Generated columns
-- `renameIndex` and `renameColumn`
-- Column introspection
-- `invisible`, `instant` and `vector` columns
-- InnoDB `spatialIndex` (needs 5.7.5, not yet confirmed on a 5.6 server)
-- DESC indexes and CHECK constraints
+- JSON and jsonb columns (probe `json-column`)
+- Generated columns, `storedAs` and `virtualAs` (probe `generated-column`)
+- `renameIndex` and `renameColumn` (probes `rename-index`, `rename-column-syntax`)
+- Column introspection (probe `column-introspection`)
+- `invisible`, `instant` and `vector` columns (probes `invisible-column`, `vector-column`)
+- InnoDB `spatialIndex`, which needs 5.7.5 (probe `spatial-index-innodb`)
+- DESC indexes and CHECK constraints. These are the quiet ones: 5.6 accepts both and then ignores them, so the migration passes, a DESC index is built ascending (probe `desc-index-ignored`) and a row that breaks a CHECK goes in (probe `check-constraint-ignored`). Validate in the app instead.
 
 ### [§5.6.2](https://creed.apps.wayne.edu/handbook/databases.html#queries) Queries
 
-- `whereJson*` and JSON-path updates
-- Window functions and CTEs
-- `SKIP LOCKED` and `NOWAIT` in raw SQL
-- `joinLateral`
-- Joined deletes with an order or a limit
+- `whereJson*` and JSON-path updates (probe `json-functions`)
+- Window functions and CTEs (probes `window-function`, `cte`)
+- `SKIP LOCKED` and `NOWAIT` in raw SQL (probes `skip-locked`, `nowait`)
+- `joinLateral` (probe `join-lateral`)
+- Joined deletes with an order or a limit (probe `joined-delete-order-limit`; no MySQL release accepts these, so they stay out after the upgrade too)
 
 ### [§5.6.3](https://creed.apps.wayne.edu/handbook/databases.html#commands) Commands
 
@@ -75,15 +77,21 @@ An app **MAY** stay on a database version for 90 days after it leaves support, t
 
 ## [§5.7](https://creed.apps.wayne.edu/handbook/databases.html#moving-to-8-4) Moving to 8.4
 
-Code that follows the conventions and avoids the patterns above runs unchanged on 8.4. The server-side large-prefix settings (`innodb_large_prefix=ON`, `innodb_file_format=Barracuda`, DYNAMIC rows) are a question for the database owners, not something an app sets (not yet confirmed on a 5.6 server). Passing `ROW_FORMAT=DYNAMIC` through the `engine` config is likewise not yet confirmed on a 5.6 server.
+Code that follows the conventions and avoids the patterns above runs unchanged on 8.4. The server-side large-prefix settings (`innodb_large_prefix=ON`, `innodb_file_format=Barracuda`, DYNAMIC rows) are a question for the database owners, not something an app sets: a stock 5.6.51 has large prefixes off (probe `large-prefix-off`). Passing `ROW_FORMAT=DYNAMIC` through the connection's `engine` setting does not get around that: on the default Antelope file format 5.6 warns and builds a COMPACT table (probe `row-format-dynamic`), and the 255 character index is still refused (probe `row-format-dynamic-index`). `defaultStringLength(191)` is the convention that works.
 
-Oracle moved 5.6 to Sustaining Support on 2021-02-01, so it gets no new fixes. Builds older than 5.6.46 also speak only TLS 1.0, which current hosts may refuse (not yet confirmed on a 5.6 server). Both are reasons to plan the move rather than wait for it.
+Oracle moved 5.6 to Sustaining Support on 2021-02-01, so it gets no new fixes. Builds older than 5.6.46 also speak only TLS 1.0 (MySQL 5.6.46 added TLS 1.1 and 1.2, per its release notes), which current hosts may refuse. The probes cannot show this one: the stock 5.6.51 image starts with TLS off. Both are reasons to plan the move rather than wait for it.
 
 ## [§5.8](https://creed.apps.wayne.edu/handbook/databases.html#how-the-stack-checks-it) How the stack checks it
 
 PROCTOR's `mysql56` check warns on the patterns the shared 5.6 server rejects: JSON columns and queries, generated columns, `renameColumn` and `renameIndex`, vector, invisible and spatial columns, column introspection, the raw-SQL syntax, the upsert row alias, indexed strings over 191 characters, a missing `Schema::defaultStringLength(191)`, `date` columns defaulting to the current time, and the `db:show` and `db:monitor` commands. It warns rather than fails: an app on its own newer database is not affected.
 
-## [§5.9](https://creed.apps.wayne.edu/handbook/databases.html#sources) Sources
+## [§5.9](https://creed.apps.wayne.edu/handbook/databases.html#how-the-claims-are-proven) How the claims are proven
+
+Every "probe" named in this chapter is one statement in CREED's `tools/Mysql56/Probes.php`: the SQL Laravel 13 sends (read from its MySQL grammars at 13.40.0), or the raw statement this chapter tells an app to write instead, with the answer 5.6 gives. `php bin/mysql56-probe.php` runs them against a live server, in the session Laravel 13 opens (`utf8mb4_unicode_ci`, its strict `sql_mode`), and prints `[OK]` or `[FAIL]` per probe. `scripts/mysql56-probe.sh` (Linux, macOS) and `scripts/mysql56-probe.ps1` (Windows) start `mysql:5.6.51`, the image [Squire](https://squire.apps.wayne.edu/) runs and Preflight's `mysql56-migrate` component tests against, and run them. CREED's own pipeline runs them on that component, on every main and tag pipeline. All 31 agreed with this chapter on 2026-11-11.
+
+The probes read a stock 5.6.51. The shared server keeps its own settings, which its owners know; a probe that says "the default" means the image's. Pointed at MySQL 8.4 the same run fails two thirds of them, which is the point: the patterns above are 5.6 limits, and the upgrade lifts them.
+
+## [§5.10](https://creed.apps.wayne.edu/handbook/databases.html#sources) Sources
 
 - Laravel 13 database docs: [https://laravel.com/docs/13.x/database](https://laravel.com/docs/13.x/database)
 - Laravel docs, `migrations.md` (index-length section): [https://github.com/laravel/docs/blob/10.x/migrations.md](https://github.com/laravel/docs/blob/10.x/migrations.md)
@@ -101,6 +109,8 @@ PROCTOR's `mysql56` check warns on the patterns the shared 5.6 server rejects: J
 - MySQL RENAME INDEX worklog: [https://dev.mysql.com/worklog/task/?id=6555](https://dev.mysql.com/worklog/task/?id=6555)
 - MySQL INSERT ... ON DUPLICATE KEY UPDATE (row alias from 8.0.19): [https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html](https://dev.mysql.com/doc/refman/8.0/en/insert-on-duplicate.html)
 - Oracle MySQL end-of-life notices: [https://www.mysql.com/support/eol-notice.html](https://www.mysql.com/support/eol-notice.html)
+- Laravel MySQL schema grammar (column, table and rename queries): [https://github.com/laravel/framework/blob/13.x/src/Illuminate/Database/Schema/Grammars/MySqlGrammar.php](https://github.com/laravel/framework/blob/13.x/src/Illuminate/Database/Schema/Grammars/MySqlGrammar.php)
+- MySQL 5.6.46 release notes (TLS 1.1 and 1.2, yaSSL dropped): [https://dev.mysql.com/doc/relnotes/mysql/5.6/en/news-5-6-46.html](https://dev.mysql.com/doc/relnotes/mysql/5.6/en/news-5-6-46.html)
 - MySQL 5.6 TLS protocols: [https://docs.oracle.com/cd/E17952_01/mysql-5.6-en/encrypted-connection-protocols-ciphers.html](https://docs.oracle.com/cd/E17952_01/mysql-5.6-en/encrypted-connection-protocols-ciphers.html)
 - MySQL 9.7, native pluggable authentication: [https://dev.mysql.com/doc/refman/9.7/en/native-pluggable-authentication.html](https://dev.mysql.com/doc/refman/9.7/en/native-pluggable-authentication.html)
 
@@ -110,4 +120,4 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`rules.eol_grace_days`**: `90`
 - **`components.*.versions.*.security_until`**: set per version
 
-Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `a862021`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/databases.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/databases.md), impression `eb0ce51`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
