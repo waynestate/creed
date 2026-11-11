@@ -15,7 +15,8 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
 
 ## Data in prompts and logs
 
-- Prompts MUST NOT contain personal data: student, employee or patient records, or identifiers such as AccessIDs, student IDs or Social Security numbers. No check exists yet.
+- Personal data (student, employee or patient records, or identifiers such as AccessIDs, student IDs or Social Security numbers) MAY go to WarriorGPT only, and only the minimum the task needs (D-102). No check exists yet.
+- Personal data MUST NOT go to an outside model provider (D-099, D-102). No check exists yet.
 - Logs SHOULD keep metadata (user, model, token counts, latency) and MUST NOT keep prompt or answer bodies by default. No check exists yet.
 - If bodies are kept for debugging, retention MUST be short and personal data MUST be stripped first. No check exists yet.
 

@@ -41,6 +41,17 @@ final class HandbookAiChapterTest extends TestCase
     }
 
     #[Test]
+    public function thePersonalDataRuleNamesWarriorGptOnly(): void
+    {
+        $content = (string) file_get_contents(self::ROOT . '/handbook/ai.md');
+
+        self::assertStringContainsString('MAY go to WarriorGPT only', $content, 'handbook/ai.md does not allow personal data to WarriorGPT.');
+        self::assertStringContainsString('MUST NOT go to an outside model provider', $content, 'handbook/ai.md does not ban personal data at an outside model provider.');
+        self::assertStringNotContainsString('Prompts MUST NOT contain personal data', $content, 'handbook/ai.md still carries the blanket ban on personal data.');
+        self::assertStringContainsString('MUST NOT keep prompt or answer bodies by default', $content, 'handbook/ai.md lost its logging rule.');
+    }
+
+    #[Test]
     public function everyRuleInTheChapterCarriesATagTheLinterAccepts(): void
     {
         $content = (string) file_get_contents(self::ROOT . '/handbook/ai.md');
