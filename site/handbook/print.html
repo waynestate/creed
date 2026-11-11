@@ -995,7 +995,7 @@ checked by WayneUI's own runnable accessibility gate <span class="hb-cite">(the 
 Held by: Preflight's <code>a11y</code> component, below.</li>
 <li>A manual keyboard and screen reader pass <strong class="kw kw--must">MUST</strong> happen before launch. An automated tool catches regressions; it is
 not proof of conformance, and it never replaces the pass <span class="hb-cite">(the stack's accessibility design)</span>. No check exists yet.</li>
-<li>Preflight's <code>a11y</code> component (0.5.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core
+<li>Preflight's <code>a11y</code> component (since 0.2.0; the pin is 0.8.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core
 in light and dark at 320 and 1280 px, and fails the pipeline on any violation. An app <strong class="kw kw--should">SHOULD</strong> add <code>wcag22aa</code> to its
 tags for the WCAG 2.2 AA target above.
 Held by: Preflight's a11y component (templates/a11y/template.yml).</li>
@@ -1163,7 +1163,7 @@ a permanent override <span class="hb-cite">(the stack's deploy-gate decision)</s
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>5b7fd82</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>20519c0</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

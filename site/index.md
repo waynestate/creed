@@ -25,8 +25,8 @@ These are the stack's written standards. The handbook has the practices, and `po
 [Inspect a version](https://creed.apps.wayne.edu/#inspection) [Read the handbook](https://creed.apps.wayne.edu/handbook/)
 
 - **Enforced**: 7
-- **Checked**: 19
-- **Partially**: 13
+- **Checked**: 20
+- **Partially**: 12
 - **Documented**: 18
 - **Not yet**: 4
 
@@ -290,11 +290,11 @@ Checked
 
 ### §3.6 Pin CI components to a tag or SHA.
 
-Include shared CI components at a tag or a full commit SHA, never `~latest`. CREED's own pipeline pins its four Preflight components to the 0.5.0 tag.
+Include shared CI components at a tag or a full commit SHA, never `~latest`. CREED's own pipeline pins its five Preflight components to the 0.8.0 tag.
 
-Gap `ci.md` writes the rule. [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `preflight-pinned` warns when a [Preflight](https://creed.apps.wayne.edu/#ahj-preflight) include is not pinned to a full release tag or a commit SHA; components from anywhere else are not checked.
+Held by `ci.md` writes the rule. [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `preflight-pinned` (since 0.12.0) warns when any CI component include, [Preflight](https://creed.apps.wayne.edu/#ahj-preflight)'s or anyone else's, is not pinned to a full release tag or a commit SHA.
 
-Partially
+Checked
 
 **Rationale.** A moving reference lets an upstream change weaken your pipeline without a commit in your repo.
 
