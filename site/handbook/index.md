@@ -12,7 +12,7 @@ The handbook · 2026 Edition
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a "Not decided here" heading.
 
-Fourteen chapters · 200 provisions · **MUST** 150 · **SHOULD** 24 · **MAY** 1
+Fourteen chapters · 201 provisions · **MUST** 150 · **SHOULD** 24 · **MAY** 2
 
 ## Contents
 
@@ -27,7 +27,7 @@ Fourteen chapters · 200 provisions · **MUST** 150 · **SHOULD** 24 · **MAY** 
 9. [9 Accessibility Target · Components · Checks · Not decided here](https://creed.apps.wayne.edu/handbook/accessibility.html)4 sections · 9 provisions · **MUST NOT** 1 · **MUST** 2 · **SHOULD** 2Decided
 10. [10 Every OS](https://creed.apps.wayne.edu/handbook/every-os.html)6 provisions · **MUST NOT** 1 · **MUST** 8Decided
 11. [11 Secrets and debugging Credentials · Errors and debug output · Not decided here](https://creed.apps.wayne.edu/handbook/secrets.html)3 sections · 9 provisions · **MUST NOT** 4 · **MUST** 5 · **SHOULD NOT** 1Decided
-12. [12 AI and LLM use Where models are called · Which service · Data in prompts and logs · What people see and decide · Not decided here](https://creed.apps.wayne.edu/handbook/ai.html)5 sections · 12 provisions · **MUST NOT** 4 · **MUST** 8 · **SHOULD** 2Decided
+12. [12 AI and LLM use Where models are called · Which service · Data in prompts and logs · What people see and decide · Not decided here](https://creed.apps.wayne.edu/handbook/ai.html)5 sections · 13 provisions · **MUST NOT** 4 · **MUST** 8 · **SHOULD** 2 · **MAY** 1Decided
 13. [13 Production Environments · Running safely · Who can reach it](https://creed.apps.wayne.edu/handbook/production.html)3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 11 · **SHOULD** 4Decided
 14. [14 Overrides](https://creed.apps.wayne.edu/handbook/overrides.html)7 provisions · **MUST NOT** 1 · **MUST** 6Decided
 

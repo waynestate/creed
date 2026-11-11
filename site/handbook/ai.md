@@ -10,7 +10,7 @@ Chapter 12
 
 # AI and LLM use
 
-5 sections · 12 provisions · **MUST NOT** 4 · **MUST** 8 · **SHOULD** 2
+5 sections · 13 provisions · **MUST NOT** 4 · **MUST** 8 · **SHOULD** 2 · **MAY** 1
 
 Decided
 
@@ -29,7 +29,8 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 ## [§12.3](https://creed.apps.wayne.edu/handbook/ai.html#data-in-prompts-and-logs) Data in prompts and logs
 
-- Prompts **MUST NOT** contain personal data: student, employee or patient records, or identifiers such as AccessIDs, student IDs or Social Security numbers. No check exists yet.
+- Personal data (student, employee or patient records, or identifiers such as AccessIDs, student IDs or Social Security numbers) **MAY** go to WarriorGPT only, and only the minimum the task needs (D-102). No check exists yet.
+- Personal data **MUST NOT** go to an outside model provider (D-099, D-102). No check exists yet.
 - Logs **SHOULD** keep metadata (user, model, token counts, latency) and **MUST NOT** keep prompt or answer bodies by default. No check exists yet.
 - If bodies are kept for debugging, retention **MUST** be short and personal data **MUST** be stripped first. No check exists yet.
 
@@ -45,4 +46,4 @@ WarriorGPT opens the show; the outside bands play only what is public.
 - Prompt-injection handling is not decided here.
 - Evaluation of model quality is not decided here.
 
-Set from [`handbook/ai.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/ai.md), impression `0ed793a`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/ai.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/ai.md), impression `770ef38`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

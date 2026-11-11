@@ -947,6 +947,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Changed: the AI and LLM handbook chapter allows personal data in a prompt when it goes to WarriorGPT only and is the minimum the task needs, and bans it at any outside model provider (D-102). It replaces the blanket ban; the logging rules are unchanged.
 - Docs: the proof page's test count is current again (386 tests in 37 files on 2026-11-11, up from 376 in 35).
 - Added: the databases chapter's "Moving to 8.4" section is proven on a real MySQL 8.4.13. Each probe now records the answer 8.4 gives as well, `scripts/mysql56-probe.sh 8.4` (`-Server 8.4` in PowerShell) and the new `mysql84-probe` CI job (Preflight's `mysql56-migrate` component with the multi-arch `mysql:8.4.13` pin, no amd64 tag) judge each probe against it, and `Mysql56ProbesTest` holds that every statement 5.6 accepts, 8.4 accepts too, except a row that breaks a CHECK constraint (an avoided pattern). All 32 agreed on both servers. The section now says what the move changes: the avoided patterns work except `vector` columns and joined deletes with an order or a limit, CHECK constraints start refusing rows and DESC indexes are built descending, a `date` column's `useCurrent()` gets its `(CURDATE())` default (new probe `date-current-expression`), and large prefixes are always on. The `invisible-column` probe gained a visible column (8.4 refuses a table with none) and `check-constraint-ignored` now judges the insert itself.
 - Docs: every sentence that states CREED's Preflight pin matches `.gitlab-ci.yml` again (the front page's §3.6 said four components at 0.5.0, the accessibility chapter said 0.5.0, BEST_PRACTICES said four components), and the new `PreflightPinMentionsTest` fails CI when a present-tense pin statement ("pins its five Preflight components to the 0.8.0 tag", "the pin is", "pinned to Preflight") names another tag or another count; history mentions such as "since 0.2.0" are left alone. Practice 23 (pin CI components) is `Checked`: PROCTOR 0.12.0's `preflight-pinned` warns on any unpinned component, not only Preflight's, so the front page's tally reads 7 Enforced, 20 Checked, 12 Partially, 18 Documented and 4 Not yet.
@@ -2437,7 +2438,7 @@ Chapter 12
 
 ## AI and LLM use
 
-5 sections · 12 provisions · **MUST NOT** 4 · **MUST** 8 · **SHOULD** 2
+5 sections · 13 provisions · **MUST NOT** 4 · **MUST** 8 · **SHOULD** 2 · **MAY** 1
 
 Decided
 
@@ -2456,7 +2457,8 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 ### [§12.3](https://creed.apps.wayne.edu/handbook/ai.html#data-in-prompts-and-logs) Data in prompts and logs
 
-- Prompts **MUST NOT** contain personal data: student, employee or patient records, or identifiers such as AccessIDs, student IDs or Social Security numbers. No check exists yet.
+- Personal data (student, employee or patient records, or identifiers such as AccessIDs, student IDs or Social Security numbers) **MAY** go to WarriorGPT only, and only the minimum the task needs (D-102). No check exists yet.
+- Personal data **MUST NOT** go to an outside model provider (D-099, D-102). No check exists yet.
 - Logs **SHOULD** keep metadata (user, model, token counts, latency) and **MUST NOT** keep prompt or answer bodies by default. No check exists yet.
 - If bodies are kept for debugging, retention **MUST** be short and personal data **MUST** be stripped first. No check exists yet.
 
@@ -2472,7 +2474,7 @@ WarriorGPT opens the show; the outside bands play only what is public.
 - Prompt-injection handling is not decided here.
 - Evaluation of model quality is not decided here.
 
-Set from [`handbook/ai.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/ai.md), impression `0ed793a`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/ai.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/ai.md), impression `770ef38`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2910,7 +2912,7 @@ The handbook · 2026 Edition
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a "Not decided here" heading.
 
-Fourteen chapters · 200 provisions · **MUST** 150 · **SHOULD** 24 · **MAY** 1
+Fourteen chapters · 201 provisions · **MUST** 150 · **SHOULD** 24 · **MAY** 2
 
 ### Contents
 
@@ -2925,7 +2927,7 @@ Fourteen chapters · 200 provisions · **MUST** 150 · **SHOULD** 24 · **MAY** 
 9. [9 Accessibility Target · Components · Checks · Not decided here](https://creed.apps.wayne.edu/handbook/accessibility.html)4 sections · 9 provisions · **MUST NOT** 1 · **MUST** 2 · **SHOULD** 2Decided
 10. [10 Every OS](https://creed.apps.wayne.edu/handbook/every-os.html)6 provisions · **MUST NOT** 1 · **MUST** 8Decided
 11. [11 Secrets and debugging Credentials · Errors and debug output · Not decided here](https://creed.apps.wayne.edu/handbook/secrets.html)3 sections · 9 provisions · **MUST NOT** 4 · **MUST** 5 · **SHOULD NOT** 1Decided
-12. [12 AI and LLM use Where models are called · Which service · Data in prompts and logs · What people see and decide · Not decided here](https://creed.apps.wayne.edu/handbook/ai.html)5 sections · 12 provisions · **MUST NOT** 4 · **MUST** 8 · **SHOULD** 2Decided
+12. [12 AI and LLM use Where models are called · Which service · Data in prompts and logs · What people see and decide · Not decided here](https://creed.apps.wayne.edu/handbook/ai.html)5 sections · 13 provisions · **MUST NOT** 4 · **MUST** 8 · **SHOULD** 2 · **MAY** 1Decided
 13. [13 Production Environments · Running safely · Who can reach it](https://creed.apps.wayne.edu/handbook/production.html)3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 11 · **SHOULD** 4Decided
 14. [14 Overrides](https://creed.apps.wayne.edu/handbook/overrides.html)7 provisions · **MUST NOT** 1 · **MUST** 6Decided
 

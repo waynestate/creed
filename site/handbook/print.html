@@ -1122,7 +1122,7 @@ design)</span>. PROCTOR check: <code>portability</code>.</li>
           <div>
             <p class="chap-head__kicker">Chapter 12</p>
             <h2 id="ai-title" class="hb-book__title">AI and LLM use</h2>
-            <p class="hb-register">5 sections · 12 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 4 · <strong class="kw kw--must">MUST</strong> 8 · <strong class="kw kw--should">SHOULD</strong> 2</p>
+            <p class="hb-register">5 sections · 13 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 4 · <strong class="kw kw--must">MUST</strong> 8 · <strong class="kw kw--should">SHOULD</strong> 2 · <strong class="kw kw--may">MAY</strong> 1</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -1141,7 +1141,8 @@ design)</span>. PROCTOR check: <code>portability</code>.</li>
 </ul>
 <h3 id="ai--data-in-prompts-and-logs"><a class="hb-sec" href="#ai--data-in-prompts-and-logs">§12.3</a> Data in prompts and logs</h3>
 <ul>
-<li>Prompts <strong class="kw kw--must-not">MUST NOT</strong> contain personal data: student, employee or patient records, or identifiers such as AccessIDs, student IDs or Social Security numbers. No check exists yet.</li>
+<li>Personal data (student, employee or patient records, or identifiers such as AccessIDs, student IDs or Social Security numbers) <strong class="kw kw--may">MAY</strong> go to WarriorGPT only, and only the minimum the task needs (D-102). No check exists yet.</li>
+<li>Personal data <strong class="kw kw--must-not">MUST NOT</strong> go to an outside model provider (D-099, D-102). No check exists yet.</li>
 <li>Logs <strong class="kw kw--should">SHOULD</strong> keep metadata (user, model, token counts, latency) and <strong class="kw kw--must-not">MUST NOT</strong> keep prompt or answer bodies by default. No check exists yet.</li>
 <li>If bodies are kept for debugging, retention <strong class="kw kw--must">MUST</strong> be short and personal data <strong class="kw kw--must">MUST</strong> be stripped first. No check exists yet.</li>
 </ul>
@@ -1237,7 +1238,7 @@ a permanent override <span class="hb-cite">(the stack's deploy-gate decision)</s
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>84fd398</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>09f1b19</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 
