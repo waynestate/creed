@@ -17,7 +17,6 @@ tools/a11y/check.mjs text eol=lf
 # Not part of the package.
 /tests            export-ignore
 /handbook         export-ignore
-/bin              export-ignore
 /tools            export-ignore
 /composer.lock    export-ignore
 /phpunit.xml.dist export-ignore
@@ -28,5 +27,18 @@ tools/a11y/check.mjs text eol=lf
 /docs/readme        export-ignore
 /scripts/readme-art export-ignore
 
-/bin/agent-ready.php export-ignore
+# bin/export.php ships because consumers run its --check from
+# vendor/waynestate/creed/bin/export.php; the other bin scripts are
+# maintainer tools. git archive skips an export-ignore directory without
+# looking inside it, so each of them gets its own line here.
+/bin/agent-ready.php       export-ignore
+/bin/build-handbook-site.php export-ignore
+/bin/docs-site.php          export-ignore
+/bin/lint-handbook.php      export-ignore
+/bin/mysql56-probe.php      export-ignore
+/bin/policy-bot.php         export-ignore
+/bin/refresh-common.php     export-ignore
+/bin/refresh-patches.php    export-ignore
+/bin/refresh-policy.php     export-ignore
+/bin/validate-policy.php    export-ignore
 /site export-ignore
