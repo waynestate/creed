@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- CI pins Preflight 0.8.0.
 - Site: the front page's "Inspect a version" form answers from a copy of the policy dates in `site/assets/creed.js`; `FrontPageInspectorTest` now fails CI when that copy and `policy.json` disagree, and prints the lines to paste. The copy matches today.
 
 - Docs: BEST_PRACTICES, MAINTAINING, the contributing page and the proof page no longer say the `proctor` job is allowed to fail (it blocks since 0.1.10), and the CI lists name the `a11y` component that checks every page in `site/`.
