@@ -12,17 +12,12 @@ ones it can source, and leaves the rest open in plain sight.
 These are numbers the stack's maintainers choose. CREED ships the data model, so the answer is one edit to
 `policy/policy.json` plus a CHANGELOG line, and every reader picks it up on its next refresh.
 
-1. **The oldest acceptable patch per PHP line** (practice 37, backlog item 19, front page E-9). `policy.json` can carry
-   a `minimum_patch` per PHP line, read by `Policy::minimumPatch()` and checked by `bin/validate-policy.php`, but no
-   line sets one. Meanwhile the reader answers null and nothing fails on an old patch; `latest_patch` still shows how
-   far behind an image is. Changes: set a floor (for example the patch that fixed the last critical advisory) and
-   PROCTOR can compare an image or runtime against it. Leaving every line empty is also an answer; say so here.
-2. **How fast a fix must ship, per advisory severity** (practice 38, backlog item 20, front page E-10). `composer
+1. **How fast a fix must ship, per advisory severity** (practice 38, backlog item 20, front page E-10). `composer
    audit` finds advisories, and `audit_severity_threshold` (high) decides which ones fail CI. `policy.json` can carry
    `rules.fix_within_days` (days per `critical`, `high`, `medium` and `low`), read by `Policy::fixWithinDays()`, but
    no severity has a number. Meanwhile the reader answers null and there is no stated window. Changes: the maintainers
    pick N per severity, and a check (PROCTOR, against audit output) can apply it.
-3. **The longest an override may run** (practice 27, front page E-11). `rules.override_max_days` is 90, the same
+2. **The longest an override may run** (practice 27, front page E-11). `rules.override_max_days` is 90, the same
    number as `eol_grace_days`, and PROCTOR fails a longer override. Meanwhile 90 holds. Changes: confirm 90, or name
    another number; it is one value in `policy.json`.
 
