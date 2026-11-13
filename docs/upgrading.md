@@ -10,7 +10,7 @@ How CREED versions are cut, what each release changed that a consumer notices, a
 ## How versions are cut
 
 1. Move the lines under `## Unreleased` in `CHANGELOG.md` to a new `## X.Y.Z (YYYY-MM-DD)` heading, leaving an empty `## Unreleased`. (0.1.0 predates the heading convention, so it has none.)
-2. `composer ci` green locally, then on both pipelines for that commit.
+2. `composer ci` green locally, then on the git.wayne.edu pipeline for that commit.
 3. Run a secrets scan of the history and check that nothing internal (server names, people, IDs) is in the tree.
 4. Tag `X.Y.Z` (no `v`) on git.wayne.edu. The mirror carries the tag to GitHub, and Packagist picks it up from there.
 5. A release needs a maintainer's approval. Never move or delete a published tag.

@@ -43,8 +43,7 @@ The documentation site is built by `composer docs` and checked by `composer docs
 ## CI [#](https://creed.apps.wayne.edu/docs/contributing.html#ci)
 
 - **GitLab:** Preflight components (`php-test` on PHP 8.3, 8.4 and 8.5, `composer-audit`, `proctor` for the `deploy/` layer, which blocks on a failing check, `a11y`, which runs axe-core on every page in `site/`, and `mysql56-migrate` as the `mysql56-probe` job, which asks a real MySQL 5.6.51 about the databases chapter on main and tag pipelines, and again as the `mysql84-probe` job, which asks MySQL 8.4.13), plus a `composer-ci` job and a `wayneui-copies` job. On scheduled pipelines, `refresh-patches` (check-only) runs on a schedule without `CREED_JOB`, and `policy-bot` runs on the Monday schedule that carries `CREED_JOB=policy-bot` (and by hand from the web).
-- **GitHub:** `.github/workflows/ci.yml` calls Preflight's reusable workflow with `composer ci`, and runs `refresh-patches` weekly (Mondays) and on demand.
-- Green means the tests passed on all three PHP versions on both, and `composer ci` passed (on all three on GitHub, once on GitLab).
+- Green means the tests passed on all three PHP versions, and `composer ci` passed (once, on the pinned Composer image).
 
 ## Keeping the policy current [#](https://creed.apps.wayne.edu/docs/contributing.html#keeping-the-policy-current)
 
@@ -61,7 +60,7 @@ This is CREED's real maintenance job.
 ## Releasing [#](https://creed.apps.wayne.edu/docs/contributing.html#releasing)
 
 1. Move the lines under `## Unreleased` in `CHANGELOG.md` to a new `## X.Y.Z (YYYY-MM-DD)` heading, leaving an empty `## Unreleased`. (0.1.0 predates the heading convention, so it has none.)
-2. `composer ci` green locally, then on both pipelines for that commit.
+2. `composer ci` green locally, then on the git.wayne.edu pipeline for that commit.
 3. Run a secrets scan of the history and check that nothing internal (server names, people, IDs) is in the tree.
 4. Tag `X.Y.Z` (no `v`) on git.wayne.edu. The mirror carries the tag to GitHub, and Packagist picks it up from there.
 5. A release needs a maintainer's approval. Never move or delete a published tag.

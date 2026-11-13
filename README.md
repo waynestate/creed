@@ -8,7 +8,6 @@
   <img src="docs/readme/badges/php.svg" alt="php ^8.3">
   <img src="docs/readme/badges/license.svg" alt="license MIT">
   <img src="docs/readme/badges/policy.svg" alt="policy schema v1, 6 components">
-  <a href="https://github.com/waynestate/creed/actions/workflows/ci.yml"><img src="https://github.com/waynestate/creed/actions/workflows/ci.yml/badge.svg" alt="GitHub CI"></a>
 </div>
 
 **The standard everything rests on.** The Wayne State App Stack Code: one policy file, one reader, and an
@@ -16,7 +15,7 @@ inspector who stamps what he finds.
 
 **Not to be confused with:** CREED is the rules; PROCTOR checks an app against them.
 
-Checks: `composer ci` (the same command runs on GitLab and GitHub).
+Checks: `composer ci` (the same command CI runs on git.wayne.edu).
 
 Front page: [`site/index.html`](site/index.html), a static page you can open in a browser or serve from `site/`.
 On Citadel it is served by the raw-PHP deploy layer in [`deploy/`](deploy/): a Squire kit whose front controller serves `site/` behind HELMET's security headers. For local development, keep serving `site/` directly.

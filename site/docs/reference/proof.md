@@ -22,20 +22,19 @@ The front page, [`site/index.html`](https://creed.apps.wayne.edu/), is a static 
 
 ## What `composer ci` proves [#](https://creed.apps.wayne.edu/docs/reference/proof.html#what-composer-ci-proves)
 
-`composer ci` is the same command on GitLab and GitHub. It validates `composer.json`, runs the test suite (386 tests in 37 files on 2026-11-11), validates `policy/policy.json` and `policy/sources.json` against their schemas, checks style with Pint, lints the handbook, runs PHPStan and `composer audit`, and fails when the handbook site, the agent-ready files or the docs pages go stale, so the site you are reading cannot drift from `docs/`.
+`composer ci` is the same command CI runs on git.wayne.edu. It validates `composer.json`, runs the test suite (386 tests in 37 files on 2026-11-11), validates `policy/policy.json` and `policy/sources.json` against their schemas, checks style with Pint, lints the handbook, runs PHPStan and `composer audit`, and fails when the handbook site, the agent-ready files or the docs pages go stale, so the site you are reading cannot drift from `docs/`.
 
-Where it runs: GitHub runs `composer ci` on PHP 8.3, 8.4 and 8.5. GitLab runs the test suite on all three through Preflight's `php-test` component, and `composer ci` once on the pinned Composer image (PHP 8.5). GitLab also runs PROCTOR against the front page's `deploy/` layer (a failing check fails the pipeline; warnings never do), Preflight's `a11y` component on every page in `site/` (axe-core at WCAG 2.2 AA, light and dark, at 320 and 1280 px), and the strict WayneUI copies check. On main and tag pipelines the `mysql56-probe` job (Preflight's `mysql56-migrate` component on the amd64 runner) asks a real MySQL 5.6.51 whether every 5.6 claim in the databases chapter holds, and the `mysql84-probe` job (the same component with `mysql:8.4.13`, on any runner) asks 8.4 whether the chapter's "Moving to 8.4" section does.
+Where it runs: git.wayne.edu runs the test suite on all three through Preflight's `php-test` component, and `composer ci` once on the pinned Composer image (PHP 8.5). GitLab also runs PROCTOR against the front page's `deploy/` layer (a failing check fails the pipeline; warnings never do), Preflight's `a11y` component on every page in `site/` (axe-core at WCAG 2.2 AA, light and dark, at 320 and 1280 px), and the strict WayneUI copies check. On main and tag pipelines the `mysql56-probe` job (Preflight's `mysql56-migrate` component on the amd64 runner) asks a real MySQL 5.6.51 whether every 5.6 claim in the databases chapter holds, and the `mysql84-probe` job (the same component with `mysql:8.4.13`, on any runner) asks 8.4 whether the chapter's "Moving to 8.4" section does.
 
 The policy itself is proved every Monday: the [policy robot](https://creed.apps.wayne.edu/docs/guides/policy-bot.html) re-reads the upstream sources and, when anything moved, pushes the refresh to `main` if `composer ci` is green, or opens a merge request for a person if it is red.
 
 ## The badges [#](https://creed.apps.wayne.edu/docs/reference/proof.html#the-badges)
 
-The README carries four badges:
+The README carries three badges:
 
 - `php ^8.3`: CREED itself requires PHP `^8.3`, like every stack package.
 - `license MIT`.
 - `policy schema v1, 6 components`: the schema is `version: 1`, and the policy lists the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia.
-- GitHub CI: the status of the `composer ci` workflow on the mirror.
 
 Creed Bratton keeps his records in a filing cabinet nobody can find; ours are in `docs/`, where anyone can.
 

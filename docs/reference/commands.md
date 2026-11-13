@@ -12,7 +12,7 @@ This page lists every command CREED ships, what each one does, and the exit code
 | Command | What it does |
 |---|---|
 | `composer install` | Installs the project dependencies. |
-| `composer ci` | All checks, what CI runs, in order: `composer validate --strict`, the tests, the policy validator, Pint, the handbook lint, the handbook site and agent-ready freshness checks, PHPStan, `composer audit` and the docs site freshness check. The same command runs on GitLab and GitHub. |
+| `composer ci` | All checks, what CI runs, in order: `composer validate --strict`, the tests, the policy validator, Pint, the handbook lint, the handbook site and agent-ready freshness checks, PHPStan, `composer audit` and the docs site freshness check. CI on git.wayne.edu runs the same command. |
 | `composer test` | Only the tests. |
 | `composer validate-policy` | Validate `policy.json`: every line dated or marked current, then its schema and its `minimum_patch` rules. |
 | `composer lint-handbook` | Lint the handbook. |

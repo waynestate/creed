@@ -45,7 +45,7 @@
 <h2 id="how-versions-are-cut">How versions are <span class="docs-heading-tail"><span>cut</span><a class="docs-heading-link" aria-label="Link to this section" href="#how-versions-are-cut">#</a></span></h2>
 <ol>
 <li>Move the lines under <code>## Unreleased</code> in <code>CHANGELOG.md</code> to a new <code>## X.Y.Z (YYYY-MM-DD)</code> heading, leaving an empty <code>## Unreleased</code>. (0.1.0 predates the heading convention, so it has none.)</li>
-<li><code>composer ci</code> green locally, then on both pipelines for that commit.</li>
+<li><code>composer ci</code> green locally, then on the git.wayne.edu pipeline for that commit.</li>
 <li>Run a secrets scan of the history and check that nothing internal (server names, people, IDs) is in the tree.</li>
 <li>Tag <code>X.Y.Z</code> (no <code>v</code>) on git.wayne.edu. The mirror carries the tag to GitHub, and Packagist picks it up from there.</li>
 <li>A release needs a maintainer's approval. Never move or delete a published tag.</li>
