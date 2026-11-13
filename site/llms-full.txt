@@ -715,7 +715,7 @@ The questions the 2026 edition hasn't answered. Each one names the clause it aff
 | E-6 | Ch. 10 | The accessibility chapter aims at WCAG 2.2 AA. Which ADA Title II dates apply to a given WSU unit is for counsel and the accessibility office. | Open |
 | E-7 | Handbook | Runtime and headers: the CSP report endpoints. The Cross-Origin-Resource-Policy default is settled as opt-in: HELMET 1.0.0 sends no header until the app sets one. | Open |
 | E-8 | Handbook | Gateway keys, SAML and metrics: settled 2026-11-07 and 2026-11-08. Apps read one key set file holding the current and the next key, rotated every 12 months; the `saml` driver is built on `onelogin/php-saml`; metrics speak Prometheus and stay off by default. | Settled |
-| E-9 | [§7.1](https://creed.apps.wayne.edu/#c-7-1) | The oldest acceptable patch per PHP line. `policy.json` can carry a `minimum_patch` per line, but none is set, so nothing fails on an old patch yet. Floors, or empty on purpose, is for the maintainers. | Open |
+| E-9 | [§7.1](https://creed.apps.wayne.edu/#c-7-1) | The oldest acceptable patch per PHP line: settled 2026-11-13. Each line's `minimum_patch` is the lowest patch a Citadel image ships (8.1.20, 8.2.13, 8.3.31, 8.4.21 and 8.5.6), and a floor rises when Citadel rebuilds its oldest image for that line. | Settled |
 | E-10 | §7.2 | How fast a fix must ship, per advisory severity. `composer audit` finds the advisory, and `policy.json` now has a place for the answer (`rules.fix_within_days`, read by `fixWithinDays()`), but no number is set. The maintainers pick N. | Open |
 | E-11 | [§5.1](https://creed.apps.wayne.edu/#c-5-1) | The longest an override may run: 90 days today (`override_max_days`), the same as the grace period. Confirm 90, or name another number. | Open |
 | E-12 | §7.9 | git.wayne.edu runs GitLab 19.5.1 Community Edition. Its owners have not published a patch level and routine for the clause to cite. | Open |
@@ -947,6 +947,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Added: PHP `minimum_patch` floors: 8.1.20, 8.2.13, 8.3.31, 8.4.21 and 8.5.6, the lowest patch each Citadel image ships, so PROCTOR can flag an older runtime without failing an app for Citadel's choice (E-9).
 - Removed: the GitHub Actions workflow; CI runs on git.wayne.edu only (the GitHub copy is a mirror).
 - Added: `bin/export.php` now ships in the Composer dist (the rest of `bin/` stays maintainer-only), so a consumer runs `php vendor/waynestate/creed/bin/export.php --check ...`; held by `tests/DistPackagingTest.php`.
 - Changed: the AI and LLM handbook chapter allows personal data in a prompt when it goes to WarriorGPT only and is the minimum the task needs, and bans it at any outside model provider (D-102). It replaces the blanket ban; the logging rules are unchanged.
