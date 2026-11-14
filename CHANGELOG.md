@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Changed: `deploy/` requires PROCTOR `^0.16`, whose `ci-pipelines` check no longer asks for a GitHub workflow (D-069); `^0.15` failed the `wayneui-copies` job.
 - Added: PHP `minimum_patch` floors: 8.1.20, 8.2.13, 8.3.31, 8.4.21 and 8.5.6, the lowest patch each Citadel image ships, so PROCTOR can flag an older runtime without failing an app for Citadel's choice (E-9).
 - Removed: the GitHub Actions workflow; CI runs on git.wayne.edu only (the GitHub copy is a mirror).
 - Added: `bin/export.php` now ships in the Composer dist (the rest of `bin/` stays maintainer-only), so a consumer runs `php vendor/waynestate/creed/bin/export.php --check ...`; held by `tests/DistPackagingTest.php`.
