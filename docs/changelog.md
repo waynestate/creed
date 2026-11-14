@@ -9,6 +9,7 @@ description: All notable changes to this project.
 
 ## Unreleased
 
+- Changed: the dev dependency Pinstripe is `^0.4` (was `^0.3`, which does not allow 0.4.0); 0.4.0 adds two opt-in Rector presets and changes no rule this repo uses.
 - Changed: CI pins Preflight 0.9.0 (components and the a11y checker copy).
 - Changed: `deploy/` requires PROCTOR `^0.16`, whose `ci-pipelines` check no longer asks for a GitHub workflow (D-069); `^0.15` failed the `wayneui-copies` job.
 - Added: PHP `minimum_patch` floors: 8.1.20, 8.2.13, 8.3.31, 8.4.21 and 8.5.6, the lowest patch each Citadel image ships, so PROCTOR can flag an older runtime without failing an app for Citadel's choice (E-9).
