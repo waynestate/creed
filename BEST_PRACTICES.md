@@ -731,8 +731,8 @@ fails the job on a high or critical advisory in a runtime dependency (sourdough
 templates/laravel-blade-vue/.gitlab-ci.yml:112-114, templates/laravel-inertia/.gitlab-ci.yml:113-115,
 templates/raw-vue/.gitlab-ci.yml:104-106). The rest is written down only: WELD's own CI runs
 `npm ci --no-audit --no-fund` without `--ignore-scripts` and with no audit step (weld .gitlab-ci.yml:111),
-Preflight 0.5.0 added an `npm-audit` component that audits `package-lock.json` (0.9.0 has fifteen templates: a11y,
-composer-audit, eslint, mysql56-migrate, npm-audit, package-publish, php-test, phpstan, pint, portability, proctor,
+Preflight 0.5.0 added an `npm-audit` component that audits `package-lock.json` (0.9.0 has sixteen templates: a11y,
+composer-audit, composer-ci, eslint, mysql56-migrate, npm-audit, package-publish, php-test, phpstan, pint, portability, proctor,
 renovate, sbom, secret-detection and squire-kit), but no stack repo or template includes it yet, and the `audit_severity_threshold` rule is read by the Composer audit alone (proctor README.md:111). `handbook/dependencies.md` writes the map (`medium` is npm's `moderate`), which Preflight's `npm-audit` component applies (preflight templates/npm-audit/template.yml:38,76). (Sourdough grades the same release install
 `Documented` from its own seat, sourdough BEST_PRACTICES.md:203; the tag here counts the built code in the stack.)
 
