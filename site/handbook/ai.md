@@ -19,7 +19,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 ## [§12.1](https://creed.apps.wayne.edu/handbook/ai.html#where-models-are-called) Where models are called
 
 - Model calls **MUST** be made server-side only, never from browser code. No check exists yet.
-- API tokens **MUST** live in server configuration or the environment and **MUST NOT** appear in `VITE_*` variables or any client-side code (anything that ships in the bundle is public). Held by: the general secret scan, [Preflight](https://preflight.apps.wayne.edu/)'s `secret-detection` component (Preflight 0.8.0), for committed tokens only; a token in a `VITE_*` variable is not checked yet.
+- API tokens **MUST** live in server configuration or the environment and **MUST NOT** appear in `VITE_*` variables or any client-side code (anything that ships in the bundle is public). Held by: the general secret scan, [Preflight](https://preflight.apps.wayne.edu/)'s `secret-detection` component (Preflight 0.9.0), for committed tokens only; a token in a `VITE_*` variable is not checked yet.
 - Rate limits **MUST** apply per signed-in user, so one person cannot spend the whole app's budget. No check exists yet.
 
 ## [§12.2](https://creed.apps.wayne.edu/handbook/ai.html#which-service) Which service
@@ -46,4 +46,4 @@ WarriorGPT opens the show; the outside bands play only what is public.
 - Prompt-injection handling is not decided here.
 - Evaluation of model quality is not decided here.
 
-Set from [`handbook/ai.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/ai.md), impression `770ef38`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/ai.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/ai.md), impression `3cba2dd`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

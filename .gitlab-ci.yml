@@ -1,5 +1,5 @@
 # CREED's pipeline, built from the Preflight components on this GitLab.
-# Every include is pinned to one Preflight release, 0.8.0. Never use ~latest.
+# Every include is pinned to one Preflight release, 0.9.0. Never use ~latest.
 # CREED requires PHP ^8.3, so the test matrix starts at 8.3.
 # composer ci is the contract: the same command runs on git.wayne.edu.
 # Docker Hub images go through the GitLab Dependency Proxy to avoid the anonymous pull limit:
@@ -7,14 +7,14 @@
 # the group's proxy, so the image inputs below are plain image names. Prefix them again and
 # the pull fails: one proxy per pull, like one creed per believer.
 include:
-  - component: $CI_SERVER_FQDN/enterprise-apps/preflight/php-test@0.8.0
+  - component: $CI_SERVER_FQDN/enterprise-apps/preflight/php-test@0.9.0
     inputs:
       php_versions: ["8.3", "8.4", "8.5"]
       image: "php:${PHP_VERSION}-cli-trixie"
-  - component: $CI_SERVER_FQDN/enterprise-apps/preflight/composer-audit@0.8.0
+  - component: $CI_SERVER_FQDN/enterprise-apps/preflight/composer-audit@0.9.0
   # The front page deploy layer (ADR-0017): PROCTOR checks deploy/ against CREED's policy.
   # It blocks (the component's default): a failing check fails the pipeline. Warnings never fail it.
-  - component: $CI_SERVER_FQDN/enterprise-apps/preflight/proctor@0.8.0
+  - component: $CI_SERVER_FQDN/enterprise-apps/preflight/proctor@0.9.0
     inputs:
       image: "php:8.5-cli-trixie@sha256:9236fd373d3bcda0659cf94838a744bd79791419292958963f8c6b34a0071554"
       working_dir: deploy
@@ -22,7 +22,7 @@ include:
   # Accessibility: Preflight's a11y component serves site/ and checks every page with axe-core 4.14.0, light and
   # dark, at 320 and 1280 px, plus WCAG 1.4.10 reflow, at WCAG 2.2 AA. Its Playwright image comes from
   # mcr.microsoft.com, which the Dependency Proxy does not front, so it takes no image_prefix.
-  - component: $CI_SERVER_FQDN/enterprise-apps/preflight/a11y@0.8.0
+  - component: $CI_SERVER_FQDN/enterprise-apps/preflight/a11y@0.9.0
     inputs:
       site_dir: site
       pages: ["**/*.html"]
@@ -30,13 +30,13 @@ include:
   # The databases chapter's MySQL 5.6 claims, asked of a real 5.6.51: Preflight's mysql56-migrate component starts
   # the server and installs pdo_mysql, and instead of an app's migrations it runs bin/mysql56-probe.php. The 5.6
   # images are amd64 only, so the job takes the component's amd64 runner tag; it runs on main and tag pipelines.
-  - component: $CI_SERVER_FQDN/enterprise-apps/preflight/mysql56-migrate@0.8.0
+  - component: $CI_SERVER_FQDN/enterprise-apps/preflight/mysql56-migrate@0.9.0
     inputs:
       job_name: mysql56-probe
       migrate_command: "php bin/mysql56-probe.php --wait=60"
   # The same probes on MySQL 8.4.13, judged against their 8.4 answers: the proof behind the chapter's "Moving to
   # 8.4" section. The 8.4 image is multi-arch, so this job needs no amd64 runner.
-  - component: $CI_SERVER_FQDN/enterprise-apps/preflight/mysql56-migrate@0.8.0
+  - component: $CI_SERVER_FQDN/enterprise-apps/preflight/mysql56-migrate@0.9.0
     inputs:
       job_name: mysql84-probe
       service_image: "mysql:8.4.13@sha256:a81d043930e51745522bd5c430961cf8286f0a23f0a9a2a6e0108f7ea71b0902"
