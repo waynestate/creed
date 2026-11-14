@@ -23,7 +23,7 @@ final class Mysql56ProbesTest extends TestCase
 {
     private const ROOT = __DIR__ . '/..';
 
-    /** The pins Preflight 0.8.0's mysql56-migrate component defaults to, which the scripts must match. */
+    /** The pins Preflight 0.9.0's mysql56-migrate component defaults to, which the scripts must match. */
     private const MYSQL_IMAGE = 'mysql:5.6.51@sha256:20575ecebe6216036d25dab5903808211f1e9ba63dc7825ac20cb975e34cfcae';
 
     private const PHP_IMAGE = 'php:8.3-cli-trixie@sha256:628102249d93494233b54490b785f12db9cd60f4dc89416dfca15973f2125f10';

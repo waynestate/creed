@@ -105,7 +105,7 @@
 <h2 id="where-models-are-called"><a class="hb-sec" href="#where-models-are-called">§12.1</a> Where models are called</h2>
 <ul>
 <li>Model calls <strong class="kw kw--must">MUST</strong> be made server-side only, never from browser code. No check exists yet.</li>
-<li>API tokens <strong class="kw kw--must">MUST</strong> live in server configuration or the environment and <strong class="kw kw--must-not">MUST NOT</strong> appear in <code>VITE_*</code> variables or any client-side code (anything that ships in the bundle is public). Held by: the general secret scan, <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s <code>secret-detection</code> component (Preflight 0.8.0), for committed tokens only; a token in a <code>VITE_*</code> variable is not checked yet.</li>
+<li>API tokens <strong class="kw kw--must">MUST</strong> live in server configuration or the environment and <strong class="kw kw--must-not">MUST NOT</strong> appear in <code>VITE_*</code> variables or any client-side code (anything that ships in the bundle is public). Held by: the general secret scan, <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s <code>secret-detection</code> component (Preflight 0.9.0), for committed tokens only; a token in a <code>VITE_*</code> variable is not checked yet.</li>
 <li>Rate limits <strong class="kw kw--must">MUST</strong> apply per signed-in user, so one person cannot spend the whole app's budget. No check exists yet.</li>
 </ul>
 <h2 id="which-service"><a class="hb-sec" href="#which-service">§12.2</a> Which service</h2>
@@ -136,7 +136,7 @@
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="secrets.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 11</span><span class="hb-pager__name">Secrets and debugging</span></a><a class="hb-pager__link hb-pager__link--next" href="production.html" rel="next"><span class="hb-pager__dir">Next · Chapter 13</span><span class="hb-pager__name">Production</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/ai.md"><code>handbook/ai.md</code> on GitHub</a>, impression <code>770ef38</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/ai.md"><code>handbook/ai.md</code> on GitHub</a>, impression <code>3cba2dd</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

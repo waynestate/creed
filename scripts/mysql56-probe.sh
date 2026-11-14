@@ -8,7 +8,7 @@
 # 8.4 runs the same probes on MySQL 8.4.13 and judges each against its 8.4
 # answer, which is how the chapter's "Moving to 8.4" section is proven.
 #
-# The images are the ones Preflight 0.8.0's mysql56-migrate component runs in
+# The images are the ones Preflight 0.9.0's mysql56-migrate component runs in
 # CI, digests included: mysql:5.6.51 (the pin Squire runs locally; amd64 only,
 # so Apple Silicon runs it under emulation) or mysql:8.4.13 (multi-arch), and
 # php:8.3-cli-trixie, which gets pdo_mysql installed on the spot. Set
