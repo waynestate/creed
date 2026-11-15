@@ -27,7 +27,7 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
 - An LDAP connection MUST demand TLS (`LDAP_OPT_X_TLS_DEMAND`), never `NEVER`, `ALLOW` or `TRY`, and never a plain `ldap://` URI without StartTLS. No check exists yet.
 - LDAP filters MUST be built with escaping (`ldap_escape()` or LdapRecord's query builder), never string formatting. No check exists yet.
 
-TELLER reads the ledger; nobody else touches the till.
+Bound values only: With Arms Wide Open is how you greet a colleague, not how you build a query.
 
 ## Not decided here
 
