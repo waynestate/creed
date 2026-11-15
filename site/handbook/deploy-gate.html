@@ -6,8 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="stack-env" content="auto">
 <script src="../assets/stack-env.js" defer></script>
-<title>CREED Handbook: 7 Deploy gate</title>
-<meta name="description" content="Chapter 7 of the CREED handbook, the written rules for the Wayne State app stack: Deploy gate.">
+<title>CREED Handbook: 8 Deploy gate</title>
+<meta name="description" content="Chapter 8 of the CREED handbook, the written rules for the Wayne State app stack: Deploy gate.">
 <meta name="theme-color" content="#0c5449" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1a1b18" media="(prefers-color-scheme: dark)">
 <meta name="color-scheme" content="light dark">
@@ -64,26 +64,27 @@
       <li><a href="code.html"><span class="hb-nav__no">3</span><span class="hb-nav__name">Code</span></a></li>
       <li><a href="auth.html"><span class="hb-nav__no">4</span><span class="hb-nav__name">Auth</span></a></li>
       <li><a href="databases.html"><span class="hb-nav__no">5</span><span class="hb-nav__name">Databases</span></a></li>
-      <li><a href="runtime-and-headers.html"><span class="hb-nav__no">6</span><span class="hb-nav__name">Runtime and headers</span></a></li>
-      <li class="is-here"><a href="deploy-gate.html" aria-current="page"><span class="hb-nav__no">7</span><span class="hb-nav__name">Deploy gate</span></a><ol class="hb-nav__sub"><li><a href="#on-citadel" data-toc="on-citadel">On Citadel</a></li><li><a href="#elsewhere" data-toc="elsewhere">Elsewhere</a></li></ol></li>
-      <li><a href="ci.html"><span class="hb-nav__no">8</span><span class="hb-nav__name">CI</span></a></li>
-      <li><a href="accessibility.html"><span class="hb-nav__no">9</span><span class="hb-nav__name">Accessibility</span></a></li>
-      <li><a href="every-os.html"><span class="hb-nav__no">10</span><span class="hb-nav__name">Every OS</span></a></li>
-      <li><a href="secrets.html"><span class="hb-nav__no">11</span><span class="hb-nav__name">Secrets and debugging</span></a></li>
-      <li><a href="ai.html"><span class="hb-nav__no">12</span><span class="hb-nav__name">AI and LLM use</span></a></li>
-      <li><a href="production.html"><span class="hb-nav__no">13</span><span class="hb-nav__name">Production</span></a></li>
-      <li><a href="overrides.html"><span class="hb-nav__no">14</span><span class="hb-nav__name">Overrides</span></a></li>
+      <li><a href="oracle-and-people.html"><span class="hb-nav__no">6</span><span class="hb-nav__name">Oracle, Banner and people</span></a></li>
+      <li><a href="runtime-and-headers.html"><span class="hb-nav__no">7</span><span class="hb-nav__name">Runtime and headers</span></a></li>
+      <li class="is-here"><a href="deploy-gate.html" aria-current="page"><span class="hb-nav__no">8</span><span class="hb-nav__name">Deploy gate</span></a><ol class="hb-nav__sub"><li><a href="#on-citadel" data-toc="on-citadel">On Citadel</a></li><li><a href="#elsewhere" data-toc="elsewhere">Elsewhere</a></li></ol></li>
+      <li><a href="ci.html"><span class="hb-nav__no">9</span><span class="hb-nav__name">CI</span></a></li>
+      <li><a href="accessibility.html"><span class="hb-nav__no">10</span><span class="hb-nav__name">Accessibility</span></a></li>
+      <li><a href="every-os.html"><span class="hb-nav__no">11</span><span class="hb-nav__name">Every OS</span></a></li>
+      <li><a href="secrets.html"><span class="hb-nav__no">12</span><span class="hb-nav__name">Secrets and debugging</span></a></li>
+      <li><a href="ai.html"><span class="hb-nav__no">13</span><span class="hb-nav__name">AI and LLM use</span></a></li>
+      <li><a href="production.html"><span class="hb-nav__no">14</span><span class="hb-nav__name">Production</span></a></li>
+      <li><a href="overrides.html"><span class="hb-nav__no">15</span><span class="hb-nav__name">Overrides</span></a></li>
   </ol>
   <p class="hb-nav__more"><a href="print.html">Whole book on one page</a></p>
 </nav>
 <main id="main" class="hb-main" tabindex="-1">
-  <nav class="hb-crumbs" aria-label="Breadcrumb"><ol><li><a href="../">CREED</a></li><li><a href="./">Handbook</a></li><li><span aria-current="page">Chapter 7: Deploy gate</span></li></ol></nav>
+  <nav class="hb-crumbs" aria-label="Breadcrumb"><ol><li><a href="../">CREED</a></li><li><a href="./">Handbook</a></li><li><span aria-current="page">Chapter 8: Deploy gate</span></li></ol></nav>
       <article class="hb-chapter" aria-labelledby="page-title">
-        <p class="folio-head" aria-hidden="true"><span>CREED 2026 · Handbook</span><span>Chapter 7 · Deploy gate</span></p>
+        <p class="folio-head" aria-hidden="true"><span>CREED 2026 · Handbook</span><span>Chapter 8 · Deploy gate</span></p>
         <header class="chap-head chap-head--chapter hb-chapter__head">
-          <p class="chap-head__no" aria-hidden="true">7</p>
+          <p class="chap-head__no" aria-hidden="true">8</p>
           <div>
-            <p class="chap-head__kicker">Chapter 7</p>
+            <p class="chap-head__kicker">Chapter 8</p>
             <h1 id="page-title">Deploy gate</h1>
             <p class="hb-register">2 sections · 8 provisions</p>
           </div>
@@ -93,8 +94,8 @@
       <nav class="hb-toc" aria-label="On this page">
         <p class="hb-toc__title">On this page</p>
         <ol>
-            <li class="hb-toc__l2"><a href="#on-citadel" data-toc="on-citadel"><span class="hb-toc__no">7.1</span> On Citadel</a></li>
-            <li class="hb-toc__l2"><a href="#elsewhere" data-toc="elsewhere"><span class="hb-toc__no">7.2</span> Elsewhere</a></li>
+            <li class="hb-toc__l2"><a href="#on-citadel" data-toc="on-citadel"><span class="hb-toc__no">8.1</span> On Citadel</a></li>
+            <li class="hb-toc__l2"><a href="#elsewhere" data-toc="elsewhere"><span class="hb-toc__no">8.2</span> Elsewhere</a></li>
         </ol>
       </nav>
           <div class="hb-prose" data-hb-prose>
@@ -117,7 +118,7 @@ an expired override is blocked <span class="hb-cite">(the stack's deploy-gate de
 </ul>
 </li>
 </ul>
-<h2 id="on-citadel"><a class="hb-sec" href="#on-citadel">§7.1</a> On Citadel</h2>
+<h2 id="on-citadel"><a class="hb-sec" href="#on-citadel">§8.1</a> On Citadel</h2>
 <ul>
 <li>When the Citadel team adopts it, the gate runs in the release hook: <code>proctor gate</code> in <code>runGitPull()</code>, against the fetched commit, before it is checked out
 <span class="hb-cite">(the stack's deploy-gate decision)</span>.</li>
@@ -125,7 +126,7 @@ an expired override is blocked <span class="hb-cite">(the stack's deploy-gate de
 Until it is adopted, enforcement is CI on the test GitLab instance (the
 stack's deploy-gate decision).</li>
 </ul>
-<h2 id="elsewhere"><a class="hb-sec" href="#elsewhere">§7.2</a> Elsewhere</h2>
+<h2 id="elsewhere"><a class="hb-sec" href="#elsewhere">§8.2</a> Elsewhere</h2>
 <ul>
 <li>The same gate runs as a CI job through <a class="tool" href="https://preflight.apps.wayne.edu/"><img src="../assets/marks/preflight.png" alt="" width="16" height="16">Preflight</a>'s <code>proctor</code> component,
 wherever the pipeline runs <span class="hb-cite">(first-repos)</span>.</li>
@@ -137,7 +138,7 @@ packages run on any container platform)</span>.</li>
           </div>
         </div>
       </article>
-      <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="runtime-and-headers.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 6</span><span class="hb-pager__name">Runtime and headers</span></a><a class="hb-pager__link hb-pager__link--next" href="ci.html" rel="next"><span class="hb-pager__dir">Next · Chapter 8</span><span class="hb-pager__name">CI</span></a></nav>
+      <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="runtime-and-headers.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 7</span><span class="hb-pager__name">Runtime and headers</span></a><a class="hb-pager__link hb-pager__link--next" href="ci.html" rel="next"><span class="hb-pager__dir">Next · Chapter 9</span><span class="hb-pager__name">CI</span></a></nav>
 
   <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/deploy-gate.md"><code>handbook/deploy-gate.md</code> on GitHub</a>, impression <code>2578c64</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>

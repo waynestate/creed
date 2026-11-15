@@ -1,12 +1,12 @@
 ---
-title: "CREED Handbook: 8 CI"
-description: "Chapter 8 of the CREED handbook, the written rules for the Wayne State app stack: CI."
+title: "CREED Handbook: 9 CI"
+description: "Chapter 9 of the CREED handbook, the written rules for the Wayne State app stack: CI."
 url: https://creed.apps.wayne.edu/handbook/ci.html
 llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
 ---
 
-Chapter 8
+Chapter 9
 
 # CI
 

@@ -1,12 +1,12 @@
 ---
-title: "CREED Handbook: 10 Every OS"
-description: "Chapter 10 of the CREED handbook, the written rules for the Wayne State app stack: Every OS."
+title: "CREED Handbook: 11 Every OS"
+description: "Chapter 11 of the CREED handbook, the written rules for the Wayne State app stack: Every OS."
 url: https://creed.apps.wayne.edu/handbook/every-os.html
 llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
 ---
 
-Chapter 10
+Chapter 11
 
 # Every OS
 

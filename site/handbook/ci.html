@@ -6,8 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="stack-env" content="auto">
 <script src="../assets/stack-env.js" defer></script>
-<title>CREED Handbook: 8 CI</title>
-<meta name="description" content="Chapter 8 of the CREED handbook, the written rules for the Wayne State app stack: CI.">
+<title>CREED Handbook: 9 CI</title>
+<meta name="description" content="Chapter 9 of the CREED handbook, the written rules for the Wayne State app stack: CI.">
 <meta name="theme-color" content="#0c5449" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1a1b18" media="(prefers-color-scheme: dark)">
 <meta name="color-scheme" content="light dark">
@@ -64,26 +64,27 @@
       <li><a href="code.html"><span class="hb-nav__no">3</span><span class="hb-nav__name">Code</span></a></li>
       <li><a href="auth.html"><span class="hb-nav__no">4</span><span class="hb-nav__name">Auth</span></a></li>
       <li><a href="databases.html"><span class="hb-nav__no">5</span><span class="hb-nav__name">Databases</span></a></li>
-      <li><a href="runtime-and-headers.html"><span class="hb-nav__no">6</span><span class="hb-nav__name">Runtime and headers</span></a></li>
-      <li><a href="deploy-gate.html"><span class="hb-nav__no">7</span><span class="hb-nav__name">Deploy gate</span></a></li>
-      <li class="is-here"><a href="ci.html" aria-current="page"><span class="hb-nav__no">8</span><span class="hb-nav__name">CI</span></a></li>
-      <li><a href="accessibility.html"><span class="hb-nav__no">9</span><span class="hb-nav__name">Accessibility</span></a></li>
-      <li><a href="every-os.html"><span class="hb-nav__no">10</span><span class="hb-nav__name">Every OS</span></a></li>
-      <li><a href="secrets.html"><span class="hb-nav__no">11</span><span class="hb-nav__name">Secrets and debugging</span></a></li>
-      <li><a href="ai.html"><span class="hb-nav__no">12</span><span class="hb-nav__name">AI and LLM use</span></a></li>
-      <li><a href="production.html"><span class="hb-nav__no">13</span><span class="hb-nav__name">Production</span></a></li>
-      <li><a href="overrides.html"><span class="hb-nav__no">14</span><span class="hb-nav__name">Overrides</span></a></li>
+      <li><a href="oracle-and-people.html"><span class="hb-nav__no">6</span><span class="hb-nav__name">Oracle, Banner and people</span></a></li>
+      <li><a href="runtime-and-headers.html"><span class="hb-nav__no">7</span><span class="hb-nav__name">Runtime and headers</span></a></li>
+      <li><a href="deploy-gate.html"><span class="hb-nav__no">8</span><span class="hb-nav__name">Deploy gate</span></a></li>
+      <li class="is-here"><a href="ci.html" aria-current="page"><span class="hb-nav__no">9</span><span class="hb-nav__name">CI</span></a></li>
+      <li><a href="accessibility.html"><span class="hb-nav__no">10</span><span class="hb-nav__name">Accessibility</span></a></li>
+      <li><a href="every-os.html"><span class="hb-nav__no">11</span><span class="hb-nav__name">Every OS</span></a></li>
+      <li><a href="secrets.html"><span class="hb-nav__no">12</span><span class="hb-nav__name">Secrets and debugging</span></a></li>
+      <li><a href="ai.html"><span class="hb-nav__no">13</span><span class="hb-nav__name">AI and LLM use</span></a></li>
+      <li><a href="production.html"><span class="hb-nav__no">14</span><span class="hb-nav__name">Production</span></a></li>
+      <li><a href="overrides.html"><span class="hb-nav__no">15</span><span class="hb-nav__name">Overrides</span></a></li>
   </ol>
   <p class="hb-nav__more"><a href="print.html">Whole book on one page</a></p>
 </nav>
 <main id="main" class="hb-main" tabindex="-1">
-  <nav class="hb-crumbs" aria-label="Breadcrumb"><ol><li><a href="../">CREED</a></li><li><a href="./">Handbook</a></li><li><span aria-current="page">Chapter 8: CI</span></li></ol></nav>
+  <nav class="hb-crumbs" aria-label="Breadcrumb"><ol><li><a href="../">CREED</a></li><li><a href="./">Handbook</a></li><li><span aria-current="page">Chapter 9: CI</span></li></ol></nav>
       <article class="hb-chapter" aria-labelledby="page-title">
-        <p class="folio-head" aria-hidden="true"><span>CREED 2026 · Handbook</span><span>Chapter 8 · CI</span></p>
+        <p class="folio-head" aria-hidden="true"><span>CREED 2026 · Handbook</span><span>Chapter 9 · CI</span></p>
         <header class="chap-head chap-head--chapter hb-chapter__head">
-          <p class="chap-head__no" aria-hidden="true">8</p>
+          <p class="chap-head__no" aria-hidden="true">9</p>
           <div>
-            <p class="chap-head__kicker">Chapter 8</p>
+            <p class="chap-head__kicker">Chapter 9</p>
             <h1 id="page-title">CI</h1>
             <p class="hb-register">8 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 1 · <strong class="kw kw--must">MUST</strong> 6 · <strong class="kw kw--should">SHOULD</strong> 1</p>
           </div>
@@ -109,7 +110,7 @@ every product strongly recommends the instance runner.</li>
           </div>
         </div>
       </article>
-      <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="deploy-gate.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 7</span><span class="hb-pager__name">Deploy gate</span></a><a class="hb-pager__link hb-pager__link--next" href="accessibility.html" rel="next"><span class="hb-pager__dir">Next · Chapter 9</span><span class="hb-pager__name">Accessibility</span></a></nav>
+      <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="deploy-gate.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 8</span><span class="hb-pager__name">Deploy gate</span></a><a class="hb-pager__link hb-pager__link--next" href="accessibility.html" rel="next"><span class="hb-pager__dir">Next · Chapter 10</span><span class="hb-pager__name">Accessibility</span></a></nav>
 
   <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/ci.md"><code>handbook/ci.md</code> on GitHub</a>, impression <code>f64b9a6</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>

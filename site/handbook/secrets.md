@@ -1,12 +1,12 @@
 ---
-title: "CREED Handbook: 11 Secrets and debugging"
-description: "Chapter 11 of the CREED handbook, the written rules for the Wayne State app stack: Secrets and debugging."
+title: "CREED Handbook: 12 Secrets and debugging"
+description: "Chapter 12 of the CREED handbook, the written rules for the Wayne State app stack: Secrets and debugging."
 url: https://creed.apps.wayne.edu/handbook/secrets.html
 llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
 ---
 
-Chapter 11
+Chapter 12
 
 # Secrets and debugging
 
@@ -16,7 +16,7 @@ Decided
 
 Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and **MAY** in this chapter are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
-## [§11.1](https://creed.apps.wayne.edu/handbook/secrets.html#credentials) Credentials
+## [§12.1](https://creed.apps.wayne.edu/handbook/secrets.html#credentials) Credentials
 
 - Credentials (database and service passwords, API keys, tokens) **MUST NOT** be committed to version control, because history keeps them forever. Commit `.env.example` with placeholders instead. A credential that was ever committed is treated as exposed and rotated (WSU developer standards, 2024). [PROCTOR](https://proctor.apps.wayne.edu/) checks: `app-key` (a committed `.env` or `APP_KEY`) and `repo-url-credentials` (a token in a package source URL). The general secret scan is [Preflight](https://preflight.apps.wayne.edu/)'s `secret-detection` component (Preflight 0.9.0), which runs Gitleaks over the tree and fails the pipeline on a match.
 - Credentials and sensitive data **MUST** live outside any folder the web server serves. Laravel's `public/` is the only served folder; raw PHP apps serve one `public/` folder the same way (WSU developer standards, 2024). PROCTOR check: `served-folder` (dumps, backups, logs and env files in `public/`).
@@ -24,7 +24,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - An app **MUST** use its own dedicated application ID, never a person's employee or student AccessID, to reach another server or service, with the fewest permissions the task needs (WSU developer standards, 2024). No check exists yet.
 - Real values **MUST** come from the environment at deploy time (the Citadel dashboard or CI variables), never from a file in the repo (WSU developer standards, 2024). No check exists yet.
 
-## [§11.2](https://creed.apps.wayne.edu/handbook/secrets.html#errors-and-debug-output) Errors and debug output
+## [§12.2](https://creed.apps.wayne.edu/handbook/secrets.html#errors-and-debug-output) Errors and debug output
 
 - `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment. PROCTOR check: `app-debug` (since PROCTOR 0.10.0), which warns when a committed production env template, deploy file or CI pipeline sets it to true.
 - Public-facing code **MUST NOT** display default interpreter or framework error pages to the user; show a controlled message and log the detail (WSU developer standards, 2024). Held by: [HELMET](https://helmet.apps.wayne.edu/), when the app turns it on. Raw PHP apps get a fixed 500 page with no exception text from the opt-in error handler (`helmet_boot()` with `error_handler` enabled) and a fixed 4xx page from `helmet_client_error()`; Laravel apps set `HELMET_ERROR_PAGES=true` for the same 4xx pages and leave 5xx to Laravel's handler, which shows no detail with `APP_DEBUG` false; JSON clients keep Laravel's JSON answer. The 4xx pages are on HELMET main and ship in its next release. Nothing checks that an app turned them on.
@@ -32,7 +32,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 A leaked password is a bad encore: everyone remembers it, and nobody asked for a second showing.
 
-## [§11.3](https://creed.apps.wayne.edu/handbook/secrets.html#not-decided-here) Not decided here
+## [§12.3](https://creed.apps.wayne.edu/handbook/secrets.html#not-decided-here) Not decided here
 
 - The HELMET header rules and runtime refusals are written in `runtime-and-headers.md`.
 

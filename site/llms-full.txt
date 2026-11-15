@@ -947,6 +947,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Added: the handbook chapter "Oracle, Banner and people" (`handbook/oracle-and-people.md`): reads through TELLER's named queries with bound values, a read-only transaction and a row cap; no Oracle credentials or Instant Client in the repo (PROCTOR check `instant-client-committed`); person lookups through Rolodex (confidentiality flag, granted profiles, POST-only searches, synthetic fixtures); LDAP that demands TLS and escapes filter values.
 - Changed: the gap list marks items 1, 16 and 19 Done, and practice 34 names the check: PROCTOR 0.16.1 warns on a missing `* text=auto eol=lf` line (`proctor/gitattributes-eol/no-default`) and on a runtime below its line's `minimum_patch` (`proctor/unpatched/below-minimum`). Content only.
 - Changed: the dev dependency Pinstripe is `^0.4` (was `^0.3`, which does not allow 0.4.0); 0.4.0 adds two opt-in Rector presets and changes no rule this repo uses.
 - Changed: the deploy kit is Squire 0.11.1 (was 0.10.7): the release script fetches PROCTOR when `--no-dev` left it out and installs the frontend from a `yarn.lock`, the HAProxy pin is current, the fallback base follows the app's PHP line, and the parity scripts carry the deprecation note.
@@ -1284,7 +1285,7 @@ Source: https://creed.apps.wayne.edu/docs/guides/handbook.html
 
 ## The handbook [#](https://creed.apps.wayne.edu/docs/guides/handbook.html#the-handbook)
 
-This page maps the CREED handbook: what it is, how to read its key words and PROCTOR check lines, and where each of the fourteen chapters lives.
+This page maps the CREED handbook: what it is, how to read its key words and PROCTOR check lines, and where each of the fifteen chapters lives.
 
 ### What the handbook is [#](https://creed.apps.wayne.edu/docs/guides/handbook.html#what-the-handbook-is)
 
@@ -1310,6 +1311,7 @@ The rules for the Wayne State app stack, chapter by chapter. Each chapter states
 - [Every OS](https://creed.apps.wayne.edu/handbook/every-os.html): every developer tool works on Windows, macOS and Linux, with `.ps1` and `.sh` pairs, LF line endings and portable paths.
 - [Secrets](https://creed.apps.wayne.edu/handbook/secrets.html): credentials never in version control and never in the served folder, with errors and debug output that hide them.
 - [AI and LLM use](https://creed.apps.wayne.edu/handbook/ai.html): model calls server-side only, tokens out of client code, outside providers receiving public data only, personal data out of prompts, and a person, not a model, making the final call.
+- [Oracle, Banner and people](https://creed.apps.wayne.edu/handbook/oracle-and-people.html): reads through TELLER's named queries with bound values and a row cap, credentials out of the repo, person lookups through Rolodex with its confidentiality flag and access log, and LDAP connections that demand TLS.
 - [Production](https://creed.apps.wayne.edu/handbook/production.html): pre-production and production environments, running safely with the least access needed, and who can reach an app.
 - [Overrides](https://creed.apps.wayne.edu/handbook/overrides.html): overrides are named, dated and visible, with an expiry date and a reason, and an expired override is a failure.
 
@@ -2403,7 +2405,7 @@ Creed Bratton would have a form for this.
 
 Source: https://creed.apps.wayne.edu/handbook/accessibility.html
 
-Chapter 9
+Chapter 10
 
 ## Accessibility
 
@@ -2413,23 +2415,23 @@ Decided
 
 Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and **MAY** in this chapter are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
-### [§9.1](https://creed.apps.wayne.edu/handbook/accessibility.html#target) Target
+### [§10.1](https://creed.apps.wayne.edu/handbook/accessibility.html#target) Target
 
 - Every public page of a stack app **MUST** target WCAG 2.2 Level AA (the stack's accessibility design). Held by: [Preflight](https://preflight.apps.wayne.edu/)'s `a11y` component, when the app carries the `wcag22aa` tag.
 - W3C says content conforming to 2.2 also conforms to 2.1 and 2.0, so the target meets the WCAG 2.1 AA floor named in the ADA Title II web rule (the stack's accessibility design).
 
-### [§9.2](https://creed.apps.wayne.edu/handbook/accessibility.html#components) Components
+### [§10.2](https://creed.apps.wayne.edu/handbook/accessibility.html#components) Components
 
 - [WayneUI](https://wayneui.apps.wayne.edu/) is the stack's component library; pages built from its components start from markup and tokens already checked by WayneUI's own runnable accessibility gate (the stack's accessibility design).
 - An app **MUST NOT** fork or restyle a WayneUI component in a way that removes focus indicators, labels or contrast (the stack's accessibility design). [PROCTOR](https://proctor.apps.wayne.edu/) check: `wayneui-forked-views` catches forked views.
 
-### [§9.3](https://creed.apps.wayne.edu/handbook/accessibility.html#checks) Checks
+### [§10.3](https://creed.apps.wayne.edu/handbook/accessibility.html#checks) Checks
 
 - An automated accessibility check **SHOULD** run in CI on the app's key pages (the stack's accessibility design). Held by: Preflight's `a11y` component, below.
 - A manual keyboard and screen reader pass **MUST** happen before launch. An automated tool catches regressions; it is not proof of conformance, and it never replaces the pass (the stack's accessibility design). No check exists yet.
 - Preflight's `a11y` component (since 0.2.0; the pin is 0.9.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core in light and dark at 320 and 1280 px, and fails the pipeline on any violation. An app **SHOULD** add `wcag22aa` to its tags for the WCAG 2.2 AA target above. Held by: Preflight's a11y component (templates/a11y/template.yml).
 
-### [§9.4](https://creed.apps.wayne.edu/handbook/accessibility.html#not-decided-here) Not decided here
+### [§10.4](https://creed.apps.wayne.edu/handbook/accessibility.html#not-decided-here) Not decided here
 
 - Whether and when the ADA Title II web rule applies to a given WSU unit. The rule applies WCAG 2.1 AA to public entities on dates that depend on the entity's size; the answer is for WSU's counsel and accessibility office, and this chapter does not decide it.
 - Which pages need a manual audit.
@@ -2440,7 +2442,7 @@ Set from [`handbook/accessibility.md` on GitHub](https://github.com/waynestate/c
 
 Source: https://creed.apps.wayne.edu/handbook/ai.html
 
-Chapter 12
+Chapter 13
 
 ## AI and LLM use
 
@@ -2450,32 +2452,32 @@ Decided
 
 Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and **MAY** in this chapter are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
-### [§12.1](https://creed.apps.wayne.edu/handbook/ai.html#where-models-are-called) Where models are called
+### [§13.1](https://creed.apps.wayne.edu/handbook/ai.html#where-models-are-called) Where models are called
 
 - Model calls **MUST** be made server-side only, never from browser code. No check exists yet.
 - API tokens **MUST** live in server configuration or the environment and **MUST NOT** appear in `VITE_*` variables or any client-side code (anything that ships in the bundle is public). Held by: the general secret scan, [Preflight](https://preflight.apps.wayne.edu/)'s `secret-detection` component (Preflight 0.9.0), for committed tokens only; a token in a `VITE_*` variable is not checked yet.
 - Rate limits **MUST** apply per signed-in user, so one person cannot spend the whole app's budget. No check exists yet.
 
-### [§12.2](https://creed.apps.wayne.edu/handbook/ai.html#which-service) Which service
+### [§13.2](https://creed.apps.wayne.edu/handbook/ai.html#which-service) Which service
 
 - WarriorGPT, the university-run service, comes first: an app **SHOULD** use it before any outside provider. No check exists yet.
 - Outside model providers (OpenAI, Anthropic, Google and the like) **MUST** only ever receive public data (D-099). Any university data, whether internal or confidential, **MUST** go to WarriorGPT only. No check exists yet.
 
-### [§12.3](https://creed.apps.wayne.edu/handbook/ai.html#data-in-prompts-and-logs) Data in prompts and logs
+### [§13.3](https://creed.apps.wayne.edu/handbook/ai.html#data-in-prompts-and-logs) Data in prompts and logs
 
 - Personal data (student, employee or patient records, or identifiers such as AccessIDs, student IDs or Social Security numbers) **MAY** go to WarriorGPT only, and only the minimum the task needs (D-102). No check exists yet.
 - Personal data **MUST NOT** go to an outside model provider (D-099, D-102). No check exists yet.
 - Logs **SHOULD** keep metadata (user, model, token counts, latency) and **MUST NOT** keep prompt or answer bodies by default. No check exists yet.
 - If bodies are kept for debugging, retention **MUST** be short and personal data **MUST** be stripped first. No check exists yet.
 
-### [§12.4](https://creed.apps.wayne.edu/handbook/ai.html#what-people-see-and-decide) What people see and decide
+### [§13.4](https://creed.apps.wayne.edu/handbook/ai.html#what-people-see-and-decide) What people see and decide
 
 - AI-written output **MUST** be labelled as AI-written in the UI. No check exists yet.
 - A model **MUST NOT** make the final call on a decision about a person; a person makes it and is accountable. No check exists yet.
 
 WarriorGPT opens the show; the outside bands play only what is public.
 
-### [§12.5](https://creed.apps.wayne.edu/handbook/ai.html#not-decided-here) Not decided here
+### [§13.5](https://creed.apps.wayne.edu/handbook/ai.html#not-decided-here) Not decided here
 
 - Prompt-injection handling is not decided here.
 - Evaluation of model quality is not decided here.
@@ -2517,7 +2519,7 @@ Set from [`handbook/auth.md` on GitHub](https://github.com/waynestate/creed/blob
 
 Source: https://creed.apps.wayne.edu/handbook/ci.html
 
-Chapter 8
+Chapter 9
 
 ## CI
 
@@ -2851,7 +2853,7 @@ Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/cr
 
 Source: https://creed.apps.wayne.edu/handbook/deploy-gate.html
 
-Chapter 7
+Chapter 8
 
 ## Deploy gate
 
@@ -2869,12 +2871,12 @@ The deploy gate runs [PROCTOR](https://proctor.apps.wayne.edu/) against the comm
 - Each rule moves through stages, `report`, `warn`, `block`, with dates in `policy.json` (the stack's deploy-gate decision).
   - The `gate` block holds them: [`default_stage`](https://github.com/waynestate/creed/blob/main/policy/policy.json) (`block`) and `stages`, a list of `{stage, from}` entries per PROCTOR check; the latest `from` on or before the run date wins. It ships empty, so every check blocks until a date is agreed with the Citadel team.
 
-### [§7.1](https://creed.apps.wayne.edu/handbook/deploy-gate.html#on-citadel) On Citadel
+### [§8.1](https://creed.apps.wayne.edu/handbook/deploy-gate.html#on-citadel) On Citadel
 
 - When the Citadel team adopts it, the gate runs in the release hook: `proctor gate` in `runGitPull()`, against the fetched commit, before it is checked out (the stack's deploy-gate decision).
 - The gate is pending the Citadel team, which is still an open question. Until it is adopted, enforcement is CI on the test GitLab instance (the stack's deploy-gate decision).
 
-### [§7.2](https://creed.apps.wayne.edu/handbook/deploy-gate.html#elsewhere) Elsewhere
+### [§8.2](https://creed.apps.wayne.edu/handbook/deploy-gate.html#elsewhere) Elsewhere
 
 - The same gate runs as a CI job through [Preflight](https://preflight.apps.wayne.edu/)'s `proctor` component, wherever the pipeline runs (first-repos).
 - [Squire](https://squire.apps.wayne.edu/)'s `docker` target will run the gate before it ships an image, and so will its later `openshift` and `coolify` targets (the stack's rule that packages run on any container platform).
@@ -2889,7 +2891,7 @@ Set from [`handbook/deploy-gate.md` on GitHub](https://github.com/waynestate/cre
 
 Source: https://creed.apps.wayne.edu/handbook/every-os.html
 
-Chapter 10
+Chapter 11
 
 ## Every OS
 
@@ -2918,7 +2920,7 @@ The handbook · 2026 Edition
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a "Not decided here" heading.
 
-Fourteen chapters · 201 provisions · **MUST** 150 · **SHOULD** 24 · **MAY** 2
+Fifteen chapters · 216 provisions · **MUST** 162 · **SHOULD** 26 · **MAY** 2
 
 ### Contents
 
@@ -2927,15 +2929,16 @@ Fourteen chapters · 201 provisions · **MUST** 150 · **SHOULD** 24 · **MAY** 
 3. [3 Code PHP style · Reading the code · Source control and documentation · Static analysis · Input and files · Banned patterns · Vue and JavaScript · Security analysis · How it is enforced · Which preset enforces each rule · Not adopted · To be decided · Sources](https://creed.apps.wayne.edu/handbook/code.html)13 sections · 43 provisions · **MUST NOT** 8 · **MUST** 23 · **SHOULD** 5Partly decided
 4. [4 Auth](https://creed.apps.wayne.edu/handbook/auth.html)14 provisions · **MUST** 11 · **SHOULD** 1Decided
 5. [5 Databases What the stack supports · Which MySQL lines the policy lists · Grace period · Names, comments and connections · Conventions that keep 5.6 working · Avoid until the server is upgraded · Moving to 8.4 · How the stack checks it · How the claims are proven · Sources](https://creed.apps.wayne.edu/handbook/databases.html)10 sections · 31 provisions · **MUST NOT** 3 · **MUST** 14 · **SHOULD** 3 · **MAY** 1Decided
-6. [6 Runtime and headers Enforcement · Headers · Proxy trust · Sessions · Health · Metrics · Errors in production · Not decided here](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html)8 sections · 16 provisions · **MUST NOT** 2 · **MUST** 4 · **SHOULD NOT** 1Decided
-7. [7 Deploy gate On Citadel · Elsewhere](https://creed.apps.wayne.edu/handbook/deploy-gate.html)2 sections · 8 provisionsDecided
-8. [8 CI](https://creed.apps.wayne.edu/handbook/ci.html)8 provisions · **MUST NOT** 1 · **MUST** 6 · **SHOULD** 1Decided
-9. [9 Accessibility Target · Components · Checks · Not decided here](https://creed.apps.wayne.edu/handbook/accessibility.html)4 sections · 9 provisions · **MUST NOT** 1 · **MUST** 2 · **SHOULD** 2Decided
-10. [10 Every OS](https://creed.apps.wayne.edu/handbook/every-os.html)6 provisions · **MUST NOT** 1 · **MUST** 8Decided
-11. [11 Secrets and debugging Credentials · Errors and debug output · Not decided here](https://creed.apps.wayne.edu/handbook/secrets.html)3 sections · 9 provisions · **MUST NOT** 4 · **MUST** 5 · **SHOULD NOT** 1Decided
-12. [12 AI and LLM use Where models are called · Which service · Data in prompts and logs · What people see and decide · Not decided here](https://creed.apps.wayne.edu/handbook/ai.html)5 sections · 13 provisions · **MUST NOT** 4 · **MUST** 8 · **SHOULD** 2 · **MAY** 1Decided
-13. [13 Production Environments · Running safely · Who can reach it](https://creed.apps.wayne.edu/handbook/production.html)3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 11 · **SHOULD** 4Decided
-14. [14 Overrides](https://creed.apps.wayne.edu/handbook/overrides.html)7 provisions · **MUST NOT** 1 · **MUST** 6Decided
+6. [6 Oracle, Banner and people Reading Oracle · Credentials and the client · People · LDAP · Not decided here](https://creed.apps.wayne.edu/handbook/oracle-and-people.html)5 sections · 15 provisions · **MUST NOT** 6 · **MUST** 6 · **SHOULD** 2Decided
+7. [7 Runtime and headers Enforcement · Headers · Proxy trust · Sessions · Health · Metrics · Errors in production · Not decided here](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html)8 sections · 16 provisions · **MUST NOT** 2 · **MUST** 4 · **SHOULD NOT** 1Decided
+8. [8 Deploy gate On Citadel · Elsewhere](https://creed.apps.wayne.edu/handbook/deploy-gate.html)2 sections · 8 provisionsDecided
+9. [9 CI](https://creed.apps.wayne.edu/handbook/ci.html)8 provisions · **MUST NOT** 1 · **MUST** 6 · **SHOULD** 1Decided
+10. [10 Accessibility Target · Components · Checks · Not decided here](https://creed.apps.wayne.edu/handbook/accessibility.html)4 sections · 9 provisions · **MUST NOT** 1 · **MUST** 2 · **SHOULD** 2Decided
+11. [11 Every OS](https://creed.apps.wayne.edu/handbook/every-os.html)6 provisions · **MUST NOT** 1 · **MUST** 8Decided
+12. [12 Secrets and debugging Credentials · Errors and debug output · Not decided here](https://creed.apps.wayne.edu/handbook/secrets.html)3 sections · 9 provisions · **MUST NOT** 4 · **MUST** 5 · **SHOULD NOT** 1Decided
+13. [13 AI and LLM use Where models are called · Which service · Data in prompts and logs · What people see and decide · Not decided here](https://creed.apps.wayne.edu/handbook/ai.html)5 sections · 13 provisions · **MUST NOT** 4 · **MUST** 8 · **SHOULD** 2 · **MAY** 1Decided
+14. [14 Production Environments · Running safely · Who can reach it](https://creed.apps.wayne.edu/handbook/production.html)3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 11 · **SHOULD** 4Decided
+15. [15 Overrides](https://creed.apps.wayne.edu/handbook/overrides.html)7 provisions · **MUST NOT** 1 · **MUST** 6Decided
 
 ### How to read this book
 
@@ -2948,13 +2951,61 @@ Fourteen chapters · 201 provisions · **MUST** 150 · **SHOULD** 24 · **MAY** 
 
 For printing, or for your browser's find. Every chapter, in order, from the same Markdown.
 
-Set from [`handbook/README.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/README.md), impression `f3af9ed`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/README.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/README.md), impression `b6020e7`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+
+---
+
+Source: https://creed.apps.wayne.edu/handbook/oracle-and-people.html
+
+Chapter 6
+
+## Oracle, Banner and people
+
+5 sections · 15 provisions · **MUST NOT** 6 · **MUST** 6 · **SHOULD** 2
+
+Decided
+
+Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and **MAY** in this chapter are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
+
+### [§6.1](https://creed.apps.wayne.edu/handbook/oracle-and-people.html#reading-oracle) Reading Oracle
+
+- App code **MUST** reach Oracle through TELLER's named queries (reviewed SQL in a catalog file), never by calling PHP's OCI functions (`oci_connect`, `oci_parse` and the rest) or `new PDO('oci:...')` itself. No check exists yet; [PROCTOR](https://proctor.apps.wayne.edu/)'s `raw-oci` warning is in review.
+- Every value in an Oracle query **MUST** be a bound variable, and SQL **MUST NOT** be built by interpolation or concatenation. No check exists yet.
+- Reads **SHOULD** run in a read-only transaction with a row cap. Held by: TELLER, for every query that goes through it (read-only transaction, 1,000-row default cap).
+- An app **MUST NOT** write to Banner tables through a read account; a write need goes to the data's owners first. No check exists yet.
+
+### [§6.2](https://creed.apps.wayne.edu/handbook/oracle-and-people.html#credentials-and-the-client) Credentials and the client
+
+- Oracle passwords **MUST NOT** appear in a DSN, a committed `tnsnames.ora` or a committed wallet; they come from the environment at deploy time. No check exists yet.
+- Oracle Instant Client **MUST NOT** be committed to the repo; the runtime image provides it. PROCTOR check: `instant-client-committed`.
+
+### [§6.3](https://creed.apps.wayne.edu/handbook/oracle-and-people.html#people) People
+
+- Person lookups **SHOULD** go through Rolodex, which applies the confidentiality flag, the app's granted profiles, the 25-per-page cap and the access log in one place. Held by: Rolodex, for apps that use it.
+- A person flagged confidential in Banner **MUST NOT** appear in a directory answer beyond what the app's grant allows. Held by: Rolodex, for apps that use it; nothing checks hand-written lookups.
+- Searches for people **MUST** travel in POST bodies, never in query strings, because URLs end up in server and proxy logs. Held by: Rolodex's search endpoint and its `useRolodexSearch()` Vue composable, for apps that use them.
+- A directory feature **MUST NOT** select Social Security numbers, birth dates, or Banner's internal person key or student ID. No check exists yet.
+- Test fixtures **MUST** use synthetic people (AccessIDs shaped like `zz1234`, `@example.edu` emails), never copies of real records. No check exists yet, and none can be reliable, so this one stays a practice.
+
+### [§6.4](https://creed.apps.wayne.edu/handbook/oracle-and-people.html#ldap) LDAP
+
+- An LDAP connection **MUST** demand TLS (`LDAP_OPT_X_TLS_DEMAND`), never `NEVER`, `ALLOW` or `TRY`, and never a plain `ldap://` URI without StartTLS. No check exists yet.
+- LDAP filters **MUST** be built with escaping (`ldap_escape()` or LdapRecord's query builder), never string formatting. No check exists yet.
+
+Bound values only: With Arms Wide Open is how you greet a colleague, not how you build a query.
+
+### [§6.5](https://creed.apps.wayne.edu/handbook/oracle-and-people.html#not-decided-here) Not decided here
+
+- What counts as directory, employee or student data, and any confidentiality rule beyond Banner's flag: waiting on Institutional Research.
+- Whether `raw-oci` becomes a fail for new apps: a later PROCTOR release decision.
+
+Set from [`handbook/oracle-and-people.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/oracle-and-people.md), impression `65ac1d7`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
 Source: https://creed.apps.wayne.edu/handbook/overrides.html
 
-Chapter 14
+Chapter 15
 
 ## Overrides
 
@@ -2978,7 +3029,7 @@ Set from [`handbook/overrides.md` on GitHub](https://github.com/waynestate/creed
 
 Source: https://creed.apps.wayne.edu/handbook/production.html
 
-Chapter 13
+Chapter 14
 
 ## Production
 
@@ -2988,7 +3039,7 @@ Decided
 
 Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and **MAY** in this chapter are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
-### [§13.1](https://creed.apps.wayne.edu/handbook/production.html#environments) Environments
+### [§14.1](https://creed.apps.wayne.edu/handbook/production.html#environments) Environments
 
 - Every environment more than one person can reach **MUST** follow the whole handbook; only a developer's own machine is exempt (WSU developer standards, 2024). No check exists yet.
 - An app **MUST** keep at least a pre-production and a production environment, each with its own working copy of every piece, database and supporting services included (WSU developer standards, 2024). No check exists yet.
@@ -2997,7 +3048,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - Anything kept outside source control, databases included, **MUST** be backed up. The README **MUST** say how to restore one app (WSU developer standards, 2024). No check exists yet.
 - An app **SHOULD** be load tested in each environment where heavy use is expected (WSU developer standards, 2024). No check exists yet.
 
-### [§13.2](https://creed.apps.wayne.edu/handbook/production.html#running-safely) Running safely
+### [§14.2](https://creed.apps.wayne.edu/handbook/production.html#running-safely) Running safely
 
 - The app and its scripts **MUST** run as a non-root, non-administrator user with the least access they need (WSU developer standards, 2024). No check exists yet.
 - The web server **MUST NOT** list directory contents (WSU developer standards, 2024). [PROCTOR](https://proctor.apps.wayne.edu/) check: `directory-listing` warns on committed server config that turns listing on (PROCTOR 0.10.0).
@@ -3010,7 +3061,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 Production is the encore. Keep the lights on and the doors locked, and the band plays on.
 
-### [§13.3](https://creed.apps.wayne.edu/handbook/production.html#who-can-reach-it) Who can reach it
+### [§14.3](https://creed.apps.wayne.edu/handbook/production.html#who-can-reach-it) Who can reach it
 
 - Every app **MUST** set `robots.txt` to keep spiders out unless crawling is wanted (WSU developer standards, 2024). An app that wants crawling says so in the file with `Allow: /` for `User-agent: *`; keeping spiders out is `Disallow: /`. PROCTOR check: `robots-txt` warns when a served app commits no `public/robots.txt`, or one that decides neither (PROCTOR 0.10.0).
 - Every app **MUST** limit access by network address to the audience it serves, as a second lock beside sign-in and never instead of it (WSU developer standards, 2024). No check exists yet.
@@ -3022,7 +3073,7 @@ Set from [`handbook/production.md` on GitHub](https://github.com/waynestate/cree
 
 Source: https://creed.apps.wayne.edu/handbook/runtime-and-headers.html
 
-Chapter 6
+Chapter 7
 
 ## Runtime and headers
 
@@ -3032,11 +3083,11 @@ Decided
 
 Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and **MAY** in this chapter are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
-### [§6.1](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#enforcement) Enforcement
+### [§7.1](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#enforcement) Enforcement
 
 - The runtime (Baseline) is enforcement point (a): it warns, and refuses only for unsafe config (the stack's enforcement design).
 
-### [§6.2](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#headers) Headers
+### [§7.2](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#headers) Headers
 
 - Every response **MUST** carry the same headers from [HELMET](https://helmet.apps.wayne.edu/) (the stack's runtime and headers design). Held by: HELMET, which sends the set on every response:
   - Content-Security-Policy: the [WayneUI](https://wayneui.apps.wayne.edu/) default policy plus a per-request nonce and `strict-dynamic`, with `frame-ancestors 'self'`, `base-uri 'self'`, `object-src 'none'` and `form-action 'self'` added.
@@ -3051,33 +3102,33 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 The headers are the setlist: the same one on every response. The HSTS encore plays only when the show is really on HTTPS.
 
-### [§6.3](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#proxy-trust) Proxy trust
+### [§7.3](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#proxy-trust) Proxy trust
 
 - Behind a proxy the app sees the proxy's address, so `X-Forwarded-Proto` **MUST** be honored only from a trusted proxy (the stack's runtime and headers design). Held by: HELMET, which honors it only from the configured trusted proxies.
 - A platform preset (`citadel` or `docker`) names the trusted proxies; off the platform the app passes its own list. An unknown preset throws at boot (the stack's runtime and headers design).
 - Strict-Transport-Security **MUST NOT** be sent for a request that was not really secure (the stack's runtime and headers design). Held by: HELMET, which sends it on HTTPS responses only.
 
-### [§6.4](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#sessions) Sessions
+### [§7.4](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#sessions) Sessions
 
 - HELMET hardens the PHP session settings before the session starts (the stack's runtime and headers design).
 - The request-forgery guard (Sec-Fetch-Site, then Origin) is optional and off by default; a rejected request gets 403 `Forbidden` (the stack's runtime and headers design).
 
-### [§6.5](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#health) Health
+### [§7.5](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#health) Health
 
 - `/up` is the health endpoint HELMET answers for raw PHP apps (the stack's runtime and headers design).
 
-### [§6.6](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#metrics) Metrics
+### [§7.6](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#metrics) Metrics
 
 - HELMET's metrics endpoint speaks the Prometheus text format and is off by default. It stays off until a Prometheus server scrapes the app; then the app turns it on with `HELMET_METRICS_ENABLED=true` (the stack's metrics decision). HELMET: with neither `HELMET_METRICS_TOKEN` nor `HELMET_METRICS_ALLOW` set, the endpoint answers 404 and logs a warning.
 - The scrape token **MUST NOT** be committed. On Citadel it goes in the app's `.env` through Citadel's configuration files step, which writes the file at deploy time (the stack's metrics decision). PROCTOR check: `app-key` (`proctor/app-key/committed-env` flags a committed `.env`).
 - On Citadel, request counts use the `sqlite` store for now (`HELMET_METRICS_STORAGE=sqlite`, with `HELMET_METRICS_SQLITE_PATH` on a file in the app's writable storage); the final store is picked when the stack's Prometheus server exists (the stack's metrics decision). Documented only.
 
-### [§6.7](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#errors-in-production) Errors in production
+### [§7.7](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#errors-in-production) Errors in production
 
 - PHP `display_errors` **MUST** be `Off` and `log_errors` `On` in production ([Squire](https://squire.apps.wayne.edu/)'s deploy kit ships that php.ini; HELMET neither sets nor checks it). PROCTOR check: `display-errors` warns on a committed php.ini, .user.ini or .htaccess that turns `display_errors` on or `log_errors` off (PROCTOR 0.10.0).
 - Laravel `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment. PROCTOR check: `app-debug` (since PROCTOR 0.10.0): it warns when a committed production env template, deploy file or CI pipeline sets `APP_DEBUG` to true (`.env.example` is the local template and is skipped).
 
-### [§6.8](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#not-decided-here) Not decided here
+### [§7.8](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#not-decided-here) Not decided here
 
 - The Content-Security-Policy report endpoints.
 
@@ -3087,7 +3138,7 @@ Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynes
 
 Source: https://creed.apps.wayne.edu/handbook/secrets.html
 
-Chapter 11
+Chapter 12
 
 ## Secrets and debugging
 
@@ -3097,7 +3148,7 @@ Decided
 
 Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and **MAY** in this chapter are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
 
-### [§11.1](https://creed.apps.wayne.edu/handbook/secrets.html#credentials) Credentials
+### [§12.1](https://creed.apps.wayne.edu/handbook/secrets.html#credentials) Credentials
 
 - Credentials (database and service passwords, API keys, tokens) **MUST NOT** be committed to version control, because history keeps them forever. Commit `.env.example` with placeholders instead. A credential that was ever committed is treated as exposed and rotated (WSU developer standards, 2024). [PROCTOR](https://proctor.apps.wayne.edu/) checks: `app-key` (a committed `.env` or `APP_KEY`) and `repo-url-credentials` (a token in a package source URL). The general secret scan is [Preflight](https://preflight.apps.wayne.edu/)'s `secret-detection` component (Preflight 0.9.0), which runs Gitleaks over the tree and fails the pipeline on a match.
 - Credentials and sensitive data **MUST** live outside any folder the web server serves. Laravel's `public/` is the only served folder; raw PHP apps serve one `public/` folder the same way (WSU developer standards, 2024). PROCTOR check: `served-folder` (dumps, backups, logs and env files in `public/`).
@@ -3105,7 +3156,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - An app **MUST** use its own dedicated application ID, never a person's employee or student AccessID, to reach another server or service, with the fewest permissions the task needs (WSU developer standards, 2024). No check exists yet.
 - Real values **MUST** come from the environment at deploy time (the Citadel dashboard or CI variables), never from a file in the repo (WSU developer standards, 2024). No check exists yet.
 
-### [§11.2](https://creed.apps.wayne.edu/handbook/secrets.html#errors-and-debug-output) Errors and debug output
+### [§12.2](https://creed.apps.wayne.edu/handbook/secrets.html#errors-and-debug-output) Errors and debug output
 
 - `APP_DEBUG` **MUST** be `false` in production (WSU developer standards, 2024). The Laravel adapter writes one warning `helmet.debug_enabled_in_production` when it is true in the production environment. PROCTOR check: `app-debug` (since PROCTOR 0.10.0), which warns when a committed production env template, deploy file or CI pipeline sets it to true.
 - Public-facing code **MUST NOT** display default interpreter or framework error pages to the user; show a controlled message and log the detail (WSU developer standards, 2024). Held by: [HELMET](https://helmet.apps.wayne.edu/), when the app turns it on. Raw PHP apps get a fixed 500 page with no exception text from the opt-in error handler (`helmet_boot()` with `error_handler` enabled) and a fixed 4xx page from `helmet_client_error()`; Laravel apps set `HELMET_ERROR_PAGES=true` for the same 4xx pages and leave 5xx to Laravel's handler, which shows no detail with `APP_DEBUG` false; JSON clients keep Laravel's JSON answer. The 4xx pages are on HELMET main and ship in its next release. Nothing checks that an app turned them on.
@@ -3113,7 +3164,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 A leaked password is a bad encore: everyone remembers it, and nobody asked for a second showing.
 
-### [§11.3](https://creed.apps.wayne.edu/handbook/secrets.html#not-decided-here) Not decided here
+### [§12.3](https://creed.apps.wayne.edu/handbook/secrets.html#not-decided-here) Not decided here
 
 - The HELMET header rules and runtime refusals are written in `runtime-and-headers.md`.
 

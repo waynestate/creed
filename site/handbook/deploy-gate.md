@@ -1,12 +1,12 @@
 ---
-title: "CREED Handbook: 7 Deploy gate"
-description: "Chapter 7 of the CREED handbook, the written rules for the Wayne State app stack: Deploy gate."
+title: "CREED Handbook: 8 Deploy gate"
+description: "Chapter 8 of the CREED handbook, the written rules for the Wayne State app stack: Deploy gate."
 url: https://creed.apps.wayne.edu/handbook/deploy-gate.html
 llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
 ---
 
-Chapter 7
+Chapter 8
 
 # Deploy gate
 
@@ -24,12 +24,12 @@ The deploy gate runs [PROCTOR](https://proctor.apps.wayne.edu/) against the comm
 - Each rule moves through stages, `report`, `warn`, `block`, with dates in `policy.json` (the stack's deploy-gate decision).
   - The `gate` block holds them: [`default_stage`](https://github.com/waynestate/creed/blob/main/policy/policy.json) (`block`) and `stages`, a list of `{stage, from}` entries per PROCTOR check; the latest `from` on or before the run date wins. It ships empty, so every check blocks until a date is agreed with the Citadel team.
 
-## [§7.1](https://creed.apps.wayne.edu/handbook/deploy-gate.html#on-citadel) On Citadel
+## [§8.1](https://creed.apps.wayne.edu/handbook/deploy-gate.html#on-citadel) On Citadel
 
 - When the Citadel team adopts it, the gate runs in the release hook: `proctor gate` in `runGitPull()`, against the fetched commit, before it is checked out (the stack's deploy-gate decision).
 - The gate is pending the Citadel team, which is still an open question. Until it is adopted, enforcement is CI on the test GitLab instance (the stack's deploy-gate decision).
 
-## [§7.2](https://creed.apps.wayne.edu/handbook/deploy-gate.html#elsewhere) Elsewhere
+## [§8.2](https://creed.apps.wayne.edu/handbook/deploy-gate.html#elsewhere) Elsewhere
 
 - The same gate runs as a CI job through [Preflight](https://preflight.apps.wayne.edu/)'s `proctor` component, wherever the pipeline runs (first-repos).
 - [Squire](https://squire.apps.wayne.edu/)'s `docker` target will run the gate before it ships an image, and so will its later `openshift` and `coolify` targets (the stack's rule that packages run on any container platform).

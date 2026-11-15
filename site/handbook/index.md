@@ -12,7 +12,7 @@ The handbook · 2026 Edition
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a "Not decided here" heading.
 
-Fourteen chapters · 201 provisions · **MUST** 150 · **SHOULD** 24 · **MAY** 2
+Fifteen chapters · 216 provisions · **MUST** 162 · **SHOULD** 26 · **MAY** 2
 
 ## Contents
 
@@ -21,15 +21,16 @@ Fourteen chapters · 201 provisions · **MUST** 150 · **SHOULD** 24 · **MAY** 
 3. [3 Code PHP style · Reading the code · Source control and documentation · Static analysis · Input and files · Banned patterns · Vue and JavaScript · Security analysis · How it is enforced · Which preset enforces each rule · Not adopted · To be decided · Sources](https://creed.apps.wayne.edu/handbook/code.html)13 sections · 43 provisions · **MUST NOT** 8 · **MUST** 23 · **SHOULD** 5Partly decided
 4. [4 Auth](https://creed.apps.wayne.edu/handbook/auth.html)14 provisions · **MUST** 11 · **SHOULD** 1Decided
 5. [5 Databases What the stack supports · Which MySQL lines the policy lists · Grace period · Names, comments and connections · Conventions that keep 5.6 working · Avoid until the server is upgraded · Moving to 8.4 · How the stack checks it · How the claims are proven · Sources](https://creed.apps.wayne.edu/handbook/databases.html)10 sections · 31 provisions · **MUST NOT** 3 · **MUST** 14 · **SHOULD** 3 · **MAY** 1Decided
-6. [6 Runtime and headers Enforcement · Headers · Proxy trust · Sessions · Health · Metrics · Errors in production · Not decided here](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html)8 sections · 16 provisions · **MUST NOT** 2 · **MUST** 4 · **SHOULD NOT** 1Decided
-7. [7 Deploy gate On Citadel · Elsewhere](https://creed.apps.wayne.edu/handbook/deploy-gate.html)2 sections · 8 provisionsDecided
-8. [8 CI](https://creed.apps.wayne.edu/handbook/ci.html)8 provisions · **MUST NOT** 1 · **MUST** 6 · **SHOULD** 1Decided
-9. [9 Accessibility Target · Components · Checks · Not decided here](https://creed.apps.wayne.edu/handbook/accessibility.html)4 sections · 9 provisions · **MUST NOT** 1 · **MUST** 2 · **SHOULD** 2Decided
-10. [10 Every OS](https://creed.apps.wayne.edu/handbook/every-os.html)6 provisions · **MUST NOT** 1 · **MUST** 8Decided
-11. [11 Secrets and debugging Credentials · Errors and debug output · Not decided here](https://creed.apps.wayne.edu/handbook/secrets.html)3 sections · 9 provisions · **MUST NOT** 4 · **MUST** 5 · **SHOULD NOT** 1Decided
-12. [12 AI and LLM use Where models are called · Which service · Data in prompts and logs · What people see and decide · Not decided here](https://creed.apps.wayne.edu/handbook/ai.html)5 sections · 13 provisions · **MUST NOT** 4 · **MUST** 8 · **SHOULD** 2 · **MAY** 1Decided
-13. [13 Production Environments · Running safely · Who can reach it](https://creed.apps.wayne.edu/handbook/production.html)3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 11 · **SHOULD** 4Decided
-14. [14 Overrides](https://creed.apps.wayne.edu/handbook/overrides.html)7 provisions · **MUST NOT** 1 · **MUST** 6Decided
+6. [6 Oracle, Banner and people Reading Oracle · Credentials and the client · People · LDAP · Not decided here](https://creed.apps.wayne.edu/handbook/oracle-and-people.html)5 sections · 15 provisions · **MUST NOT** 6 · **MUST** 6 · **SHOULD** 2Decided
+7. [7 Runtime and headers Enforcement · Headers · Proxy trust · Sessions · Health · Metrics · Errors in production · Not decided here](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html)8 sections · 16 provisions · **MUST NOT** 2 · **MUST** 4 · **SHOULD NOT** 1Decided
+8. [8 Deploy gate On Citadel · Elsewhere](https://creed.apps.wayne.edu/handbook/deploy-gate.html)2 sections · 8 provisionsDecided
+9. [9 CI](https://creed.apps.wayne.edu/handbook/ci.html)8 provisions · **MUST NOT** 1 · **MUST** 6 · **SHOULD** 1Decided
+10. [10 Accessibility Target · Components · Checks · Not decided here](https://creed.apps.wayne.edu/handbook/accessibility.html)4 sections · 9 provisions · **MUST NOT** 1 · **MUST** 2 · **SHOULD** 2Decided
+11. [11 Every OS](https://creed.apps.wayne.edu/handbook/every-os.html)6 provisions · **MUST NOT** 1 · **MUST** 8Decided
+12. [12 Secrets and debugging Credentials · Errors and debug output · Not decided here](https://creed.apps.wayne.edu/handbook/secrets.html)3 sections · 9 provisions · **MUST NOT** 4 · **MUST** 5 · **SHOULD NOT** 1Decided
+13. [13 AI and LLM use Where models are called · Which service · Data in prompts and logs · What people see and decide · Not decided here](https://creed.apps.wayne.edu/handbook/ai.html)5 sections · 13 provisions · **MUST NOT** 4 · **MUST** 8 · **SHOULD** 2 · **MAY** 1Decided
+14. [14 Production Environments · Running safely · Who can reach it](https://creed.apps.wayne.edu/handbook/production.html)3 sections · 17 provisions · **MUST NOT** 3 · **MUST** 11 · **SHOULD** 4Decided
+15. [15 Overrides](https://creed.apps.wayne.edu/handbook/overrides.html)7 provisions · **MUST NOT** 1 · **MUST** 6Decided
 
 ## How to read this book
 
@@ -42,4 +43,4 @@ Fourteen chapters · 201 provisions · **MUST** 150 · **SHOULD** 24 · **MAY** 
 
 For printing, or for your browser's find. Every chapter, in order, from the same Markdown.
 
-Set from [`handbook/README.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/README.md), impression `f3af9ed`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/README.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/README.md), impression `b6020e7`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
