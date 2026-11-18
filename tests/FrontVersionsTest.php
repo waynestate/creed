@@ -45,7 +45,7 @@ final class FrontVersionsTest extends TestCase
         $page = str_replace(
             '<td>2026-08-13</td><td>2027-02-24</td><td>12.71.0</td>',
             '<td>2026-08-12</td><td>2027-02-23</td><td>12.71.0</td>',
-            $this->page()
+            $this->page(),
         );
         $root = $this->makeRoot($this->policy(), $page);
 
@@ -56,7 +56,7 @@ final class FrontVersionsTest extends TestCase
         $html = (string) file_get_contents($root . '/site/index.html');
         self::assertStringContainsString(
             '<tr data-c="laravel" data-v="12"><th scope="row">12</th><td>2026-08-13</td><td>2027-02-24</td><td>12.72.0</td><td><span class="st st--security">Security</span></td></tr>',
-            $html
+            $html,
         );
 
         [$exit, $stdout] = $this->runScript($root, true);
@@ -82,7 +82,7 @@ final class FrontVersionsTest extends TestCase
         $html = (string) file_get_contents($root . '/site/index.html');
         self::assertStringContainsString(
             '<tr data-c="mysql" data-v="8.4"><th scope="row">8.4</th><td>2029-04-30</td><td>2032-04-30</td><td>n/a</td><td><span class="st st--active">Active</span></td></tr>',
-            $html
+            $html,
         );
 
         [$exit, $stdout] = $this->runScript($root, true);
@@ -109,11 +109,11 @@ final class FrontVersionsTest extends TestCase
         self::assertSame($expected, $html, 'only the stale cell may change; everything else stays byte-identical');
         self::assertStringContainsString(
             '<tr class="code-table__group"><th scope="rowgroup" colspan="5">Laravel <span>floor <b data-floor="laravel">12</b></span></th></tr>',
-            $html
+            $html,
         );
         self::assertStringContainsString(
             '<tr data-c="vue" data-v="3"><th scope="row">Vue 3</th><td colspan="3">Current line: no published end dates, none invented.</td><td><span class="st st--active">Active</span></td></tr>',
-            $html
+            $html,
         );
     }
 
@@ -124,7 +124,7 @@ final class FrontVersionsTest extends TestCase
         $page = str_replace(
             '      <tr class="code-table__group"><th scope="rowgroup" colspan="5">Vue</th></tr>',
             $unknown . '      <tr class="code-table__group"><th scope="rowgroup" colspan="5">Vue</th></tr>',
-            $this->page()
+            $this->page(),
         );
         $root = $this->makeRoot($this->policy(), $page);
         $before = (string) file_get_contents($root . '/site/index.html');

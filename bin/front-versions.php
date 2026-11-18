@@ -177,6 +177,7 @@ function frontVersionsRewrite(string $region, array $components): array
     return [$out, $stale];
 }
 
+/** @param list<string> $argv */
 function frontVersionsMain(array $argv): int
 {
     $root = dirname(__DIR__);
