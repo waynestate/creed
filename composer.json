@@ -57,6 +57,8 @@
         "site:handbook-check": "php bin/build-handbook-site.php --check",
         "site:agent-ready": "php bin/agent-ready.php",
         "site:agent-ready-check": "php bin/agent-ready.php --check",
+        "site:versions": "php bin/front-versions.php",
+        "site:versions-check": "php bin/front-versions.php --check",
         "docs": "php bin/docs-site.php",
         "docs:check": "php bin/docs-site.php --check",
         "fix": "pint",
@@ -68,6 +70,8 @@
         "site:handbook-check": "Fail when site/handbook/ is stale against handbook/*.md.",
         "site:agent-ready": "Rewrite the Markdown twins, llms.txt, llms-full.txt, robots.txt and sitemap.xml in site/ (Squire's agent-ready kit).",
         "site:agent-ready-check": "Fail when the agent-ready files are stale, a page lacks its Markdown link, a prompt drifts from the docs, or the kit was edited here.",
+        "site:versions": "Write the front page's Table 2-1 dates and latest patches from policy/policy.json.",
+        "site:versions-check": "Fail when the front page's Table 2-1 is stale against policy/policy.json.",
         "docs": "Rebuild site/docs/ from docs/ with the shared docs builder (Squire's kit).",
         "docs:check": "Fail when site/docs/ is stale against docs/, a nav path has no page, or a page fails the builder's checks."
     },
