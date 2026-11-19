@@ -11,6 +11,7 @@ generator: Squire agent-ready
 ## Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
 - Changed: the policy robot rewrites the front page's Table 2-1 (`site/index.html`) from the policy it just wrote before staging the refresh, and `composer ci` runs `site:versions-check` so a stale table fails the gate.
+- Added: `cakephp` (4, 5) and `slim` (4) policy components, refreshed from endoflife.date and Packagist, so Booster's CakePHP and Slim hops target CakePHP 5 and Slim 4 by default.
 - Added: `composer site:versions` writes the front page's Table 2-1 dates and latest patches from policy.json; `site:versions-check` reports a stale table.
 - Added: the handbook chapter "Oracle, Banner and people" (`handbook/oracle-and-people.md`): reads through TELLER's named queries with bound values, a read-only transaction and a row cap; no Oracle credentials or Instant Client in the repo (PROCTOR check `instant-client-committed`); person lookups through Rolodex (confidentiality flag, granted profiles, POST-only searches, synthetic fixtures); LDAP that demands TLS and escapes filter values.
 - Changed: the gap list marks items 1, 16 and 19 Done, and practice 34 names the check: PROCTOR 0.16.1 warns on a missing `* text=auto eol=lf` line (`proctor/gitattributes-eol/no-default`) and on a runtime below its line's `minimum_patch` (`proctor/unpatched/below-minimum`). Content only.

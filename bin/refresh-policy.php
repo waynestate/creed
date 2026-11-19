@@ -28,6 +28,9 @@ declare(strict_types=1);
  *   Node cross-check https://endoflife.date/api/v1/products/nodejs/
  *   Laravel dates   https://endoflife.date/api/v1/products/laravel/
  *   Laravel patches https://repo.packagist.org/p2/laravel/framework.json
+ *   CakePHP dates   https://endoflife.date/api/v1/products/cakephp/
+ *   CakePHP patches https://repo.packagist.org/p2/cakephp/cakephp.json
+ *   Slim patches    https://repo.packagist.org/p2/slim/slim.json
  *   MySQL lines     https://endoflife.date/api/v1/products/mysql/
  *   Vue lines       https://endoflife.date/api/v1/products/vue/
  *   Inertia tags    https://registry.npmjs.org/-/package/@inertiajs/vue3/dist-tags
@@ -151,6 +154,9 @@ $feeds = [
     'endoflife-nodejs' => ['endoflife-nodejs.json', 'https://endoflife.date/api/v1/products/nodejs/'],
     'endoflife-laravel' => ['endoflife-laravel.json', 'https://endoflife.date/api/v1/products/laravel/'],
     'packagist-laravel' => ['laravel.json', 'https://repo.packagist.org/p2/laravel/framework.json'],
+    'endoflife-cakephp' => ['endoflife-cakephp.json', 'https://endoflife.date/api/v1/products/cakephp/'],
+    'packagist-cakephp' => ['cakephp.json', 'https://repo.packagist.org/p2/cakephp/cakephp.json'],
+    'packagist-slim' => ['slim.json', 'https://repo.packagist.org/p2/slim/slim.json'],
     'endoflife-mysql' => ['endoflife-mysql.json', 'https://endoflife.date/api/v1/products/mysql/'],
     'endoflife-vue' => ['endoflife-vue.json', 'https://endoflife.date/api/v1/products/vue/'],
     'npm-inertia' => ['npm-inertia-vue3.json', 'https://registry.npmjs.org/-/package/@inertiajs/vue3/dist-tags'],
@@ -195,6 +201,9 @@ $endoflifePhp = parseFeed('endoflife-php', $rawFeeds['endoflife-php'] ?? null, E
 $endoflifeNodejs = parseFeed('endoflife-nodejs', $rawFeeds['endoflife-nodejs'] ?? null, EndOfLifeParser::parseReleases(...), $sourceErrors);
 $endoflifeLaravel = parseFeed('endoflife-laravel', $rawFeeds['endoflife-laravel'] ?? null, EndOfLifeParser::parseReleases(...), $sourceErrors);
 $packagistLaravel = parseFeed('packagist-laravel', $rawFeeds['packagist-laravel'] ?? null, PackagistP2Parser::parse(...), $sourceErrors);
+$endoflifeCakephp = parseFeed('endoflife-cakephp', $rawFeeds['endoflife-cakephp'] ?? null, EndOfLifeParser::parseReleases(...), $sourceErrors);
+$packagistCakephp = parseFeed('packagist-cakephp', $rawFeeds['packagist-cakephp'] ?? null, static fn(string $json): array => PackagistP2Parser::parse($json, 'cakephp/cakephp'), $sourceErrors);
+$packagistSlim = parseFeed('packagist-slim', $rawFeeds['packagist-slim'] ?? null, static fn(string $json): array => PackagistP2Parser::parse($json, 'slim/slim'), $sourceErrors);
 $endoflifeMysql = parseFeed('endoflife-mysql', $rawFeeds['endoflife-mysql'] ?? null, EndOfLifeParser::parseReleases(...), $sourceErrors);
 $endoflifeVue = parseFeed('endoflife-vue', $rawFeeds['endoflife-vue'] ?? null, EndOfLifeParser::parseReleases(...), $sourceErrors);
 $npmInertia = parseFeed('npm-inertia', $rawFeeds['npm-inertia'] ?? null, NpmDistTagsParser::parse(...), $sourceErrors);
@@ -214,6 +223,9 @@ $sources = new Sources(
     npmInertia: $npmInertia,
     endoflifeComposer: $endoflifeComposer,
     errors: $sourceErrors,
+    endoflifeCakephp: $endoflifeCakephp,
+    packagistCakephp: $packagistCakephp,
+    packagistSlim: $packagistSlim,
 );
 
 // The policy itself is not optional: without it there is nothing to refresh.

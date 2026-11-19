@@ -28,6 +28,9 @@ final class Sources
      * @param array<int|string, string>|null $npmInertia
      * @param list<Release>|null $endoflifeComposer
      * @param list<string> $errors
+     * @param list<Release>|null $endoflifeCakephp
+     * @param array<int|string, string>|null $packagistCakephp
+     * @param array<int|string, string>|null $packagistSlim
      */
     public function __construct(
         public readonly ?array $phpStates = null,
@@ -43,6 +46,9 @@ final class Sources
         public readonly ?array $npmInertia = null,
         public readonly ?array $endoflifeComposer = null,
         public readonly array $errors = [],
+        public readonly ?array $endoflifeCakephp = null,
+        public readonly ?array $packagistCakephp = null,
+        public readonly ?array $packagistSlim = null,
     ) {}
 
     public static function empty(): self

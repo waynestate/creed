@@ -33,6 +33,13 @@ final class RefresherTest extends TestCase
         "laravel": {"versions": {
             "13": {"active_until": "2027-09-17", "security_until": "2028-03-17"}
         }},
+        "cakephp": {"versions": {
+            "4": {"active_until": "2025-10-01", "security_until": "2026-10-01", "latest_patch": "4.6.5", "latest_patch_checked": "2026-10-01"},
+            "5": {"current": true, "latest_patch": "5.4.3", "latest_patch_checked": "2026-10-01"}
+        }},
+        "slim": {"versions": {
+            "4": {"current": true, "latest_patch": "4.15.2", "latest_patch_checked": "2026-10-01"}
+        }},
         "node": {"versions": {
             "24": {"active_until": "2026-10-20", "security_until": "2028-04-30"}
         }},
@@ -270,5 +277,78 @@ JSON;
             array_keys($report['held'][0]),
         );
         self::assertCount(1, $report['disagreements']);
+    }
+
+    #[Test]
+    public function cakephpMapsPerMinorCyclesToMajorLinesAndBumpsPatches(): void
+    {
+        $sources = new Sources(
+            endoflifeCakephp: [
+                $this->release('5.4', null, null, false, null, '5.4.4'),
+                $this->release('4.6', '2025-09-09', null, false, null, '4.6.6'),
+                $this->release('4.5', '2025-03-23', '2026-09-09', true, null, '4.5.12'),
+            ],
+            packagistCakephp: ['4' => '4.6.6', '5' => '5.4.4'],
+        );
+        [$result, $policy] = $this->runWith($sources);
+
+        // Line 4 takes its dates from the latest cycle per field.
+        self::assertSame('2025-09-09', $this->field($policy, 'cakephp', '4', 'active_until'));
+        self::assertSame('2026-09-09', $this->field($policy, 'cakephp', '4', 'security_until'));
+        self::assertSame('4.6.6', $this->field($policy, 'cakephp', '4', 'latest_patch'));
+        self::assertSame(self::TODAY, $this->field($policy, 'cakephp', '4', 'latest_patch_checked'));
+        // Line 5 has no dates in the feed: only its patch moves.
+        self::assertTrue($this->field($policy, 'cakephp', '5', 'current'));
+        self::assertNull($this->field($policy, 'cakephp', '5', 'active_until'));
+        self::assertNull($this->field($policy, 'cakephp', '5', 'security_until'));
+        self::assertSame('5.4.4', $this->field($policy, 'cakephp', '5', 'latest_patch'));
+
+        self::assertCount(4, $result->changes);
+        self::assertSame(['tighten', 'tighten', 'neutral', 'neutral'], array_map(fn($c) => $c->kind, $result->changes));
+    }
+
+    #[Test]
+    public function slimBumpsItsLatestPatchWithoutDates(): void
+    {
+        $sources = new Sources(packagistSlim: ['4' => '4.15.3']);
+        [$result, $policy] = $this->runWith($sources);
+
+        self::assertSame('4.15.3', $this->field($policy, 'slim', '4', 'latest_patch'));
+        self::assertSame(self::TODAY, $this->field($policy, 'slim', '4', 'latest_patch_checked'));
+        self::assertTrue($this->field($policy, 'slim', '4', 'current'));
+        self::assertNull($this->field($policy, 'slim', '4', 'active_until'));
+        self::assertNull($this->field($policy, 'slim', '4', 'security_until'));
+
+        self::assertCount(1, $result->changes);
+        self::assertSame('neutral', $result->changes[0]->kind);
+        self::assertSame('latest_patch', $result->changes[0]->field);
+    }
+
+    #[Test]
+    public function aCakephpMajorStillSupportedProposesACurrentLine(): void
+    {
+        $sources = new Sources(endoflifeCakephp: [
+            $this->release('6.0', null, null, false),
+            $this->release('5.4', null, null, false),
+        ]);
+        [$result, $policy] = $this->runWith($sources);
+
+        self::assertTrue($this->field($policy, 'cakephp', '6', 'current'));
+        self::assertCount(1, $result->changes);
+        self::assertSame('neutral', $result->changes[0]->kind);
+        self::assertSame('entry', $result->changes[0]->field);
+    }
+
+    #[Test]
+    public function aSlimMajorOnPackagistProposesACurrentLine(): void
+    {
+        $sources = new Sources(packagistSlim: ['4' => '4.15.3', '5' => '5.0.0']);
+        [$result, $policy] = $this->runWith($sources);
+
+        self::assertTrue($this->field($policy, 'slim', '5', 'current'));
+        self::assertSame('4.15.3', $this->field($policy, 'slim', '4', 'latest_patch'));
+        self::assertCount(2, $result->changes);
+        self::assertSame('neutral', $result->changes[1]->kind);
+        self::assertSame('entry', $result->changes[1]->field);
     }
 }

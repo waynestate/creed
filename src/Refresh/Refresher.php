@@ -60,6 +60,8 @@ final class Refresher
 
         $this->planPhp($components, $sources, $ledger, $result);
         $this->planLaravel($components, $sources, $ledger, $result);
+        $this->planCakephp($components, $sources, $ledger, $result);
+        $this->planSlim($components, $sources, $ledger, $result);
         $this->planNode($components, $sources, $ledger, $result);
         $this->planMysql($components, $sources, $ledger, $result);
         $this->planVue($components, $sources, $ledger, $result);
@@ -226,6 +228,134 @@ final class Refresher
                 $this->proposeNewLine('laravel', $best, ['current' => true], $listed, SourceNames::EOL_LARAVEL, $result);
             }
         }
+    }
+
+    private function planCakephp(object $components, Sources $sources, SourceLedger $ledger, RefreshResult $result): void
+    {
+        $versions = self::versionsOf($components, 'cakephp');
+        if ($versions === null) {
+            return;
+        }
+        $listed = get_object_vars($versions);
+
+        foreach (array_keys($listed) as $line) {
+            $line = (string) $line;
+            $dates = $sources->endoflifeCakephp === null
+                ? ['active_until' => null, 'security_until' => null]
+                : self::majorDatesForLine($line, $sources->endoflifeCakephp);
+            $facts = [
+                'active_until' => $dates['active_until'],
+                'security_until' => $dates['security_until'],
+                'latest_patch' => $sources->packagistCakephp[$line] ?? null,
+            ];
+            if ($facts['active_until'] === null && $facts['security_until'] === null && $facts['latest_patch'] === null) {
+                continue;
+            }
+            $this->updateListedLine(
+                'cakephp',
+                $versions,
+                $line,
+                $facts,
+                [
+                    'active_until' => SourceNames::EOL_CAKEPHP,
+                    'security_until' => SourceNames::EOL_CAKEPHP,
+                    'latest_patch' => SourceNames::PACKAGIST_CAKEPHP,
+                ],
+                null,
+                null,
+                $ledger,
+                $result,
+            );
+        }
+
+        // A new major: the highest cycle endoflife.date still calls supported,
+        // when the policy does not list its major yet.
+        if ($sources->endoflifeCakephp !== null) {
+            $candidates = [];
+            foreach ($sources->endoflifeCakephp as $release) {
+                if ($release->isEol || preg_match('/^(\d+)(?:\.\d+)?$/', $release->name, $cycle) !== 1) {
+                    continue;
+                }
+                $candidates[] = $cycle[1];
+            }
+            $best = Versions::highest($candidates);
+            if ($best !== null && !array_key_exists($best, $listed) && Versions::aboveAll($best, $listed)) {
+                $this->proposeNewLine('cakephp', $best, ['current' => true], $listed, SourceNames::EOL_CAKEPHP, $result);
+            }
+        }
+    }
+
+    private function planSlim(object $components, Sources $sources, SourceLedger $ledger, RefreshResult $result): void
+    {
+        $versions = self::versionsOf($components, 'slim');
+        if ($versions === null) {
+            return;
+        }
+        $listed = get_object_vars($versions);
+
+        // Slim has no support schedule in the feeds this tool reads: only the
+        // latest patch moves, never a date.
+        foreach (array_keys($listed) as $line) {
+            $line = (string) $line;
+            $patch = $sources->packagistSlim[$line] ?? null;
+            if ($patch === null) {
+                continue;
+            }
+            $this->updateListedLine(
+                'slim',
+                $versions,
+                $line,
+                ['active_until' => null, 'security_until' => null, 'latest_patch' => $patch],
+                [
+                    'active_until' => SourceNames::PACKAGIST_SLIM,
+                    'security_until' => SourceNames::PACKAGIST_SLIM,
+                    'latest_patch' => SourceNames::PACKAGIST_SLIM,
+                ],
+                null,
+                null,
+                $ledger,
+                $result,
+            );
+        }
+
+        // A new major: the highest Packagist major above every listed line,
+        // proposed open-ended like Laravel's.
+        if ($sources->packagistSlim !== null) {
+            $candidates = array_map('strval', array_keys($sources->packagistSlim));
+            $best = Versions::highest($candidates);
+            if ($best !== null && !array_key_exists($best, $listed) && Versions::aboveAll($best, $listed)) {
+                $this->proposeNewLine('slim', $best, ['current' => true], $listed, SourceNames::PACKAGIST_SLIM, $result);
+            }
+        }
+    }
+
+    /**
+     * The support dates of one CakePHP major line from its per-minor cycles:
+     * the latest non-null eoasFrom becomes active_until, the latest non-null
+     * eolFrom becomes security_until. Nulls stay null, so a date the feed
+     * lacks is left untouched by updateListedLine.
+     *
+     * @param list<Release> $releases
+     *
+     * @return array{active_until: ?string, security_until: ?string}
+     */
+    private static function majorDatesForLine(string $major, array $releases): array
+    {
+        $active = null;
+        $security = null;
+        foreach ($releases as $release) {
+            if (!str_starts_with($release->name, $major . '.')) {
+                continue;
+            }
+            if ($release->eoasFrom !== null && ($active === null || $release->eoasFrom > $active)) {
+                $active = $release->eoasFrom;
+            }
+            if ($release->eolFrom !== null && ($security === null || $release->eolFrom > $security)) {
+                $security = $release->eolFrom;
+            }
+        }
+
+        return ['active_until' => $active, 'security_until' => $security];
     }
 
     private function planNode(object $components, Sources $sources, SourceLedger $ledger, RefreshResult $result): void

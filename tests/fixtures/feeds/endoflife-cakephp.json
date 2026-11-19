@@ -1,0 +1,32 @@
+{
+    "schema_version": "1.2.1",
+    "result": {
+        "name": "cakephp",
+        "releases": [
+            {
+                "name": "5.4",
+                "isEol": false,
+                "latest": {
+                    "name": "5.4.4"
+                }
+            },
+            {
+                "name": "4.6",
+                "isEol": false,
+                "eoasFrom": "2025-09-09",
+                "latest": {
+                    "name": "4.6.6"
+                }
+            },
+            {
+                "name": "4.5",
+                "isEol": true,
+                "eoasFrom": "2025-03-23",
+                "eolFrom": "2026-09-09",
+                "latest": {
+                    "name": "4.5.12"
+                }
+            }
+        ]
+    }
+}
