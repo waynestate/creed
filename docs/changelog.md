@@ -9,6 +9,7 @@ description: All notable changes to this project.
 
 ## Unreleased
 
+- Added: `composer site:versions` writes the front page's Table 2-1 dates and latest patches from policy.json; `site:versions-check` reports a stale table.
 - Added: the handbook chapter "Oracle, Banner and people" (`handbook/oracle-and-people.md`): reads through TELLER's named queries with bound values, a read-only transaction and a row cap; no Oracle credentials or Instant Client in the repo (PROCTOR check `instant-client-committed`); person lookups through Rolodex (confidentiality flag, granted profiles, POST-only searches, synthetic fixtures); LDAP that demands TLS and escapes filter values.
 - Changed: the gap list marks items 1, 16 and 19 Done, and practice 34 names the check: PROCTOR 0.16.1 warns on a missing `* text=auto eol=lf` line (`proctor/gitattributes-eol/no-default`) and on a runtime below its line's `minimum_patch` (`proctor/unpatched/below-minimum`). Content only.
 - Changed: the dev dependency Pinstripe is `^0.4` (was `^0.3`, which does not allow 0.4.0); 0.4.0 adds two opt-in Rector presets and changes no rule this repo uses.
