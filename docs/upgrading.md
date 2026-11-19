@@ -16,6 +16,12 @@ How CREED versions are cut, what each release changed that a consumer notices, a
 5. A release needs a maintainer's approval. Never move or delete a published tag.
 6. Then bump `waynestate/creed` where the stack pins it, and refresh the generated copies.
 
+## 0.1.12 (2026-11-19)
+
+The reader and schema are as they were in 0.1.11; policy.json gains the cakephp (4, 5) and slim (4) components, refreshed from endoflife.date and Packagist (a CakePHP major's dates come from its newest minor), and the PHP minimum_patch floors. The handbook gains the chapter Oracle, Banner and people and the AI chapter's WarriorGPT-only allowance for personal data in a prompt. The policy robot now rewrites the front page's Table 2-1 from the policy, and in/export.php ships in the Composer dist. The deploy kit is Squire 0.11.1 and deploy/ requires PROCTOR ^0.16.
+
+Refresh after upgrading: ADVISOR's bundled policy and handbook, so its answers quote the new components and wording. PROCTOR's generated reader needs no refresh.
+
 ## 0.1.11 (2026-11-10)
 
 Nothing changes for a consumer's code: `policy.json`, its schema and the reader are as they were in 0.1.10. The handbook changed: rules phrased as plain imperatives now carry an RFC 2119 capital (MUST, SHOULD, MAY) and a tag saying what holds them ("Held by:" a named check, or "No check exists yet"); the databases rule names Preflight's `mysql56-migrate` job and PROCTOR's `mysql56-ci` check; the auth chapter names both gateway assertion lifetimes. The rest is CREED's own CI and deploy layer (PROCTOR ^0.15, Preflight 0.5.0 on GitHub).
