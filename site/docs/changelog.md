@@ -10,6 +10,8 @@ generator: Squire agent-ready
 
 ## Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+## 0.1.12 (2026-11-19) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-12-2026-11-19)
+
 - Changed: the policy robot rewrites the front page's Table 2-1 (`site/index.html`) from the policy it just wrote before staging the refresh, and `composer ci` runs `site:versions-check` so a stale table fails the gate.
 - Added: `cakephp` (4, 5) and `slim` (4) policy components, refreshed from endoflife.date and Packagist, so Booster's CakePHP and Slim hops target CakePHP 5 and Slim 4 by default.
 - Added: `composer site:versions` writes the front page's Table 2-1 dates and latest patches from policy.json; `site:versions-check` reports a stale table.
