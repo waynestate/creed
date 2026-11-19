@@ -25,6 +25,11 @@ use stdClass;
  *                was written (often nothing) and runs the gate the same way
  *        exit 1  a hard failure: the robot stops with exit 1
  *
+ * Before it stages anything, the robot rewrites the front page's Table
+ * 2-1 (site/index.html) from the policy just written, through the same
+ * runner; composer ci checks that page is current too. A non-zero exit
+ * from the rewrite stops the run the way a failed git add does.
+ *
  * The gate: the robot commits on the checked-out main commit (it pushes
  * only from the default branch), then runs composer ci in the same job.
  * Green: it pushes the commit straight to main with the CI job token, no
@@ -65,14 +70,16 @@ final readonly class PolicyBot
     public const MR_TITLE = 'policy: refresh from upstream sources';
 
     /**
-     * The only paths a policy refresh may change; a commit stages exactly
-     * these, nothing else.
+     * The only paths a policy refresh may change: the policy data plus the
+     * one generated page (the front page's Table 2-1); a commit stages
+     * exactly these, nothing else.
      *
      * @var list<string>
      */
     public const DATA_ALLOWLIST = [
         'policy/policy.json',
         'policy/sources.json',
+        'site/index.html',
     ];
 
     /**
@@ -509,6 +516,16 @@ final readonly class PolicyBot
             return 1;
         }
 
+        // The policy just written is the table's source of truth, so the
+        // front page is rewritten from it before anything is staged. On a
+        // --touch heartbeat this is a no-op; it still runs.
+        $status = $this->runFrontVersions();
+        if ($status !== 0) {
+            $this->say("front-versions failed (exit {$status}); the robot stops here\n");
+
+            return 1;
+        }
+
         $result = $this->runGit(['add', ...self::DATA_ALLOWLIST]);
         if ($result['status'] !== 0) {
             $this->say("git add failed (exit {$result['status']}); the robot stops here\n");
@@ -579,6 +596,36 @@ final readonly class PolicyBot
         $this->printMergeRequest($report);
 
         return 1;
+    }
+
+    /**
+     * Rewrite the front page's Table 2-1 (site/index.html) from the policy
+     * the refresher just wrote, in the repo root, through the same runner
+     * as the refresher and git so tests can fake it. The command line is
+     * echoed first (masked) and its streams are replayed (masked). A
+     * command that cannot start counts as a failure with status 1.
+     */
+    private function runFrontVersions(): int
+    {
+        $argv = [PHP_BINARY, $this->repoRoot . '/bin/front-versions.php'];
+        $this->say('$ ' . implode(' ', $argv) . "\n");
+
+        try {
+            $result = $this->runner->run($argv);
+        } catch (CommandException $e) {
+            $this->err('front-versions could not start: ' . $e->getMessage() . "\n");
+
+            return 1;
+        }
+
+        if ($result['stdout'] !== '') {
+            $this->say($result['stdout']);
+        }
+        if ($result['stderr'] !== '') {
+            $this->err($result['stderr']);
+        }
+
+        return $result['status'];
     }
 
     /**

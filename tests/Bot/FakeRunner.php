@@ -11,8 +11,9 @@ use RuntimeException;
  * argv names refresh-policy.php pop the next scripted exit code and write
  * the next report to the requested --report path. Git calls return the
  * scripted result for their subcommand, or success with empty streams.
- * Composer calls (the gate) return $gate. Every call is recorded; any other call throws, so a test can never
- * silently run a real command.
+ * Composer calls (the gate) return $gate. Front-versions calls (the Table
+ * 2-1 rewrite) return $frontVersions. Every call is recorded; any other
+ * call throws, so a test can never silently run a real command.
  */
 final class FakeRunner
 {
@@ -45,6 +46,14 @@ final class FakeRunner
      * @var array{status: int, stdout: string, stderr: string}
      */
     public array $gate = ['status' => 0, 'stdout' => '', 'stderr' => ''];
+
+    /**
+     * The scripted result for the front-versions generator (any call whose
+     * argv names front-versions.php). Green by default.
+     *
+     * @var array{status: int, stdout: string, stderr: string}
+     */
+    public array $frontVersions = ['status' => 0, 'stdout' => '', 'stderr' => ''];
 
     private int $call = 0;
 
@@ -88,6 +97,9 @@ final class FakeRunner
                 }
 
                 return $this->git[$sub] ?? ['status' => 0, 'stdout' => '', 'stderr' => ''];
+            }
+            if (str_contains($joined, 'front-versions.php')) {
+                return $this->frontVersions;
             }
 
             throw new RuntimeException("FakeRunner has no rule for: {$joined}");

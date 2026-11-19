@@ -13,10 +13,10 @@ use Waynestate\Creed\Bot\PolicyBot;
 
 /**
  * Shared setup for the policy robot tests: a throwaway repository root with
- * the data allowlist files (policy.json stamped with today, so the weekly
- * heartbeat stays quiet unless a test ages it), builders for refresher
- * reports, and a capture helper for echoed stdout. No network, no real
- * repository.
+ * the data allowlist files (the policy documents plus a front page stub,
+ * policy.json stamped with today, so the weekly heartbeat stays quiet
+ * unless a test ages it), builders for refresher reports, and a capture
+ * helper for echoed stdout. No network, no real repository.
  */
 abstract class TestCase extends PHPUnitTestCase
 {
@@ -46,6 +46,10 @@ abstract class TestCase extends PHPUnitTestCase
         mkdir($this->repoRoot . '/policy', 0777, true);
         file_put_contents($this->repoRoot . '/policy/policy.json', json_encode(['refreshed_on' => date('Y-m-d')]) . "\n");
         file_put_contents($this->repoRoot . '/policy/sources.json', "{}\n");
+        // The front page stub: the robot rewrites its Table 2-1 and stages
+        // it, so the fixture carries the file like the real repository.
+        mkdir($this->repoRoot . '/site', 0777, true);
+        file_put_contents($this->repoRoot . '/site/index.html', "<html><body>front page</body></html>\n");
     }
 
     protected function tearDown(): void
@@ -57,6 +61,10 @@ abstract class TestCase extends PHPUnitTestCase
             unlink($file);
         }
         rmdir($this->repoRoot . '/policy');
+        foreach (glob($this->repoRoot . '/site/*') ?: [] as $file) {
+            unlink($file);
+        }
+        rmdir($this->repoRoot . '/site');
         rmdir($this->repoRoot);
     }
 

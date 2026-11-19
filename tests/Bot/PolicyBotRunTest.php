@@ -54,7 +54,7 @@ final class PolicyBotRunTest extends TestCase
         [$exit, $out] = $this->capture($bot, static fn(PolicyBot $b): int => $b->run());
 
         self::assertSame(0, $exit, $out);
-        self::assertStringContainsString("changes written; the commit plan:\n  policy/policy.json\n  policy/sources.json\n", $out);
+        self::assertStringContainsString("changes written; the commit plan:\n  policy/policy.json\n  policy/sources.json\n  site/index.html\n", $out);
         self::assertStringContainsString('running the gate: composer ci', $out);
         // No merge request on a green gate, so no title or body either.
         self::assertStringNotContainsString('merge request title:', $out);
@@ -62,7 +62,7 @@ final class PolicyBotRunTest extends TestCase
 
         $git = $this->gitCalls($runner);
         self::assertArrayNotHasKey('checkout', $git);
-        self::assertSame(['add', 'policy/policy.json', 'policy/sources.json'], $git['add']);
+        self::assertSame(['add', 'policy/policy.json', 'policy/sources.json', 'site/index.html'], $git['add']);
         self::assertSame(
             ['-c', 'user.name=CREED policy bot', '-c', 'user.email=policy-bot@noreply.invalid', 'commit', '-m', 'policy: refresh from upstream sources'],
             $git['commit'],
@@ -79,6 +79,66 @@ final class PolicyBotRunTest extends TestCase
         self::assertIsInt($gateAt);
         self::assertGreaterThan($commitAt, $gateAt);
         self::assertGreaterThan($gateAt, $pushAt);
+    }
+
+    #[Test]
+    public function runsTheFrontVersionsGeneratorBeforeStaging(): void
+    {
+        $this->ciEnvironment();
+        [$bot, $runner] = $this->makeBot([3], [$this->report(changes: [$this->changeItem()])]);
+        $runner->git['diff'] = ['status' => 0, 'stdout' => "policy/policy.json\n", 'stderr' => ''];
+
+        [$exit, $out] = $this->capture($bot, static fn(PolicyBot $b): int => $b->run());
+
+        self::assertSame(0, $exit, $out);
+        $frontAt = $this->callIndex($runner, PHP_BINARY, $this->repoRoot . '/bin/front-versions.php');
+        $addAt = $this->callIndex($runner, 'git', 'add');
+        self::assertLessThan($addAt, $frontAt, $out);
+    }
+
+    #[Test]
+    public function stagesTheFrontPageWithThePolicyData(): void
+    {
+        $this->ciEnvironment();
+        [$bot, $runner] = $this->makeBot([3], [$this->report(changes: [$this->changeItem()])]);
+        $runner->git['diff'] = ['status' => 0, 'stdout' => "policy/policy.json\n", 'stderr' => ''];
+
+        [$exit, $out] = $this->capture($bot, static fn(PolicyBot $b): int => $b->run());
+
+        self::assertSame(0, $exit, $out);
+        self::assertStringContainsString("changes written; the commit plan:\n  policy/policy.json\n  policy/sources.json\n  site/index.html\n", $out);
+        $git = $this->gitCalls($runner);
+        self::assertSame(['add', 'policy/policy.json', 'policy/sources.json', 'site/index.html'], $git['add']);
+    }
+
+    #[Test]
+    public function stopsWhenTheFrontVersionsGeneratorFails(): void
+    {
+        $this->ciEnvironment();
+        [$bot, $runner] = $this->makeBot([3], [$this->report(changes: [$this->changeItem()])]);
+        $runner->frontVersions = ['status' => 1, 'stdout' => '', 'stderr' => ''];
+
+        [$exit, $out] = $this->capture($bot, static fn(PolicyBot $b): int => $b->run());
+
+        self::assertSame(1, $exit, $out);
+        self::assertStringContainsString('front-versions failed (exit 1); the robot stops here', $out);
+        // The stop happens before git add, so no git call was made at all.
+        self::assertSame([], $this->gitCalls($runner));
+    }
+
+    #[Test]
+    public function dryRunPlansTheFrontPageAndRunsNothing(): void
+    {
+        [$bot, $runner] = $this->makeBot([0], [$this->report(changes: [$this->changeItem()], dryRun: true)], dryRun: true);
+
+        [$exit, $out] = $this->capture($bot, static fn(PolicyBot $b): int => $b->run());
+
+        self::assertSame(0, $exit, $out);
+        self::assertStringContainsString("dry run: would commit these files:\n  policy/policy.json\n  policy/sources.json\n  site/index.html\n", $out);
+        // Only the refresher ran; the generator and git stayed out of it.
+        self::assertCount(1, $runner->calls);
+        self::assertStringContainsString('refresh-policy.php', implode(' ', $runner->calls[0]));
+        self::assertStringNotContainsString('front-versions.php', implode(' ', $runner->calls[0]));
     }
 
     #[Test]
@@ -381,7 +441,7 @@ final class PolicyBotRunTest extends TestCase
         [$exit, $out] = $this->capture($bot, static fn(PolicyBot $b): int => $b->run());
 
         self::assertSame(0, $exit, $out);
-        self::assertStringContainsString("dry run: would commit these files:\n  policy/policy.json\n  policy/sources.json\n", $out);
+        self::assertStringContainsString("dry run: would commit these files:\n  policy/policy.json\n  policy/sources.json\n  site/index.html\n", $out);
         self::assertStringContainsString('merge request title: policy: refresh from upstream sources', $out);
         self::assertStringContainsString('- php 8.3: latest_patch 8.3.35 -> 8.3.36 [neutral]', $out);
         self::assertStringContainsString('--dry-run', implode(' ', $runner->calls[0]));
