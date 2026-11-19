@@ -493,14 +493,14 @@ Table 2-1 Adopted editions, with the state on 2026-10-29
 | 8.2 | 2024-12-31 | 2026-12-31 | 8.2.35 | Security |
 | 8.1 | 2023-11-25 | 2025-12-31 | n/a | Grace expired |
 | Laravel floor **12** |  |  |  |  |
-| 13 | 2027-09-30 | 2028-03-17 | 13.40.0 | Active |
-| 12 | 2026-08-13 | 2027-02-24 | 12.71.0 | Security |
+| 13 | 2027-09-30 | 2028-03-17 | 13.42.0 | Active |
+| 12 | 2026-08-13 | 2027-02-24 | 12.72.0 | Security |
 | 11 | 2025-09-03 | 2026-03-12 | 11.57.1 | Grace expired |
 | 10 | 2024-08-06 | 2025-02-04 | 10.50.4 | Grace expired |
 | Node floor **22** |  |  |  |  |
-| 26 | 2027-10-20 | 2029-04-30 | 26.13.0 | Active |
-| 24 | 2026-10-20 | 2028-04-30 | 24.22.2 | Security |
-| 22 | 2025-10-21 | 2027-04-30 | 22.23.4 | Security |
+| 26 | 2027-10-20 | 2029-04-30 | 26.13.1 | Active |
+| 24 | 2026-10-20 | 2028-04-30 | 24.22.3 | Security |
+| 22 | 2025-10-21 | 2027-04-30 | 22.23.5 | Security |
 | 20 | 2024-10-22 | 2026-04-30 | 20.20.2 | Grace expired |
 | MySQL floor **8.4** |  |  |  |  |
 | 9.7 | 2031-04-30 | 2034-04-30 | n/a | Active |
@@ -947,6 +947,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Changed: the policy robot rewrites the front page's Table 2-1 (`site/index.html`) from the policy it just wrote before staging the refresh, and `composer ci` runs `site:versions-check` so a stale table fails the gate.
 - Added: `composer site:versions` writes the front page's Table 2-1 dates and latest patches from policy.json; `site:versions-check` reports a stale table.
 - Added: the handbook chapter "Oracle, Banner and people" (`handbook/oracle-and-people.md`): reads through TELLER's named queries with bound values, a read-only transaction and a row cap; no Oracle credentials or Instant Client in the repo (PROCTOR check `instant-client-committed`); person lookups through Rolodex (confidentiality flag, granted profiles, POST-only searches, synthetic fixtures); LDAP that demands TLS and escapes filter values.
 - Changed: the gap list marks items 1, 16 and 19 Done, and practice 34 names the check: PROCTOR 0.16.1 warns on a missing `* text=auto eol=lf` line (`proctor/gitattributes-eol/no-default`) and on a runtime below its line's `minimum_patch` (`proctor/unpatched/below-minimum`). Content only.
@@ -1397,15 +1398,17 @@ The policy robot is `bin/policy-bot.php run` (the logic is `src/Bot/PolicyBot.ph
 | Refresher exit | What the robot does |
 | --- | --- |
 | `0` nothing worth committing | Nothing, unless `refreshed_on` is 7 or more days old: then it runs the refresher again with `--touch` (the weekly heartbeat) and treats that run like any other. |
-| `3` changes written | Commits `policy/policy.json` and `policy/sources.json` on main's commit, runs [the gate](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-gate), and pushes to `main` when it is green. |
+| `3` changes written | Commits `policy/policy.json`, `policy/sources.json` and `site/index.html` on main's commit, runs [the gate](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-gate), and pushes to `main` when it is green. |
 | `4` something held or refused | Commits whatever was written (often nothing) and runs the gate the same way. The held and refused items stay out and get alert issues. |
 | `1` hard failure | Stops with exit 1. The job goes red and nothing is pushed. |
+
+Before it stages anything, the robot rewrites the front page's Table 2-1 (`site/index.html`) from the policy it just wrote, and `composer ci` fails when that page is stale (`site:versions-check`).
 
 After every handled run, red or green, it also brings its [alert issues](https://creed.apps.wayne.edu/docs/guides/policy-bot.html#the-alert-issues) in line with the report.
 
 Note
 
-The robot only ever stages `policy/policy.json` and `policy/sources.json`, and only on `main`: a pipeline on any other branch stops before it commits. It never tags, releases or touches code, and nothing it writes reaches `main` without `composer ci` passing on it first.
+The robot only ever stages `policy/policy.json`, `policy/sources.json` and `site/index.html`, and only on `main`: a pipeline on any other branch stops before it commits. It never tags, releases or touches code, and nothing it writes reaches `main` without `composer ci` passing on it first.
 
 What it may write is decided by the refresher's change classes: a date that moves earlier (`tighten`), a new patch or a new line (`neutral`) and a later `active_until` (`loosen-warning`) are written; a later `security_until` (`loosen-fail`) is held until two sources or 14 days of the same answer prove it; removing anything, or touching `tools` or `rules`, is refused. [Refreshing the policy](https://creed.apps.wayne.edu/docs/guides/policy-refresh.html) has the full table.
 

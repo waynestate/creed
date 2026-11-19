@@ -45,6 +45,9 @@
 <h2 id="unreleased"><span class="docs-heading-tail"><span>Unreleased</span><a class="docs-heading-link" aria-label="Link to this section" href="#unreleased">#</a></span></h2>
 <ul>
 <li>
+<p>Changed: the policy robot rewrites the front page's Table 2-1 (<code>site/index.html</code>) from the policy it just wrote before staging the refresh, and <code>composer ci</code> runs <code>site:versions-check</code> so a stale table fails the gate.</p>
+</li>
+<li>
 <p>Added: <code>composer site:versions</code> writes the front page's Table 2-1 dates and latest patches from policy.json; <code>site:versions-check</code> reports a stale table.</p>
 </li>
 <li>

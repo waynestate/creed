@@ -58,7 +58,7 @@
 </tr>
 <tr>
 <td><code>3</code> changes written</td>
-<td>Commits <code>policy/policy.json</code> and <code>policy/sources.json</code> on main's commit, runs <a href="#the-gate">the gate</a>, and pushes to <code>main</code> when it is green.</td>
+<td>Commits <code>policy/policy.json</code>, <code>policy/sources.json</code> and <code>site/index.html</code> on main's commit, runs <a href="#the-gate">the gate</a>, and pushes to <code>main</code> when it is green.</td>
 </tr>
 <tr>
 <td><code>4</code> something held or refused</td>
@@ -70,8 +70,9 @@
 </tr>
 </tbody>
 </table></div>
+<p>Before it stages anything, the robot rewrites the front page's Table 2-1 (<code>site/index.html</code>) from the policy it just wrote, and <code>composer ci</code> fails when that page is stale (<code>site:versions-check</code>).</p>
 <p>After every handled run, red or green, it also brings its <a href="#the-alert-issues">alert issues</a> in line with the report.</p>
-<aside class="docs-callout docs-callout--note" role="note"><p class="docs-callout__label">Note</p><p>The robot only ever stages <code>policy/policy.json</code> and <code>policy/sources.json</code>, and only on <code>main</code>: a pipeline on any other branch stops before it commits. It never tags, releases or touches code, and nothing it writes reaches <code>main</code> without <code>composer ci</code> passing on it first.</p></aside>
+<aside class="docs-callout docs-callout--note" role="note"><p class="docs-callout__label">Note</p><p>The robot only ever stages <code>policy/policy.json</code>, <code>policy/sources.json</code> and <code>site/index.html</code>, and only on <code>main</code>: a pipeline on any other branch stops before it commits. It never tags, releases or touches code, and nothing it writes reaches <code>main</code> without <code>composer ci</code> passing on it first.</p></aside>
 <p>What it may write is decided by the refresher's change classes: a date that moves earlier (<code>tighten</code>), a new patch or a new line (<code>neutral</code>) and a later <code>active_until</code> (<code>loosen-warning</code>) are written; a later <code>security_until</code> (<code>loosen-fail</code>) is held until two sources or 14 days of the same answer prove it; removing anything, or touching <code>tools</code> or <code>rules</code>, is refused. <a href="policy-refresh.html">Refreshing the policy</a> has the full table.</p>
 <h2 id="the-gate">The <span class="docs-heading-tail"><span>gate</span><a class="docs-heading-link" aria-label="Link to this section" href="#the-gate">#</a></span></h2>
 <p>The scheduled job runs as the schedule owner, so it can run the whole gate itself:</p>

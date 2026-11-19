@@ -42,7 +42,8 @@ docker run --rm -v "${PWD}:/app" -w /app php:8.5-cli vendor/bin/phpunit
 ```
 
 `composer ci` runs `composer validate --strict`, the tests, the policy validator, Pint, the handbook lint, the
-handbook site and agent-ready freshness checks, PHPStan, `composer audit` and the docs site freshness check. On Windows, if tests fail oddly after a Docker install, delete `vendor/` and install again.
+handbook site, agent-ready and front page Table 2-1 freshness checks, PHPStan, `composer audit` and the docs
+site freshness check. On Windows, if tests fail oddly after a Docker install, delete `vendor/` and install again.
 
 ## CI
 
@@ -61,8 +62,10 @@ This is CREED's real maintenance job.
   nodejs.org (Node) and endoflife.date (a PHP cross-check and Vue lines). It updates `latest_patch` and
   `latest_patch_checked`, and proposes new Vue lines. In CI the scheduled job is check-only: the refresh tool
   exits 3 when the policy changed and the job fails on the diff. The policy robot (`bin/policy-bot.php run`)
-  runs the fuller `bin/refresh-policy.php` every Monday, commits `policy/policy.json` and `policy/sources.json`
-  on main's commit and runs `composer ci` in its own job. Green: it pushes straight to `main` with the CI job
+  runs the fuller `bin/refresh-policy.php` every Monday, commits `policy/policy.json`, `policy/sources.json`
+  and `site/index.html` on main's commit and runs `composer ci` in its own job. It also rewrites the front
+  page's Table 2-1 (`site/index.html`) from the policy before it stages anything, and `composer ci` fails
+  when that page is stale (`site:versions-check`). Green: it pushes straight to `main` with the CI job
   token; GitLab starts no new pipeline for that push and nobody merges by hand. Red: it opens or updates
   `auto/policy-refresh` as a merge request labeled `auto-data` for a person, and the job fails, so the schedule
   owner gets mail. Held and refused items get an `auto-alert` issue every run, red or green. Missing CI

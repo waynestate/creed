@@ -14,14 +14,16 @@ The policy robot is `bin/policy-bot.php run` (the logic is `src/Bot/PolicyBot.ph
 | Refresher exit | What the robot does |
 |---|---|
 | `0` nothing worth committing | Nothing, unless `refreshed_on` is 7 or more days old: then it runs the refresher again with `--touch` (the weekly heartbeat) and treats that run like any other. |
-| `3` changes written | Commits `policy/policy.json` and `policy/sources.json` on main's commit, runs [the gate](#the-gate), and pushes to `main` when it is green. |
+| `3` changes written | Commits `policy/policy.json`, `policy/sources.json` and `site/index.html` on main's commit, runs [the gate](#the-gate), and pushes to `main` when it is green. |
 | `4` something held or refused | Commits whatever was written (often nothing) and runs the gate the same way. The held and refused items stay out and get alert issues. |
 | `1` hard failure | Stops with exit 1. The job goes red and nothing is pushed. |
+
+Before it stages anything, the robot rewrites the front page's Table 2-1 (`site/index.html`) from the policy it just wrote, and `composer ci` fails when that page is stale (`site:versions-check`).
 
 After every handled run, red or green, it also brings its [alert issues](#the-alert-issues) in line with the report.
 
 > [!NOTE]
-> The robot only ever stages `policy/policy.json` and `policy/sources.json`, and only on `main`: a pipeline on any other branch stops before it commits. It never tags, releases or touches code, and nothing it writes reaches `main` without `composer ci` passing on it first.
+> The robot only ever stages `policy/policy.json`, `policy/sources.json` and `site/index.html`, and only on `main`: a pipeline on any other branch stops before it commits. It never tags, releases or touches code, and nothing it writes reaches `main` without `composer ci` passing on it first.
 
 What it may write is decided by the refresher's change classes: a date that moves earlier (`tighten`), a new patch or a new line (`neutral`) and a later `active_until` (`loosen-warning`) are written; a later `security_until` (`loosen-fail`) is held until two sources or 14 days of the same answer prove it; removing anything, or touching `tools` or `rules`, is refused. [Refreshing the policy](policy-refresh.md) has the full table.
 
