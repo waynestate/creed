@@ -1,6 +1,6 @@
 {
     "schema_version": 1,
-    "refreshed_on": "2026-11-16",
+    "refreshed_on": "2026-11-19",
     "components": {
         "php": {
             "versions": {
@@ -104,6 +104,48 @@
                         },
                         "mysql": "5.7",
                         "mariadb": "10.3"
+                    }
+                }
+            }
+        },
+        "cakephp": {
+            "versions": {
+                "4": {
+                    "active_until": "2025-09-09",
+                    "security_until": "2026-09-09",
+                    "latest_patch": "4.6.6",
+                    "latest_patch_checked": "2026-11-19",
+                    "requires": {
+                        "php": {
+                            "min": "7.4",
+                            "max": "8.5"
+                        }
+                    }
+                },
+                "5": {
+                    "current": true,
+                    "latest_patch": "5.4.4",
+                    "latest_patch_checked": "2026-11-19",
+                    "requires": {
+                        "php": {
+                            "min": "8.2",
+                            "max": "8.5"
+                        }
+                    }
+                }
+            }
+        },
+        "slim": {
+            "versions": {
+                "4": {
+                    "current": true,
+                    "latest_patch": "4.15.3",
+                    "latest_patch_checked": "2026-11-19",
+                    "requires": {
+                        "php": {
+                            "min": "7.4",
+                            "max": "8.5"
+                        }
                     }
                 }
             }

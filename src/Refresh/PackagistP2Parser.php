@@ -17,11 +17,13 @@ use RuntimeException;
 final class PackagistP2Parser
 {
     /**
+     * The latest stable version per major of one package in the feed.
+     *
      * @return array<int|string, string> keyed by major, for example "13"
      *
      * @throws RuntimeException when the feed is not the expected shape
      */
-    public static function parse(string $json): array
+    public static function parse(string $json, string $package = 'laravel/framework'): array
     {
         $data = json_decode($json, false);
         if (!is_object($data)) {
@@ -31,14 +33,14 @@ final class PackagistP2Parser
         if ($packages === null) {
             throw new RuntimeException('Packagist feed: missing "packages" object');
         }
-        $framework = get_object_vars($packages)['laravel/framework'] ?? null;
-        if (!is_array($framework)) {
-            throw new RuntimeException('Packagist feed: missing "laravel/framework" versions');
+        $versions = get_object_vars($packages)[$package] ?? null;
+        if (!is_array($versions)) {
+            throw new RuntimeException('Packagist feed: missing "' . $package . '" versions');
         }
 
         /** @var array<string, list<string>> $byMajor */
         $byMajor = [];
-        foreach ($framework as $entry) {
+        foreach ($versions as $entry) {
             if (!is_object($entry)) {
                 continue;
             }

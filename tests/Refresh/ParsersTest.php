@@ -74,6 +74,31 @@ final class ParsersTest extends TestCase
     }
 
     #[Test]
+    public function cakephpEndOfLifeGivesPerMinorCycles(): void
+    {
+        $cakephp = EndOfLifeParser::byName(EndOfLifeParser::parseReleases($this->feed('endoflife-cakephp.json')));
+        self::assertSame('2025-09-09', $cakephp['4.6']->eoasFrom);
+        self::assertNull($cakephp['4.6']->eolFrom);
+        self::assertFalse($cakephp['4.6']->isEol);
+        self::assertSame('2026-09-09', $cakephp['4.5']->eolFrom);
+        self::assertTrue($cakephp['4.5']->isEol);
+        self::assertFalse($cakephp['5.4']->isEol);
+        self::assertSame('5.4.4', $cakephp['5.4']->latest);
+    }
+
+    #[Test]
+    public function packagistGivesTheHighestStablePatchForOtherPackages(): void
+    {
+        $cakephp = PackagistP2Parser::parse($this->feed('cakephp.json'), 'cakephp/cakephp');
+        self::assertSame('4.6.6', ($cakephp['4'] ?? null));
+        self::assertSame('5.4.4', ($cakephp['5'] ?? null));
+
+        $slim = PackagistP2Parser::parse($this->feed('slim.json'), 'slim/slim');
+        self::assertSame('4.15.3', ($slim['4'] ?? null));
+        self::assertSame('3.16.3', ($slim['3'] ?? null));
+    }
+
+    #[Test]
     public function npmDistTagsGivesLatest(): void
     {
         self::assertSame('3.9.1', NpmDistTagsParser::parse($this->feed('npm-inertia-vue3.json'))['latest']);

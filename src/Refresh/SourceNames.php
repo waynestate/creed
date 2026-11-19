@@ -26,6 +26,12 @@ final class SourceNames
 
     public const PACKAGIST_LARAVEL = 'packagist/laravel-framework';
 
+    public const EOL_CAKEPHP = 'endoflife.date/cakephp';
+
+    public const PACKAGIST_CAKEPHP = 'packagist/cakephp-cakephp';
+
+    public const PACKAGIST_SLIM = 'packagist/slim-slim';
+
     public const EOL_MYSQL = 'endoflife.date/mysql';
 
     public const EOL_VUE = 'endoflife.date/vue';
