@@ -34,6 +34,7 @@ tools/a11y/check.mjs text eol=lf
 /bin/agent-ready.php       export-ignore
 /bin/build-handbook-site.php export-ignore
 /bin/docs-site.php          export-ignore
+/bin/front-versions.php     export-ignore
 /bin/lint-handbook.php      export-ignore
 /bin/mysql56-probe.php      export-ignore
 /bin/policy-bot.php         export-ignore
