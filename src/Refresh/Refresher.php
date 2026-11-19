@@ -331,9 +331,11 @@ final class Refresher
 
     /**
      * The support dates of one CakePHP major line from its per-minor cycles:
-     * the latest non-null eoasFrom becomes active_until, the latest non-null
-     * eolFrom becomes security_until. Nulls stay null, so a date the feed
-     * lacks is left untouched by updateListedLine.
+     * the newest minor (highest minor number in `<major>.<minor>` names)
+     * decides, so its eoasFrom becomes active_until and its eolFrom becomes
+     * security_until. A major is supported as long as its newest minor is,
+     * so older minors' later dates must not leak into the line. Nulls stay
+     * null, so a date the feed lacks is left untouched by updateListedLine.
      *
      * @param list<Release> $releases
      *
@@ -341,21 +343,23 @@ final class Refresher
      */
     private static function majorDatesForLine(string $major, array $releases): array
     {
-        $active = null;
-        $security = null;
+        $newestMinor = -1;
+        $newest = null;
         foreach ($releases as $release) {
-            if (!str_starts_with($release->name, $major . '.')) {
+            if (!preg_match('/^(\d+)\.(\d+)$/', $release->name, $parts)) {
                 continue;
             }
-            if ($release->eoasFrom !== null && ($active === null || $release->eoasFrom > $active)) {
-                $active = $release->eoasFrom;
+            if ($parts[1] !== $major || (int) $parts[2] <= $newestMinor) {
+                continue;
             }
-            if ($release->eolFrom !== null && ($security === null || $release->eolFrom > $security)) {
-                $security = $release->eolFrom;
-            }
+            $newestMinor = (int) $parts[2];
+            $newest = $release;
         }
 
-        return ['active_until' => $active, 'security_until' => $security];
+        return [
+            'active_until' => $newest?->eoasFrom,
+            'security_until' => $newest?->eolFrom,
+        ];
     }
 
     private function planNode(object $components, Sources $sources, SourceLedger $ledger, RefreshResult $result): void

@@ -11,6 +11,28 @@
                 }
             },
             {
+                "name": "5.3",
+                "isEol": false,
+                "eoasFrom": "2026-07-20"
+            },
+            {
+                "name": "5.2",
+                "isEol": false,
+                "eoasFrom": "2026-01-10"
+            },
+            {
+                "name": "5.1",
+                "isEol": true,
+                "eoasFrom": "2025-03-30",
+                "eolFrom": "2026-07-19"
+            },
+            {
+                "name": "5.0",
+                "isEol": true,
+                "eoasFrom": "2024-09-14",
+                "eolFrom": "2026-01-09"
+            },
+            {
                 "name": "4.6",
                 "isEol": false,
                 "eoasFrom": "2025-09-09",

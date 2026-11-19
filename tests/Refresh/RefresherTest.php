@@ -6,6 +6,7 @@ namespace Waynestate\Creed\Tests\Refresh;
 
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
+use Waynestate\Creed\Refresh\EndOfLifeParser;
 use Waynestate\Creed\Refresh\Refresher;
 use Waynestate\Creed\Refresh\RefreshResult;
 use Waynestate\Creed\Refresh\Release;
@@ -34,7 +35,7 @@ final class RefresherTest extends TestCase
             "13": {"active_until": "2027-09-17", "security_until": "2028-03-17"}
         }},
         "cakephp": {"versions": {
-            "4": {"active_until": "2025-10-01", "security_until": "2026-10-01", "latest_patch": "4.6.5", "latest_patch_checked": "2026-10-01"},
+            "4": {"active_until": "2025-10-01", "security_until": "2026-09-09", "latest_patch": "4.6.5", "latest_patch_checked": "2026-10-01"},
             "5": {"current": true, "latest_patch": "5.4.3", "latest_patch_checked": "2026-10-01"}
         }},
         "slim": {"versions": {
@@ -282,29 +283,47 @@ JSON;
     #[Test]
     public function cakephpMapsPerMinorCyclesToMajorLinesAndBumpsPatches(): void
     {
+        $feed = (string) file_get_contents(dirname(__DIR__) . '/fixtures/feeds/endoflife-cakephp.json');
         $sources = new Sources(
-            endoflifeCakephp: [
-                $this->release('5.4', null, null, false, null, '5.4.4'),
-                $this->release('4.6', '2025-09-09', null, false, null, '4.6.6'),
-                $this->release('4.5', '2025-03-23', '2026-09-09', true, null, '4.5.12'),
-            ],
+            endoflifeCakephp: EndOfLifeParser::parseReleases($feed),
             packagistCakephp: ['4' => '4.6.6', '5' => '5.4.4'],
         );
         [$result, $policy] = $this->runWith($sources);
 
-        // Line 4 takes its dates from the latest cycle per field.
+        // Line 4 takes its dates from its newest minor, 4.6: active until
+        // 2025-09-09. The feed carries no eolFrom for 4.6, so the policy's
+        // security date stays as it was.
         self::assertSame('2025-09-09', $this->field($policy, 'cakephp', '4', 'active_until'));
         self::assertSame('2026-09-09', $this->field($policy, 'cakephp', '4', 'security_until'));
         self::assertSame('4.6.6', $this->field($policy, 'cakephp', '4', 'latest_patch'));
         self::assertSame(self::TODAY, $this->field($policy, 'cakephp', '4', 'latest_patch_checked'));
-        // Line 5 has no dates in the feed: only its patch moves.
+        // Line 5's newest minor (5.4) has no dates in the feed, even though
+        // older minors do: only its patch moves, and the line stays
+        // open-ended.
         self::assertTrue($this->field($policy, 'cakephp', '5', 'current'));
         self::assertNull($this->field($policy, 'cakephp', '5', 'active_until'));
         self::assertNull($this->field($policy, 'cakephp', '5', 'security_until'));
         self::assertSame('5.4.4', $this->field($policy, 'cakephp', '5', 'latest_patch'));
 
-        self::assertCount(4, $result->changes);
-        self::assertSame(['tighten', 'tighten', 'neutral', 'neutral'], array_map(fn($c) => $c->kind, $result->changes));
+        self::assertCount(3, $result->changes);
+        self::assertSame(['tighten', 'neutral', 'neutral'], array_map(fn($c) => $c->kind, $result->changes));
+    }
+
+    #[Test]
+    public function theHighestMinorWinsWhenMinorsAreNotInFeedOrder(): void
+    {
+        // 4.10 is the newest minor even though an older one looks later in
+        // string order; its dates decide the major line.
+        $sources = new Sources(endoflifeCakephp: [
+            $this->release('4.9', '2025-01-01', '2026-01-01', true),
+            $this->release('4.10', '2025-06-01', '2026-06-01', false),
+        ]);
+        [$result, $policy] = $this->runWith($sources);
+
+        self::assertSame('2025-06-01', $this->field($policy, 'cakephp', '4', 'active_until'));
+        self::assertSame('2026-06-01', $this->field($policy, 'cakephp', '4', 'security_until'));
+        self::assertCount(2, $result->changes);
+        self::assertSame(['tighten', 'tighten'], array_map(fn($c) => $c->kind, $result->changes));
     }
 
     #[Test]
