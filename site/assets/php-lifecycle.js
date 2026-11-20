@@ -320,7 +320,7 @@
     var nx = els.next;
     clear(nx);
     nx.appendChild(h("p", { class: "pl-card__label", text: "Next known release" }));
-    var up = doc.upcoming || [];
+    var up = orderUpcoming(doc.upcoming || []);
     if (!up.length) {
       nx.appendChild(h("p", { class: "pl-next__what", text: "Nothing announced or tagged" }));
       nx.appendChild(h("p", { class: "pl-sub", text: state.mode === "fallback"
@@ -329,9 +329,13 @@
       return;
     }
     var u = up[0];
+    // Patches tagged together read as one line: "PHP 8.5.14, 8.4.29 and 8.3.38".
+    var same = up.filter(function (x) { return x.kind === "patch" && u.kind === "patch" && x.status === u.status && (x.day || "") === (u.day || ""); });
+    var rest = same.length > 1 ? up.filter(function (x) { return same.indexOf(x) === -1; }) : up.slice(1);
     var what;
     if (u.kind === "security") what = "Security releases for PHP " + branchList(u.branches);
     else if (u.kind === "branch") what = "PHP " + (u.version || u.branches[0]) + (u.status === "development" ? " in the works" : "");
+    else if (same.length > 1) what = "PHP " + same.map(function (x) { return x.version || x.branches[0] + ".x"; }).join(", ");
     else what = "PHP " + (u.version || (u.branches[0] + ".x"));
     var key = what + "|" + (u.day || "") + "|" + u.status;
     nx.appendChild(h("p", { class: "pl-next__what" + (state.nextKey && state.nextKey !== key ? " is-fresh" : ""), text: what }));
@@ -345,11 +349,24 @@
       evs.appendChild(h("li", null, [h("a", { href: e.url, text: e.source })]));
     });
     nx.appendChild(evs);
-    if (up.length > 1) {
-      nx.appendChild(h("p", { class: "pl-sub", text: "Also: " + up.slice(1, 4).map(function (x) {
-        return (x.version || ("PHP " + branchList(x.branches))) + " (" + statusLabel(x.status) + ")";
-      }).join("; ") + (up.length > 4 ? "; and more" : "") }));
+    if (rest.length) {
+      nx.appendChild(h("p", { class: "pl-sub", text: "Also: " + rest.slice(0, 3).map(function (x) {
+        return (x.kind === "security" ? "security releases for " + branchList(x.branches) : (x.version || ("PHP " + branchList(x.branches)))) + " (" + statusLabel(x.status) + (x.day ? ", " + x.day : "") + ")";
+      }).join("; ") + (rest.length > 3 ? "; and more" : "") }));
     }
+  }
+
+  /* Dated first (soonest first), then a new branch, then everything else by strength of evidence. */
+  function orderUpcoming(list) {
+    var kind = { security: 0, branch: 1, patch: 2 };
+    var status = { due: 0, announced: 1, tagged: 2, scheduled: 3, candidate: 4, development: 5 };
+    return list.slice().sort(function (a, b) {
+      var da = a.start || a.day || "9999", db = b.start || b.day || "9999";
+      if (da !== db) return da < db ? -1 : 1;
+      var k = (kind[a.kind] || 3) - (kind[b.kind] || 3);
+      if (k) return k;
+      return (status[a.status] || 9) - (status[b.status] || 9) || cmpVersion(b.version || "0", a.version || "0");
+    });
   }
 
   function renderTimeline(doc, fresh) {
@@ -378,9 +395,12 @@
     hi = Date.UTC(y1, 0, 1);
     var pct = function (day) { return Math.max(0, Math.min(100, (dayMs(day) - lo) / (hi - lo) * 100)); };
 
+    var todayPct = pct(today);
     for (var y = y0; y < y1; y++) {
-      var tick = h("span", { class: "pl-axis__tick", text: String(y) });
-      tick.style.setProperty("left", ((Date.UTC(y, 6, 1) - lo) / (hi - lo) * 100) + "%");
+      var at = (Date.UTC(y, 6, 1) - lo) / (hi - lo) * 100;
+      // The year under the Today label steps aside rather than print through it.
+      var tick = h("span", { class: "pl-axis__tick" + (Math.abs(at - todayPct) < 5 ? " pl-axis__tick--hidden" : ""), text: String(y) });
+      tick.style.setProperty("left", at + "%");
       els.axis.appendChild(tick);
     }
     var tLabel = h("span", { class: "pl-axis__today", text: "Today" });

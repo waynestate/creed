@@ -97,6 +97,7 @@
 .pl-axis-cell { position: relative; }
 .pl-axis { position: absolute; inset: 0 .4rem; }
 .pl-axis__tick { position: absolute; bottom: .3rem; transform: translateX(-50%); font-family: var(--mono); font-size: .64rem; letter-spacing: .04em; color: var(--ink-2); }
+.pl-axis__tick--hidden { visibility: hidden; }
 .pl-axis__today { position: absolute; bottom: .3rem; transform: translateX(-50%); font-family: var(--mono); font-weight: 600; font-size: .64rem; letter-spacing: .08em; text-transform: uppercase; color: var(--red); background: var(--paper); padding: 0 .25rem; }
 
 .pl-branch {
