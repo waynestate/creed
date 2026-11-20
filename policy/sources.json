@@ -1,28 +1,55 @@
 {
     "schema_version": 1,
-    "updated_on": "2026-11-16",
+    "updated_on": "2026-11-20",
     "observations": {
+        "cakephp": {
+            "4": {
+                "active_until": {
+                    "endoflife.date/cakephp": {
+                        "value": "2025-09-09",
+                        "first_seen": "2026-11-20",
+                        "last_seen": "2026-11-20"
+                    }
+                },
+                "latest_patch": {
+                    "packagist/cakephp-cakephp": {
+                        "value": "4.6.6",
+                        "first_seen": "2026-11-20",
+                        "last_seen": "2026-11-20"
+                    }
+                }
+            },
+            "5": {
+                "latest_patch": {
+                    "packagist/cakephp-cakephp": {
+                        "value": "5.4.4",
+                        "first_seen": "2026-11-20",
+                        "last_seen": "2026-11-20"
+                    }
+                }
+            }
+        },
         "laravel": {
             "10": {
                 "active_until": {
                     "endoflife.date/laravel": {
                         "value": "2024-08-06",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "latest_patch": {
                     "packagist/laravel-framework": {
                         "value": "10.50.4",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "security_until": {
                     "endoflife.date/laravel": {
                         "value": "2025-02-04",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 }
             },
@@ -31,21 +58,21 @@
                     "endoflife.date/laravel": {
                         "value": "2025-09-03",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "latest_patch": {
                     "packagist/laravel-framework": {
                         "value": "11.57.1",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "security_until": {
                     "endoflife.date/laravel": {
                         "value": "2026-03-12",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 }
             },
@@ -54,21 +81,21 @@
                     "endoflife.date/laravel": {
                         "value": "2026-08-13",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "latest_patch": {
                     "packagist/laravel-framework": {
-                        "value": "12.72.0",
-                        "first_seen": "2026-11-16",
-                        "last_seen": "2026-11-16"
+                        "value": "12.73.0",
+                        "first_seen": "2026-11-20",
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "security_until": {
                     "endoflife.date/laravel": {
                         "value": "2027-02-24",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 }
             },
@@ -77,21 +104,21 @@
                     "endoflife.date/laravel": {
                         "value": "2027-09-30",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "latest_patch": {
                     "packagist/laravel-framework": {
-                        "value": "13.42.0",
-                        "first_seen": "2026-11-16",
-                        "last_seen": "2026-11-16"
+                        "value": "13.43.0",
+                        "first_seen": "2026-11-20",
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "security_until": {
                     "endoflife.date/laravel": {
                         "value": "2028-03-17",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 }
             }
@@ -102,14 +129,14 @@
                     "endoflife.date/mysql": {
                         "value": "2018-02-28",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "security_until": {
                     "endoflife.date/mysql": {
                         "value": "2021-02-28",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 }
             },
@@ -118,14 +145,14 @@
                     "endoflife.date/mysql": {
                         "value": "2020-10-31",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "security_until": {
                     "endoflife.date/mysql": {
                         "value": "2023-10-31",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 }
             },
@@ -134,14 +161,14 @@
                     "endoflife.date/mysql": {
                         "value": "2025-04-30",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "security_until": {
                     "endoflife.date/mysql": {
                         "value": "2026-04-30",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 }
             },
@@ -150,14 +177,14 @@
                     "endoflife.date/mysql": {
                         "value": "2029-04-30",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "security_until": {
                     "endoflife.date/mysql": {
                         "value": "2032-04-30",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 }
             },
@@ -166,14 +193,14 @@
                     "endoflife.date/mysql": {
                         "value": "2031-04-30",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "security_until": {
                     "endoflife.date/mysql": {
                         "value": "2034-04-30",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 }
             }
@@ -184,21 +211,21 @@
                     "nodejs/schedule": {
                         "value": "2024-10-22",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "latest_patch": {
                     "nodejs.org/dist": {
                         "value": "20.20.2",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "security_until": {
                     "nodejs/schedule": {
                         "value": "2026-04-30",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 }
             },
@@ -207,21 +234,21 @@
                     "nodejs/schedule": {
                         "value": "2025-10-21",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "latest_patch": {
                     "nodejs.org/dist": {
                         "value": "22.23.5",
                         "first_seen": "2026-11-16",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "security_until": {
                     "nodejs/schedule": {
                         "value": "2027-04-30",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 }
             },
@@ -230,21 +257,21 @@
                     "nodejs/schedule": {
                         "value": "2026-10-20",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "latest_patch": {
                     "nodejs.org/dist": {
                         "value": "24.22.3",
                         "first_seen": "2026-11-16",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "security_until": {
                     "nodejs/schedule": {
                         "value": "2028-04-30",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 }
             },
@@ -253,21 +280,21 @@
                     "nodejs/schedule": {
                         "value": "2027-10-20",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "latest_patch": {
                     "nodejs.org/dist": {
                         "value": "26.13.1",
                         "first_seen": "2026-11-16",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "security_until": {
                     "nodejs/schedule": {
                         "value": "2029-04-30",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 }
             }
@@ -278,14 +305,14 @@
                     "php.net/states": {
                         "value": "2023-11-25",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "security_until": {
                     "php.net/states": {
                         "value": "2025-12-31",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 }
             },
@@ -294,21 +321,21 @@
                     "php.net/states": {
                         "value": "2024-12-31",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "latest_patch": {
                     "php.net/active": {
-                        "value": "8.2.35",
-                        "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "value": "8.2.36",
+                        "first_seen": "2026-11-20",
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "security_until": {
                     "php.net/states": {
                         "value": "2026-12-31",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 }
             },
@@ -317,21 +344,21 @@
                     "php.net/states": {
                         "value": "2025-12-31",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "latest_patch": {
                     "php.net/active": {
-                        "value": "8.3.36",
-                        "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "value": "8.3.37",
+                        "first_seen": "2026-11-20",
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "security_until": {
                     "php.net/states": {
                         "value": "2027-12-31",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 }
             },
@@ -340,21 +367,21 @@
                     "php.net/states": {
                         "value": "2026-12-31",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "latest_patch": {
                     "php.net/active": {
-                        "value": "8.4.27",
-                        "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "value": "8.4.28",
+                        "first_seen": "2026-11-20",
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "security_until": {
                     "php.net/states": {
                         "value": "2028-12-31",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 }
             },
@@ -363,21 +390,48 @@
                     "php.net/states": {
                         "value": "2027-12-31",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "latest_patch": {
                     "php.net/active": {
-                        "value": "8.5.12",
-                        "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "value": "8.5.13",
+                        "first_seen": "2026-11-20",
+                        "last_seen": "2026-11-20"
                     }
                 },
                 "security_until": {
                     "php.net/states": {
                         "value": "2029-12-31",
                         "first_seen": "2026-10-29",
-                        "last_seen": "2026-11-16"
+                        "last_seen": "2026-11-20"
+                    }
+                }
+            },
+            "8.6": {
+                "active_until": {
+                    "php.net/states": {
+                        "value": "2028-12-31",
+                        "first_seen": "2026-11-20",
+                        "last_seen": "2026-11-20"
+                    }
+                },
+                "security_until": {
+                    "php.net/states": {
+                        "value": "2030-12-31",
+                        "first_seen": "2026-11-20",
+                        "last_seen": "2026-11-20"
+                    }
+                }
+            }
+        },
+        "slim": {
+            "4": {
+                "latest_patch": {
+                    "packagist/slim-slim": {
+                        "value": "4.15.3",
+                        "first_seen": "2026-11-20",
+                        "last_seen": "2026-11-20"
                     }
                 }
             }
