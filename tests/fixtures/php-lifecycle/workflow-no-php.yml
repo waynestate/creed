@@ -1,0 +1,9 @@
+# Made up for the tests: a workflow whose matrix names no PHP version.
+name: docs
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        node: [20, 22]
+        php: ['${{ fromJSON(needs.setup.outputs.php) }}', nightly]

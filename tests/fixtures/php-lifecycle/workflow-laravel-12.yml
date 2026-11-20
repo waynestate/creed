@@ -1,0 +1,32 @@
+# Trimmed from laravel/framework 12.x .github/workflows/tests.yml, read 2026-11-20.
+# 8.2 to 8.4 in the matrix; 8.5 arrives only through include: entries.
+name: tests
+
+jobs:
+  linux_tests:
+    runs-on: ubuntu-24.04
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [8.2, 8.3, 8.4]
+        phpunit: ['10.5.35', '11.5.3', '12.0.0', '12.5.0']
+        stability: [prefer-lowest, prefer-stable]
+        exclude:
+          - php: 8.2
+            phpunit: '12.0.0'
+          - php: 8.2
+            phpunit: '12.5.0'
+        include:
+          - php: 8.5
+            phpunit: '12.1.0'
+            stability: prefer-stable
+          - php: 8.5
+            phpunit: '12.5.0'
+            stability: prefer-stable
+
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}

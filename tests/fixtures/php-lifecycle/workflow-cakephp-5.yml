@@ -1,0 +1,50 @@
+# Trimmed from cakephp/cakephp 5.x .github/workflows/ci.yml, read 2026-11-20.
+# A quoted php-version list, include: entries that add 8.3 and 8.4, and a Windows job
+# whose single PHP version comes from env (not a matrix, so it does not count).
+name: CI
+
+jobs:
+  testsuite:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ['8.2', '8.5', '8.6']
+        db-type: [sqlite, pgsql]
+        dependencies: ['highest']
+        include:
+          - php-version: '8.2'
+            db-type: 'mariadb'
+            dependencies: highest
+
+          - php-version: '8.3'
+            db-type: 'mysql'
+            dependencies: highest
+
+          - php-version: '8.4'
+            db-type: 'mysql'
+            dependencies: highest
+
+    steps:
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php-version }}
+
+  testsuite-windows:
+    runs-on: windows-2022
+    env:
+      PHP_VERSION: '8.2'
+    steps:
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ env.PHP_VERSION }}
+
+  cs-stan:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'

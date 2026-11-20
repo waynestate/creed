@@ -112,6 +112,72 @@ final class PhpLifecycleFeedTest extends TestCase
         self::assertFalse($s['states']['browser']);
     }
 
+    /**
+     * @param array<string, mixed> $doc
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    private static function frameworks(array $doc): array
+    {
+        self::assertIsArray($doc['frameworks']);
+        $out = [];
+        foreach ($doc['frameworks'] as $f) {
+            self::assertIsArray($f);
+            $out[$f['name'] . ' ' . $f['major']] = $f;
+        }
+
+        return $out;
+    }
+
+    #[Test]
+    public function eachFrameworkMajorsCiWorkflowIsReadFromItsBranch(): void
+    {
+        $net = self::net();
+        $doc = (new Feed($this->dir, $net))->get(new DateTimeImmutable('2026-11-19T22:00:00Z'));
+
+        self::assertSame('https://raw.githubusercontent.com/laravel/framework/13.x/.github/workflows/tests.yml', $net->urls['ci-laravel/framework@13']);
+        self::assertSame('https://raw.githubusercontent.com/cakephp/cakephp/4.x/.github/workflows/ci.yml', $net->urls['ci-cakephp/cakephp@4']);
+        self::assertSame('https://raw.githubusercontent.com/slimphp/Slim/3.x/.github/workflows/tests.yml', $net->urls['ci-slim/slim@3']);
+        $s = self::sources($doc);
+        self::assertTrue($s['ci-laravel/framework@13']['ok']);
+        self::assertSame('framework-ci', $s['ci-laravel/framework@13']['group']);
+        self::assertSame('GitHub: Laravel 13.x CI workflow', $s['ci-laravel/framework@13']['label']);
+        self::assertFalse($s['ci-laravel/framework@13']['browser']);
+
+        // The feed's shape: allows stays, tested sits beside it keyed the same, fit joins them.
+        $fw = self::frameworks($doc);
+        $l13 = $fw['Laravel 13'];
+        self::assertIsArray($l13['allows']);
+        self::assertIsArray($l13['tested']);
+        self::assertSame(array_keys($l13['allows']), array_keys($l13['tested']));
+        self::assertTrue($l13['allows']['8.6']);
+        self::assertFalse($l13['tested']['8.6']);
+        self::assertIsArray($l13['fit']);
+        self::assertSame('untested', $l13['fit']['8.6']);
+        self::assertSame('tested', $l13['fit']['8.5']);
+        self::assertSame('https://github.com/laravel/framework/blob/13.x/.github/workflows/tests.yml', $l13['tested_source']);
+        self::assertIsArray($fw['CakePHP 5']['fit']);
+        self::assertSame('tested', $fw['CakePHP 5']['fit']['8.6']);
+    }
+
+    #[Test]
+    public function aWorkflowThatFailsLeavesTestedNullAndTheAllowsState(): void
+    {
+        $doc = (new Feed($this->dir, self::net(['ci-laravel/framework@13'], ['ci-slim/slim@3' => 'wiki-php87-404.html'])))->get(new DateTimeImmutable('2026-11-19T22:00:00Z'));
+        $fw = self::frameworks($doc);
+        $s = self::sources($doc);
+
+        self::assertNull($fw['Laravel 13']['tested']);
+        self::assertIsArray($fw['Laravel 13']['fit']);
+        self::assertSame('allowed', $fw['Laravel 13']['fit']['8.6']);
+        self::assertSame('no', $fw['Laravel 13']['fit']['8.2']);
+        self::assertFalse($s['ci-laravel/framework@13']['ok']);
+        self::assertSame('timed out', $s['ci-laravel/framework@13']['error']);
+        self::assertNull($fw['Slim 3']['tested'], 'an HTML page is not a workflow');
+        self::assertSame('unreadable answer', $s['ci-slim/slim@3']['error']);
+        self::assertIsArray($fw['Laravel 12']['tested'], 'the other majors are still read');
+    }
+
     #[Test]
     public function theWikiIsAskedForIndexedPagesOnlyOneASecond(): void
     {
@@ -245,6 +311,9 @@ final class PhpLifecycleFakeHttp extends Http
     /** @var list<float> */
     public array $pauses = [];
 
+    /** @var array<string, string> id => the URL asked for */
+    public array $urls = [];
+
     /**
      * @param list<string> $down
      * @param array<string, string> $files id => fixture, on top of the usual ones
@@ -274,11 +343,18 @@ final class PhpLifecycleFakeHttp extends Http
             'wiki-7.4' => 'wiki-php74.txt',
             'wiki-5.6' => 'wiki-php56.txt',
             'wiki-5.4' => 'wiki-php54.txt',
+            'ci-laravel/framework@13' => 'workflow-laravel-13.yml',
+            'ci-laravel/framework@12' => 'workflow-laravel-12.yml',
+            'ci-cakephp/cakephp@5' => 'workflow-cakephp-5.yml',
+            'ci-cakephp/cakephp@4' => 'workflow-cakephp-4.yml',
+            'ci-slim/slim@4' => 'workflow-slim-4.yml',
+            'ci-slim/slim@3' => 'workflow-slim-3.yml',
         ];
         $map = $this->files + $map;
         $out = [];
         foreach ($urls as $id => $url) {
             $this->asked[] = $id;
+            $this->urls[$id] = $url;
             $file = $map[$id] ?? null;
             if (in_array($id, $this->down, true)) {
                 $out[$id] = ['status' => 0, 'body' => null, 'error' => 'timed out'];

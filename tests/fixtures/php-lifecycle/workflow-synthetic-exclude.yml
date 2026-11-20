@@ -1,0 +1,29 @@
+# Made up for the tests, not copied from any project: a block-list PHP key, comments,
+# an exclude that names only the PHP key (so 8.3 is gone entirely), an exclude that
+# covers every pairing of 8.4 (gone too), an include list at the key's own indent,
+# and a matrix with no PHP key at all.
+name: made-up
+
+jobs:
+  tests:
+    strategy:
+      matrix:
+        php-versions:   # block form, mixed quoting
+          - "8.2"
+          - '8.3'
+          - 8.4
+          - 8.5   # trailing comment
+        db: [mysql, sqlite]
+        exclude:
+          - php-versions: '8.3'
+          - php-versions: '8.4'
+            db: mysql
+          - php-versions: '8.4'
+            db: sqlite
+        include:
+        - php-versions: '8.6'
+          db: mysql
+  lint:
+    strategy:
+      matrix:
+        node: [20, 22]

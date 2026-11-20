@@ -57,6 +57,7 @@ final class PhpLifecycleParseTest extends TestCase
         self::assertNull(Parse::endoflife($html));
         self::assertNull(Parse::wiki($html));
         self::assertNull(Parse::packagist($html, 'slim/slim'));
+        self::assertNull(Parse::workflowPhp($html));
     }
 
     #[Test]
@@ -212,6 +213,78 @@ final class PhpLifecycleParseTest extends TestCase
         self::assertSame('^8.3', $min[0]['php']);
         self::assertSame('>=7.4,<8.6', $min[1]['php'], 'the newest 2.x inherits nothing it did not declare');
         self::assertSame('2026-11-01', $min[0]['released']);
+    }
+
+    /**
+     * Each framework's CI workflow on its major's branch, trimmed copies read 2026-11-20.
+     *
+     * @return iterable<string, array{0: string, 1: list<string>}>
+     */
+    public static function workflows(): iterable
+    {
+        yield 'Laravel 13: unquoted list; the exclude drops a PHPUnit pairing, not 8.3' => ['workflow-laravel-13.yml', ['8.3', '8.4', '8.5']];
+        yield 'Laravel 12: 8.5 only in include entries' => ['workflow-laravel-12.yml', ['8.2', '8.3', '8.4', '8.5']];
+        yield 'CakePHP 5: quoted php-version list plus include; env and step versions do not count' => ['workflow-cakephp-5.yml', ['8.2', '8.3', '8.4', '8.5', '8.6']];
+        yield 'CakePHP 4: an exclude on a db-type the matrix lacks removes nothing; no 8.3, 8.4 or 8.6' => ['workflow-cakephp-4.yml', ['7.4', '8.0', '8.1', '8.2', '8.5']];
+        yield 'Slim 4: nightly is not a line' => ['workflow-slim-4.yml', ['7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.5', '8.6']];
+        yield 'Slim 3: four-space indents' => ['workflow-slim-3.yml', ['8.1', '8.2', '8.3', '8.4', '8.5']];
+        yield 'made up: block list, comments, excludes that remove whole lines, include at the key indent' => ['workflow-synthetic-exclude.yml', ['8.2', '8.5', '8.6']];
+    }
+
+    /**
+     * @param list<string> $expected
+     */
+    #[Test]
+    #[DataProvider('workflows')]
+    public function aWorkflowGivesThePhpLinesItsMatricesRun(string $file, array $expected): void
+    {
+        self::assertSame($expected, Parse::workflowPhp(self::fixture($file)));
+    }
+
+    #[Test]
+    public function aWorkflowThatNamesNoPhpVersionIsNotRead(): void
+    {
+        self::assertNull(Parse::workflowPhp(self::fixture('workflow-no-php.yml')), 'an expression and nightly are not lines; null, never "tests nothing"');
+        self::assertNull(Parse::workflowPhp('404: Not Found'));
+        self::assertNull(Parse::workflowPhp(''));
+    }
+
+    #[Test]
+    public function anExcludeThatRemovesEveryPairingLeavesTheLineOut(): void
+    {
+        $yml = "jobs:
+  t:
+    strategy:
+      matrix:
+        php: ['8.3', '8.4']
+        exclude:
+          - php: '8.3'
+";
+        self::assertSame(['8.4'], Parse::workflowPhp($yml));
+        $all = "jobs:
+  t:
+    strategy:
+      matrix:
+        php: [8.4]
+        exclude:
+          - php: 8.4
+";
+        self::assertSame([], Parse::workflowPhp($all), 'read, and it runs no line: an answer, not an outage');
+    }
+
+    #[Test]
+    public function aFlowListMayRunOverSeveralLines(): void
+    {
+        $yml = "jobs:
+  t:
+    strategy:
+      matrix:
+        php-version: [
+          '8.4', # the floor
+          \"8.5\"
+        ]
+";
+        self::assertSame(['8.4', '8.5'], Parse::workflowPhp($yml));
     }
 
     /**

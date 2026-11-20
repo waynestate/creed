@@ -68,7 +68,7 @@ final class Merge
      *     wiki?: array<string, ?array{ga: ?string, rows: list<array{date: string, label: string, skipped: bool, kind: string, note: ?string, announce: ?string, links: list<array{label: string, url: string}>}>}>,
      *     wikiPages?: ?list<array{branch: string, page: string}>,
      *     master?: ?array{version: string, branch: string, major: int, minor: int, extra: string},
-     *     frameworks?: array<string, array{name: string, url: string, majors: ?list<array{version: string, major: string, released: ?string, php: ?string}>, lifecycle?: ?string, lifecycle_note?: ?string}>,
+     *     frameworks?: array<string, array{name: string, url: string, majors: ?list<array{version: string, major: string, released: ?string, php: ?string}>, workflows?: array<string, array{lines: ?list<string>, url: string}>, lifecycle?: ?string, lifecycle_note?: ?string}>,
      *     platforms?: array<string, ?list<string>>,
      * } $in
      * @param list<array<string, mixed>> $sources
@@ -299,15 +299,26 @@ final class Merge
             return [$da, self::rank($a['status'])] <=> [$db, self::rank($b['status'])];
         });
 
-        // Framework fit: what each framework's newest majors declare in require.php.
+        // Framework fit: what each framework's newest majors declare in require.php (allows), what
+        // that major's own CI runs (tested), and the two together (fit). A constraint like ^8.3
+        // "allows" every 8.x to come; only the CI matrix says the framework has tried it.
         $frameworks = [];
         foreach ($in['frameworks'] ?? [] as $package => $f) {
             foreach ($f['majors'] ?? [] as $m) {
+                $ci = $f['workflows'][$m['major']] ?? null;
+                $lines = $ci['lines'] ?? null;
                 $allows = [];
+                $tested = $lines === null ? null : [];
+                $fit = [];
                 foreach (array_keys($branches) as $branch) {
                     $allows[$branch] = $m['php'] === null ? null : Constraint::allowsBranch($m['php'], $branch);
+                    if ($tested !== null) {
+                        $tested[$branch] = in_array($branch, $lines ?? [], true);
+                    }
+                    $fit[$branch] = self::fit($allows[$branch], $tested === null ? null : $tested[$branch]);
                 }
                 $frameworks[] = ['package' => $package, 'name' => $f['name'], 'url' => $f['url'], 'major' => $m['major'], 'version' => $m['version'], 'released' => $m['released'], 'php' => $m['php'], 'allows' => $allows,
+                    'tested' => $tested, 'tested_lines' => $lines, 'tested_source' => $ci['url'] ?? null, 'fit' => $fit,
                     'lifecycle' => $f['lifecycle'] ?? null, 'lifecycle_note' => $f['lifecycle_note'] ?? null];
             }
         }
@@ -647,6 +658,24 @@ final class Merge
     private static function evidence(string $source, string $label, ?string $url = null): array
     {
         return ['source' => $source, 'label' => $label, 'url' => $url];
+    }
+
+    /**
+     * One framework cell: "tested" (require.php allows the line and the major's CI runs it),
+     * "untested" (Composer would install it; the CI does not run it yet), "allowed" (allowed,
+     * and the CI workflow was not read, so nothing is claimed), "no" (require.php refuses it),
+     * or null (no constraint to read). A CI run on a line the constraint refuses is still "no":
+     * Slim 4 runs 8.6 with --ignore-platform-req, Composer would not install it.
+     */
+    private static function fit(?bool $allows, ?bool $tested): ?string
+    {
+        return match (true) {
+            $allows === null => null,
+            $allows === false => 'no',
+            $tested === null => 'allowed',
+            $tested => 'tested',
+            default => 'untested',
+        };
     }
 
     private static function rank(string $status): int

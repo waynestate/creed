@@ -329,6 +329,89 @@ final class PhpLifecycleMergeTest extends TestCase
         self::assertSame('announced', $t['8.4']['patches']['next']['status']);
     }
 
+    /**
+     * tonight() plus each major's CI workflow lines, as Feed hands them over.
+     *
+     * @return array<string, mixed>
+     */
+    private static function withWorkflows(): array
+    {
+        $in = self::tonight();
+        self::assertIsArray($in['frameworks']);
+        $files = ['laravel/framework' => 'laravel', 'cakephp/cakephp' => 'cakephp', 'slim/slim' => 'slim'];
+        foreach ($files as $package => $short) {
+            self::assertIsArray($in['frameworks'][$package]['majors']);
+            foreach ($in['frameworks'][$package]['majors'] as $m) {
+                $in['frameworks'][$package]['workflows'][$m['major']] = [
+                    'lines' => Parse::workflowPhp(self::fixture('workflow-' . $short . '-' . $m['major'] . '.yml')),
+                    'url' => 'https://github.com/example/' . $short . '/blob/' . $m['major'] . '.x/.github/workflows/ci.yml',
+                ];
+            }
+        }
+
+        return $in;
+    }
+
+    /**
+     * @param array<string, mixed> $doc
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    private static function frameworks(array $doc): array
+    {
+        self::assertIsArray($doc['frameworks']);
+        $out = [];
+        foreach ($doc['frameworks'] as $f) {
+            self::assertIsArray($f);
+            $out[$f['name'] . ' ' . $f['major']] = $f;
+        }
+
+        return $out;
+    }
+
+    #[Test]
+    public function frameworkFitSaysTestedOnlyWhereItsOwnCiRunsTheLine(): void
+    {
+        $fw = self::frameworks(self::build(self::withWorkflows()));
+        $cols = array_flip(['8.2', '8.3', '8.4', '8.5', '8.6']);
+        $row = static fn(string $name): array => array_intersect_key($fw[$name]['fit'], $cols);
+
+        // The question from 2026-11-20: ^8.3 lets Composer install Laravel 13 on 8.6; Laravel does not test it.
+        self::assertTrue($fw['Laravel 13']['allows']['8.6']);
+        self::assertFalse($fw['Laravel 13']['tested']['8.6']);
+        self::assertSame(['8.2' => 'no', '8.3' => 'tested', '8.4' => 'tested', '8.5' => 'tested', '8.6' => 'untested'], $row('Laravel 13'));
+        self::assertSame(['8.2' => 'tested', '8.3' => 'tested', '8.4' => 'tested', '8.5' => 'tested', '8.6' => 'untested'], $row('Laravel 12'), '8.5 comes from include: entries');
+        self::assertSame(['8.2' => 'tested', '8.3' => 'tested', '8.4' => 'tested', '8.5' => 'tested', '8.6' => 'tested'], $row('CakePHP 5'));
+        self::assertSame(['8.2' => 'tested', '8.3' => 'untested', '8.4' => 'untested', '8.5' => 'tested', '8.6' => 'untested'], $row('CakePHP 4'));
+        self::assertSame(['8.2' => 'tested', '8.3' => 'tested', '8.4' => 'tested', '8.5' => 'tested', '8.6' => 'no'], $row('Slim 4'), 'CI runs 8.6 past the platform check; Composer still refuses it');
+        self::assertSame(['8.2' => 'tested', '8.3' => 'tested', '8.4' => 'tested', '8.5' => 'tested', '8.6' => 'untested'], $row('Slim 3'));
+        self::assertSame(['8.3', '8.4', '8.5'], $fw['Laravel 13']['tested_lines']);
+        self::assertSame('https://github.com/example/laravel/blob/13.x/.github/workflows/ci.yml', $fw['Laravel 13']['tested_source']);
+        self::assertSame(array_keys($fw['Laravel 13']['allows']), array_keys($fw['Laravel 13']['tested']), 'tested has the shape of allows');
+    }
+
+    #[Test]
+    public function aWorkflowNotReadClaimsNothingTested(): void
+    {
+        $in = self::withWorkflows();
+        self::assertIsArray($in['frameworks']);
+        $in['frameworks']['laravel/framework']['workflows']['13']['lines'] = null;
+        unset($in['frameworks']['slim/slim']['workflows']);
+        $fw = self::frameworks(self::build($in));
+
+        foreach (['Laravel 13', 'Slim 4', 'Slim 3'] as $name) {
+            self::assertNull($fw[$name]['tested'], $name);
+            self::assertNotContains('tested', $fw[$name]['fit'], $name . ' never says Tested');
+            self::assertNotContains('untested', $fw[$name]['fit'], $name . ' never says not tested either');
+        }
+        self::assertSame('allowed', $fw['Laravel 13']['fit']['8.6']);
+        self::assertSame('no', $fw['Laravel 13']['fit']['8.2']);
+        self::assertSame(self::frameworks(self::build(self::withWorkflows()))['Laravel 13']['allows'], $fw['Laravel 13']['allows'], 'allows is unchanged');
+        self::assertNotNull($fw['Laravel 13']['tested_source'], 'the page can still link to what it tried to read');
+        self::assertNull($fw['Slim 4']['tested_source']);
+        self::assertSame('tested', $fw['Laravel 12']['fit']['8.5'], 'one failed read does not touch another major');
+    }
+
     #[Test]
     public function cakeAndSlimRowsCarryTheLegacyLabelAndTheSameFit(): void
     {

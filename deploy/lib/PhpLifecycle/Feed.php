@@ -20,7 +20,9 @@ use DateTimeZone;
  *  - GitHub's unauthenticated budget is 60 calls an hour per address. A
  *    refresh makes one call per live PHP major plus one for the next major,
  *    at most every TTL_MINUTES: about 12 an hour. php-src master's
- *    php_version.h comes from raw.githubusercontent.com, outside that budget.
+ *    php_version.h comes from raw.githubusercontent.com, outside that budget,
+ *    and so do the frameworks' CI workflows (one per framework major, read in
+ *    the same round as the tags).
  *  - The php.net wiki is asked one page a second, never in parallel. Its
  *    index names every release page; supported and future releases are
  *    re-read each refresh, a closed release's page once (WIKI_BACKFILL new
@@ -44,6 +46,20 @@ final class Feed
         'laravel/framework' => 'Laravel',
         'cakephp/cakephp' => 'CakePHP',
         'slim/slim' => 'Slim',
+    ];
+
+    /**
+     * Where each framework's own CI says which PHP lines it tests: the GitHub repo, the
+     * workflow file under .github/workflows/, and the branch a major lives on (%s is the
+     * major Packagist named). Config, not a version list: the lines come out of the file.
+     * Read from raw.githubusercontent.com, outside GitHub's 60-an-hour API budget.
+     * Paths confirmed 2026-11-20 on laravel/framework 12.x and 13.x, cakephp/cakephp 4.x
+     * and 5.x, slimphp/Slim 3.x and 4.x.
+     */
+    public const WORKFLOWS = [
+        'laravel/framework' => ['repo' => 'laravel/framework', 'file' => 'tests.yml', 'branch' => '%s.x'],
+        'cakephp/cakephp' => ['repo' => 'cakephp/cakephp', 'file' => 'ci.yml', 'branch' => '%s.x'],
+        'slim/slim' => ['repo' => 'slimphp/Slim', 'file' => 'tests.yml', 'branch' => '%s.x'],
     ];
 
     /**
@@ -168,10 +184,18 @@ final class Feed
             }
         }
         foreach (self::FRAMEWORKS as $package => $name) {
+            // Each major's CI workflow: the lines it runs (null when it was never read) and where it lives.
+            $workflows = [];
+            foreach ($this->planWorkflows($state) as $id => $p) {
+                if (str_starts_with($id, 'ci-' . $package . '@')) {
+                    $workflows[substr($id, strlen('ci-' . $package . '@'))] = ['lines' => $state[$id]['parsed'] ?? null, 'url' => $p['link']];
+                }
+            }
             $in['frameworks'][$package] = [
                 'name' => $name,
                 'url' => 'https://packagist.org/packages/' . $package,
                 'majors' => $state['packagist-' . $package]['parsed'] ?? null,
+                'workflows' => $workflows,
                 'lifecycle' => isset(self::LEGACY[$package]) ? 'legacy' : null,
                 'lifecycle_note' => self::LEGACY[$package] ?? null,
             ];
@@ -265,6 +289,8 @@ final class Feed
     public function planLate(array $state, string $today): array
     {
         $this->backfill = [];
+        // The frameworks' CI workflows need only Packagist's majors, not the branch list.
+        $ci = $this->planWorkflows($state);
         $branches = [];
         foreach (['states', 'endoflife'] as $id) {
             $parsed = $state[$id]['parsed'] ?? null;
@@ -281,7 +307,7 @@ final class Feed
             }
         }
         if ($branches === []) {
-            return [];
+            return $ci;
         }
         $all = array_keys($branches);
         usort($all, static fn(string $a, string $b): int => version_compare($b, $a));
@@ -323,6 +349,38 @@ final class Feed
             }
             $plan[$id] = ['url' => 'https://wiki.php.net/todo/' . $page . '?do=export_raw', 'link' => 'https://wiki.php.net/todo/' . $page, 'label' => 'php.net wiki: ' . $branch . ' timetable', 'group' => 'wiki', 'browser' => false,
                 'parse' => static fn(string $b): mixed => Parse::wiki($b)];
+        }
+
+        return $plan + $ci;
+    }
+
+    /**
+     * One CI workflow read per framework major Packagist named: `ci-<package>@<major>`.
+     *
+     * @param array<string, array<string, mixed>> $state
+     *
+     * @return array<string, array{url: string, link: string, label: string, group: string, browser: bool, parse: callable(string): mixed}>
+     */
+    private function planWorkflows(array $state): array
+    {
+        $plan = [];
+        foreach (self::WORKFLOWS as $package => $wf) {
+            $majors = $state['packagist-' . $package]['parsed'] ?? null;
+            foreach (is_array($majors) ? $majors : [] as $m) {
+                if (!is_array($m) || !is_string($m['major'] ?? null)) {
+                    continue;
+                }
+                $branch = sprintf($wf['branch'], $m['major']);
+                $path = $wf['repo'] . '/' . $branch . '/.github/workflows/' . $wf['file'];
+                $plan['ci-' . $package . '@' . $m['major']] = [
+                    'url' => 'https://raw.githubusercontent.com/' . $path,
+                    'link' => 'https://github.com/' . $wf['repo'] . '/blob/' . $branch . '/.github/workflows/' . $wf['file'],
+                    'label' => 'GitHub: ' . self::FRAMEWORKS[$package] . ' ' . $branch . ' CI workflow',
+                    'group' => 'framework-ci',
+                    'browser' => false,
+                    'parse' => static fn(string $b): mixed => Parse::workflowPhp($b),
+                ];
+            }
         }
 
         return $plan;
