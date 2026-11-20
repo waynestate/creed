@@ -221,7 +221,7 @@
             schema: 1, mode: "browser", generated_at: now, today: today,
             newest: released.length ? released[released.length - 1].branch : null,
             branches: branches, upcoming: upcoming, timelines: [], frameworks: [], sources: sources,
-            notes: ["The server feed did not answer, so php.net, its news feed, the wiki and Packagist were not read. endoflife.date can be about a day behind php.net."]
+            notes: ["The server feed did not answer, so php.net, its news feed, the wiki, Packagist and the frameworks' CI workflows were not read. endoflife.date can be about a day behind php.net."]
           };
         });
       });
@@ -273,7 +273,7 @@
 
     var msg = null, cls = "pl-alert";
     if (mode === "fallback") {
-      msg = "The server feed did not answer, so this page read endoflife.date and php-src's tags straight from your browser. php.net's own pages, its news feed (where upcoming security releases are announced) and the framework fit need the server feed.";
+      msg = "The server feed did not answer, so this page read endoflife.date and php-src's tags straight from your browser. php.net's own pages, its news feed (where upcoming security releases are announced) and the framework fit (Packagist and each framework's CI workflow) need the server feed.";
       cls += " pl-alert--fallback";
     } else if (mode === "stale") {
       msg = "The sources were last merged " + ago(doc.generated_at) + ". What you see is the last good answer, not a fresh one.";
@@ -639,25 +639,43 @@
     if (e.key === "Escape" && !els.detail.hidden) hideDetail(true);
   });
 
+  // One framework cell. "tested": require.php allows the line and the major's own CI runs it.
+  // "untested": Composer would install it, the framework does not test it yet. "allowed": the
+  // CI workflow was not read, so the page says what Composer allows and claims nothing more.
+  // Each mark differs in shape as well as color: a filled disc, a dashed ring, a thin ring, a cross.
+  var FIT = {
+    tested: { cls: "pl-yes", sr: function (f, c) { return "PHP " + c + ": tested in " + f.name + " " + f.major + "'s CI"; } },
+    untested: { cls: "pl-maybe", sr: function (f, c) { return "PHP " + c + ": Composer allows it, " + f.name + " " + f.major + "'s CI does not test it yet"; } },
+    allowed: { cls: "pl-maybe pl-maybe--unread", sr: function (f, c) { return "PHP " + c + ": Composer allows it; tested lines not read"; } },
+    no: { cls: "pl-no-fit", text: "×", sr: function (f, c) { return "PHP " + c + ": not allowed by require.php"; } }
+  };
+
+  function fitOf(f, c) {
+    if (f.fit && Object.prototype.hasOwnProperty.call(f.fit, c)) return f.fit[c];
+    // A feed from before the CI read: what Composer allows, and no claim about tests.
+    var v = f.allows ? f.allows[c] : null;
+    return v === true ? "allowed" : v === false ? "no" : null;
+  }
+
   function renderFit(doc) {
     clear(els.fit);
     var fw = doc.frameworks || [];
     var cols = supported(doc).map(function (b) { return b.branch; });
     if (!fw.length || !cols.length) {
       els.fit.appendChild(h("p", { class: "pl-card__empty", text: state.mode === "fallback" || state.mode === "down"
-        ? "Framework fit needs the server feed (Packagist is read there)."
+        ? "Framework fit needs the server feed (Packagist and the frameworks' CI workflows are read there)."
         : "Packagist could not be read." }));
       return;
     }
     var table = h("table", { class: "pl-fit" }, [
-      h("caption", { class: "wsu-sr-only", text: "Which supported PHP branches each framework's newest releases allow, from require.php on Packagist." }),
+      h("caption", { class: "wsu-sr-only", text: "For each supported PHP branch: whether each framework's newest releases allow it (require.php on Packagist) and whether that major's own CI tests it (its GitHub Actions workflow)." }),
       h("thead", null, [h("tr", null, [h("th", { scope: "col", text: "Release" })].concat(cols.map(function (c) { return h("th", { scope: "col", text: c }); })))])
     ]);
     var tb = h("tbody");
     var legacy = [];
     fw.forEach(function (f) {
       var old = f.lifecycle === "legacy";
-      // CakePHP and Slim sit under one "Legacy: being phased out" band; their fit is as Packagist says.
+      // CakePHP and Slim sit under one "Legacy: being phased out" band; their fit is read like Laravel's.
       if (old && !legacy.length) {
         tb.appendChild(h("tr", { class: "pl-fit__group" }, [h("td", { colspan: String(cols.length + 1) }, [
           h("span", { class: "pl-legacy", text: "Legacy: being phased out" }),
@@ -669,17 +687,26 @@
         ])]));
       }
       if (old && legacy.indexOf(f.name) === -1) legacy.push(f.name);
+      var read = Array.isArray(f.tested_lines);
+      var ciTitle = read
+        ? f.name + " " + f.major + ".x CI runs PHP " + (f.tested_lines.length ? f.tested_lines.join(", ") : "no line it names") + " (GitHub Actions)"
+        : f.name + " " + f.major + ".x CI workflow: tested lines not read";
       var tr = h("tr", { class: old ? "pl-fit__legacy" : null }, [h("th", { scope: "row" }, [
-        h("span", { class: "pl-fw" }, [h("a", { href: f.url, text: f.name + " " + f.major })]),
+        h("span", { class: "pl-fw" }, [
+          h("a", { href: f.url, text: f.name + " " + f.major }),
+          f.tested_source ? h("a", { class: "pl-fw__ci" + (read ? "" : " pl-fw__ci--unread"), href: f.tested_source, title: ciTitle, "aria-label": ciTitle, text: "CI" }) : null
+        ]),
         old ? h("span", { class: "wsu-sr-only", text: ", legacy, being phased out" }) : null,
-        h("span", { class: "pl-fw__req", title: "require.php of " + f.version, text: f.version + " · " + (f.php || "no php constraint") })
+        h("span", { class: "pl-fw__req", title: "require.php of " + f.version, text: f.version + " · " + (f.php || "no php constraint") }),
+        read ? null : h("span", { class: "pl-fw__note", text: "tested lines not read" })
       ])]);
       cols.forEach(function (c) {
-        var v = f.allows ? f.allows[c] : null;
-        var cell = v === true
-          ? h("span", { class: "pl-yes", "aria-hidden": "true" })
-          : v === false ? h("span", { class: "pl-no-fit", "aria-hidden": "true", text: "×" }) : h("span", { class: "pl-unknown", "aria-hidden": "true", text: "?" });
-        tr.appendChild(h("td", null, [cell, h("span", { class: "wsu-sr-only", text: v === true ? "allows PHP " + c : v === false ? "does not allow PHP " + c : "unknown for PHP " + c })]));
+        var k = FIT[fitOf(f, c)];
+        var sr = k ? k.sr(f, c) : "PHP " + c + ": unknown";
+        var cell = k
+          ? h("span", { class: k.cls, "aria-hidden": "true", title: sr, text: k.text || null })
+          : h("span", { class: "pl-unknown", "aria-hidden": "true", text: "?" });
+        tr.appendChild(h("td", null, [cell, h("span", { class: "wsu-sr-only", text: sr })]));
       });
       tb.appendChild(tr);
     });
@@ -934,7 +961,7 @@
       if (!groups[s.group]) { groups[s.group] = []; order.push(s.group); }
       groups[s.group].push(s);
     });
-    var names = { "php.net": "php.net", "php-src": "php-src", wiki: "php.net wiki", "cross-check": "endoflife.date", frameworks: "Packagist" };
+    var names = { "php.net": "php.net", "php-src": "php-src", wiki: "php.net wiki", "cross-check": "endoflife.date", frameworks: "Packagist", "framework-ci": "framework CI" };
     var rank = { ok: 0, stale: 1, down: 2 };
     order.forEach(function (g) {
       var list = groups[g];

@@ -43,9 +43,10 @@ For the picture between refreshes, CREED's site has a [live view](https://creed.
 every PHP branch with its latest patch, the support timeline, the next release
 php.net has announced or php-src has tagged (or "no timeline released yet" for
 the lines still to come), every release's own timeline, and which PHP lines
-Laravel, CakePHP and Slim allow. It reads php.net, php-src, the php.net wiki,
-endoflife.date and Packagist itself, at most 30 minutes behind. It is a view,
-not a gate: the gates read `policy.json`.
+Laravel, CakePHP and Slim allow and which their own CI tests. It reads php.net,
+php-src, the php.net wiki, endoflife.date, Packagist and the frameworks' CI
+workflows itself, at most 30 minutes behind. It is a view, not a gate: the gates
+read `policy.json`.
 
 ## Base images
 

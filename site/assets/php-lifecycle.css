@@ -156,14 +156,30 @@
 .pl-fit thead th { border-top: 0; font-family: var(--mono); font-size: .72rem; font-weight: 600; color: var(--ink); padding-top: .4rem; }
 .pl-fit thead th:first-child { width: 42%; }
 .pl-fit tbody th { text-align: left; font-weight: 400; }
-.pl-fw { display: block; font-family: var(--serif); font-weight: 700; font-size: .98rem; line-height: 1.15; }
+.pl-fw { display: block; font-family: var(--serif); font-weight: 700; font-size: .98rem; line-height: 1.15; white-space: nowrap; }
 .pl-fw a { color: var(--ink); text-decoration: none; }
 .pl-fw a:hover { text-decoration: underline; }
 .pl-fw__req { display: block; font-family: var(--mono); font-size: .66rem; color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.pl-yes, .pl-no-fit, .pl-unknown { display: inline-block; width: 1.25rem; height: 1.25rem; line-height: 1.25rem; font-family: var(--mono); font-size: .75rem; font-weight: 600; }
+/* The marks: tested is the cloth disc; allowed-but-untested is a pencilled dashed ring (Composer
+   would install it, nobody has run the tests); a ring whose CI was not read is a thin plain one.
+   Shape carries the state, so color is never the only cue. */
+.pl-yes, .pl-maybe, .pl-no-fit, .pl-unknown { display: inline-block; box-sizing: border-box; width: 1.25rem; height: 1.25rem; line-height: 1.25rem; font-family: var(--mono); font-size: .75rem; font-weight: 600; vertical-align: middle; }
 .pl-yes { border-radius: 50%; background: var(--cloth); color: var(--on-cloth); }
+.pl-maybe { border-radius: 50%; border: 2px dashed var(--ink-2); }
+.pl-maybe--unread { border: 1.5px solid color-mix(in srgb, var(--ink-2) 70%, transparent); }
 .pl-no-fit { color: var(--red); }
 .pl-unknown { color: var(--ink-2); }
+.pl-fw .pl-fw__ci {
+  display: inline-block; margin-left: .4rem; padding: .05rem .26rem 0; vertical-align: .18em;
+  font-family: var(--mono); font-size: .56rem; font-weight: 600; letter-spacing: .12em; line-height: 1.35;
+  color: var(--green); border: 1px solid currentColor; border-radius: 2px; text-decoration: none;
+}
+.pl-fw .pl-fw__ci:hover { text-decoration: none; background: color-mix(in srgb, currentColor 12%, transparent); }
+.pl-fw .pl-fw__ci--unread { color: var(--ink-2); border-style: dashed; }
+.pl-fw__note { display: block; font-family: var(--mono); font-size: .62rem; color: var(--ink-2); font-style: italic; }
+.pl-fitkey { margin-top: .6rem; color: var(--ink); }
+.pl-fitkey .pl-yes, .pl-fitkey .pl-maybe, .pl-fitkey .pl-no-fit { width: .85rem; height: .85rem; line-height: .85rem; text-align: center; }
+.pl-fitkey .pl-maybe { border-width: 1.5px; }
 
 /* -------------------------------------------------------- sources */
 .pl-sources { display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: start; gap: .3rem 1.1rem; margin-top: 1.1rem; padding-top: .7rem; border-top: 2px solid var(--rule-strong); }
@@ -332,6 +348,7 @@
   .pl-now { grid-template-columns: minmax(0, 1fr); }
   .pl-card--next { grid-column: 1; grid-row: auto; border-left: 0 !important; border-top: 1px solid var(--rule); }
   .pl-card--patches { grid-row: auto; }
+  .pl-fit thead th:first-child { width: 48%; }
   .pl-table thead th:first-child { width: 3.6rem; }
   .pl-table thead th:nth-child(3) { width: 4.9rem; }
   .pl-table thead th:nth-child(4) { width: 3.4rem; }

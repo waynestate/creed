@@ -6,7 +6,7 @@
 <meta name="stack-env" content="auto">
 <script src="../assets/stack-env.js" defer></script>
 <title>PHP, as of now | CREED</title>
-<meta name="description" content="The whole PHP lifecycle, live: every supported branch with its latest patch, the support timeline, the next announced or tagged release, every release's timeline from first alpha to last security fix, and which PHP lines Laravel, CakePHP and Slim allow. Read from php.net, php-src, the php.net wiki, endoflife.date and Packagist, at most 30 minutes behind.">
+<meta name="description" content="The whole PHP lifecycle, live: every supported branch with its latest patch, the support timeline, the next announced or tagged release, every release's timeline from first alpha to last security fix, and which PHP lines Laravel, CakePHP and Slim allow and actually test. Read from php.net, php-src, the php.net wiki, endoflife.date, Packagist and each framework's CI workflow, at most 30 minutes behind.">
 <meta name="theme-color" content="#0c5449" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1a1b18" media="(prefers-color-scheme: dark)">
 <meta name="color-scheme" content="light dark">
@@ -115,13 +115,18 @@
         </div>
       </section>
 
-      <!-- §2A.3 Framework fit: what each framework's newest majors declare in require.php. -->
+      <!-- §2A.3 Framework fit: what each framework's newest majors allow in require.php, and what their own CI tests. -->
       <section class="pl-panel pl-panel--fit" aria-labelledby="fit-h">
         <div class="pl-panel__head">
           <h2 id="fit-h" class="pl-h2"><span class="pl-no">§2A.3</span> Framework fit</h2>
         </div>
         <div data-pl-fit><p class="pl-card__empty">Not read yet.</p></div>
-        <p class="pl-fine">From each release's <code>require.php</code> on Packagist: what the framework allows, not a test result.</p>
+        <ul class="pl-legend pl-fitkey" aria-label="Key to the framework fit">
+          <li><span class="pl-yes" aria-hidden="true"></span> Tested</li>
+          <li><span class="pl-maybe" aria-hidden="true"></span> Allowed, not tested yet</li>
+          <li><span class="pl-no-fit" aria-hidden="true">&times;</span> Not allowed</li>
+        </ul>
+        <p class="pl-fine">Allowed: the release's <code>require.php</code> on Packagist lets Composer install it. Tested: that major's own CI on GitHub runs the line too.</p>
       </section>
     </div>
 

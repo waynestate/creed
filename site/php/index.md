@@ -1,6 +1,6 @@
 ---
 title: "PHP, as of now | CREED"
-description: "The whole PHP lifecycle, live: every supported branch with its latest patch, the support timeline, the next announced or tagged release, every release's timeline from first alpha to last security fix, and which PHP lines Laravel, CakePHP and Slim allow. Read from php.net, php-src, the php.net wiki, endoflife.date and Packagist, at most 30 minutes behind."
+description: "The whole PHP lifecycle, live: every supported branch with its latest patch, the support timeline, the next announced or tagged release, every release's timeline from first alpha to last security fix, and which PHP lines Laravel, CakePHP and Slim allow and actually test. Read from php.net, php-src, the php.net wiki, endoflife.date, Packagist and each framework's CI workflow, at most 30 minutes behind."
 url: https://creed.apps.wayne.edu/php/
 llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
@@ -45,7 +45,11 @@ Not read yet.
 
 Not read yet.
 
-From each release's `require.php` on Packagist: what the framework allows, not a test result.
+- Tested
+- Allowed, not tested yet
+- Not allowed
+
+Allowed: the release's `require.php` on Packagist lets Composer install it. Tested: that major's own CI on GitHub runs the line too.
 
 ## §2A.4 Sources
 
