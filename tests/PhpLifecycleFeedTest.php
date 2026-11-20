@@ -38,10 +38,11 @@ final class PhpLifecycleFeedTest extends TestCase
      * A fake network: every URL answers from the fixtures unless it is listed as down.
      *
      * @param list<string> $down source ids that fail
+     * @param array<string, string> $files id => fixture file, replacing or adding to the usual ones
      */
-    private static function net(array $down = []): PhpLifecycleFakeHttp
+    private static function net(array $down = [], array $files = []): PhpLifecycleFakeHttp
     {
-        return new PhpLifecycleFakeHttp($down);
+        return new PhpLifecycleFakeHttp($down, $files);
     }
 
     /**
@@ -61,6 +62,31 @@ final class PhpLifecycleFeedTest extends TestCase
         return $out;
     }
 
+    /**
+     * @return list<string>
+     */
+    private static function wikiAsked(PhpLifecycleFakeHttp $net): array
+    {
+        return array_values(array_filter($net->asked, static fn(string $id): bool => str_starts_with($id, 'wiki-') && $id !== 'wiki-index'));
+    }
+
+    /**
+     * @param array<string, mixed> $doc
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    private static function timelines(array $doc): array
+    {
+        self::assertIsArray($doc['timelines']);
+        $out = [];
+        foreach ($doc['timelines'] as $t) {
+            self::assertIsArray($t);
+            $out[(string) $t['branch']] = $t;
+        }
+
+        return $out;
+    }
+
     #[Test]
     public function aFirstRequestFetchesEverySourceOnceAndAsksGithubLittle(): void
     {
@@ -70,16 +96,97 @@ final class PhpLifecycleFeedTest extends TestCase
         self::assertSame('server', $doc['mode']);
         self::assertFalse($doc['stale']);
         self::assertSame('8.6', $doc['newest']);
-        self::assertSame(2, $net->calls, 'one round for the fixed sources, one for tags and wiki');
+        $wiki = self::wikiAsked($net);
+        self::assertSame(2 + count($wiki), $net->calls, 'one round for the fixed sources, one for tags, then one wiki page at a time');
         $github = array_filter($net->asked, static fn(string $id): bool => str_starts_with($id, 'tags-'));
         self::assertSame(['tags-8', 'tags-9'], array_values($github), 'one call per live major and the next');
-        self::assertContains('wiki-8.7', $net->asked);
+        self::assertContains('master', $net->asked);
+        self::assertContains('wiki-index', $net->asked);
         $s = self::sources($doc);
         self::assertTrue($s['states']['ok']);
-        self::assertTrue($s['wiki-8.7']['ok'], 'no page yet is an answer, not an outage');
+        self::assertTrue($s['master']['ok']);
+        self::assertTrue($s['wiki-index']['ok']);
+        self::assertTrue($s['wiki-8.5']['ok'], 'no page is an answer, not an outage');
         self::assertFalse($s['tags-9']['ok']);
         self::assertTrue($s['endoflife']['browser']);
         self::assertFalse($s['states']['browser']);
+    }
+
+    #[Test]
+    public function theWikiIsAskedForIndexedPagesOnlyOneASecond(): void
+    {
+        $net = self::net();
+        (new Feed($this->dir, $net))->get(new DateTimeImmutable('2026-11-19T22:00:00Z'));
+
+        // Supported releases every time, then the newest closed ones (three per refresh).
+        self::assertSame(['wiki-8.6', 'wiki-8.5', 'wiki-8.4', 'wiki-8.3', 'wiki-8.2', 'wiki-8.1', 'wiki-8.0', 'wiki-7.4'], self::wikiAsked($net));
+        self::assertNotContains('wiki-8.7', $net->asked, 'no page name is guessed');
+        self::assertNotContains('wiki-6.0', $net->asked, 'a struck-through index entry is not a release');
+        self::assertCount(count(self::wikiAsked($net)), $net->pauses);
+        foreach ($net->pauses as $p) {
+            self::assertGreaterThanOrEqual(1.0, $p);
+        }
+    }
+
+    #[Test]
+    public function aClosedReleasesTimetableIsReadOnceAndKept(): void
+    {
+        (new Feed($this->dir, self::net()))->get(new DateTimeImmutable('2026-11-19T22:00:00Z'));
+        $next = self::net();
+        $doc = (new Feed($this->dir, $next))->get(new DateTimeImmutable('2026-11-19T22:10:00Z'));
+
+        self::assertSame(['wiki-8.6', 'wiki-8.5', 'wiki-8.4', 'wiki-8.3', 'wiki-8.2', 'wiki-7.3', 'wiki-7.2', 'wiki-7.1'], self::wikiAsked($next));
+        $s = self::sources($doc);
+        self::assertArrayNotHasKey('wiki-7.4', $s, 'closed pages share one source line');
+        self::assertTrue($s['wiki-archive']['ok']);
+        self::assertFalse($s['wiki-archive']['stale'], 'a page that never changes does not go stale');
+        self::assertStringContainsString('6 of', (string) $s['wiki-archive']['label']);
+        $t = self::timelines($doc);
+        self::assertSame('published', $t['7.4']['timetable'], 'the page read ten minutes ago still counts');
+        self::assertSame('not-read', $t['5.6']['timetable']);
+    }
+
+    #[Test]
+    public function aWikiThatDoesNotAnswerStopsAfterOnePage(): void
+    {
+        $net = self::net(['wiki-8.6']);
+        $doc = (new Feed($this->dir, $net))->get(new DateTimeImmutable('2026-11-19T22:00:00Z'));
+
+        self::assertSame(['wiki-8.6'], self::wikiAsked($net));
+        self::assertSame('not fetched: the host did not answer', self::sources($doc)['wiki-8.5']['error']);
+    }
+
+    #[Test]
+    public function withNoTimetablesTheNextLinesSayNoTimelineYet(): void
+    {
+        $doc = (new Feed($this->dir, self::net()))->get(new DateTimeImmutable('2026-11-19T22:00:00Z'));
+        self::assertIsArray($doc['upcoming']);
+        $rows = array_values(array_filter($doc['upcoming'], static fn(array $u): bool => $u['status'] === 'no-timeline'));
+
+        self::assertSame([['8.7'], ['9.0']], array_column($rows, 'branches'));
+        self::assertSame(['development', 'major'], array_column($rows, 'role'));
+        self::assertSame('2026-11-19T22:00:00Z', $rows[0]['checked_at']);
+        self::assertNull($rows[0]['day'], 'no estimate');
+    }
+
+    #[Test]
+    public function aNewlyIndexedTimetableIsPickedUpAndReplacesNoTimeline(): void
+    {
+        $net = self::net([], ['wiki-index' => 'wiki-index-with-php87.txt', 'wiki-8.7' => 'wiki-php87-synthetic.txt']);
+        $doc = (new Feed($this->dir, $net))->get(new DateTimeImmutable('2026-11-19T22:00:00Z'));
+
+        self::assertSame('wiki-8.7', self::wikiAsked($net)[0], 'a future release is read every refresh');
+        self::assertIsArray($doc['upcoming']);
+        $by = [];
+        foreach ($doc['upcoming'] as $u) {
+            $by[$u['branches'][0]] = $u;
+        }
+        self::assertSame('scheduled', $by['8.7']['status']);
+        self::assertSame('2027-11-25', $by['8.7']['day']);
+        self::assertSame(['date' => '2027-07-01', 'label' => 'Alpha 1'], $by['8.7']['next_step']);
+        self::assertSame('no-timeline', $by['9.0']['status']);
+        self::assertTrue(self::sources($doc)['wiki-8.7']['ok']);
+        self::assertSame('future', self::timelines($doc)['8.7']['state']);
     }
 
     #[Test]
@@ -88,12 +195,13 @@ final class PhpLifecycleFeedTest extends TestCase
         $net = self::net();
         $feed = new Feed($this->dir, $net);
         $feed->get(new DateTimeImmutable('2026-11-19T22:00:00Z'));
+        $calls = $net->calls;
         $doc = $feed->get(new DateTimeImmutable('2026-11-19T22:09:00Z'));
 
-        self::assertSame(2, $net->calls);
+        self::assertSame($calls, $net->calls);
         self::assertSame(540, $doc['age_seconds']);
         $feed->get(new DateTimeImmutable('2026-11-19T22:10:00Z'));
-        self::assertSame(4, $net->calls, 'ten minutes on, it refreshes');
+        self::assertGreaterThan($calls, $net->calls, 'ten minutes on, it refreshes');
     }
 
     #[Test]
@@ -134,10 +242,19 @@ final class PhpLifecycleFakeHttp extends Http
     /** @var list<string> */
     public array $asked = [];
 
+    /** @var list<float> */
+    public array $pauses = [];
+
     /**
      * @param list<string> $down
+     * @param array<string, string> $files id => fixture, on top of the usual ones
      */
-    public function __construct(public array $down) {}
+    public function __construct(public array $down, public array $files = []) {}
+
+    protected function pause(float $seconds): void
+    {
+        $this->pauses[] = $seconds;
+    }
 
     public function fetchAll(array $urls): array
     {
@@ -151,16 +268,21 @@ final class PhpLifecycleFakeHttp extends Http
             'packagist-cakephp/cakephp' => 'packagist-cakephp.json',
             'packagist-slim/slim' => 'packagist-slim.json',
             'tags-8' => 'tags-8.json',
-            'wiki-8.7' => 'wiki-php87-404.html',
-            'wiki-9.0' => 'wiki-php87-404.html',
+            'master' => 'php_version.h',
+            'wiki-index' => 'wiki-index.txt',
+            'wiki-8.6' => 'wiki-php86.txt',
+            'wiki-7.4' => 'wiki-php74.txt',
+            'wiki-5.6' => 'wiki-php56.txt',
+            'wiki-5.4' => 'wiki-php54.txt',
         ];
+        $map = $this->files + $map;
         $out = [];
         foreach ($urls as $id => $url) {
             $this->asked[] = $id;
             $file = $map[$id] ?? null;
             if (in_array($id, $this->down, true)) {
                 $out[$id] = ['status' => 0, 'body' => null, 'error' => 'timed out'];
-            } elseif ($file === null || str_starts_with($id, 'wiki-')) {
+            } elseif ($file === null) {
                 $out[$id] = ['status' => 404, 'body' => '<!doctype html><title>Not found</title>', 'error' => 'HTTP 404'];
             } else {
                 $out[$id] = ['status' => 200, 'body' => (string) file_get_contents(__DIR__ . '/fixtures/php-lifecycle/' . $file), 'error' => null];

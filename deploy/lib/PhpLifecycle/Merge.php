@@ -24,7 +24,15 @@ use DateTimeZone;
  *    window when the text gives one; it goes away once a release dated on or
  *    after its day appears, or two days after its window.
  *  - A new branch on the wiki's timetable shows its GA day as "on the wiki
- *    schedule".
+ *    schedule". The timetables come from the wiki's index of release pages.
+ *  - php-src master's php_version.h names the line in development (8.7.0-dev
+ *    means 8.7 comes next). It and the major after it are "no-timeline" until
+ *    a wiki timetable, a php-src tag or a php.net notice covers them. Nothing
+ *    is estimated from the release-cycle policy.
+ *  - Every release gets a timeline: the wiki's milestones (skipped steps kept
+ *    and marked) joined with php.net's GA, active and security end dates, and
+ *    the patch releases that happened. A future patch day comes only from a
+ *    php.net notice; the four-week rhythm is never projected.
  * A source that is missing contributes nothing. Nothing here is invented.
  */
 final class Merge
@@ -40,6 +48,16 @@ final class Merge
     /** A notice stays up this long after its window when no release has appeared. */
     private const NOTICE_GRACE_HOURS = 48;
 
+    /** Where the evidence for a line with no timeline points. */
+    public const MASTER_LINK = 'https://github.com/php/php-src/blob/master/main/php_version.h';
+
+    public const INDEX_LINK = 'https://wiki.php.net/todo';
+
+    public const RFC_LINK = 'https://wiki.php.net/rfc';
+
+    /** How many dated patch releases a timeline lists; the rest are counted. */
+    private const PATCHES_SHOWN = 6;
+
     /**
      * @param array{
      *     states?: ?array<string, array{state: string, released: ?string, active_until: ?string, security_until: ?string}>,
@@ -47,8 +65,10 @@ final class Merge
      *     atom?: ?list<array{title: string, published: string, link: string, text: string}>,
      *     tags?: ?list<array{version: string, branch: string, pre: ?string}>,
      *     endoflife?: ?array{generated_at: ?string, branches: array<string, array{released: ?string, active_until: ?string, security_until: ?string, latest: ?string, latest_date: ?string}>},
-     *     wiki?: array<string, ?array{ga: ?string, rows: list<array{date: string, label: string, skipped: bool}>}>,
-     *     frameworks?: array<string, array{name: string, url: string, majors: ?list<array{version: string, major: string, released: ?string, php: ?string}>}>,
+     *     wiki?: array<string, ?array{ga: ?string, rows: list<array{date: string, label: string, skipped: bool, kind: string, note: ?string, announce: ?string, links: list<array{label: string, url: string}>}>}>,
+     *     wikiPages?: ?list<array{branch: string, page: string}>,
+     *     master?: ?array{version: string, branch: string, major: int, minor: int, extra: string},
+     *     frameworks?: array<string, array{name: string, url: string, majors: ?list<array{version: string, major: string, released: ?string, php: ?string}>, lifecycle?: ?string, lifecycle_note?: ?string}>,
      *     platforms?: array<string, ?list<string>>,
      * } $in
      * @param list<array<string, mixed>> $sources
@@ -223,23 +243,54 @@ final class Merge
         }
 
         // The wiki's timetable for a branch php.net does not list yet.
+        $pages = self::pages($in['wikiPages'] ?? null);
         foreach ($in['wiki'] ?? [] as $branch => $w) {
-            if ($w === null || $w['ga'] === null || isset($branches[$branch]) || $w['ga'] < $today) {
+            $branch = (string) $branch;
+            if ($w === null || isset($branches[$branch])) {
                 continue;
             }
+            $ahead = array_values(array_filter($w['rows'], static fn(array $r): bool => !$r['skipped'] && $r['date'] >= $today));
+            if ($w['ga'] !== null ? $w['ga'] < $today : $ahead === []) {
+                continue;
+            }
+            $page = $pages[$branch] ?? self::pageUrl($branch);
+            $label = $w['ga'] !== null ? 'GA on the wiki schedule' : 'Timetable on the wiki, no GA day yet';
+            $step = $ahead === [] ? null : ['date' => $ahead[0]['date'], 'label' => $ahead[0]['label']];
             $found = false;
             foreach ($upcoming as &$u) {
                 if ($u['kind'] === 'branch' && $u['branches'] === [$branch]) {
                     $u['day'] = $w['ga'];
-                    $u['evidence'][] = self::evidence('wiki schedule', 'GA on the wiki schedule', 'https://wiki.php.net/todo/php' . str_replace('.', '', $branch));
+                    $u['next_step'] = $step;
+                    $u['evidence'][] = self::evidence('wiki schedule', $label, $page);
                     $found = true;
                 }
             }
             unset($u);
             if (!$found) {
-                $upcoming[] = ['kind' => 'branch', 'branches' => [$branch], 'version' => $branch . '.0', 'status' => 'scheduled', 'day' => $w['ga'],
-                    'evidence' => [self::evidence('wiki schedule', 'GA on the wiki schedule', 'https://wiki.php.net/todo/php' . str_replace('.', '', $branch))]];
+                $upcoming[] = ['kind' => 'branch', 'branches' => [$branch], 'version' => $branch . '.0', 'status' => 'scheduled', 'day' => $w['ga'], 'next_step' => $step,
+                    'evidence' => [self::evidence('wiki schedule', $label, $page)]];
             }
+        }
+
+        // The lines still to come, from php-src master: the version master will become, and
+        // the major after it. One with nothing published says so; nothing is estimated.
+        foreach (self::futureLines($in['master'] ?? null) as $line) {
+            if (isset($branches[$line['branch']]) || ($in['wiki'][$line['branch']] ?? null) !== null) {
+                continue;
+            }
+            $covered = array_filter($upcoming, static fn(array $u): bool => in_array($line['branch'], $u['branches'], true));
+            if ($covered !== []) {
+                continue;
+            }
+            $evidence = [
+                self::evidence('php-src master', 'php-src master is ' . $line['master'], self::MASTER_LINK),
+                self::evidence('wiki timetables', 'No timetable page in the wiki index', self::INDEX_LINK),
+            ];
+            if ($line['role'] === 'major') {
+                $evidence[] = self::evidence('RFCs', 'RFCs name ' . $line['branch'] . ' as a target; no date', self::RFC_LINK);
+            }
+            $upcoming[] = ['kind' => 'branch', 'branches' => [$line['branch']], 'version' => $line['branch'] . '.0', 'status' => 'no-timeline', 'role' => $line['role'],
+                'day' => null, 'checked_at' => self::checkedAt($sources, ['master', 'wiki-index']), 'evidence' => $evidence];
         }
         usort($upcoming, static function (array $a, array $b): int {
             $da = $a['start'] ?? ($a['day'] ?? '9999');
@@ -256,7 +307,8 @@ final class Merge
                 foreach (array_keys($branches) as $branch) {
                     $allows[$branch] = $m['php'] === null ? null : Constraint::allowsBranch($m['php'], $branch);
                 }
-                $frameworks[] = ['package' => $package, 'name' => $f['name'], 'url' => $f['url'], 'major' => $m['major'], 'version' => $m['version'], 'released' => $m['released'], 'php' => $m['php'], 'allows' => $allows];
+                $frameworks[] = ['package' => $package, 'name' => $f['name'], 'url' => $f['url'], 'major' => $m['major'], 'version' => $m['version'], 'released' => $m['released'], 'php' => $m['php'], 'allows' => $allows,
+                    'lifecycle' => $f['lifecycle'] ?? null, 'lifecycle_note' => $f['lifecycle_note'] ?? null];
             }
         }
 
@@ -280,6 +332,7 @@ final class Merge
         }
 
         $released = array_filter($branches, static fn(array $b): bool => $b['released'] !== null && $b['released'] <= $today);
+        $timelines = self::timelines($in, $dates, $branchSource, $branches, $upcoming, $finals, $today);
 
         return [
             'schema' => self::SCHEMA,
@@ -288,11 +341,203 @@ final class Merge
             'newest' => $released === [] ? null : (string) array_key_last($released),
             'branches' => array_values($branches),
             'upcoming' => $upcoming,
+            'timelines' => $timelines,
             'frameworks' => $frameworks,
             'platforms' => $platforms,
             'sources' => $sources,
             'notes' => $notes,
         ];
+    }
+
+    /**
+     * One timeline per release, newest first: every branch php.net lists, every page in the
+     * wiki's index, and every line still to come. Each joins the wiki's milestones (alpha to
+     * GA, skipped steps kept and marked) with php.net's lifecycle dates (GA, end of active
+     * support, end of security support) and the patch releases that already happened. A
+     * future patch date appears only when php.net news published one.
+     *
+     * @param array<string, mixed> $in
+     * @param array<string, array{state: string, released: ?string, active_until: ?string, security_until: ?string}> $dates
+     * @param array<string, array<string, mixed>> $branches
+     * @param list<array<string, mixed>> $upcoming
+     * @param array<string, list<string>> $finals
+     *
+     * @return list<array<string, mixed>>
+     */
+    private static function timelines(array $in, array $dates, string $branchSource, array $branches, array $upcoming, array $finals, string $today): array
+    {
+        /** @var array<string, ?array{ga: ?string, rows: list<array{date: string, label: string, skipped: bool, kind: string, note: ?string, announce: ?string, links: list<array{label: string, url: string}>}>}> $wiki */
+        $wiki = is_array($in['wiki'] ?? null) ? $in['wiki'] : [];
+        $pages = self::pages($in['wikiPages'] ?? null);
+        /** @var ?array<string, array{version: string, date: ?string, security: bool}> $active */
+        $active = $in['active'] ?? null;
+        /** @var ?list<array{title: string, published: string, link: string, text: string}> $atom */
+        $atom = $in['atom'] ?? null;
+
+        $future = [];
+        foreach ($upcoming as $u) {
+            if (($u['kind'] ?? null) === 'branch' && is_array($u['branches'] ?? null) && count($u['branches']) === 1) {
+                $future[(string) $u['branches'][0]] = $u;
+            }
+        }
+        $all = array_unique(array_merge(array_map('strval', array_keys($dates)), array_keys($pages), array_keys($future)));
+        usort($all, static fn(string $a, string $b): int => version_compare($b, $a));
+
+        // Patch releases with a day on them: php.net's releases list and its news feed.
+        $dated = [];
+        foreach ($active ?? [] as $branch => $a) {
+            $dated[(string) $branch][$a['version']] = ['version' => $a['version'], 'date' => $a['date'], 'security' => $a['security'], 'source' => 'php.net releases'];
+        }
+        foreach (Parse::releasesFromAtom($atom ?? []) as $r) {
+            $dated[Parse::branchOf($r['version'])][$r['version']] ??= ['version' => $r['version'], 'date' => $r['date'], 'security' => $r['security'], 'source' => 'php.net news'];
+        }
+
+        $out = [];
+        foreach ($all as $branch) {
+            $d = $dates[$branch] ?? null;
+            $w = $wiki[$branch] ?? null;
+            $state = $d !== null ? self::stateOn($d, $today) : (isset($future[$branch]) || isset($pages[$branch]) && self::isAfter($branch, array_keys($dates)) ? 'future' : 'unknown');
+            if ($state === 'unknown' && !isset($pages[$branch])) {
+                continue;
+            }
+
+            $steps = [];
+            foreach ($w['rows'] ?? [] as $r) {
+                $steps[] = $r + ['source' => 'wiki', 'done' => !$r['skipped'] && $r['date'] <= $today];
+            }
+            if ($d !== null) {
+                $wikiGa = $w['ga'] ?? null;
+                if ($d['released'] !== null && $wikiGa !== $d['released']) {
+                    $steps[] = self::step($d['released'], 'General availability', 'ga', $today, $wikiGa === null ? null : 'php.net gives this day; the wiki said ' . $wikiGa);
+                }
+                if ($d['active_until'] !== null) {
+                    $steps[] = self::step($d['active_until'], 'Active support ends', 'active-end', $today, 'Bug fixes stop; security fixes go on.');
+                }
+                if ($d['security_until'] !== null) {
+                    $steps[] = self::step($d['security_until'], 'Security support ends', 'security-end', $today, 'End of life: no more fixes of any kind.');
+                }
+            }
+            usort($steps, static fn(array $a, array $b): int => strcmp($a['date'], $b['date']));
+
+            // x.y.0 is the GA, already on the timeline; patches start at x.y.1.
+            $patches = array_values(array_filter($dated[$branch] ?? [], static fn(array $p): bool => !str_ends_with($p['version'], '.0')));
+            usort($patches, static fn(array $a, array $b): int => version_compare($b['version'], $a['version']));
+            $tagged = array_values(array_filter($finals[$branch] ?? [], static fn(string $v): bool => !str_ends_with($v, '.0')));
+            usort($tagged, static fn(string $a, string $b): int => version_compare($a, $b));
+
+            $next = $branches[$branch]['next'] ?? null;
+            $nextPatch = is_array($next) && in_array($next['status'] ?? null, ['announced', 'due'], true) && ($next['day'] ?? null) !== null
+                ? ['version' => $next['version'] ?? null, 'day' => $next['day'], 'start' => $next['start'] ?? null, 'end' => $next['end'] ?? null, 'status' => $next['status'], 'evidence' => $next['evidence'] ?? []]
+                : null;
+
+            $out[] = [
+                'branch' => $branch,
+                'state' => $state,
+                'page' => $pages[$branch] ?? null,
+                'timetable' => $w !== null ? 'published' : (isset($pages[$branch]) ? (array_key_exists($branch, $wiki) ? 'no-dates' : 'not-read') : 'none'),
+                'released' => $d['released'] ?? null,
+                'active_until' => $d['active_until'] ?? null,
+                'security_until' => $d['security_until'] ?? null,
+                'dates_from' => $d !== null ? $branchSource : null,
+                'steps' => $steps,
+                'patches' => [
+                    'dated' => array_slice($patches, 0, self::PATCHES_SHOWN),
+                    'tagged' => count($tagged),
+                    'first' => $tagged[0] ?? null,
+                    'last' => $tagged === [] ? null : $tagged[count($tagged) - 1],
+                    'next' => $nextPatch,
+                ],
+                'upcoming' => $future[$branch] ?? null,
+            ];
+        }
+
+        return $out;
+    }
+
+    /**
+     * @return array{date: string, label: string, skipped: bool, kind: string, note: ?string, announce: ?string, links: list<array{label: string, url: string}>, source: string, done: bool}
+     */
+    private static function step(string $date, string $label, string $kind, string $today, ?string $note): array
+    {
+        return ['date' => $date, 'label' => $label, 'skipped' => false, 'kind' => $kind, 'note' => $note, 'announce' => null, 'links' => [], 'source' => 'php.net', 'done' => $date <= $today];
+    }
+
+    /**
+     * @param list<int|string> $known
+     */
+    private static function isAfter(string $branch, array $known): bool
+    {
+        if ($known === []) {
+            return false;
+        }
+        foreach ($known as $k) {
+            if (version_compare($branch, (string) $k, '<=')) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * The wiki index as branch => page URL.
+     *
+     * @return array<string, string>
+     */
+    private static function pages(mixed $index): array
+    {
+        $out = [];
+        foreach (is_array($index) ? $index : [] as $p) {
+            if (is_array($p) && is_string($p['branch'] ?? null) && is_string($p['page'] ?? null)) {
+                $out[$p['branch']] = 'https://wiki.php.net/todo/' . $p['page'];
+            }
+        }
+
+        return $out;
+    }
+
+    public static function pageUrl(string $branch): string
+    {
+        return 'https://wiki.php.net/todo/php' . str_replace('.', '', $branch);
+    }
+
+    /**
+     * php-src master's version, and the major after it unless master already is a new major.
+     *
+     * @return list<array{branch: string, role: string, master: string}>
+     */
+    private static function futureLines(mixed $master): array
+    {
+        if (!is_array($master) || !is_int($master['major'] ?? null) || !is_int($master['minor'] ?? null) || !is_string($master['version'] ?? null)) {
+            return [];
+        }
+        $lines = [['branch' => $master['major'] . '.' . $master['minor'], 'role' => 'development', 'master' => $master['version']]];
+        if ($master['minor'] !== 0) {
+            $lines[] = ['branch' => ($master['major'] + 1) . '.0', 'role' => 'major', 'master' => $master['version']];
+        }
+
+        return $lines;
+    }
+
+    /**
+     * The oldest good read among the named sources: "checked" means all of them were.
+     *
+     * @param list<array<string, mixed>> $sources
+     * @param list<string> $ids
+     */
+    private static function checkedAt(array $sources, array $ids): ?string
+    {
+        $at = [];
+        foreach ($sources as $s) {
+            if (in_array($s['id'] ?? null, $ids, true)) {
+                if (!is_string($s['ok_at'] ?? null)) {
+                    return null;
+                }
+                $at[] = $s['ok_at'];
+            }
+        }
+
+        return $at === [] ? null : min($at);
     }
 
     /**
@@ -412,7 +657,8 @@ final class Merge
             'tagged' => 2,
             'scheduled' => 3,
             'candidate' => 4,
-            default => 5,
+            'development' => 5,
+            default => 6,
         };
     }
 }

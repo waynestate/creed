@@ -33,6 +33,41 @@ class Http
     }
 
     /**
+     * One URL at a time, at least $gap seconds apart (the gap also comes before
+     * the first, after whatever was asked of that host a moment ago). A host
+     * that does not answer at all stops the run: the rest are reported as not
+     * fetched rather than each waiting out its own timeout.
+     *
+     * @param array<string, string> $urls id => URL
+     *
+     * @return array<string, array{status: int, body: ?string, error: ?string}>
+     */
+    public function fetchPaced(array $urls, float $gap): array
+    {
+        $out = [];
+        $down = false;
+        foreach ($urls as $id => $url) {
+            if ($down) {
+                $out[$id] = ['status' => 0, 'body' => null, 'error' => 'not fetched: the host did not answer'];
+
+                continue;
+            }
+            $this->pause($gap);
+            $out[$id] = $this->fetchAll([$id => $url])[$id] ?? ['status' => 0, 'body' => null, 'error' => 'not fetched'];
+            $down = $out[$id]['status'] === 0;
+        }
+
+        return $out;
+    }
+
+    protected function pause(float $seconds): void
+    {
+        if ($seconds > 0) {
+            usleep((int) round($seconds * 1_000_000));
+        }
+    }
+
+    /**
      * @param array<string, string> $urls
      *
      * @return array<string, array{status: int, body: ?string, error: ?string}>

@@ -1,0 +1,30 @@
+===== PHP 7.4 Preparation Tasks =====
+
+  * Elect managers ([[http://news.php.net/php.internals/104784|done]])
+  * Triage bugs.php.net for PHP 7.4
+  * Triage github pull requests
+  * Push appropriate RFC at appropriate time
+
+===== Timetable =====
+
+Based upon PHP 7.3 release schedule
+
+  * Tag on Tuesday, Release on Thursday
+  * 6 months pre-release phase
+
+^ Date           ^ Release ^
+| Jun 13 2019    | Alpha 1 [[http://news.php.net/php.internals/105894|Announce]] [[https://downloads.php.net/~derick/|Files]] |
+| Jun 27 2019    | Alpha 2 [[http://news.php.net/php.internals/106081|Announce]] [[https://downloads.php.net/~derick/|Files]] |
+| Jul 11 2019    | Alpha 3 [[http://news.php.net/php.internals/106209|Announce]] [[https://downloads.php.net/~derick/|Files]] |
+| Jul 22 2019    | Feature freeze (PHP 7.4 has already [[http://news.php.net/php.internals/103862|been branched]]) @ 23:59 UTC |
+| Jul 25 2019    | Beta 1 [[http://news.php.net/php.internals/106289|Announce]] [[https://downloads.php.net/~derick/|Files]] |
+| Aug 08 2019    | Beta 2 [[http://news.php.net/php.internals/106430|Announce]] [[https://downloads.php.net/~derick/|Files]] |
+| Aug 22 2019    | Beta 4 [[http://news.php.net/php.internals/106676|Beta 3 skipped]] [[http://news.php.net/php.internals/106691|Announce]] [[https://downloads.php.net/~derick/|Files]] |
+| Sep 05 2019    | RC 1 [[https://news-web.php.net/php.internals/106867|Announce]]  [[https://downloads.php.net/~derick/|Files]] |
+| Sep 19 2019    | RC 2 [[https://news-web.php.net/php.internals/107245|Announce]]  [[https://downloads.php.net/~derick/|Files]] |
+| Oct 03 2019    | RC 3 [[https://news-web.php.net/php.internals/107366|Announce]]  [[https://downloads.php.net/~derick/|Files]] |
+| Oct 17 2019    | RC 4 [[https://news-web.php.net/php.internals/107574|Announce]]  [[https://downloads.php.net/~derick/|Files]] |
+| Oct 31 2019    | RC 5 [[https://news-web.php.net/php.internals/107741|Announce]]  [[https://downloads.php.net/~derick/|Files]] |
+| Nov 14 2019    | RC 6 [[https://news-web.php.net/php.internals/107792|Announce]]  [[https://downloads.php.net/~derick/|Files]] |
+| Nov 28 2019    | GA [[https://news-web.php.net/php.internals/107880|Announce]]  [[https://www.php.net/downloads.php#v7.4.0|Files]] |
+

@@ -1,0 +1,10 @@
+===== Timetable =====
+
+  - alpha 1 - June 28 2011 **DONE**
+  - alpha 2 - July 14 2011 **DONE**
+  - alpha 3 - Aug 4 2011 **DONE**
+  - beta - September 15 2011 **DONE**
+  - beta2 - October 20 2011 **DONE**
+  - 5.4.0 - **Released** on March 1, 2012
+  - 5.4.1 - **Released** on April 26, 2012
+  - 5.4.2 RC1 - Planned on May 10, 2012

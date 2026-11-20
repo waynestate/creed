@@ -152,7 +152,199 @@ final class PhpLifecycleMergeTest extends TestCase
         $doc = self::build($in, '2026-11-01T12:00:00Z');
 
         self::assertSame([['kind' => 'branch', 'branches' => ['8.6'], 'version' => '8.6.0', 'status' => 'scheduled', 'day' => '2026-11-19',
+            'next_step' => ['date' => '2026-11-05', 'label' => 'RC5'],
             'evidence' => [['source' => 'wiki schedule', 'label' => 'GA on the wiki schedule', 'url' => 'https://wiki.php.net/todo/php86']]]], $doc['upcoming']);
+    }
+
+    /**
+     * tonight() plus php-src master and the wiki index as they were on 2026-11-20.
+     *
+     * @return array<string, mixed>
+     */
+    private static function withMaster(): array
+    {
+        $in = self::tonight();
+        $in['master'] = Parse::phpVersionH(self::fixture('php_version.h'));
+        $in['wikiPages'] = Parse::wikiIndex(self::fixture('wiki-index.txt'));
+
+        return $in;
+    }
+
+    /**
+     * @param array<string, mixed> $doc
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    private static function upcomingByBranch(array $doc): array
+    {
+        self::assertIsArray($doc['upcoming']);
+        $out = [];
+        foreach ($doc['upcoming'] as $u) {
+            $out[(string) $u['branches'][0]] = $u;
+        }
+
+        return $out;
+    }
+
+    /**
+     * @param array<string, mixed> $doc
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    private static function timelines(array $doc): array
+    {
+        self::assertIsArray($doc['timelines']);
+        $out = [];
+        foreach ($doc['timelines'] as $t) {
+            $out[(string) $t['branch']] = $t;
+        }
+
+        return $out;
+    }
+
+    #[Test]
+    public function withNoTimetableTheNextLinesSayNoTimelineAndNothingElse(): void
+    {
+        $doc = self::build(self::withMaster(), '2026-11-20T00:10:00Z');
+        $u = self::upcomingByBranch($doc);
+
+        self::assertSame(['8.7', '9.0'], array_keys($u));
+        self::assertSame('no-timeline', $u['8.7']['status']);
+        self::assertSame('development', $u['8.7']['role']);
+        self::assertSame('no-timeline', $u['9.0']['status']);
+        self::assertSame('major', $u['9.0']['role']);
+        self::assertNull($u['8.7']['day'], 'no date is estimated');
+        self::assertNull($u['9.0']['day']);
+        self::assertSame([Merge::MASTER_LINK, Merge::INDEX_LINK], array_column($u['8.7']['evidence'], 'url'));
+        self::assertSame([Merge::MASTER_LINK, Merge::INDEX_LINK, Merge::RFC_LINK], array_column($u['9.0']['evidence'], 'url'));
+        self::assertSame('php-src master is 8.7.0-dev', $u['8.7']['evidence'][0]['label']);
+    }
+
+    #[Test]
+    public function masterOnANewMajorIsTheOnlyNoTimelineLine(): void
+    {
+        $in = self::withMaster();
+        $in['master'] = Parse::phpVersionH("#define PHP_VERSION \"9.0.0-dev\"\n");
+        $u = self::upcomingByBranch(self::build($in));
+
+        self::assertSame(['9.0'], array_keys($u));
+        self::assertSame('development', $u['9.0']['role']);
+    }
+
+    #[Test]
+    public function aWikiTimetableFor87ReplacesNoTimelineWithRealDates(): void
+    {
+        $in = self::withMaster();
+        $in['wikiPages'] = Parse::wikiIndex(self::fixture('wiki-index-with-php87.txt'));
+        $in['wiki'] = ['8.7' => Parse::wiki(self::fixture('wiki-php87-synthetic.txt'))];
+        $doc = self::build($in, '2026-11-20T00:10:00Z');
+        $u = self::upcomingByBranch($doc);
+
+        self::assertSame('scheduled', $u['8.7']['status']);
+        self::assertSame('2027-11-25', $u['8.7']['day']);
+        self::assertSame(['date' => '2027-07-01', 'label' => 'Alpha 1'], $u['8.7']['next_step']);
+        self::assertSame('https://wiki.php.net/todo/php87', $u['8.7']['evidence'][0]['url']);
+        self::assertSame('no-timeline', $u['9.0']['status'], '9.0 still has nothing');
+
+        $t = self::timelines($doc)['8.7'];
+        self::assertSame('future', $t['state']);
+        self::assertSame('published', $t['timetable']);
+        self::assertSame(['2027-07-01', '2027-07-15', '2027-08-10', '2027-08-12', '2027-09-23', '2027-09-23', '2027-11-25'], array_column($t['steps'], 'date'));
+        self::assertTrue($t['steps'][4]['skipped']);
+        self::assertFalse($t['steps'][6]['done']);
+    }
+
+    #[Test]
+    public function anAlphaTagOrANoticeAlsoReplacesNoTimeline(): void
+    {
+        $in = self::withMaster();
+        $in['tags'][] = ['version' => '8.7.0', 'branch' => '8.7', 'pre' => 'alpha1'];
+        $u = self::upcomingByBranch(self::build($in));
+        self::assertSame('development', $u['8.7']['status']);
+
+        $in = self::withMaster();
+        $in['atom'] = array_merge([[
+            'title' => 'Upcoming PHP 9.0 Release',
+            'published' => '2026-11-19T20:00:00Z',
+            'link' => 'https://www.php.net/',
+            'text' => 'PHP 9.0 will be released on 26 November 2026.',
+        ]], (array) $in['atom']);
+        $u = self::upcomingByBranch(self::build($in));
+        self::assertSame('announced', $u['9.0']['status']);
+        self::assertSame('2026-11-26', $u['9.0']['day']);
+    }
+
+    #[Test]
+    public function everyReleaseGetsATimelineFromWikiMilestonesAndPhpNetDates(): void
+    {
+        $in = self::withMaster();
+        $in['wiki'] = [
+            '8.6' => Parse::wiki(self::fixture('wiki-php86.txt')),
+            '7.4' => Parse::wiki(self::fixture('wiki-php74.txt')),
+            '5.6' => Parse::wiki(self::fixture('wiki-php56.txt')),
+        ];
+        $t = self::timelines(self::build($in));
+
+        self::assertSame(['9.0', '8.7', '8.6', '8.5'], array_slice(array_keys($t), 0, 4), 'newest first, lines to come on top');
+        self::assertSame('future', $t['8.7']['state']);
+        self::assertSame('none', $t['8.7']['timetable']);
+
+        $s = $t['8.6']['steps'];
+        $labels = array_column($s, 'label');
+        self::assertSame('Alpha 1', $labels[0]);
+        self::assertSame('https://www.php.net/archive/2026.php#2026-07-02-3', $s[0]['announce']);
+        $skipped = array_column(array_filter($s, static fn(array $x): bool => $x['skipped']), 'label');
+        self::assertSame(['RC1', 'RC6'], $skipped, 'RC1 struck through, RC6 tagged then skipped');
+        $ga = array_values(array_filter($s, static fn(array $x): bool => $x['kind'] === 'ga'));
+        self::assertCount(1, $ga, 'the wiki GA and php.net release day agree, so one GA');
+        self::assertSame('2026-11-19', $ga[0]['date']);
+        self::assertTrue($ga[0]['done']);
+        self::assertSame(['Active support ends', 'Security support ends'], array_slice($labels, -2));
+        self::assertSame('2030-12-31', $s[count($s) - 1]['date']);
+        self::assertFalse($s[count($s) - 1]['done']);
+
+        self::assertSame('eol', $t['7.4']['state']);
+        self::assertSame('2019-11-28', $t['7.4']['released']);
+        self::assertContains('Beta 4 Beta 3 skipped', array_column($t['7.4']['steps'], 'label'));
+        self::assertSame('ga', array_values(array_filter($t['5.6']['steps'], static fn(array $x): bool => $x['label'] === 'Final'))[0]['kind']);
+        self::assertSame('not-read', $t['8.5']['timetable'], 'indexed, not read in this test');
+    }
+
+    #[Test]
+    public function patchDatesAreOnlyWhatHappenedOrWhatPhpNetAnnounced(): void
+    {
+        $t = self::timelines(self::build(self::withMaster()));
+        $p = $t['8.5']['patches'];
+
+        self::assertSame('8.5.13', $p['dated'][0]['version']);
+        self::assertSame('2026-11-19', $p['dated'][0]['date']);
+        self::assertNull($p['next'], 'no notice, so no future patch day');
+        self::assertGreaterThan(0, $p['tagged']);
+        self::assertSame('8.5.1', $p['first']);
+
+        $in = self::withMaster();
+        $in['atom'] = Parse::atom(self::fixture('upcoming-notice.atom'));
+        $t = self::timelines(self::build($in));
+        self::assertSame('2026-11-20', $t['8.4']['patches']['next']['day']);
+        self::assertSame('announced', $t['8.4']['patches']['next']['status']);
+    }
+
+    #[Test]
+    public function cakeAndSlimRowsCarryTheLegacyLabelAndTheSameFit(): void
+    {
+        $in = self::tonight();
+        $plain = self::build($in);
+        foreach (['cakephp/cakephp', 'slim/slim'] as $package) {
+            $in['frameworks'][$package]['lifecycle'] = 'legacy';
+            $in['frameworks'][$package]['lifecycle_note'] = 'New apps use raw PHP or Laravel (D-124).';
+        }
+        $doc = self::build($in);
+        self::assertIsArray($doc['frameworks']);
+        self::assertIsArray($plain['frameworks']);
+        foreach ($doc['frameworks'] as $i => $f) {
+            self::assertSame($f['name'] === 'Laravel' ? null : 'legacy', $f['lifecycle']);
+            self::assertSame($plain['frameworks'][$i]['allows'], $f['allows'], 'the label changes nothing in the fit');
+        }
     }
 
     #[Test]

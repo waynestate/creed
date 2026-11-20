@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The live PHP page | CREED docs</title>
-<meta name="description" content="How /php reads the PHP lifecycle live from php.net, php-src, the php.net wiki, endoflife.date and Packagist, what it shows, and what happens when a source is down.">
+<meta name="description" content="How /php reads the PHP lifecycle live from php.net, php-src, the php.net wiki, endoflife.date and Packagist, what it shows (every release&#039;s timeline included), and what happens when a source is down.">
 <meta name="docs-version" content="0.1.14">
 <link rel="stylesheet" href="../../assets/wayne-ui/wayne-ui.css">
 <link rel="stylesheet" href="../../assets/docs.css">
@@ -43,9 +43,10 @@
     <main id="main">
       <article class="docs-article"><h1 id="the-live-php-page">The live PHP <span class="docs-heading-tail"><span>page</span><a class="docs-heading-link" aria-label="Link to this section" href="#the-live-php-page">#</a></span></h1>
 <p><a rel="noopener" href="https://creed.apps.wayne.edu/php/"><code>/php</code></a> shows the whole PHP lifecycle as of now: the newest version, the latest
-patch of every supported branch, the next release that is announced or tagged, a support timeline, and which PHP lines
-the newest Laravel, CakePHP and Slim releases allow. Every value comes from a source at request time. There is no list
-of versions, dates or branches anywhere in its code.</p>
+patch of every supported branch, the next release that is announced or tagged (or, when nothing is, the lines still
+to come), a support timeline, and which PHP lines the newest Laravel, CakePHP and Slim releases allow. Below that
+dashboard sits every release's own timeline, from its first alpha to its last security fix. Every value comes from a
+source at request time. There is no list of versions, dates or branches anywhere in its code.</p>
 <p>It is a view, not a gate. PROCTOR, HELMET and the rest read <code>policy/policy.json</code>, which the policy robot refreshes on a
 schedule and a person can review. The live page exists for the hours in between: the morning a new branch ships, or
 the evening before a security release.</p>
@@ -80,8 +81,18 @@ the evening before a security release.</p>
 <td>server, browser</td>
 </tr>
 <tr>
+<td>php-src master <code>main/php_version.h</code></td>
+<td>the version master is building (<code>8.7.0-dev</code>): the next line in development</td>
+<td>server</td>
+</tr>
+<tr>
+<td>php.net wiki <code>todo</code> index (raw export)</td>
+<td>which release pages exist: <code>todo:php86</code>, <code>todo:php85</code> and so on back to 5.2</td>
+<td>server</td>
+</tr>
+<tr>
 <td>php.net wiki <code>todo/phpNN</code> (raw export)</td>
-<td>the GA day of a branch php.net does not list yet</td>
+<td>each release's timetable: alphas, betas, RCs, freezes, GA, skipped steps and their Announce links</td>
 <td>server</td>
 </tr>
 <tr>
@@ -97,8 +108,16 @@ the evening before a security release.</p>
 </tbody>
 </table></div>
 <p>php.net and its news feed send no CORS headers, so the browser cannot read them itself. GitHub allows 60 calls an hour
-per address without a token; the server makes one tag call per live PHP major plus one for the next major, at most every
-ten minutes.</p>
+per address without a token; the server makes one tag call per live PHP major plus one for the next major, and one
+for master, at most every ten minutes.</p>
+<p>The wiki is read gently. Release pages are found only through the index, never by guessing names, and asked for one at
+a time, at least a second apart; the first page that does not answer ends that round. The index, the pages of
+supported releases and the pages of releases still to come are read again on the ten-minute schedule. A closed
+release's timetable does not change, so it is read once and kept: at most three a round until all are in, and the
+sources list shows them as one archive line.</p>
+<p>How long a release is supported is PHP's
+<a rel="noopener" href="https://wiki.php.net/rfc/release_cycle_update">release cycle policy</a>. The page cites it and never uses it to work out
+a date php.net has not published.</p>
 <h2 id="how-the-server-keeps-it-fresh">How the server keeps it <span class="docs-heading-tail"><span>fresh</span><a class="docs-heading-link" aria-label="Link to this section" href="#how-the-server-keeps-it-fresh">#</a></span></h2>
 <p><code>deploy/public/php-feed.php</code> is a real file in the deploy layer, so the rewrite hands it to PHP instead of the static
 front controller. It builds the document with <code>deploy/lib/PhpLifecycle</code>:</p>
@@ -119,16 +138,56 @@ answered shows as down and contributes nothing.</li>
 alpha, beta or RC tag is never a release.</li>
 <li>An &quot;Upcoming ... Security Release&quot; notice is &quot;announced&quot;, with its window when the text gives one. It disappears once
 a release dated on or after its day appears, or two days after its window.</li>
-<li>A new branch on the wiki's timetable shows its GA day as &quot;on the wiki schedule&quot;.</li>
+<li>A new branch on the wiki's timetable shows its GA day as &quot;on the wiki schedule&quot;, and its next step (the next RC, say)
+with its date.</li>
 <li>A branch that reached end of life in the last three years keeps its row, greyed: Wayne State apps still run them.</li>
 </ul>
-<p>Each rule has a test on frozen copies of the feeds from 2026-11-19, the night 8.6.0 shipped
-(<code>tests/PhpLifecycleMergeTest.php</code>, fixtures in <code>tests/fixtures/php-lifecycle/</code>).</p>
+<h3 id="lines-with-no-timeline-yet">Lines with no timeline <span class="docs-heading-tail"><span>yet</span><a class="docs-heading-link" aria-label="Link to this section" href="#lines-with-no-timeline-yet">#</a></span></h3>
+<p>Before PHP publishes anything about a release, the page says so and stops there. It never estimates.</p>
+<ul>
+<li>The line master is building (8.7 while master says <code>8.7.0-dev</code>) shows as &quot;next in development: no timeline released
+yet&quot;. It is PHP's yearly feature release: a minor by PHP's numbering, but it brings deprecations and breaking changes.</li>
+<li>The next major (9.0) shows as &quot;next major: no timeline released yet&quot;. When master itself is on an <code>X.0</code> version, that
+line is the major and no second one is shown.</li>
+<li>Each row says what the page is watching (php-src master, the wiki index, and for the major the RFC index) and when it
+last checked.</li>
+<li>The row goes away by itself when a wiki timetable page for that release appears in the index, an alpha tag lands in
+php-src, or php.net posts a notice. A timetable replaces it with its real dates.</li>
+<li>When master cannot be read, there are no such rows: the card says &quot;Nothing announced or tagged&quot;, as before.</li>
+</ul>
+<h3 id="release-timelines">Release <span class="docs-heading-tail"><span>timelines</span><a class="docs-heading-link" aria-label="Link to this section" href="#release-timelines">#</a></span></h3>
+<p>Every branch php.net lists, every release page in the wiki index, and every line still to come gets a timeline,
+newest first:</p>
+<ul>
+<li>The milestones are the wiki's timetable rows: alphas, betas, RCs, feature freezes and the notes in between, each with
+its date and the official Announce link. A struck-out row shows as skipped (8.6 skipped RC1, and tagged RC6 and then
+skipped it).</li>
+<li>General availability, the end of active support and the end of security support are php.net's dates, joined onto
+the same timeline. Each step is done or still ahead against today, and the next one is marked.</li>
+<li>Once a release is out, its pre-release run folds into one line that opens to show every step.</li>
+<li>Patches: the past ones are what php.net and php-src say happened (the last few with their dates, and the count of
+tags). A future patch day shows only when php.net has announced it. Otherwise the card says, in one quiet line, that
+no date is published. The page never projects PHP's four-week patch rhythm.</li>
+<li>Releases past end of life sit under &quot;Older releases&quot;, complete, one click away. A closed release whose page has not
+been read yet says so until its turn comes.</li>
+</ul>
+<h3 id="legacy-frameworks">Legacy <span class="docs-heading-tail"><span>frameworks</span><a class="docs-heading-link" aria-label="Link to this section" href="#legacy-frameworks">#</a></span></h3>
+<p>CakePHP and Slim are being phased out (department rule D-124: new apps use raw PHP or Laravel). Their rows in the
+framework fit sit under a &quot;Legacy: being phased out&quot; band, styled apart from the support colors, with the note &quot;Don't
+start new apps on CakePHP or Slim. New apps use raw PHP or Laravel.&quot; and a link to Booster's framework hops guide.
+Their fit is read from Packagist exactly as Laravel's is. The label lives in the feed (<code>frameworks[].lifecycle</code>), not
+in <code>policy/policy.json</code>: the policy schema allows no extra component fields, and an older schema copy would refuse a
+policy file that carried one.</p>
+<p>Each rule has a test on frozen copies of the feeds from 2026-11-19, the night 8.6.0 shipped, and of the wiki from
+2026-11-20 (<code>tests/PhpLifecycleMergeTest.php</code>, <code>tests/PhpLifecycleFeedTest.php</code>, <code>tests/PhpLifecycleParseTest.php</code>,
+fixtures in <code>tests/fixtures/php-lifecycle/</code>). One fixture, a made-up 8.7 timetable, is labelled as made up; it proves a
+new page in the index is picked up and replaces &quot;no timeline released yet&quot; with its dates.</p>
 <h2 id="when-the-server-cannot-answer">When the server cannot <span class="docs-heading-tail"><span>answer</span><a class="docs-heading-link" aria-label="Link to this section" href="#when-the-server-cannot-answer">#</a></span></h2>
 <p>If <code>php-feed.php</code> fails (or the server cannot reach out), the page reads endoflife.date and php-src's tags straight
-from the browser, marks itself <strong>Fallback</strong> and says what it could not read: php.net's own pages, its news feed and the
-framework fit. For that, the front controller's CSP lists <code>https://endoflife.date</code> and <code>https://api.github.com</code> in
-<code>connect-src</code>. If both paths fail, the page says <strong>No data</strong> and shows nothing rather than something made up.</p>
+from the browser, marks itself <strong>Fallback</strong> and says what it could not read: php.net's own pages, its news feed,
+php-src master, the wiki's timetables and the framework fit. For that, the front controller's CSP lists
+<code>https://endoflife.date</code> and <code>https://api.github.com</code> in <code>connect-src</code>. If both paths fail, the page says <strong>No data</strong>
+and shows nothing rather than something made up.</p>
 <h2 id="not-there-yet">Not there <span class="docs-heading-tail"><span>yet</span><a class="docs-heading-link" aria-label="Link to this section" href="#not-there-yet">#</a></span></h2>
 <p>A row for what Citadel offers. Citadel keeps image status in its dashboard, not in a public file, so there is no source
 to read. The merger takes a <code>platforms</code> input for it already; a source that lists only images that are built fills it.</p>
@@ -136,7 +195,7 @@ to read. The merger takes a <code>platforms</code> input for it already; a sourc
     </main>
     <nav class="docs-pager" aria-label="Pages"><a class="docs-pager__link" href="../../docs/guides/support-states.html"><span class="docs-pager__dir">Previous</span><span class="docs-pager__title">Support states and the grace period</span></a><a class="docs-pager__link docs-pager__link--next" href="../../docs/guides/patch-refresh.html"><span class="docs-pager__dir">Next</span><span class="docs-pager__title">Keeping the patches fresh</span></a></nav>
   </div>
-  <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#what-it-reads">What it reads</a></li><li class="docs-toc__item"><a href="#how-the-server-keeps-it-fresh">How the server keeps it fresh</a></li><li class="docs-toc__item"><a href="#the-merge-rules">The merge rules</a></li><li class="docs-toc__item"><a href="#when-the-server-cannot-answer">When the server cannot answer</a></li><li class="docs-toc__item"><a href="#not-there-yet">Not there yet</a></li></ul></nav>
+  <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#what-it-reads">What it reads</a></li><li class="docs-toc__item"><a href="#how-the-server-keeps-it-fresh">How the server keeps it fresh</a></li><li class="docs-toc__item"><a href="#the-merge-rules">The merge rules</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#lines-with-no-timeline-yet">Lines with no timeline yet</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#release-timelines">Release timelines</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#legacy-frameworks">Legacy frameworks</a></li><li class="docs-toc__item"><a href="#when-the-server-cannot-answer">When the server cannot answer</a></li><li class="docs-toc__item"><a href="#not-there-yet">Not there yet</a></li></ul></nav>
 </div>
 <footer class="docs-footer">
   <span>Documents CREED <span data-docs-version>0.1.14</span></span>

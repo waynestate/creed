@@ -1,0 +1,7 @@
+===== Timetable =====
+^ Date           ^ Release         ^ Comment            ^
+| Jan 16 2014    | Alpha1          | No new RFCs        |
+| March 16 2014  | Beta1           | No new features    |
+| May 16 2014    | RC1             |                    |
+| June 16 2014   | Final           |                    |
+

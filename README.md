@@ -20,7 +20,7 @@ Checks: `composer ci` (the same command CI runs on git.wayne.edu).
 Front page: [`site/index.html`](site/index.html), a static page you can open in a browser or serve from `site/`.
 On Citadel it is served by the raw-PHP deploy layer in [`deploy/`](deploy/): a Squire kit whose front controller serves `site/` behind HELMET's security headers. For local development, keep serving `site/` directly.
 
-Live PHP: [`/php`](https://creed.apps.wayne.edu/php/) (`site/php/index.html`) shows the whole PHP lifecycle as of now, read from php.net, php-src, the php.net wiki, endoflife.date and Packagist by `deploy/public/php-feed.php` and at most 30 minutes behind; served from `site/` alone it reads endoflife.date and php-src from the browser and says so. See [The live PHP page](docs/guides/live-php.md).
+Live PHP: [`/php`](https://creed.apps.wayne.edu/php/) (`site/php/index.html`) shows the whole PHP lifecycle as of now, with every release's timeline from first alpha to last security fix, read from php.net, php-src, the php.net wiki, endoflife.date and Packagist by `deploy/public/php-feed.php` and at most 30 minutes behind; served from `site/` alone it reads endoflife.date and php-src from the browser and says so. See [The live PHP page](docs/guides/live-php.md).
 
 One command, two clouds, zero excuses. Higher.
 

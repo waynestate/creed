@@ -1,0 +1,16 @@
+===== PHP 8.7 Preparation Tasks =====
+
+  * Elect managers
+
+===== Timetable =====
+
+A made-up timetable for tests only: the shape of the 8.6 page with 8.7 dates. It is not a real schedule.
+
+^ Date           ^ Release ^
+| Jul 01 2027    | Alpha 1 |
+| Jul 15 2027    | Alpha 2 |
+| Aug 10 2027    | Feature freeze |
+| Aug 12 2027    | Beta 1 |
+| Sep 23 2027    | <del>RC1</del> (skipped) |
+| Sep 23 2027    | RC2 |
+| Nov 25 2027    | GA |

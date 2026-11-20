@@ -6,7 +6,7 @@
 <meta name="stack-env" content="auto">
 <script src="../assets/stack-env.js" defer></script>
 <title>PHP, as of now | CREED</title>
-<meta name="description" content="The whole PHP lifecycle, live: every supported branch with its latest patch, the support timeline, the next announced or tagged release, and which PHP lines Laravel, CakePHP and Slim allow. Read from php.net, php-src, endoflife.date and Packagist, at most 30 minutes behind.">
+<meta name="description" content="The whole PHP lifecycle, live: every supported branch with its latest patch, the support timeline, the next announced or tagged release, every release's timeline from first alpha to last security fix, and which PHP lines Laravel, CakePHP and Slim allow. Read from php.net, php-src, the php.net wiki, endoflife.date and Packagist, at most 30 minutes behind.">
 <meta name="theme-color" content="#0c5449" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#1a1b18" media="(prefers-color-scheme: dark)">
 <meta name="color-scheme" content="light dark">
@@ -134,8 +134,29 @@
         <div class="pl-more__body">
           <ul class="pl-src-all" data-pl-sources-all></ul>
           <ul class="pl-notes" data-pl-notes></ul>
-          <p class="pl-fine">The page asks <a href="../php-feed.php">php-feed.php</a>, which reads php.net's supported versions, releases and news feed, php-src's tags, the php.net wiki's timetables, endoflife.date and Packagist, and keeps the merge for ten minutes. If that fails, the page reads endoflife.date and php-src's tags straight from your browser and says so. A source that cannot be read is shown as stale or down; nothing on this page is typed in by hand. php.net wins when sources disagree on a date.</p>
+          <p class="pl-fine">The page asks <a href="../php-feed.php">php-feed.php</a>, which reads php.net's supported versions, releases and news feed, php-src's tags and the version on its master branch, the php.net wiki's index of release pages and every timetable it lists, endoflife.date and Packagist, and keeps the merge for ten minutes. If that fails, the page reads endoflife.date and php-src's tags straight from your browser and says so. A source that cannot be read is shown as stale or down; nothing on this page is typed in by hand. php.net wins when sources disagree on a date. How long each release is supported is PHP's <a href="https://wiki.php.net/rfc/release_cycle_update">release cycle policy</a>; this page never uses it to guess a date php.net has not published.</p>
         </div>
+      </details>
+    </section>
+
+    <!-- §2A.5 Release timelines: below the fold, reached from the Next card. -->
+    <section class="pl-tl" id="timelines" aria-labelledby="tl-h">
+      <div class="pl-panel__head pl-tl__head">
+        <h2 id="tl-h" class="pl-h2"><span class="pl-no">§2A.5</span> Release timelines</h2>
+        <ul class="pl-legend pl-tl__legend" aria-label="Legend">
+          <li><span class="pl-key pl-key--done" aria-hidden="true"></span>Done</li>
+          <li><span class="pl-key pl-key--ahead" aria-hidden="true"></span>Still ahead</li>
+          <li><span class="pl-key pl-key--skipped" aria-hidden="true"></span>Skipped</li>
+          <li><span class="pl-swatch pl-swatch--pre" aria-hidden="true"></span>Pre-release</li>
+          <li><span class="pl-swatch pl-swatch--active" aria-hidden="true"></span>Active</li>
+          <li><span class="pl-swatch pl-swatch--security" aria-hidden="true"></span>Security only</li>
+        </ul>
+      </div>
+      <p class="pl-tl__intro">Every release from its first alpha to its last security fix. The milestones are the php.net wiki's timetable, as its release managers keep it; general availability and the end of active and security support are php.net's own dates. Future patch days appear only when php.net announces one.</p>
+      <div class="pl-tl__grid" data-pl-timelines><p class="pl-card__empty">Not read yet.</p></div>
+      <details class="pl-tl__older" data-pl-timelines-older-wrap hidden>
+        <summary>Older releases, past end of life (<span data-pl-timelines-older-count>0</span>)</summary>
+        <div class="pl-tl__grid" data-pl-timelines-older></div>
       </details>
     </section>
 

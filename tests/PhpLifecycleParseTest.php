@@ -128,6 +128,77 @@ final class PhpLifecycleParseTest extends TestCase
     }
 
     #[Test]
+    public function wiki86ReadsEveryMilestoneWithItsKindAndAnnounceLink(): void
+    {
+        $wiki = Parse::wiki(self::fixture('wiki-php86.txt'));
+        self::assertNotNull($wiki);
+        $rows = $wiki['rows'];
+        self::assertCount(16, $rows);
+        self::assertSame(['date' => '2026-07-02', 'label' => 'Alpha 1', 'skipped' => false, 'kind' => 'alpha', 'note' => null,
+            'announce' => 'https://www.php.net/archive/2026.php#2026-07-02-3', 'links' => []], $rows[0]);
+        $by = [];
+        foreach ($rows as $r) {
+            $by[$r['label']] ??= $r;
+        }
+        self::assertSame('freeze', $by['Hard feature freeze: features, whether requiring an RFC or not, must be merged only with approval from the RMs.']['kind']);
+        self::assertSame('note', $by['All RFCs targeting 8.6 should have been merged, so they can be in Beta 1.']['kind']);
+        self::assertSame('beta', $by['Beta 1 + Soft feature freeze: all RFCs must have their voting concluded']['kind']);
+        self::assertTrue($by['RC1']['skipped']);
+        self::assertSame('skipped, explanation', $by['RC1']['note']);
+        self::assertSame('explanation', $by['RC1']['links'][0]['label']);
+        self::assertTrue($by['RC6']['skipped'], 'tagged but then skipped');
+        self::assertFalse($by['RC7']['skipped'], 'an extra RC is not a skipped one');
+        self::assertSame('extra unplanned RC release, see explanation', $by['RC7']['note']);
+        self::assertSame(['date' => '2026-11-19', 'label' => 'GA', 'skipped' => false, 'kind' => 'ga', 'note' => null, 'announce' => null, 'links' => []], $rows[15]);
+    }
+
+    #[Test]
+    public function olderWikiLayoutsReadToo(): void
+    {
+        $w74 = Parse::wiki(self::fixture('wiki-php74.txt'));
+        self::assertNotNull($w74);
+        self::assertSame('2019-11-28', $w74['ga']);
+        $beta4 = array_values(array_filter($w74['rows'], static fn(array $r): bool => str_starts_with($r['label'], 'Beta 4')));
+        self::assertFalse($beta4[0]['skipped'], 'a link that says "Beta 3 skipped" is about Beta 3');
+
+        // 5.6: a comment column and "Final" for GA.
+        $w56 = Parse::wiki(self::fixture('wiki-php56.txt'));
+        self::assertNotNull($w56);
+        self::assertSame('2014-06-16', $w56['ga']);
+        self::assertSame(['Alpha1', 'No new RFCs'], [$w56['rows'][0]['label'], $w56['rows'][0]['note']]);
+        self::assertSame('2014-03-16', $w56['rows'][1]['date']);
+
+        // 5.4: a list, not a table.
+        $w54 = Parse::wiki(self::fixture('wiki-php54.txt'));
+        self::assertNotNull($w54);
+        self::assertSame(['alpha 1', 'alpha 2', 'alpha 3', 'beta', 'beta2', '5.4.0 Released', '5.4.1 Released', '5.4.2 RC1 Planned'], array_column($w54['rows'], 'label'));
+        self::assertSame('2012-03-01', $w54['ga']);
+        self::assertSame('patch', $w54['rows'][6]['kind']);
+    }
+
+    #[Test]
+    public function theWikiIndexListsEveryReleasePageAndNothingElse(): void
+    {
+        $index = Parse::wikiIndex(self::fixture('wiki-index.txt'));
+        self::assertNotNull($index);
+        self::assertSame(
+            ['8.6', '8.5', '8.4', '8.3', '8.2', '8.1', '8.0', '7.4', '7.3', '7.2', '7.1', '7.0', '5.6', '5.5', '5.4', '5.3', '5.2'],
+            array_column($index, 'branch'),
+            'PHP 6 is struck through; PHP531 is a sub-page; PECL and Backlog are not releases',
+        );
+        self::assertSame('php86', $index[0]['page']);
+        self::assertSame('8.7', Parse::wikiIndex(self::fixture('wiki-index-with-php87.txt'))[0]['branch'] ?? null);
+        self::assertNull(Parse::wikiIndex(self::fixture('wiki-php87-404.html')));
+    }
+
+    #[Test]
+    public function phpSrcMasterNamesTheNextVersion(): void
+    {
+        self::assertSame(['version' => '8.7.0-dev', 'branch' => '8.7', 'major' => 8, 'minor' => 7, 'extra' => '-dev'], Parse::phpVersionH(self::fixture('php_version.h')));
+        self::assertNull(Parse::phpVersionH(self::fixture('wiki-php87-404.html')));
+    }
+
+    #[Test]
     public function packagistGivesTheNewestStableOfEachMajor(): void
     {
         $slim = Parse::packagist(self::fixture('packagist-slim.json'), 'slim/slim');

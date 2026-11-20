@@ -179,6 +179,123 @@
 .pl-src-all { display: grid; grid-template-columns: repeat(auto-fill, minmax(19rem, 1fr)); gap: .25rem 1.2rem; margin: 0; padding: 0; list-style: none; font-family: var(--mono); font-size: .74rem; color: var(--ink-2); }
 .pl-notes { margin: .6rem 0 0; padding-left: 1.1rem; font-size: .86rem; }
 
+/* -------------------------------------------------------- lines still to come
+   In the Next card: a line with nothing published says so, with what this
+   page watches for it. No dates, so no bars; a dashed tag, like a pencilled
+   entry waiting for ink. */
+.pl-lines { list-style: none; margin: 0; padding: 0; display: grid; gap: .4rem; }
+.pl-line + .pl-line { padding-top: .4rem; border-top: 1px dotted var(--rule); }
+.pl-lines--compact { margin-top: .6rem; padding-top: .5rem; border-top: 1px solid var(--rule); }
+.pl-line__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem .5rem; margin: 0; }
+.pl-line__v { font-family: var(--serif); font-weight: 700; font-size: 1.12rem; line-height: 1.15; color: var(--ink); }
+.pl-lines--compact .pl-line__v { font-size: 1.02rem; }
+.pl-line__tag { font-family: var(--mono); font-weight: 600; font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; color: var(--green); padding: .1rem .32rem; border: 1.5px dashed currentColor; border-radius: 2px; }
+.pl-line__what { margin: .1rem 0 0; font-size: .86rem; line-height: 1.35; color: var(--ink); }
+.pl-line__why { font-size: .74rem; color: var(--ink-2); }
+.pl-rel--line .pl-line__why { display: block; margin-top: .3rem; }
+.pl-line__watch { margin: .12rem 0 0; font-size: .68rem; line-height: 1.4; color: var(--ink-2); }
+.pl-line__watch a { color: var(--green); text-underline-offset: 2px; }
+.pl-next__top { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 .75rem; margin-bottom: .45rem; }
+.pl-next__top .pl-card__label { margin: 0; }
+.pl-next__more { font-family: var(--mono); font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; color: var(--green); white-space: nowrap; }
+
+/* -------------------------------------------------------- legacy frameworks
+   CakePHP and Slim: a slate "superseded" stamp, none of the support inks, so
+   it never reads as a support state. The fit beside it is untouched. */
+.pl-legacy {
+  display: inline-block; margin: .2rem 0 .12rem; padding: .12rem .34rem .1rem;
+  font-family: var(--mono); font-weight: 600; font-size: .56rem; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap;
+  color: var(--stamp-doc); border: 1.5px solid currentColor; border-radius: 2px;
+  background: repeating-linear-gradient(-45deg, transparent 0 4px, color-mix(in srgb, currentColor 14%, transparent) 4px 5px);
+  transform: rotate(-1.5deg); transform-origin: left center;
+}
+.pl-fit .pl-fit__group td { padding: .5rem .25rem .3rem; text-align: left; font-size: .74rem; line-height: 1.4; color: var(--ink-2); border-top: 1px solid var(--rule); }
+.pl-fit__group .pl-legacy { margin: 0 .3rem 0 0; vertical-align: .05em; }
+.pl-fit__group a { color: var(--green); }
+.pl-fit__legacy th[scope="row"] { box-shadow: inset 3px 0 0 color-mix(in srgb, var(--stamp-doc) 55%, transparent); padding-left: .55rem; }
+.pl-fit__legacy .pl-fw a { color: var(--ink-2); }
+
+/* -------------------------------------------------------- release timelines
+   One index card per release, read top to bottom from its first alpha to its
+   last security fix: filled dots are done, open dots are ahead, struck dots
+   were skipped, the diamond is GA. The thin bar on top is the same ledger
+   ink as §2A.2, so a card and its row agree at a glance. */
+.pl-tl { margin-top: 2.4rem; scroll-margin-top: 4.5rem; }
+.pl-tl__head { margin-bottom: 0; }
+.pl-tl__intro { max-width: 64rem; margin: .55rem 0 1rem; font-size: .9rem; color: var(--ink-2); }
+.pl-tl__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(19.5rem, 100%), 1fr)); gap: 1rem; align-items: start; }
+.pl-tl__older { margin-top: 1.3rem; }
+.pl-tl__older > summary { cursor: pointer; width: max-content; max-width: 100%; font-family: var(--mono); font-size: .74rem; letter-spacing: .06em; text-transform: uppercase; color: var(--green); }
+.pl-tl__older[open] > summary { margin-bottom: .9rem; }
+.pl-key { display: inline-block; width: .62rem; height: .62rem; border-radius: 50%; border: 2px solid var(--green); background: var(--paper-hi); }
+.pl-key--done { background: var(--green); }
+.pl-key--skipped { border-color: var(--ink-2); border-style: dotted; background: transparent; }
+.pl-swatch--pre { background: repeating-linear-gradient(90deg, var(--green) 0 2px, transparent 2px 5px); }
+
+.pl-rel { position: relative; min-width: 0; padding: .8rem .95rem .85rem; background: var(--paper-hi); border: 1px solid var(--rule); border-top: 3px solid var(--cloth); }
+.pl-rel--security { border-top-color: #8a6c08; }
+.pl-rel--eol, .pl-rel--unknown { border-top-color: var(--ink-2); }
+.pl-rel--future, .pl-rel--planned { border-top-style: dashed; border-top-color: var(--green); }
+.pl-rel--line { background: transparent; border: 1.5px dashed var(--rule); border-top: 3px dashed var(--green); }
+.pl-rel__head { display: flex; flex-wrap: wrap; align-items: center; gap: .3rem .55rem; }
+.pl-rel__v { margin: 0; font-family: var(--serif); font-weight: 700; font-size: 1.35rem; line-height: 1.1; color: var(--ink); }
+.pl-rel--eol .pl-rel__v { color: var(--ink-2); }
+.pl-rel__span { margin-left: auto; font-family: var(--mono); font-size: .66rem; color: var(--ink-2); white-space: nowrap; }
+.pl-rel__none { margin: .5rem 0 0; font-family: var(--serif); font-size: 1.05rem; color: var(--ink); }
+.pl-rel__fine { margin: .45rem 0 0; font-size: .76rem; color: var(--ink-2); }
+
+.pl-phase { position: relative; height: .5rem; margin: .65rem 0 .55rem; background: var(--bar-track); border-radius: 1px; }
+.pl-phase > span { position: absolute; top: 0; height: 100%; transform-origin: left center; }
+.pl-phase__pre { background: repeating-linear-gradient(90deg, var(--green) 0 2px, transparent 2px 5px); opacity: .8; }
+.pl-phase__active { background: var(--bar-active); }
+.pl-phase__security { background: var(--bar-security); }
+.pl-phase .pl-phase__today { top: -.22rem; height: calc(100% + .44rem); width: 2px; margin-left: -1px; background: var(--red); z-index: 1; }
+.pl-phase .pl-phase__ga { top: -.06rem; width: .6rem; height: .6rem; transform: translateX(-50%) rotate(45deg); background: var(--paper-hi); border: 2px solid var(--green); }
+
+.pl-tl__tocome { display: grid; gap: 1rem; min-width: 0; }
+.pl-rel__pre { margin: 0; padding: 0; border: 0; }
+.pl-rel__pre > summary { cursor: pointer; min-height: 0; padding: .3rem 0; line-height: 1.3; margin: 0; font-family: var(--mono); font-size: .68rem; color: var(--green); }
+.pl-rel__pre[open] > summary { margin-bottom: .25rem; }
+.pl-steps { list-style: none; margin: .15rem 0 0; padding: 0; }
+.pl-step { position: relative; display: grid; grid-template-columns: 5.4rem .8rem minmax(0, 1fr); gap: 0 .45rem; align-items: start; padding: .17rem 0; }
+.pl-step::before { content: ""; position: absolute; left: calc(5.4rem + .45rem + .4rem - .5px); top: 0; bottom: 0; width: 1px; background: var(--rule); }
+.pl-step:first-child::before { top: .75rem; }
+.pl-step:last-child::before { bottom: calc(100% - .75rem); }
+.pl-step:only-child::before { display: none; }
+.pl-step__d { padding-top: .1rem; font-family: var(--mono); font-size: .7rem; color: var(--ink-2); white-space: nowrap; }
+.pl-step__dot { position: relative; z-index: 1; justify-self: center; width: .64rem; height: .64rem; margin-top: .3rem; border: 2px solid var(--green); border-radius: 50%; background: var(--paper-hi); }
+.pl-step.is-done .pl-step__dot { background: var(--green); }
+.pl-step.is-skipped .pl-step__dot { border-color: var(--ink-2); border-style: dotted; background: var(--paper-hi); }
+.pl-step--note .pl-step__dot, .pl-step--freeze .pl-step__dot { width: .44rem; height: .44rem; margin-top: .38rem; border-width: 1.5px; }
+.pl-step--ga .pl-step__dot { width: .72rem; height: .72rem; margin-top: .26rem; border-radius: 1px; transform: rotate(45deg); }
+.pl-step--active-end .pl-step__dot { border-radius: 1px; }
+.pl-step--security-end .pl-step__dot { border-radius: 1px; border-color: var(--red); }
+.pl-step--security-end.is-done .pl-step__dot { background: var(--red); }
+.pl-step__body { font-size: .84rem; line-height: 1.3; color: var(--ink); min-width: 0; }
+.pl-step--ga .pl-step__label, .pl-step--security-end .pl-step__label, .pl-step--active-end .pl-step__label { font-weight: 600; }
+.pl-step--note .pl-step__label, .pl-step--freeze .pl-step__label { font-size: .78rem; color: var(--ink-2); }
+.pl-step.is-skipped .pl-step__label, .pl-step.is-skipped .pl-step__d { color: var(--ink-2); }
+.pl-step__note { display: block; font-size: .72rem; color: var(--ink-2); }
+.pl-step__links { display: inline-flex; flex-wrap: wrap; gap: .45rem; margin-left: .45rem; font-family: var(--mono); font-size: .64rem; }
+.pl-step__links a { display: inline-block; min-height: 24px; line-height: 24px; color: var(--green); }
+.pl-step__next { display: inline-block; margin-left: .4rem; padding: .08rem .3rem; font-family: var(--mono); font-weight: 600; font-size: .56rem; letter-spacing: .12em; text-transform: uppercase; background: var(--gold); color: var(--on-gold); border-radius: 2px; vertical-align: .1em; }
+.pl-step.is-next .pl-step__dot { box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 60%, transparent); }
+
+.pl-rel__patches p { margin: .55rem 0 0; font-size: .78rem; line-height: 1.45; color: var(--ink); }
+.pl-rel__patches .pl-rel__dated { display: flex; flex-wrap: wrap; gap: 0 .8rem; }
+.pl-rel__dated > * { flex-basis: 100%; }
+.pl-rel__dated .pl-rel__patch { margin-right: 0; }
+.pl-step__note a { color: var(--green); }
+.pl-rel__k { margin-right: .45rem; font-family: var(--mono); font-size: .6rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-2); }
+.pl-rel__patch { margin-right: .55rem; font-family: var(--mono); font-size: .7rem; color: var(--ink-2); white-space: nowrap; }
+.pl-rel__patch strong { font-weight: 600; color: var(--ink); }
+.pl-rel__patch.is-security strong { color: var(--ochre); }
+.pl-rel__tagged { display: block; margin-top: .1rem; font-family: var(--mono); font-size: .66rem; color: var(--ink-2); }
+.pl-rel__patches .pl-rel__quiet { margin-top: .3rem; font-size: .74rem; color: var(--ink-2); }
+.pl-rel__nextpatch strong { color: var(--green); }
+.pl-rel__foot { margin: .6rem 0 0; padding-top: .4rem; border-top: 1px dotted var(--rule); font-family: var(--mono); font-size: .66rem; color: var(--ink-2); }
+.pl-rel__foot a { color: var(--green); }
+
 /* -------------------------------------------------------- motion */
 @media (prefers-reduced-motion: no-preference) {
   .motion .pl-in .pl-bar { animation: pl-draw .9s var(--ease-out) both; animation-delay: calc(var(--i, 0) * 70ms + 120ms); }
@@ -187,6 +304,11 @@
   .motion .pl-mode.is-pressed { animation: pl-press .45s var(--ease-press) both; }
   .motion .is-fresh { animation: pl-pulse 1.6s ease-out 1; }
   .motion .pl-detail { transition: opacity .12s ease-out; }
+  /* Release cards settle in as they scroll up, then their bar draws and the next step glints once. */
+  .motion .pl-rel.is-waiting { opacity: 0; transform: translateY(12px); }
+  .motion .pl-rel.is-waiting.is-in { opacity: 1; transform: none; transition: opacity .5s var(--ease-out), transform .65s var(--ease-out); transition-delay: calc(var(--k, 0) * 60ms); }
+  .motion .pl-rel.is-waiting.is-in .pl-phase > span:not(.pl-phase__today):not(.pl-phase__ga) { animation: pl-draw .9s var(--ease-out) both; animation-delay: calc(var(--k, 0) * 60ms + 180ms); }
+  .motion .pl-rel.is-waiting.is-in .pl-step.is-next .pl-step__dot { animation: pl-pulse 1.6s ease-out 1; animation-delay: calc(var(--k, 0) * 60ms + 700ms); }
 }
 @keyframes pl-draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
 @keyframes pl-drop { from { transform: scaleY(0); } to { transform: scaleY(1); } }

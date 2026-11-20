@@ -263,34 +263,181 @@ final class Parse
     }
 
     /**
-     * wiki.php.net todo/phpNN?do=export_raw: the release timetable rows.
+     * php-src master's main/php_version.h: the version the development line will become.
      *
-     * @return array{ga: ?string, rows: list<array{date: string, label: string, skipped: bool}>}|null
+     * @return array{version: string, branch: string, major: int, minor: int, extra: string}|null
+     */
+    public static function phpVersionH(string $body): ?array
+    {
+        if (!preg_match('/^\s*#\s*define\s+PHP_VERSION\s+"(\d+)\.(\d+)\.(\d+)([^"]*)"/m', $body, $m)) {
+            return null;
+        }
+
+        return [
+            'version' => $m[1] . '.' . $m[2] . '.' . $m[3] . $m[4],
+            'branch' => $m[1] . '.' . $m[2],
+            'major' => (int) $m[1],
+            'minor' => (int) $m[2],
+            'extra' => $m[4],
+        ];
+    }
+
+    /**
+     * wiki.php.net todo?do=export_raw: the index of release pages, one per branch.
+     * A struck-through entry (PHP 6, which never shipped) is not a release. Sub-pages
+     * such as PHP531 are not branches. Majors 10 to 19 read as PHP10x.
+     *
+     * @return list<array{branch: string, page: string}>|null
+     */
+    public static function wikiIndex(string $body): ?array
+    {
+        if (self::isHtml($body) || !str_contains($body, '[[')) {
+            return null;
+        }
+        $out = [];
+        $body = (string) preg_replace('#<del>.*?</del>#is', '', $body);
+        if (preg_match_all('/\[\[\s*todo:(php)(1\d|\d)(\d)\s*(?:\|[^\]]*)?\]\]/i', $body, $all, PREG_SET_ORDER)) {
+            foreach ($all as $m) {
+                $branch = $m[2] . '.' . $m[3];
+                $out[$branch] = ['branch' => $branch, 'page' => strtolower($m[1] . $m[2] . $m[3])];
+            }
+        }
+        uksort($out, static fn(string $a, string $b): int => version_compare($b, $a));
+
+        return array_values($out);
+    }
+
+    /**
+     * wiki.php.net todo/phpNN?do=export_raw: the release timetable, as the page has it.
+     *
+     * Two layouts exist. From 5.5 on, a table: `| Jul 02 2026 | Alpha 1 [[link|Announce]] |`,
+     * with skipped steps struck through (`<del>RC1</del>`) or described as skipped, and
+     * notes rows ("Feature freeze") between the releases. Before that, a list under
+     * "Timetable": `- alpha 1 - June 28 2011 **DONE**`. A list item without a year is left out.
+     *
+     * @return array{ga: ?string, rows: list<array{date: string, label: string, skipped: bool, kind: string, note: ?string, announce: ?string, links: list<array{label: string, url: string}>}>}|null
      */
     public static function wiki(string $body): ?array
     {
-        if (stripos(ltrim($body), '<!doctype') === 0 || stripos(ltrim($body), '<html') === 0) {
+        if (self::isHtml($body)) {
             return null;
         }
         $rows = [];
-        $ga = null;
-        if (preg_match_all('/^\|\s*([A-Z][a-z]{2,8}\.?\s+\d{1,2},?\s+\d{4})\s*\|\s*(.*?)\s*\|?\s*$/m', $body, $all, PREG_SET_ORDER)) {
+        $date = '[A-Z][a-z]{2,8}\.?\s+\d{1,2},?\s+\d{4}';
+        if (preg_match_all('#^\|\s*(<del>\s*)?(' . $date . ')\s*(?:</del>\s*)?\|(.*)$#m', $body, $all, PREG_SET_ORDER)) {
             foreach ($all as $m) {
-                $date = self::looseDay($m[1]);
-                if ($date === null) {
-                    continue;
-                }
-                $skipped = (bool) preg_match('#<del>|\bskipped\b#i', $m[2]);
-                $label = (string) preg_replace('/\[\[[^|\]]*\|([^\]]*)\]\]/', '$1', $m[2]);
-                $label = trim((string) preg_replace('/\s+/', ' ', strip_tags(str_replace('**', '', $label))));
-                $rows[] = ['date' => $date, 'label' => $label, 'skipped' => $skipped];
-                if (!$skipped && preg_match('/^(GA|General availability)\b/i', $label)) {
-                    $ga = $date;
+                $day = self::looseDay($m[2]);
+                if ($day !== null) {
+                    $rows[] = self::wikiRow($day, $m[3], $m[1] !== '');
                 }
             }
         }
+        if ($rows === [] && preg_match('/^=+\s*Timetable\s*=+\s*$(.*?)(?=^=+|\z)/ims', $body, $section)) {
+            $months = self::MONTHS . '|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec';
+            foreach (preg_split('/\R/', $section[1]) ?: [] as $line) {
+                if (!preg_match('/^\s+[-*]\s+(.*)$/', $line, $item)
+                    || !preg_match("/\\b({$months})\\.?\\s+(\\d{1,2})(?:st|nd|rd|th)?,?\\s+(\\d{4})\\b/i", $item[1], $d)) {
+                    continue;
+                }
+                $day = self::looseDay(ucfirst(strtolower(substr($d[1], 0, 3))) . ' ' . $d[2] . ' ' . $d[3]);
+                if ($day === null) {
+                    continue;
+                }
+                $text = str_replace($d[0], '', $item[1]);
+                $text = (string) preg_replace('/\*\*\s*(DONE|COMPLETED)\s*\*\*/i', '', $text);
+                $text = (string) preg_replace('/\s+on\s*$|\s+-\s+|\s+-\s*$/', ' ', $text);
+                $rows[] = self::wikiRow($day, $text, false);
+            }
+        }
+        if ($rows === []) {
+            return null;
+        }
+        // Page order is date order with ties kept as written (RC1 skipped, then RC2 the same day).
+        usort($rows, static fn(array $a, array $b): int => strcmp($a['date'], $b['date']));
+        $ga = null;
+        foreach ($rows as $r) {
+            if ($r['kind'] === 'ga' && !$r['skipped']) {
+                $ga = $r['date'];
+                break;
+            }
+        }
 
-        return $rows === [] ? null : ['ga' => $ga, 'rows' => $rows];
+        return ['ga' => $ga, 'rows' => $rows];
+    }
+
+    /**
+     * One timetable row: the label as written, its links, whether it was skipped, and what kind of step it is.
+     *
+     * @return array{date: string, label: string, skipped: bool, kind: string, note: ?string, announce: ?string, links: list<array{label: string, url: string}>}
+     */
+    private static function wikiRow(string $day, string $cell, bool $dateStruck): array
+    {
+        $links = [];
+        $announce = null;
+        // [[url|Label]] links: Announce and Files are links, not words; any other link keeps its words.
+        $text = (string) preg_replace_callback('/\[\[\s*([^|\]]+?)\s*(?:\|([^\]]*))?\]\]/', static function (array $m) use (&$links, &$announce): string {
+            $url = trim($m[1]);
+            $label = trim($m[2] ?? '');
+            if (!preg_match('#^https?://#i', $url)) {
+                return $label;
+            }
+            if (strcasecmp($label, 'Announce') === 0) {
+                $announce ??= $url;
+
+                return '';
+            }
+            if (strcasecmp($label, 'Files') === 0) {
+                return '';
+            }
+            $links[] = ['label' => $label === '' ? $url : $label, 'url' => $url];
+
+            return $label;
+        }, $cell);
+        $bare = (string) preg_replace('/\[\[[^\]]*\]\]/', '', $cell);
+        $skipped = $dateStruck || str_contains($cell, '<del>') || (bool) preg_match('/\bskipped\b/i', $bare);
+
+        $cells = array_values(array_filter(array_map(
+            static fn(string $c): string => trim((string) preg_replace('/\s+/', ' ', strip_tags(str_replace(['**', '//'], '', $c)))),
+            explode('|', $text),
+        ), static fn(string $c): bool => $c !== ''));
+        $label = $cells[0] ?? '';
+        $note = count($cells) > 1 ? implode('; ', array_slice($cells, 1)) : null;
+        // "RC7 (extra unplanned RC release, see explanation)": the step, then why.
+        if (preg_match('/^(.+?)\s*\((.+)\)\s*$/', $label, $p)) {
+            $label = $p[1];
+            $note = $note === null ? $p[2] : $p[2] . '; ' . $note;
+        }
+
+        return [
+            'date' => $day,
+            'label' => $label,
+            'skipped' => $skipped,
+            'kind' => self::milestoneKind($label),
+            'note' => $note,
+            'announce' => $announce,
+            'links' => $links,
+        ];
+    }
+
+    private static function milestoneKind(string $label): string
+    {
+        return match (true) {
+            (bool) preg_match('/^(GA|General availability|Final)\b/i', $label),
+            (bool) preg_match('/^\d+\.\d+\.0\s+(?:-\s*)?released\b/i', $label) => 'ga',
+            (bool) preg_match('/^\d+\.\d+\.\d+/', $label) => 'patch',
+            (bool) preg_match('/^alpha/i', $label) => 'alpha',
+            (bool) preg_match('/^beta/i', $label) => 'beta',
+            (bool) preg_match('/^RC\b|^RC\s?\d/i', $label) => 'rc',
+            (bool) preg_match('/feature freeze|branched/i', $label) => 'freeze',
+            default => 'note',
+        };
+    }
+
+    private static function isHtml(string $body): bool
+    {
+        $start = ltrim($body);
+
+        return stripos($start, '<!doctype') === 0 || stripos($start, '<html') === 0;
     }
 
     /**
