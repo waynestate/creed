@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Added: the handbook's "Frameworks" section in `handbook/code.md`: new apps SHOULD be raw PHP or Laravel; CakePHP and Slim apps are legacy, still supported and upgraded by Booster, and the rule is advice only, never a failing check.
+
 ## 0.1.12 (2026-11-19)
 
 - Changed: the policy robot rewrites the front page's Table 2-1 (`site/index.html`) from the policy it just wrote before staging the refresh, and `composer ci` runs `site:versions-check` so a stale table fails the gate.
