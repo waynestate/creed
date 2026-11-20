@@ -110,9 +110,9 @@ final class Feed
         $stamp = $now->setTimezone(new DateTimeZone('UTC'))->format('Y-m-d\TH:i:s\Z');
 
         $first = $this->plan();
-        $state = $this->collect($first, $this->http->fetchAll(array_map(static fn (array $p): string => $p['url'], $first)), $state, $stamp);
+        $state = $this->collect($first, $this->http->fetchAll(array_map(static fn(array $p): string => $p['url'], $first)), $state, $stamp);
         $late = $this->planLate($state, substr($stamp, 0, 10));
-        $state = $this->collect($late, $this->http->fetchAll(array_map(static fn (array $p): string => $p['url'], $late)), $state, $stamp);
+        $state = $this->collect($late, $this->http->fetchAll(array_map(static fn(array $p): string => $p['url'], $late)), $state, $stamp);
 
         // Drop sources this refresh no longer asks for (an old wiki page, a retired major).
         $state = array_intersect_key($state, $first + $late);
@@ -177,20 +177,20 @@ final class Feed
     {
         $plan = [
             'states' => ['url' => 'https://www.php.net/releases/states.php', 'link' => 'https://www.php.net/supported-versions.php', 'label' => 'php.net supported versions', 'group' => 'php.net', 'browser' => false,
-                'parse' => static fn (string $b): mixed => Parse::states($b)],
+                'parse' => static fn(string $b): mixed => Parse::states($b)],
             'active' => ['url' => 'https://www.php.net/releases/active.php', 'link' => 'https://www.php.net/downloads.php', 'label' => 'php.net releases', 'group' => 'php.net', 'browser' => false,
-                'parse' => static fn (string $b): mixed => Parse::active($b)],
+                'parse' => static fn(string $b): mixed => Parse::active($b)],
             'atom' => ['url' => 'https://www.php.net/feed.atom', 'link' => 'https://www.php.net/', 'label' => 'php.net news', 'group' => 'php.net', 'browser' => false,
-                'parse' => static fn (string $b): mixed => ($e = Parse::atom($b)) === null ? null : array_map(
-                    static fn (array $x): array => ['text' => mb_substr($x['text'], 0, 1500)] + $x,
+                'parse' => static fn(string $b): mixed => ($e = Parse::atom($b)) === null ? null : array_map(
+                    static fn(array $x): array => ['text' => mb_substr($x['text'], 0, 1500)] + $x,
                     array_slice($e, 0, self::ATOM_KEEP),
                 )],
             'endoflife' => ['url' => 'https://endoflife.date/api/v1/products/php', 'link' => 'https://endoflife.date/php', 'label' => 'endoflife.date', 'group' => 'cross-check', 'browser' => true,
-                'parse' => static fn (string $b): mixed => Parse::endoflife($b)],
+                'parse' => static fn(string $b): mixed => Parse::endoflife($b)],
         ];
         foreach (self::FRAMEWORKS as $package => $name) {
             $plan['packagist-' . $package] = ['url' => 'https://repo.packagist.org/p2/' . $package . '.json', 'link' => 'https://packagist.org/packages/' . $package, 'label' => 'Packagist: ' . $name, 'group' => 'frameworks', 'browser' => false,
-                'parse' => static fn (string $b): mixed => Parse::packagist($b, $package)];
+                'parse' => static fn(string $b): mixed => Parse::packagist($b, $package)];
         }
 
         return $plan;
@@ -225,7 +225,7 @@ final class Feed
             return [];
         }
         $all = array_keys($branches);
-        usort($all, static fn (string $a, string $b): int => version_compare($b, $a));
+        usort($all, static fn(string $a, string $b): int => version_compare($b, $a));
         [$newMajor, $newMinor] = array_map('intval', explode('.', $all[0]));
         $majors = [];
         foreach ($branches as $branch => $live) {
@@ -239,12 +239,12 @@ final class Feed
         $plan = [];
         foreach (array_keys($majors) as $major) {
             $plan['tags-' . $major] = ['url' => 'https://api.github.com/repos/php/php-src/git/matching-refs/tags/php-' . $major . '.', 'link' => 'https://github.com/php/php-src/tags', 'label' => 'php-src tags (PHP ' . $major . ')', 'group' => 'php-src', 'browser' => true,
-                'parse' => static fn (string $b): mixed => Parse::tags($b)];
+                'parse' => static fn(string $b): mixed => Parse::tags($b)];
         }
         foreach ([$newMajor . '.' . ($newMinor + 1), ($newMajor + 1) . '.0'] as $next) {
             $page = 'php' . str_replace('.', '', $next);
             $plan['wiki-' . $next] = ['url' => 'https://wiki.php.net/todo/' . $page . '?do=export_raw', 'link' => 'https://wiki.php.net/todo/' . $page, 'label' => 'php.net wiki: ' . $next . ' timetable', 'group' => 'wiki', 'browser' => false,
-                'parse' => static fn (string $b): mixed => Parse::wiki($b)];
+                'parse' => static fn(string $b): mixed => Parse::wiki($b)];
         }
 
         return $plan;

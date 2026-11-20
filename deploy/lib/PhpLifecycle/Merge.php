@@ -132,19 +132,19 @@ final class Merge
                 'next' => null,
             ];
         }
-        uksort($branches, static fn (string $a, string $b): int => version_compare($a, $b));
+        uksort($branches, static fn(string $a, string $b): int => version_compare($a, $b));
 
         // What comes next, branch by branch: a final tag beats a release candidate.
         $upcoming = [];
         foreach ($branches as $branch => &$row) {
             $have = $row['latest']['version'] ?? null;
-            $tagged = array_values(array_filter($finals[$branch] ?? [], static fn (string $v): bool => $have === null || version_compare($v, $have, '>')));
+            $tagged = array_values(array_filter($finals[$branch] ?? [], static fn(string $v): bool => $have === null || version_compare($v, $have, '>')));
             if ($have !== null && $tagged !== []) {
                 $row['next'] = ['version' => self::max($tagged), 'status' => 'tagged', 'evidence' => [self::evidence('php-src tag', 'Tagged in php-src, not announced on php.net')]];
             } elseif ($have !== null) {
-                $rc = array_values(array_filter($pres[$branch] ?? [], static fn (array $t): bool => version_compare($t['version'], $have, '>')));
+                $rc = array_values(array_filter($pres[$branch] ?? [], static fn(array $t): bool => version_compare($t['version'], $have, '>')));
                 if ($rc !== []) {
-                    usort($rc, static fn (array $a, array $b): int => version_compare($b['version'] . '-' . $b['pre'], $a['version'] . '-' . $a['pre']));
+                    usort($rc, static fn(array $a, array $b): int => version_compare($b['version'] . '-' . $b['pre'], $a['version'] . '-' . $a['pre']));
                     $row['next'] = ['version' => $rc[0]['version'], 'status' => 'candidate', 'pre' => $rc[0]['pre'], 'evidence' => [self::evidence('php-src tag', $rc[0]['pre'] . ' tagged in php-src; release candidates are not releases')]];
                 }
             }
@@ -167,12 +167,12 @@ final class Merge
             if ($now > $expiry) {
                 continue;
             }
-            $applies = $n['branches'] ?? array_keys(array_filter($branches, static fn (array $b): bool => $b['state'] !== 'eol'));
+            $applies = $n['branches'] ?? array_keys(array_filter($branches, static fn(array $b): bool => $b['state'] !== 'eol'));
             $status = $n['start'] !== null && $now >= new DateTimeImmutable($n['start']) ? 'due' : 'announced';
             $item = [
                 'kind' => 'security',
                 'status' => $status,
-                'branches' => array_values($applies),
+                'branches' => $applies,
                 'start' => $n['start'],
                 'end' => $n['end'],
                 'day' => $n['day'],
@@ -216,7 +216,7 @@ final class Merge
                     'evidence' => [self::evidence('php-src tag', 'Tagged in php-src, not listed on php.net yet')]];
             } else {
                 $newest = $pres[$branch];
-                usort($newest, static fn (array $a, array $b): int => version_compare($b['version'] . '-' . $b['pre'], $a['version'] . '-' . $a['pre']));
+                usort($newest, static fn(array $a, array $b): int => version_compare($b['version'] . '-' . $b['pre'], $a['version'] . '-' . $a['pre']));
                 $upcoming[] = ['kind' => 'branch', 'branches' => [$branch], 'version' => $newest[0]['version'], 'status' => 'development', 'pre' => $newest[0]['pre'],
                     'evidence' => [self::evidence('php-src tag', $newest[0]['pre'] . ' tagged in php-src')]];
             }
@@ -229,7 +229,7 @@ final class Merge
             }
             $found = false;
             foreach ($upcoming as &$u) {
-                if (($u['kind'] ?? '') === 'branch' && $u['branches'] === [$branch]) {
+                if ($u['kind'] === 'branch' && $u['branches'] === [$branch]) {
                     $u['day'] = $w['ga'];
                     $u['evidence'][] = self::evidence('wiki schedule', 'GA on the wiki schedule', 'https://wiki.php.net/todo/php' . str_replace('.', '', $branch));
                     $found = true;
@@ -245,7 +245,7 @@ final class Merge
             $da = $a['start'] ?? ($a['day'] ?? '9999');
             $db = $b['start'] ?? ($b['day'] ?? '9999');
 
-            return [$da, self::rank($a['status'] ?? '')] <=> [$db, self::rank($b['status'] ?? '')];
+            return [$da, self::rank($a['status'])] <=> [$db, self::rank($b['status'])];
         });
 
         // Framework fit: what each framework's newest majors declare in require.php.
@@ -262,7 +262,7 @@ final class Merge
 
         // endoflife.date behind php.net is worth saying out loud.
         if ($states !== null && $eolBranches !== []) {
-            $missing = array_values(array_filter(array_keys($branches), static fn (string $b): bool => !isset($eolBranches[$b]) && $branches[$b]['state'] !== 'eol'));
+            $missing = array_values(array_filter(array_keys($branches), static fn(string $b): bool => !isset($eolBranches[$b]) && $branches[$b]['state'] !== 'eol'));
             if ($missing !== []) {
                 $notes[] = 'endoflife.date does not list ' . implode(', ', $missing) . ' yet; php.net does.';
             }
@@ -279,7 +279,7 @@ final class Merge
             }
         }
 
-        $released = array_filter($branches, static fn (array $b): bool => $b['released'] !== null && $b['released'] <= $today);
+        $released = array_filter($branches, static fn(array $b): bool => $b['released'] !== null && $b['released'] <= $today);
 
         return [
             'schema' => self::SCHEMA,
@@ -391,7 +391,7 @@ final class Merge
      */
     private static function max(array $versions): string
     {
-        usort($versions, static fn (string $a, string $b): int => version_compare($b, $a));
+        usort($versions, static fn(string $a, string $b): int => version_compare($b, $a));
 
         return $versions[0];
     }

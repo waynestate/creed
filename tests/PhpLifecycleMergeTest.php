@@ -59,7 +59,6 @@ final class PhpLifecycleMergeTest extends TestCase
      */
     private static function build(array $in, string $now = self::NOW): array
     {
-        /** @phpstan-ignore argument.type (fixture inputs come straight from Parse) */
         return Merge::build($in, new DateTimeImmutable($now));
     }
 
@@ -137,7 +136,7 @@ final class PhpLifecycleMergeTest extends TestCase
 
         self::assertArrayNotHasKey('8.6', self::branches($doc));
         self::assertSame('8.5', $doc['newest']);
-        $branch = array_values(array_filter($doc['upcoming'], static fn (array $u): bool => $u['kind'] === 'branch'));
+        $branch = array_values(array_filter($doc['upcoming'], static fn(array $u): bool => $u['kind'] === 'branch'));
         self::assertSame('8.6.0', $branch[0]['version']);
         self::assertSame('tagged', $branch[0]['status']);
         self::assertSame('php-src tag', $branch[0]['evidence'][0]['source']);
@@ -148,7 +147,7 @@ final class PhpLifecycleMergeTest extends TestCase
     {
         $in = self::tonight();
         unset($in['states']['8.6'], $in['active']['8.6']);
-        $in['tags'] = array_values(array_filter($in['tags'], static fn (array $t): bool => $t['branch'] !== '8.6'));
+        $in['tags'] = array_values(array_filter($in['tags'], static fn(array $t): bool => $t['branch'] !== '8.6'));
         $in['wiki'] = ['8.6' => Parse::wiki(self::fixture('wiki-php86.txt'))];
         $doc = self::build($in, '2026-11-01T12:00:00Z');
 
@@ -174,7 +173,7 @@ final class PhpLifecycleMergeTest extends TestCase
     public function aPatchAnnouncedButNotTaggedIsStillTheRelease(): void
     {
         $in = self::tonight();
-        $in['tags'] = array_values(array_filter($in['tags'], static fn (array $t): bool => $t['version'] !== '8.5.13'));
+        $in['tags'] = array_values(array_filter($in['tags'], static fn(array $t): bool => $t['version'] !== '8.5.13'));
         $doc = self::build($in);
         $b = self::branches($doc);
 
@@ -195,7 +194,7 @@ final class PhpLifecycleMergeTest extends TestCase
         self::assertSame('candidate', $b['8.5']['next']['status']);
         self::assertSame('RC1', $b['8.5']['next']['pre']);
         self::assertArrayNotHasKey('8.7', $b);
-        $dev = array_values(array_filter($doc['upcoming'], static fn (array $u): bool => $u['branches'] === ['8.7']));
+        $dev = array_values(array_filter($doc['upcoming'], static fn(array $u): bool => $u['branches'] === ['8.7']));
         self::assertSame('development', $dev[0]['status']);
     }
 

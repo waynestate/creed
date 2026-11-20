@@ -22,6 +22,8 @@ Checks: `composer ci` (the same command CI runs on git.wayne.edu).
 Front page: [`site/index.html`](https://github.com/waynestate/creed/blob/HEAD/site/index.html), a static page you can open in a browser or serve from `site/`.
 On Citadel it is served by the raw-PHP deploy layer in [`deploy/`](https://github.com/waynestate/creed/blob/HEAD/deploy/): a Squire kit whose front controller serves `site/` behind HELMET's security headers. For local development, keep serving `site/` directly.
 
+Live PHP: [`/php`](https://creed.apps.wayne.edu/php/) (`site/php/index.html`) shows the whole PHP lifecycle as of now, read from php.net, php-src, the php.net wiki, endoflife.date and Packagist by `deploy/public/php-feed.php` and at most 30 minutes behind; served from `site/` alone it reads endoflife.date and php-src from the browser and says so. See [The live PHP page](https://github.com/waynestate/creed/blob/HEAD/docs/guides/live-php.md).
+
 One command, two clouds, zero excuses. Higher.
 
 CREED is the Wayne State app stack's version policy, as data. One file,
@@ -955,6 +957,8 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 - Changed: policy refresh: PHP 8.6 and the 2026-11-19 security patches (the policy robot added the 8.6 line from php.net states.php; latest patches 8.5.13, 8.4.28, 8.3.37 and 8.2.36; Laravel latest patches 12.73.0 and 13.43.0). The front page's inspector copy of the dates gained 8.6.
 - Added: the handbook's "Frameworks" section in `handbook/code.md`: new apps SHOULD be raw PHP or Laravel; CakePHP and Slim apps are legacy, still supported and upgraded by Booster, and the rule is advice only, never a failing check.
+- Added: a live PHP lifecycle page at `/php` (`site/php/index.html`, in the main menu as PHP). It shows the newest PHP version (with a New mark for a branch shipped in the last 30 days), the latest patch of every supported branch, the next release php.net has announced or php-src has tagged, a support timeline from the recent EOL branches to the newest (a table underneath), which PHP lines the newest Laravel, CakePHP and Slim majors allow from their `require.php`, and how fresh each source is. `deploy/public/php-feed.php` reads php.net (supported versions, releases, news feed), php-src tags, the php.net wiki timetables, endoflife.date and Packagist, merges them (`deploy/lib/PhpLifecycle`) and caches the result for ten minutes, serving the last good answer marked stale when a source fails; nothing is typed in by hand. When the feed cannot answer, the page reads endoflife.date and php-src tags from the browser and says so, so the front controller's CSP now allows those two hosts in `connect-src`. The page polls every ten minutes. Merge rules are tested on frozen feeds from 2026-11-19 (`tests/PhpLifecycle*Test.php`). The handbook's versions chapter links it.
+- Changed: the phone menu sets four links over three, to make room for PHP.
 
 ### 0.1.12 (2026-11-19) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-12-2026-11-19)
 
@@ -1362,6 +1366,58 @@ Creed Bratton would say the code lives wherever he last left it. Ours lives on g
 - [Carrying CREED in another package](https://creed.apps.wayne.edu/docs/guides/carrying-creed.html)
 - [The handbook](https://creed.apps.wayne.edu/docs/guides/handbook.html)
 - [Contributing](https://creed.apps.wayne.edu/docs/contributing.html)
+
+---
+
+Source: https://creed.apps.wayne.edu/docs/guides/live-php.html
+
+## The live PHP page [#](https://creed.apps.wayne.edu/docs/guides/live-php.html#the-live-php-page)
+
+[`/php`](https://creed.apps.wayne.edu/php/) shows the whole PHP lifecycle as of now: the newest version, the latest patch of every supported branch, the next release that is announced or tagged, a support timeline, and which PHP lines the newest Laravel, CakePHP and Slim releases allow. Every value comes from a source at request time. There is no list of versions, dates or branches anywhere in its code.
+
+It is a view, not a gate. PROCTOR, HELMET and the rest read `policy/policy.json`, which the policy robot refreshes on a schedule and a person can review. The live page exists for the hours in between: the morning a new branch ships, or the evening before a security release.
+
+### What it reads [#](https://creed.apps.wayne.edu/docs/guides/live-php.html#what-it-reads)
+
+| Source | What it gives the page | Read by |
+| --- | --- | --- |
+| php.net `releases/states.php` | every branch, its state, its release, active support and security support dates | server |
+| php.net `releases/active.php` | the newest release of each supported branch, its date, whether it is a security release | server |
+| php.net `feed.atom` | "Released!" posts, and the "Upcoming ... Security Release" notices with their schedule | server |
+| php-src tags (GitHub `git/matching-refs`) | final tags not yet announced, and release candidates | server, browser |
+| php.net wiki `todo/phpNN` (raw export) | the GA day of a branch php.net does not list yet | server |
+| endoflife.date `api/v1/products/php` | a cross-check of the dates; the branch list when php.net is down | server, browser |
+| Packagist `p2` metadata | `require.php` of the newest release of each framework's two newest majors | server |
+
+php.net and its news feed send no CORS headers, so the browser cannot read them itself. GitHub allows 60 calls an hour per address without a token; the server makes one tag call per live PHP major plus one for the next major, at most every ten minutes.
+
+### How the server keeps it fresh [#](https://creed.apps.wayne.edu/docs/guides/live-php.html#how-the-server-keeps-it-fresh)
+
+`deploy/public/php-feed.php` is a real file in the deploy layer, so the rewrite hands it to PHP instead of the static front controller. It builds the document with `deploy/lib/PhpLifecycle`:
+
+- A merged document younger than ten minutes is served as it is. An older one is refreshed by one request at a time (a non-blocking file lock); everyone else gets the cached copy meanwhile.
+- php.net asks for its JSON to be cached for up to 30 days. The fetcher ignores that and asks for a fresh copy.
+- A source that fails keeps its last good answer, marked stale with the time it was last read. A source that has never answered shows as down and contributes nothing.
+- The cache lives in `CREED_PHP_FEED_CACHE` when that variable is set, otherwise in the system temp folder (`creed-php-lifecycle`).
+
+### The merge rules [#](https://creed.apps.wayne.edu/docs/guides/live-php.html#the-merge-rules)
+
+- Branches and dates come from php.net. When php.net is down they come from endoflife.date, and the page says so.
+- When php.net and endoflife.date disagree on a date, the page shows php.net's and lists the disagreement.
+- A release is a version php.net announced. A final php-src tag above it is "tagged in php-src, not announced". An alpha, beta or RC tag is never a release.
+- An "Upcoming ... Security Release" notice is "announced", with its window when the text gives one. It disappears once a release dated on or after its day appears, or two days after its window.
+- A new branch on the wiki's timetable shows its GA day as "on the wiki schedule".
+- A branch that reached end of life in the last three years keeps its row, greyed: Wayne State apps still run them.
+
+Each rule has a test on frozen copies of the feeds from 2026-11-19, the night 8.6.0 shipped (`tests/PhpLifecycleMergeTest.php`, fixtures in `tests/fixtures/php-lifecycle/`).
+
+### When the server cannot answer [#](https://creed.apps.wayne.edu/docs/guides/live-php.html#when-the-server-cannot-answer)
+
+If `php-feed.php` fails (or the server cannot reach out), the page reads endoflife.date and php-src's tags straight from the browser, marks itself **Fallback** and says what it could not read: php.net's own pages, its news feed and the framework fit. For that, the front controller's CSP lists `https://endoflife.date` and `https://api.github.com` in `connect-src`. If both paths fail, the page says **No data** and shows nothing rather than something made up.
+
+### Not there yet [#](https://creed.apps.wayne.edu/docs/guides/live-php.html#not-there-yet)
+
+A row for what Citadel offers. Citadel keeps image status in its dashboard, not in a public file, so there is no source to read. The merger takes a `platforms` input for it already; a source that lists only images that are built fills it.
 
 ---
 
@@ -3232,6 +3288,8 @@ Table 1-1
 
 Each version can also carry a [`latest_patch`](https://github.com/waynestate/creed/blob/main/policy/policy.json): the newest patch release for that version as of a [`latest_patch_checked`](https://github.com/waynestate/creed/blob/main/policy/policy.json) date. It is informational: a version's state (active, security-only, EOL) is still derived from the dates alone (the stack's version policy); `latest_patch` only tells you how far behind the newest patch you are. `bin/refresh-patches.php` keeps it current by reading the four upstream feeds (php.net's active releases, Packagist's `laravel/framework`, nodejs.org's dist index, and endoflife.date's PHP data) and writing `latest_patch` and `latest_patch_checked` for every version the feeds cover; a version the feeds do not cover (an EOL branch, for instance) is left as-is with a warning, and a php.net / endoflife.date disagreement is reported but never fails the run. Run it with `--dry-run` to preview, or `--offline <dir>` to test against saved feeds.
 
+For the picture between refreshes, CREED's site has a [live view](https://creed.apps.wayne.edu/php/): every PHP branch with its latest patch, the support timeline, the next release php.net has announced or php-src has tagged, and which PHP lines Laravel, CakePHP and Slim allow. It reads php.net, php-src, the php.net wiki, endoflife.date and Packagist itself, at most 30 minutes behind. It is a view, not a gate: the gates read `policy.json`.
+
 ### [§1.2](https://creed.apps.wayne.edu/handbook/versions.html#base-images) Base images
 
 A base image **MUST** be rebuilt when the policy's `latest_patch` for its branch changes. The policy robot lands that change itself: it pushes the refresh to `main` when its `composer ci` gate is green, and opens a merge request for a person only when the gate is red. So an image never sits behind the patch level the policy records (the stack's version policy). Every such change to `latest_patch` is a rebuild. An image **MUST NOT** be pinned to a branch the policy marks EOL (the stack's version policy). PROCTOR check: `unpatched`, which warns when the PHP an app runs on (`--php-runtime`) is behind `latest_patch`; nothing reads the PHP image tag itself yet.
@@ -3257,4 +3315,55 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`components.*.versions.*.latest_patch`**: set per version
 - **`components.*.versions.*.latest_patch_checked`**: set per version
 
-Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `e0de232`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `8803bf7`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+
+---
+
+Source: https://creed.apps.wayne.edu/php/
+
+Supplement 2-A to Chapter 2, Versions Live
+
+## PHP, as of now
+
+Reading
+
+Reading the sources… refreshes every 10 minutes while open
+
+This page reads the PHP lifecycle live and needs JavaScript. The same data is at [php-feed.php](https://creed.apps.wayne.edu/php-feed.php) as JSON, and the sources are [php.net's supported versions](https://www.php.net/supported-versions.php) and [endoflife.date](https://endoflife.date/php).
+
+### Now
+
+§2A.1 Newest
+
+Not read yet.
+
+Latest patch of every supported branch
+
+Next known release
+
+Not read yet.
+
+### §2A.2 Lifecycle
+
+- Active support
+- Security fixes only
+- End of life
+- Today
+
+**PHP branches from the oldest still in use to the newest: support dates, latest patch and what comes next. Focus or hover a branch for its details.**
+
+| Branch | Support timeline | Latest | Days left |
+| --- | --- | --- | --- |
+| Not read yet. |  |  |  |
+
+### §2A.3 Framework fit
+
+Not read yet.
+
+From each release's `require.php` on Packagist: what the framework allows, not a test result.
+
+### §2A.4 Sources
+
+**Every source and note**
+
+The page asks [php-feed.php](https://creed.apps.wayne.edu/php-feed.php), which reads php.net's supported versions, releases and news feed, php-src's tags, the php.net wiki's timetables, endoflife.date and Packagist, and keeps the merge for ten minutes. If that fails, the page reads endoflife.date and php-src's tags straight from your browser and says so. A source that cannot be read is shown as stale or down; nothing on this page is typed in by hand. php.net wins when sources disagree on a date.

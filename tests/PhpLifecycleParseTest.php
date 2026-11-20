@@ -123,7 +123,7 @@ final class PhpLifecycleParseTest extends TestCase
         $wiki = Parse::wiki(self::fixture('wiki-php86.txt'));
         self::assertNotNull($wiki);
         self::assertSame('2026-11-19', $wiki['ga']);
-        $rc1 = array_values(array_filter($wiki['rows'], static fn (array $r): bool => str_starts_with($r['label'], 'RC1')));
+        $rc1 = array_values(array_filter($wiki['rows'], static fn(array $r): bool => str_starts_with($r['label'], 'RC1')));
         self::assertTrue($rc1[0]['skipped']);
     }
 

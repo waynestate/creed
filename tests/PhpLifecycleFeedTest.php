@@ -39,50 +39,9 @@ final class PhpLifecycleFeedTest extends TestCase
      *
      * @param list<string> $down source ids that fail
      */
-    private static function net(array $down = []): Http
+    private static function net(array $down = []): PhpLifecycleFakeHttp
     {
-        return new class ($down) extends Http {
-            public int $calls = 0;
-
-            /** @var list<string> */
-            public array $asked = [];
-
-            /**
-             * @param list<string> $down
-             */
-            public function __construct(public array $down) {}
-
-            public function fetchAll(array $urls): array
-            {
-                $this->calls++;
-                $map = [
-                    'states' => 'states.json',
-                    'active' => 'active.json',
-                    'atom' => 'feed.atom',
-                    'endoflife' => 'endoflife.json',
-                    'packagist-laravel/framework' => 'packagist-laravel.json',
-                    'packagist-cakephp/cakephp' => 'packagist-cakephp.json',
-                    'packagist-slim/slim' => 'packagist-slim.json',
-                    'tags-8' => 'tags-8.json',
-                    'wiki-8.7' => 'wiki-php87-404.html',
-                    'wiki-9.0' => 'wiki-php87-404.html',
-                ];
-                $out = [];
-                foreach ($urls as $id => $url) {
-                    $this->asked[] = $id;
-                    $file = $map[$id] ?? null;
-                    if (in_array($id, $this->down, true)) {
-                        $out[$id] = ['status' => 0, 'body' => null, 'error' => 'timed out'];
-                    } elseif ($file === null || str_starts_with($id, 'wiki-')) {
-                        $out[$id] = ['status' => 404, 'body' => '<!doctype html><title>Not found</title>', 'error' => 'HTTP 404'];
-                    } else {
-                        $out[$id] = ['status' => 200, 'body' => (string) file_get_contents(__DIR__ . '/fixtures/php-lifecycle/' . $file), 'error' => null];
-                    }
-                }
-
-                return $out;
-            }
-        };
+        return new PhpLifecycleFakeHttp($down);
     }
 
     /**
@@ -112,7 +71,7 @@ final class PhpLifecycleFeedTest extends TestCase
         self::assertFalse($doc['stale']);
         self::assertSame('8.6', $doc['newest']);
         self::assertSame(2, $net->calls, 'one round for the fixed sources, one for tags and wiki');
-        $github = array_filter($net->asked, static fn (string $id): bool => str_starts_with($id, 'tags-'));
+        $github = array_filter($net->asked, static fn(string $id): bool => str_starts_with($id, 'tags-'));
         self::assertSame(['tags-8', 'tags-9'], array_values($github), 'one call per live major and the next');
         self::assertContains('wiki-8.7', $net->asked);
         $s = self::sources($doc);
@@ -162,5 +121,52 @@ final class PhpLifecycleFeedTest extends TestCase
         self::assertNull($s['states']['ok_at']);
         self::assertSame([], $doc['branches']);
         self::assertArrayNotHasKey('tags-8', $s, 'with no branch list there is no major to ask about');
+    }
+}
+
+/**
+ * The fake network behind PhpLifecycleFeedTest, with counters the tests read.
+ */
+final class PhpLifecycleFakeHttp extends Http
+{
+    public int $calls = 0;
+
+    /** @var list<string> */
+    public array $asked = [];
+
+    /**
+     * @param list<string> $down
+     */
+    public function __construct(public array $down) {}
+
+    public function fetchAll(array $urls): array
+    {
+        $this->calls++;
+        $map = [
+            'states' => 'states.json',
+            'active' => 'active.json',
+            'atom' => 'feed.atom',
+            'endoflife' => 'endoflife.json',
+            'packagist-laravel/framework' => 'packagist-laravel.json',
+            'packagist-cakephp/cakephp' => 'packagist-cakephp.json',
+            'packagist-slim/slim' => 'packagist-slim.json',
+            'tags-8' => 'tags-8.json',
+            'wiki-8.7' => 'wiki-php87-404.html',
+            'wiki-9.0' => 'wiki-php87-404.html',
+        ];
+        $out = [];
+        foreach ($urls as $id => $url) {
+            $this->asked[] = $id;
+            $file = $map[$id] ?? null;
+            if (in_array($id, $this->down, true)) {
+                $out[$id] = ['status' => 0, 'body' => null, 'error' => 'timed out'];
+            } elseif ($file === null || str_starts_with($id, 'wiki-')) {
+                $out[$id] = ['status' => 404, 'body' => '<!doctype html><title>Not found</title>', 'error' => 'HTTP 404'];
+            } else {
+                $out[$id] = ['status' => 200, 'body' => (string) file_get_contents(__DIR__ . '/fixtures/php-lifecycle/' . $file), 'error' => null];
+            }
+        }
+
+        return $out;
     }
 }

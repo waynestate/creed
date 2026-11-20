@@ -36,6 +36,8 @@ Table 1-1
 
 Each version can also carry a [`latest_patch`](https://github.com/waynestate/creed/blob/main/policy/policy.json): the newest patch release for that version as of a [`latest_patch_checked`](https://github.com/waynestate/creed/blob/main/policy/policy.json) date. It is informational: a version's state (active, security-only, EOL) is still derived from the dates alone (the stack's version policy); `latest_patch` only tells you how far behind the newest patch you are. `bin/refresh-patches.php` keeps it current by reading the four upstream feeds (php.net's active releases, Packagist's `laravel/framework`, nodejs.org's dist index, and endoflife.date's PHP data) and writing `latest_patch` and `latest_patch_checked` for every version the feeds cover; a version the feeds do not cover (an EOL branch, for instance) is left as-is with a warning, and a php.net / endoflife.date disagreement is reported but never fails the run. Run it with `--dry-run` to preview, or `--offline <dir>` to test against saved feeds.
 
+For the picture between refreshes, CREED's site has a [live view](https://creed.apps.wayne.edu/php/): every PHP branch with its latest patch, the support timeline, the next release php.net has announced or php-src has tagged, and which PHP lines Laravel, CakePHP and Slim allow. It reads php.net, php-src, the php.net wiki, endoflife.date and Packagist itself, at most 30 minutes behind. It is a view, not a gate: the gates read `policy.json`.
+
 ## [§1.2](https://creed.apps.wayne.edu/handbook/versions.html#base-images) Base images
 
 A base image **MUST** be rebuilt when the policy's `latest_patch` for its branch changes. The policy robot lands that change itself: it pushes the refresh to `main` when its `composer ci` gate is green, and opens a merge request for a person only when the gate is red. So an image never sits behind the patch level the policy records (the stack's version policy). Every such change to `latest_patch` is a rebuild. An image **MUST NOT** be pinned to a branch the policy marks EOL (the stack's version policy). PROCTOR check: `unpatched`, which warns when the PHP an app runs on (`--php-runtime`) is behind `latest_patch`; nothing reads the PHP image tag itself yet.
@@ -61,4 +63,4 @@ In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.j
 - **`components.*.versions.*.latest_patch`**: set per version
 - **`components.*.versions.*.latest_patch_checked`**: set per version
 
-Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `e0de232`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/versions.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/versions.md), impression `8803bf7`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

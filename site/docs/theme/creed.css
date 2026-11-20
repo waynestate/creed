@@ -1040,11 +1040,11 @@ body::before {
     width: 5px;
   }
 
-  /* The menu sets as a form's two ruled lines of three. As on the front
+  /* The menu sets as a form's two ruled lines (four over three). As on the front
      page, Errata steps out on a phone; the contents link reaches it. */
   .runhead__nav {
     display: grid;
-    grid-template-columns: repeat(3, auto);
+    grid-template-columns: repeat(4, auto);
     justify-content: space-between;
     gap: 0 .7rem;
   }

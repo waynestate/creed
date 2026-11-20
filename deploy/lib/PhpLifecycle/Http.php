@@ -104,7 +104,9 @@ class Http
             ]);
             $body = @file_get_contents($url, false, $context);
             $code = 0;
-            foreach ($http_response_header ?? [] as $line) {
+            // PHP 8.4 added the function; 8.5 deprecates the magic variable.
+            $headers = function_exists('http_get_last_response_headers') ? (http_get_last_response_headers() ?? []) : $http_response_header;
+            foreach ($headers as $line) {
                 if (preg_match('#^HTTP/\S+\s+(\d{3})#', $line, $m)) {
                     $code = (int) $m[1];
                 }

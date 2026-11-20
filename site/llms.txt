@@ -12,6 +12,8 @@ Checks: `composer ci` (the same command CI runs on git.wayne.edu).
 Front page: [`site/index.html`](https://github.com/waynestate/creed/blob/HEAD/site/index.html), a static page you can open in a browser or serve from `site/`.
 On Citadel it is served by the raw-PHP deploy layer in [`deploy/`](https://github.com/waynestate/creed/blob/HEAD/deploy/): a Squire kit whose front controller serves `site/` behind HELMET's security headers. For local development, keep serving `site/` directly.
 
+Live PHP: [`/php`](https://creed.apps.wayne.edu/php/) (`site/php/index.html`) shows the whole PHP lifecycle as of now, read from php.net, php-src, the php.net wiki, endoflife.date and Packagist by `deploy/public/php-feed.php` and at most 30 minutes behind; served from `site/` alone it reads endoflife.date and php-src from the browser and says so. See [The live PHP page](https://github.com/waynestate/creed/blob/HEAD/docs/guides/live-php.md).
+
 One command, two clouds, zero excuses. Higher.
 
 CREED is the Wayne State app stack's version policy, as data. One file,
@@ -30,6 +32,7 @@ Every page below is Markdown. The HTML pages send the same Markdown to a client 
 - [Carrying CREED in another package | CREED docs](https://creed.apps.wayne.edu/docs/guides/carrying-creed.md): How PROCTOR, Booster and Rollcall carry a generated copy of the reader under their own namespace, and how bin/export.php keeps the copies in step.
 - [The handbook | CREED docs](https://creed.apps.wayne.edu/docs/guides/handbook.md): The rules, chapter by chapter, in handbook/, with each rule linking the decision behind it.
 - [The instance runner | CREED docs](https://creed.apps.wayne.edu/docs/guides/instance-runner.md): Why every product in the stack still strongly recommends a git.wayne.edu instance runner, now that git.wayne.edu has one and the stack's CI runs on it.
+- [The live PHP page | CREED docs](https://creed.apps.wayne.edu/docs/guides/live-php.md): How /php reads the PHP lifecycle live from php.net, php-src, the php.net wiki, endoflife.date and Packagist, what it shows, and what happens when a source is down.
 - [Keeping the patches fresh | CREED docs](https://creed.apps.wayne.edu/docs/guides/patch-refresh.md): How bin/refresh-patches.php re-reads the upstream feeds and rewrites the latest_patch fields in policy/policy.json, with the check-only CI job that watches it.
 - [The policy robot | CREED docs](https://creed.apps.wayne.edu/docs/guides/policy-bot.md): How the Monday policy robot refreshes policy/policy.json, runs composer ci and pushes the refresh straight to main with the job token, falls back to a merge request labeled auto-data when the gate is red, opens alert issues labeled auto-alert, how it is set up, and how to review a red week.
 - [Refreshing the policy | CREED docs](https://creed.apps.wayne.edu/docs/guides/policy-refresh.md): How bin/refresh-policy.php keeps every support date, patch and new line tied to a canonical source, with its change classes and exit codes.
@@ -61,6 +64,7 @@ Every page below is Markdown. The HTML pages send the same Markdown to a client 
 - [CREED Handbook: 7 Runtime and headers](https://creed.apps.wayne.edu/handbook/runtime-and-headers.md): Chapter 7 of the CREED handbook, the written rules for the Wayne State app stack: Runtime and headers.
 - [CREED Handbook: 12 Secrets and debugging](https://creed.apps.wayne.edu/handbook/secrets.md): Chapter 12 of the CREED handbook, the written rules for the Wayne State app stack: Secrets and debugging.
 - [CREED Handbook: 1 Versions](https://creed.apps.wayne.edu/handbook/versions.md): Chapter 1 of the CREED handbook, the written rules for the Wayne State app stack: Versions.
+- [PHP, as of now | CREED](https://creed.apps.wayne.edu/php/index.md): The whole PHP lifecycle, live: every supported branch with its latest patch, the support timeline, the next announced or tagged release, and which PHP lines Laravel, CakePHP and Slim allow. Read from php.net, php-src, endoflife.date and Packagist, at most 30 minutes behind.
 
 ## Prompts
 

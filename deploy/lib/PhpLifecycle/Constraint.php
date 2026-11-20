@@ -119,7 +119,7 @@ final class Constraint
             if ($op !== '' && $op !== '=' && $op !== '==') {
                 return null;
             }
-            $fixed = array_values(array_filter(explode('.', $raw), static fn (string $p): bool => $p !== '*'));
+            $fixed = array_values(array_filter(explode('.', $raw), static fn(string $p): bool => $p !== '*'));
             if ($fixed === []) {
                 return [['>=', '0.0.0']];
             }

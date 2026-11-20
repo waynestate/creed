@@ -7,6 +7,7 @@
   <url><loc>https://creed.apps.wayne.edu/docs/guides/carrying-creed.html</loc></url>
   <url><loc>https://creed.apps.wayne.edu/docs/guides/handbook.html</loc></url>
   <url><loc>https://creed.apps.wayne.edu/docs/guides/instance-runner.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/docs/guides/live-php.html</loc></url>
   <url><loc>https://creed.apps.wayne.edu/docs/guides/patch-refresh.html</loc></url>
   <url><loc>https://creed.apps.wayne.edu/docs/guides/policy-bot.html</loc></url>
   <url><loc>https://creed.apps.wayne.edu/docs/guides/policy-refresh.html</loc></url>
@@ -38,4 +39,5 @@
   <url><loc>https://creed.apps.wayne.edu/handbook/runtime-and-headers.html</loc></url>
   <url><loc>https://creed.apps.wayne.edu/handbook/secrets.html</loc></url>
   <url><loc>https://creed.apps.wayne.edu/handbook/versions.html</loc></url>
+  <url><loc>https://creed.apps.wayne.edu/php/</loc></url>
 </urlset>

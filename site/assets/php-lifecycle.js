@@ -350,9 +350,16 @@
     });
     nx.appendChild(evs);
     if (rest.length) {
-      nx.appendChild(h("p", { class: "pl-sub", text: "Also: " + rest.slice(0, 3).map(function (x) {
-        return (x.kind === "security" ? "security releases for " + branchList(x.branches) : (x.version || ("PHP " + branchList(x.branches)))) + " (" + statusLabel(x.status) + (x.day ? ", " + x.day : "") + ")";
-      }).join("; ") + (rest.length > 3 ? "; and more" : "") }));
+      // Same kind, status and day read as one entry.
+      var lines = [];
+      rest.forEach(function (x) {
+        var tail = " (" + statusLabel(x.status) + (x.day ? ", " + x.day : "") + ")";
+        var name = x.kind === "security" ? "security releases for " + branchList(x.branches) : (x.version || ("PHP " + branchList(x.branches)));
+        var last = lines[lines.length - 1];
+        if (last && x.kind === "patch" && last.kind === "patch" && last.tail === tail) last.names.push(name);
+        else lines.push({ kind: x.kind, tail: tail, names: [name] });
+      });
+      nx.appendChild(h("p", { class: "pl-sub", text: "Also: " + lines.slice(0, 3).map(function (l) { return l.names.join(", ") + l.tail; }).join("; ") + (lines.length > 3 ? "; and more" : "") }));
     }
   }
 
@@ -396,10 +403,11 @@
     var pct = function (day) { return Math.max(0, Math.min(100, (dayMs(day) - lo) / (hi - lo) * 100)); };
 
     var todayPct = pct(today);
+    var axisW = els.axis.clientWidth || 500;
     for (var y = y0; y < y1; y++) {
       var at = (Date.UTC(y, 6, 1) - lo) / (hi - lo) * 100;
       // The year under the Today label steps aside rather than print through it.
-      var tick = h("span", { class: "pl-axis__tick" + (Math.abs(at - todayPct) < 5 ? " pl-axis__tick--hidden" : ""), text: String(y) });
+      var tick = h("span", { class: "pl-axis__tick" + (Math.abs(at - todayPct) * axisW / 100 < 46 ? " pl-axis__tick--hidden" : ""), text: String(y) });
       tick.style.setProperty("left", at + "%");
       els.axis.appendChild(tick);
     }

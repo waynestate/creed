@@ -125,7 +125,7 @@ final class Parse
                 'text' => trim((string) preg_replace('/\s+/u', ' ', $text)),
             ];
         }
-        usort($out, static fn (array $a, array $b): int => strcmp($b['published'], $a['published']));
+        usort($out, static fn(array $a, array $b): int => strcmp($b['published'], $a['published']));
 
         return $out;
     }
@@ -221,7 +221,7 @@ final class Parse
                 $out[] = [
                     'version' => $m[1],
                     'branch' => self::branchOf($m[1]),
-                    'pre' => isset($m[2]) && $m[2] !== '' ? $m[2] : null,
+                    'pre' => $m[2] ?? null,
                 ];
             }
         }
@@ -342,7 +342,7 @@ final class Parse
         if ($best === []) {
             return null;
         }
-        uksort($best, static fn (int|string $a, int|string $b): int => (int) $b <=> (int) $a);
+        uksort($best, static fn(int|string $a, int|string $b): int => (int) $b <=> (int) $a);
 
         return array_slice(array_values($best), 0, max(1, $majors));
     }
