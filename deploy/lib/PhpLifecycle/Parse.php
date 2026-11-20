@@ -173,7 +173,7 @@ final class Parse
             $start = null;
             $end = null;
             if ($day !== null) {
-                if (preg_match('/(\d{1,2}:\d{2})\s*(?:and|to|-|–)\s*(\d{1,2}:\d{2})\s*UTC/i', $e['text'], $t)) {
+                if (preg_match('/(\d{1,2}:\d{2})\s*(?:and|to|-|\x{2013})\s*(\d{1,2}:\d{2})\s*UTC/iu', $e['text'], $t)) {
                     $start = self::instant($day . 'T' . $t[1] . ':00+00:00');
                     $end = self::instant($day . 'T' . $t[2] . ':00+00:00');
                 } elseif (preg_match('/(\d{1,2}:\d{2})\s*UTC/i', $e['text'], $t)) {
