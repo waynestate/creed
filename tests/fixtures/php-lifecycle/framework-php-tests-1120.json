@@ -1,0 +1,2183 @@
+{
+    "$comment": "Written by php bin/framework-matrix.php report from the cells scripts/framework-matrix.ps1 or .sh ran. States: pass, pass-deprecations, fail, refused (Composer refused the PHP platform), no (require.php excludes the line; not run), no-image, not-run. See docs/guides/framework-php-tests.md.",
+    "generated": "2026-11-20",
+    "php_lines": [
+        "8.0",
+        "8.1",
+        "8.2",
+        "8.3",
+        "8.4",
+        "8.5",
+        "8.6"
+    ],
+    "images": {
+        "8.0": {
+            "image": "php:8.0-cli@sha256:0569e384b9064c04dec55dc6e41be41b494a878dfbb6577a7d76bd50cfd5bc00",
+            "php_versions": [
+                "8.0.30"
+            ],
+            "prerelease": false
+        },
+        "8.1": {
+            "image": "php:8.1-cli@sha256:76e563191d1ade120313a8736df24154d21da5155c0756f147c0b01bd19d9087",
+            "php_versions": [
+                "8.1.34"
+            ],
+            "prerelease": false
+        },
+        "8.2": {
+            "image": "php:8.2-cli@sha256:842748bc4526d4c3c56501fd314e2d75d1005e8a45b7a40f9768ee820df0a6d6",
+            "php_versions": [
+                "8.2.36"
+            ],
+            "prerelease": false
+        },
+        "8.3": {
+            "image": "php:8.3-cli@sha256:f14261a8cdb7f28b2ec45798c256b744c3ab6a6dd8598206b028c1efb7f76d15",
+            "php_versions": [
+                "8.3.37"
+            ],
+            "prerelease": false
+        },
+        "8.4": {
+            "image": "php:8.4-cli@sha256:6b13a8678b38ca38e4e3950be57b664ed8c8706131a0586111f68792aede4c58",
+            "php_versions": [
+                "8.4.28"
+            ],
+            "prerelease": false
+        },
+        "8.5": {
+            "image": "php:8.5-cli@sha256:f324fcb4dc009ac0470a7d614cd122499dcee3ca47a9bab620fc14c0eb759ba2",
+            "php_versions": [
+                "8.5.13"
+            ],
+            "prerelease": false
+        },
+        "8.6": {
+            "image": "php:8.6-cli@sha256:d84acf3155d907afaa5afa9b9457c5f12016b6dc7ade84659f40cdc505cc087d",
+            "php_versions": [
+                "8.6.0"
+            ],
+            "prerelease": false
+        }
+    },
+    "frameworks": [
+        {
+            "id": "laravel-13",
+            "name": "Laravel",
+            "major": 13,
+            "package": "laravel/framework",
+            "release": {
+                "version": "13.43.0",
+                "released": "2026-11-17"
+            },
+            "require_php": "^8.3",
+            "skeleton": "laravel/laravel",
+            "skeleton_constraint": "^13.0"
+        },
+        {
+            "id": "laravel-12",
+            "name": "Laravel",
+            "major": 12,
+            "package": "laravel/framework",
+            "release": {
+                "version": "12.73.0",
+                "released": "2026-11-17"
+            },
+            "require_php": "^8.2",
+            "skeleton": "laravel/laravel",
+            "skeleton_constraint": "^12.0"
+        },
+        {
+            "id": "cakephp-5",
+            "name": "CakePHP",
+            "major": 5,
+            "package": "cakephp/cakephp",
+            "release": {
+                "version": "5.4.4",
+                "released": "2026-11-01"
+            },
+            "require_php": ">=8.2",
+            "skeleton": "cakephp/app",
+            "skeleton_constraint": "^5.0"
+        },
+        {
+            "id": "cakephp-4",
+            "name": "CakePHP",
+            "major": 4,
+            "package": "cakephp/cakephp",
+            "release": {
+                "version": "4.6.6",
+                "released": "2026-11-01"
+            },
+            "require_php": ">=7.4.0,<9",
+            "skeleton": "cakephp/app",
+            "skeleton_constraint": "^4.0"
+        },
+        {
+            "id": "slim-4",
+            "name": "Slim",
+            "major": 4,
+            "package": "slim/slim",
+            "release": {
+                "version": "4.15.3",
+                "released": "2026-09-01"
+            },
+            "require_php": "~7.4.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
+            "skeleton": "slim/slim-skeleton",
+            "skeleton_constraint": "^4.0"
+        },
+        {
+            "id": "slim-3",
+            "name": "Slim",
+            "major": 3,
+            "package": "slim/slim",
+            "release": {
+                "version": "3.13.1",
+                "released": "2026-11-15"
+            },
+            "require_php": "^8.1",
+            "skeleton": "slim/slim-skeleton",
+            "skeleton_constraint": "^3.0"
+        }
+    ],
+    "cells": [
+        {
+            "framework": "laravel-13",
+            "php_line": "8.0",
+            "allowed": false,
+            "state": "no"
+        },
+        {
+            "framework": "laravel-13",
+            "php_line": "8.1",
+            "allowed": false,
+            "state": "no"
+        },
+        {
+            "framework": "laravel-13",
+            "php_line": "8.2",
+            "allowed": false,
+            "state": "no"
+        },
+        {
+            "framework": "laravel-13",
+            "php_line": "8.3",
+            "allowed": true,
+            "php_version": "8.3.37",
+            "image": "php:8.3-cli@sha256:f14261a8cdb7f28b2ec45798c256b744c3ab6a6dd8598206b028c1efb7f76d15",
+            "prerelease": false,
+            "date": "2026-11-20T21:08:48Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "laravel/laravel",
+                "constraint": "^13.0",
+                "version": "v13.11.0"
+            },
+            "framework_package": {
+                "package": "laravel/framework",
+                "version": "v13.43.0"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 3,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 12.5.45",
+                "summary": {
+                    "tests": 2,
+                    "assertions": 2
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.6,
+                "body_bytes": 70403,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 4.1
+        },
+        {
+            "framework": "laravel-13",
+            "php_line": "8.4",
+            "allowed": true,
+            "php_version": "8.4.28",
+            "image": "php:8.4-cli@sha256:6b13a8678b38ca38e4e3950be57b664ed8c8706131a0586111f68792aede4c58",
+            "prerelease": false,
+            "date": "2026-11-20T21:07:47Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "laravel/laravel",
+                "constraint": "^13.0",
+                "version": "v13.11.0"
+            },
+            "framework_package": {
+                "package": "laravel/framework",
+                "version": "v13.43.0"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 4.4,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 12.5.45",
+                "summary": {
+                    "tests": 2,
+                    "assertions": 2
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.7,
+                "body_bytes": 70403,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 5.5
+        },
+        {
+            "framework": "laravel-13",
+            "php_line": "8.5",
+            "allowed": true,
+            "php_version": "8.5.13",
+            "image": "php:8.5-cli@sha256:f324fcb4dc009ac0470a7d614cd122499dcee3ca47a9bab620fc14c0eb759ba2",
+            "prerelease": false,
+            "date": "2026-11-20T21:06:18Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "laravel/laravel",
+                "constraint": "^13.0",
+                "version": "v13.11.0"
+            },
+            "framework_package": {
+                "package": "laravel/framework",
+                "version": "v13.43.0"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 3,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 12.5.45",
+                "summary": {
+                    "tests": 2,
+                    "assertions": 2
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.7,
+                "body_bytes": 70403,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 4.1
+        },
+        {
+            "framework": "laravel-13",
+            "php_line": "8.6",
+            "allowed": true,
+            "php_version": "8.6.0",
+            "image": "php:8.6-cli@sha256:d84acf3155d907afaa5afa9b9457c5f12016b6dc7ade84659f40cdc505cc087d",
+            "prerelease": false,
+            "date": "2026-11-20T21:06:49Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "laravel/laravel",
+                "constraint": "^13.0",
+                "version": "v13.11.0"
+            },
+            "framework_package": {
+                "package": "laravel/framework",
+                "version": "v13.43.0"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 3,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 12.5.45",
+                "summary": {
+                    "tests": 2,
+                    "assertions": 2
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.7,
+                "body_bytes": 70403,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 4.1
+        },
+        {
+            "framework": "laravel-12",
+            "php_line": "8.0",
+            "allowed": false,
+            "state": "no"
+        },
+        {
+            "framework": "laravel-12",
+            "php_line": "8.1",
+            "allowed": false,
+            "state": "no"
+        },
+        {
+            "framework": "laravel-12",
+            "php_line": "8.2",
+            "allowed": true,
+            "php_version": "8.2.36",
+            "image": "php:8.2-cli@sha256:842748bc4526d4c3c56501fd314e2d75d1005e8a45b7a40f9768ee820df0a6d6",
+            "prerelease": false,
+            "date": "2026-11-20T21:09:53Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "laravel/laravel",
+                "constraint": "^12.0",
+                "version": "v12.12.2"
+            },
+            "framework_package": {
+                "package": "laravel/framework",
+                "version": "v12.73.0"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 3.4,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 11.5.58",
+                "summary": {
+                    "tests": 2,
+                    "assertions": 2
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.6,
+                "body_bytes": 80650,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 4.5
+        },
+        {
+            "framework": "laravel-12",
+            "php_line": "8.3",
+            "allowed": true,
+            "php_version": "8.3.37",
+            "image": "php:8.3-cli@sha256:f14261a8cdb7f28b2ec45798c256b744c3ab6a6dd8598206b028c1efb7f76d15",
+            "prerelease": false,
+            "date": "2026-11-20T21:08:53Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "laravel/laravel",
+                "constraint": "^12.0",
+                "version": "v12.12.2"
+            },
+            "framework_package": {
+                "package": "laravel/framework",
+                "version": "v12.73.0"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 3,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 11.5.58",
+                "summary": {
+                    "tests": 2,
+                    "assertions": 2
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.6,
+                "body_bytes": 80650,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 4.1
+        },
+        {
+            "framework": "laravel-12",
+            "php_line": "8.4",
+            "allowed": true,
+            "php_version": "8.4.28",
+            "image": "php:8.4-cli@sha256:6b13a8678b38ca38e4e3950be57b664ed8c8706131a0586111f68792aede4c58",
+            "prerelease": false,
+            "date": "2026-11-20T21:07:54Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "laravel/laravel",
+                "constraint": "^12.0",
+                "version": "v12.12.2"
+            },
+            "framework_package": {
+                "package": "laravel/framework",
+                "version": "v12.73.0"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 3,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 11.5.58",
+                "summary": {
+                    "tests": 2,
+                    "assertions": 2
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.7,
+                "body_bytes": 80650,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 4.1
+        },
+        {
+            "framework": "laravel-12",
+            "php_line": "8.5",
+            "allowed": true,
+            "php_version": "8.5.13",
+            "image": "php:8.5-cli@sha256:f324fcb4dc009ac0470a7d614cd122499dcee3ca47a9bab620fc14c0eb759ba2",
+            "prerelease": false,
+            "date": "2026-11-20T21:06:23Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "laravel/laravel",
+                "constraint": "^12.0",
+                "version": "v12.12.2"
+            },
+            "framework_package": {
+                "package": "laravel/framework",
+                "version": "v12.73.0"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 2.8,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 11.5.58",
+                "summary": {
+                    "tests": 2,
+                    "assertions": 2
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.6,
+                "body_bytes": 80650,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 3.9
+        },
+        {
+            "framework": "laravel-12",
+            "php_line": "8.6",
+            "allowed": true,
+            "php_version": "8.6.0",
+            "image": "php:8.6-cli@sha256:d84acf3155d907afaa5afa9b9457c5f12016b6dc7ade84659f40cdc505cc087d",
+            "prerelease": false,
+            "date": "2026-11-20T21:06:54Z",
+            "state": "fail",
+            "step": "tests",
+            "first_error": "2 tests, 1 failure, 0 errors: Failed asserting that 500 is identical to 200.",
+            "skeleton": {
+                "package": "laravel/laravel",
+                "constraint": "^12.0",
+                "version": "v12.12.2"
+            },
+            "framework_package": {
+                "package": "laravel/framework",
+                "version": "v12.73.0"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 2.8,
+                "deprecations": 126,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 1,
+                "seconds": 0.4,
+                "phpunit": "PHPUnit 11.5.58",
+                "summary": {
+                    "tests": 2,
+                    "assertions": 2,
+                    "failures": 1,
+                    "deprecations": 1
+                },
+                "deprecations": 113,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.7,
+                "body_bytes": 863953,
+                "body_has_php_diagnostic": true,
+                "deprecations": 52,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 291,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [
+                {
+                    "kind": "deprecation",
+                    "message": "Function spl_object_hash() is deprecated since 8.6, consider using spl_object_id() instead",
+                    "file": "vendor/laravel/framework/src/Illuminate/Container/Container.php",
+                    "line": 1112,
+                    "source": "app",
+                    "step": "install"
+                },
+                {
+                    "kind": "deprecation",
+                    "message": "Function mb_split() is deprecated since 8.6, because the underlying library is no longer maintained",
+                    "file": "vendor/laravel/framework/src/Illuminate/Support/Str.php",
+                    "line": 1728,
+                    "source": "app",
+                    "step": "install"
+                },
+                {
+                    "kind": "deprecation",
+                    "message": "Since symfony/http-foundation 7.4: Trying to use \"Illuminate\\Http\\Response::sendHeaders()\" after headers have already been sent is deprecated and will throw a PHP warning in 8.0. Use a \"StreamedResponse\" instead.",
+                    "file": "vendor/symfony/deprecation-contracts/function.php",
+                    "line": 25,
+                    "source": "app",
+                    "step": "request"
+                }
+            ],
+            "seconds": 4.2
+        },
+        {
+            "framework": "cakephp-5",
+            "php_line": "8.0",
+            "allowed": false,
+            "state": "no"
+        },
+        {
+            "framework": "cakephp-5",
+            "php_line": "8.1",
+            "allowed": false,
+            "state": "no"
+        },
+        {
+            "framework": "cakephp-5",
+            "php_line": "8.2",
+            "allowed": true,
+            "php_version": "8.2.36",
+            "image": "php:8.2-cli@sha256:842748bc4526d4c3c56501fd314e2d75d1005e8a45b7a40f9768ee820df0a6d6",
+            "prerelease": false,
+            "date": "2026-11-20T21:09:59Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "cakephp/app",
+                "constraint": "^5.0",
+                "version": "5.4.0"
+            },
+            "framework_package": {
+                "package": "cakephp/cakephp",
+                "version": "5.4.4"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 2,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 11.5.58",
+                "summary": {
+                    "tests": 9,
+                    "assertions": 23
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.7,
+                "body_bytes": 7874,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 3.1
+        },
+        {
+            "framework": "cakephp-5",
+            "php_line": "8.3",
+            "allowed": true,
+            "php_version": "8.3.37",
+            "image": "php:8.3-cli@sha256:f14261a8cdb7f28b2ec45798c256b744c3ab6a6dd8598206b028c1efb7f76d15",
+            "prerelease": false,
+            "date": "2026-11-20T21:08:59Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "cakephp/app",
+                "constraint": "^5.0",
+                "version": "5.4.0"
+            },
+            "framework_package": {
+                "package": "cakephp/cakephp",
+                "version": "5.4.4"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 1.8,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 12.5.45",
+                "summary": {
+                    "tests": 9,
+                    "assertions": 23
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.7,
+                "body_bytes": 7874,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 2.9
+        },
+        {
+            "framework": "cakephp-5",
+            "php_line": "8.4",
+            "allowed": true,
+            "php_version": "8.4.28",
+            "image": "php:8.4-cli@sha256:6b13a8678b38ca38e4e3950be57b664ed8c8706131a0586111f68792aede4c58",
+            "prerelease": false,
+            "date": "2026-11-20T21:08:00Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "cakephp/app",
+                "constraint": "^5.0",
+                "version": "5.4.0"
+            },
+            "framework_package": {
+                "package": "cakephp/cakephp",
+                "version": "5.4.4"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 1.8,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 13.4.8",
+                "summary": {
+                    "tests": 9,
+                    "assertions": 23
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.6,
+                "body_bytes": 7874,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 2.9
+        },
+        {
+            "framework": "cakephp-5",
+            "php_line": "8.5",
+            "allowed": true,
+            "php_version": "8.5.13",
+            "image": "php:8.5-cli@sha256:f324fcb4dc009ac0470a7d614cd122499dcee3ca47a9bab620fc14c0eb759ba2",
+            "prerelease": false,
+            "date": "2026-11-20T21:06:30Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "cakephp/app",
+                "constraint": "^5.0",
+                "version": "5.4.0"
+            },
+            "framework_package": {
+                "package": "cakephp/cakephp",
+                "version": "5.4.4"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 1.8,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 13.4.8",
+                "summary": {
+                    "tests": 9,
+                    "assertions": 23
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.7,
+                "body_bytes": 7874,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 2.9
+        },
+        {
+            "framework": "cakephp-5",
+            "php_line": "8.6",
+            "allowed": true,
+            "php_version": "8.6.0",
+            "image": "php:8.6-cli@sha256:d84acf3155d907afaa5afa9b9457c5f12016b6dc7ade84659f40cdc505cc087d",
+            "prerelease": false,
+            "date": "2026-11-20T21:07:01Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "cakephp/app",
+                "constraint": "^5.0",
+                "version": "5.4.0"
+            },
+            "framework_package": {
+                "package": "cakephp/cakephp",
+                "version": "5.4.4"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 1.8,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 13.4.8",
+                "summary": {
+                    "tests": 9,
+                    "assertions": 23
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.6,
+                "body_bytes": 7873,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 2.9
+        },
+        {
+            "framework": "cakephp-4",
+            "php_line": "8.0",
+            "allowed": true,
+            "php_version": "8.0.30",
+            "image": "php:8.0-cli@sha256:0569e384b9064c04dec55dc6e41be41b494a878dfbb6577a7d76bd50cfd5bc00",
+            "prerelease": false,
+            "date": "2026-11-20T21:11:10Z",
+            "state": "refused",
+            "step": "install",
+            "first_error": "- twig/markdown-extra[v3.26.0, ..., 3.x-dev] require php >=8.1.0 -> your php version (8.0.30) does not satisfy that requirement.",
+            "skeleton": {
+                "package": "cakephp/app",
+                "constraint": "^4.0",
+                "version": "4.5.0"
+            },
+            "framework_package": {
+                "package": "cakephp/cakephp",
+                "version": null
+            },
+            "install": {
+                "exit": 2,
+                "seconds": 2.2,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": null,
+            "request": null,
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 2.2
+        },
+        {
+            "framework": "cakephp-4",
+            "php_line": "8.1",
+            "allowed": true,
+            "php_version": "8.1.34",
+            "image": "php:8.1-cli@sha256:76e563191d1ade120313a8736df24154d21da5155c0756f147c0b01bd19d9087",
+            "prerelease": false,
+            "date": "2026-11-20T21:10:54Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "cakephp/app",
+                "constraint": "^4.0",
+                "version": "4.5.0"
+            },
+            "framework_package": {
+                "package": "cakephp/cakephp",
+                "version": "4.6.6"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 2.4,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 9.6.39",
+                "summary": {
+                    "tests": 10,
+                    "assertions": 23
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.6,
+                "body_bytes": 7774,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 3.5
+        },
+        {
+            "framework": "cakephp-4",
+            "php_line": "8.2",
+            "allowed": true,
+            "php_version": "8.2.36",
+            "image": "php:8.2-cli@sha256:842748bc4526d4c3c56501fd314e2d75d1005e8a45b7a40f9768ee820df0a6d6",
+            "prerelease": false,
+            "date": "2026-11-20T21:10:04Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "cakephp/app",
+                "constraint": "^4.0",
+                "version": "4.5.0"
+            },
+            "framework_package": {
+                "package": "cakephp/cakephp",
+                "version": "4.6.6"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 2.4,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 9.6.39",
+                "summary": {
+                    "tests": 10,
+                    "assertions": 23
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.6,
+                "body_bytes": 7774,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 3.5
+        },
+        {
+            "framework": "cakephp-4",
+            "php_line": "8.3",
+            "allowed": true,
+            "php_version": "8.3.37",
+            "image": "php:8.3-cli@sha256:f14261a8cdb7f28b2ec45798c256b744c3ab6a6dd8598206b028c1efb7f76d15",
+            "prerelease": false,
+            "date": "2026-11-20T21:09:05Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "cakephp/app",
+                "constraint": "^4.0",
+                "version": "4.5.0"
+            },
+            "framework_package": {
+                "package": "cakephp/cakephp",
+                "version": "4.6.6"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 2,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 9.6.39",
+                "summary": {
+                    "tests": 10,
+                    "assertions": 23
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.6,
+                "body_bytes": 7774,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 3.1
+        },
+        {
+            "framework": "cakephp-4",
+            "php_line": "8.4",
+            "allowed": true,
+            "php_version": "8.4.28",
+            "image": "php:8.4-cli@sha256:6b13a8678b38ca38e4e3950be57b664ed8c8706131a0586111f68792aede4c58",
+            "prerelease": false,
+            "date": "2026-11-20T21:08:04Z",
+            "state": "refused",
+            "step": "install",
+            "first_error": "- laminas/laminas-diactoros[2.26.0, ..., 2.26.x-dev] require php ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 -> your php version (8.4.28) does not satisfy that requirement.",
+            "skeleton": {
+                "package": "cakephp/app",
+                "constraint": "^4.0",
+                "version": "4.5.0"
+            },
+            "framework_package": {
+                "package": "cakephp/cakephp",
+                "version": null
+            },
+            "install": {
+                "exit": 2,
+                "seconds": 1.2,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": null,
+            "request": null,
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 1.2
+        },
+        {
+            "framework": "cakephp-4",
+            "php_line": "8.5",
+            "allowed": true,
+            "php_version": "8.5.13",
+            "image": "php:8.5-cli@sha256:f324fcb4dc009ac0470a7d614cd122499dcee3ca47a9bab620fc14c0eb759ba2",
+            "prerelease": false,
+            "date": "2026-11-20T21:06:34Z",
+            "state": "refused",
+            "step": "install",
+            "first_error": "- laminas/laminas-diactoros[2.26.0, ..., 2.26.x-dev] require php ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 -> your php version (8.5.13) does not satisfy that requirement.",
+            "skeleton": {
+                "package": "cakephp/app",
+                "constraint": "^4.0",
+                "version": "4.5.0"
+            },
+            "framework_package": {
+                "package": "cakephp/cakephp",
+                "version": null
+            },
+            "install": {
+                "exit": 2,
+                "seconds": 1.6,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": null,
+            "request": null,
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 1.6
+        },
+        {
+            "framework": "cakephp-4",
+            "php_line": "8.6",
+            "allowed": true,
+            "php_version": "8.6.0",
+            "image": "php:8.6-cli@sha256:d84acf3155d907afaa5afa9b9457c5f12016b6dc7ade84659f40cdc505cc087d",
+            "prerelease": false,
+            "date": "2026-11-20T21:07:06Z",
+            "state": "refused",
+            "step": "install",
+            "first_error": "- laminas/laminas-diactoros[2.26.0, ..., 2.26.x-dev] require php ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 -> your php version (8.6.0) does not satisfy that requirement.",
+            "skeleton": {
+                "package": "cakephp/app",
+                "constraint": "^4.0",
+                "version": "4.5.0"
+            },
+            "framework_package": {
+                "package": "cakephp/cakephp",
+                "version": null
+            },
+            "install": {
+                "exit": 2,
+                "seconds": 1.4,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": null,
+            "request": null,
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 1.4
+        },
+        {
+            "framework": "slim-4",
+            "php_line": "8.0",
+            "allowed": true,
+            "php_version": "8.0.30",
+            "image": "php:8.0-cli@sha256:0569e384b9064c04dec55dc6e41be41b494a878dfbb6577a7d76bd50cfd5bc00",
+            "prerelease": false,
+            "date": "2026-11-20T21:11:14Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "slim/slim-skeleton",
+                "constraint": "^4.0",
+                "version": "4.5.0"
+            },
+            "framework_package": {
+                "package": "slim/slim",
+                "version": "4.15.3"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 1.8,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 9.6.39",
+                "summary": {
+                    "tests": 19,
+                    "assertions": 37
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.5,
+                "body_bytes": 12,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 2.8
+        },
+        {
+            "framework": "slim-4",
+            "php_line": "8.1",
+            "allowed": true,
+            "php_version": "8.1.34",
+            "image": "php:8.1-cli@sha256:76e563191d1ade120313a8736df24154d21da5155c0756f147c0b01bd19d9087",
+            "prerelease": false,
+            "date": "2026-11-20T21:10:59Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "slim/slim-skeleton",
+                "constraint": "^4.0",
+                "version": "4.5.0"
+            },
+            "framework_package": {
+                "package": "slim/slim",
+                "version": "4.15.3"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 1.6,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 9.6.39",
+                "summary": {
+                    "tests": 19,
+                    "assertions": 37
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.5,
+                "body_bytes": 12,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 2.6
+        },
+        {
+            "framework": "slim-4",
+            "php_line": "8.2",
+            "allowed": true,
+            "php_version": "8.2.36",
+            "image": "php:8.2-cli@sha256:842748bc4526d4c3c56501fd314e2d75d1005e8a45b7a40f9768ee820df0a6d6",
+            "prerelease": false,
+            "date": "2026-11-20T21:10:10Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "slim/slim-skeleton",
+                "constraint": "^4.0",
+                "version": "4.5.0"
+            },
+            "framework_package": {
+                "package": "slim/slim",
+                "version": "4.15.3"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 1.4,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 9.6.39",
+                "summary": {
+                    "tests": 19,
+                    "assertions": 37
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.5,
+                "body_bytes": 12,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 2.4
+        },
+        {
+            "framework": "slim-4",
+            "php_line": "8.3",
+            "allowed": true,
+            "php_version": "8.3.37",
+            "image": "php:8.3-cli@sha256:f14261a8cdb7f28b2ec45798c256b744c3ab6a6dd8598206b028c1efb7f76d15",
+            "prerelease": false,
+            "date": "2026-11-20T21:09:11Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "slim/slim-skeleton",
+                "constraint": "^4.0",
+                "version": "4.5.0"
+            },
+            "framework_package": {
+                "package": "slim/slim",
+                "version": "4.15.3"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 1.4,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 9.6.39",
+                "summary": {
+                    "tests": 19,
+                    "assertions": 37
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.5,
+                "body_bytes": 12,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 2.4
+        },
+        {
+            "framework": "slim-4",
+            "php_line": "8.4",
+            "allowed": true,
+            "php_version": "8.4.28",
+            "image": "php:8.4-cli@sha256:6b13a8678b38ca38e4e3950be57b664ed8c8706131a0586111f68792aede4c58",
+            "prerelease": false,
+            "date": "2026-11-20T21:08:07Z",
+            "state": "pass-deprecations",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "slim/slim-skeleton",
+                "constraint": "^4.0",
+                "version": "4.5.0"
+            },
+            "framework_package": {
+                "package": "slim/slim",
+                "version": "4.15.3"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 1.4,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 9.6.39",
+                "summary": {
+                    "tests": 19,
+                    "assertions": 37
+                },
+                "deprecations": 18,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.5,
+                "body_bytes": 5576,
+                "body_has_php_diagnostic": true,
+                "deprecations": 18,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 36,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [
+                {
+                    "kind": "deprecation",
+                    "message": "DI\\create(): Implicitly marking parameter $className as nullable is deprecated, the explicit nullable type must be used instead",
+                    "file": "vendor/php-di/php-di/src/functions.php",
+                    "line": 35,
+                    "source": "app",
+                    "step": "tests"
+                },
+                {
+                    "kind": "deprecation",
+                    "message": "DI\\autowire(): Implicitly marking parameter $className as nullable is deprecated, the explicit nullable type must be used instead",
+                    "file": "vendor/php-di/php-di/src/functions.php",
+                    "line": 48,
+                    "source": "app",
+                    "step": "tests"
+                },
+                {
+                    "kind": "deprecation",
+                    "message": "DI\\ContainerBuilder::writeProxiesToFile(): Implicitly marking parameter $proxyDirectory as nullable is deprecated, the explicit nullable type must be used instead",
+                    "file": "vendor/php-di/php-di/src/ContainerBuilder.php",
+                    "line": 283,
+                    "source": "app",
+                    "step": "tests"
+                }
+            ],
+            "seconds": 2.4
+        },
+        {
+            "framework": "slim-4",
+            "php_line": "8.5",
+            "allowed": true,
+            "php_version": "8.5.13",
+            "image": "php:8.5-cli@sha256:f324fcb4dc009ac0470a7d614cd122499dcee3ca47a9bab620fc14c0eb759ba2",
+            "prerelease": false,
+            "date": "2026-11-20T21:06:37Z",
+            "state": "pass-deprecations",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "slim/slim-skeleton",
+                "constraint": "^4.0",
+                "version": "4.5.0"
+            },
+            "framework_package": {
+                "package": "slim/slim",
+                "version": "4.15.3"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 1.6,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 9.6.39",
+                "summary": {
+                    "tests": 19,
+                    "assertions": 37
+                },
+                "deprecations": 18,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.6,
+                "body_bytes": 5577,
+                "body_has_php_diagnostic": true,
+                "deprecations": 18,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 36,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [
+                {
+                    "kind": "deprecation",
+                    "message": "DI\\create(): Implicitly marking parameter $className as nullable is deprecated, the explicit nullable type must be used instead",
+                    "file": "vendor/php-di/php-di/src/functions.php",
+                    "line": 35,
+                    "source": "app",
+                    "step": "tests"
+                },
+                {
+                    "kind": "deprecation",
+                    "message": "DI\\autowire(): Implicitly marking parameter $className as nullable is deprecated, the explicit nullable type must be used instead",
+                    "file": "vendor/php-di/php-di/src/functions.php",
+                    "line": 48,
+                    "source": "app",
+                    "step": "tests"
+                },
+                {
+                    "kind": "deprecation",
+                    "message": "DI\\ContainerBuilder::writeProxiesToFile(): Implicitly marking parameter $proxyDirectory as nullable is deprecated, the explicit nullable type must be used instead",
+                    "file": "vendor/php-di/php-di/src/ContainerBuilder.php",
+                    "line": 283,
+                    "source": "app",
+                    "step": "tests"
+                }
+            ],
+            "seconds": 2.6
+        },
+        {
+            "framework": "slim-4",
+            "php_line": "8.6",
+            "allowed": false,
+            "state": "no"
+        },
+        {
+            "framework": "slim-3",
+            "php_line": "8.0",
+            "allowed": false,
+            "state": "no"
+        },
+        {
+            "framework": "slim-3",
+            "php_line": "8.1",
+            "allowed": true,
+            "php_version": "8.1.34",
+            "image": "php:8.1-cli@sha256:76e563191d1ade120313a8736df24154d21da5155c0756f147c0b01bd19d9087",
+            "prerelease": false,
+            "date": "2026-11-20T21:11:03Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "slim/slim-skeleton",
+                "constraint": "^3.0",
+                "version": "3.1.8"
+            },
+            "framework_package": {
+                "package": "slim/slim",
+                "version": "3.13.1"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 1.2,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 10.5.67",
+                "summary": {
+                    "tests": 3,
+                    "assertions": 7
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.5,
+                "body_bytes": 987,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 2.2
+        },
+        {
+            "framework": "slim-3",
+            "php_line": "8.2",
+            "allowed": true,
+            "php_version": "8.2.36",
+            "image": "php:8.2-cli@sha256:842748bc4526d4c3c56501fd314e2d75d1005e8a45b7a40f9768ee820df0a6d6",
+            "prerelease": false,
+            "date": "2026-11-20T21:10:13Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "slim/slim-skeleton",
+                "constraint": "^3.0",
+                "version": "3.1.8"
+            },
+            "framework_package": {
+                "package": "slim/slim",
+                "version": "3.13.1"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 1.2,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 11.5.58",
+                "summary": {
+                    "tests": 3,
+                    "assertions": 7
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.5,
+                "body_bytes": 987,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 2.2
+        },
+        {
+            "framework": "slim-3",
+            "php_line": "8.3",
+            "allowed": true,
+            "php_version": "8.3.37",
+            "image": "php:8.3-cli@sha256:f14261a8cdb7f28b2ec45798c256b744c3ab6a6dd8598206b028c1efb7f76d15",
+            "prerelease": false,
+            "date": "2026-11-20T21:09:15Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "slim/slim-skeleton",
+                "constraint": "^3.0",
+                "version": "3.1.8"
+            },
+            "framework_package": {
+                "package": "slim/slim",
+                "version": "3.13.1"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 1.2,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 12.5.45",
+                "summary": {
+                    "tests": 3,
+                    "assertions": 7
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.5,
+                "body_bytes": 987,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 2.2
+        },
+        {
+            "framework": "slim-3",
+            "php_line": "8.4",
+            "allowed": true,
+            "php_version": "8.4.28",
+            "image": "php:8.4-cli@sha256:6b13a8678b38ca38e4e3950be57b664ed8c8706131a0586111f68792aede4c58",
+            "prerelease": false,
+            "date": "2026-11-20T21:08:11Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "slim/slim-skeleton",
+                "constraint": "^3.0",
+                "version": "3.1.8"
+            },
+            "framework_package": {
+                "package": "slim/slim",
+                "version": "3.13.1"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 1.2,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 13.4.8",
+                "summary": {
+                    "tests": 3,
+                    "assertions": 7
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.5,
+                "body_bytes": 987,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 2.2
+        },
+        {
+            "framework": "slim-3",
+            "php_line": "8.5",
+            "allowed": true,
+            "php_version": "8.5.13",
+            "image": "php:8.5-cli@sha256:f324fcb4dc009ac0470a7d614cd122499dcee3ca47a9bab620fc14c0eb759ba2",
+            "prerelease": false,
+            "date": "2026-11-20T21:06:41Z",
+            "state": "pass",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "slim/slim-skeleton",
+                "constraint": "^3.0",
+                "version": "3.1.8"
+            },
+            "framework_package": {
+                "package": "slim/slim",
+                "version": "3.13.1"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 1.2,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 13.4.8",
+                "summary": {
+                    "tests": 3,
+                    "assertions": 7
+                },
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.5,
+                "body_bytes": 987,
+                "body_has_php_diagnostic": false,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [],
+            "seconds": 2.2
+        },
+        {
+            "framework": "slim-3",
+            "php_line": "8.6",
+            "allowed": true,
+            "php_version": "8.6.0",
+            "image": "php:8.6-cli@sha256:d84acf3155d907afaa5afa9b9457c5f12016b6dc7ade84659f40cdc505cc087d",
+            "prerelease": false,
+            "date": "2026-11-20T21:07:09Z",
+            "state": "pass-deprecations",
+            "step": null,
+            "first_error": null,
+            "skeleton": {
+                "package": "slim/slim-skeleton",
+                "constraint": "^3.0",
+                "version": "3.1.8"
+            },
+            "framework_package": {
+                "package": "slim/slim",
+                "version": "3.13.1"
+            },
+            "install": {
+                "exit": 0,
+                "seconds": 1.2,
+                "deprecations": 0,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "tests": {
+                "exit": 0,
+                "seconds": 0.2,
+                "phpunit": "PHPUnit 13.4.8",
+                "summary": {
+                    "tests": 3,
+                    "assertions": 7,
+                    "deprecations": 1
+                },
+                "deprecations": 1,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "request": {
+                "status": 200,
+                "seconds": 0.5,
+                "body_bytes": 1166,
+                "body_has_php_diagnostic": true,
+                "deprecations": 1,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "diagnostics": {
+                "deprecations": 2,
+                "warnings": 0,
+                "fatals": 0,
+                "tool": 0
+            },
+            "messages": [
+                {
+                    "kind": "deprecation",
+                    "message": "Function is_integer() is deprecated since 8.6, use is_int() instead",
+                    "file": "vendor/slim/slim/Slim/Http/Response.php",
+                    "line": 223,
+                    "source": "app",
+                    "step": "tests"
+                }
+            ],
+            "seconds": 2.2
+        }
+    ]
+}

@@ -28,7 +28,7 @@ Each cell reads one of:
 | **refused** (R) | Composer refused the PHP platform when it resolved the skeleton's dependencies |
 | **not run** (-) | the release's `require.php` excludes the line |
 
-This is half of what the [live PHP page](https://creed.apps.wayne.edu/docs/guides/live-php.html) calls supported. The other half is what the framework's maintainers have announced; a line we passed but they have not announced is not supported yet.
+This is half of what the [live PHP page](https://creed.apps.wayne.edu/docs/guides/live-php.html) calls supported. The other half is what the framework's maintainers have announced (Laravel's support table; CakePHP and Slim publish nothing a server can read, so they show as unknown there): a line we passed but they have not announced is not supported yet, and a line they announced that we have not passed shows as announced, not passed. The page reads this file from the deployed tree on every refresh.
 
 ## The results [#](https://creed.apps.wayne.edu/docs/guides/framework-php-tests.html#the-results)
 

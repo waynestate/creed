@@ -221,7 +221,7 @@
             schema: 1, mode: "browser", generated_at: now, today: today,
             newest: released.length ? released[released.length - 1].branch : null,
             branches: branches, upcoming: upcoming, timelines: [], frameworks: [], sources: sources,
-            notes: ["The server feed did not answer, so php.net, its news feed, the wiki, Packagist and the frameworks' CI workflows were not read. endoflife.date can be about a day behind php.net."]
+            notes: ["The server feed did not answer, so php.net, its news feed, the wiki, Packagist and Laravel's support table were not read. endoflife.date can be about a day behind php.net."]
           };
         });
       });
@@ -273,7 +273,7 @@
 
     var msg = null, cls = "pl-alert";
     if (mode === "fallback") {
-      msg = "The server feed did not answer, so this page read endoflife.date and php-src's tags straight from your browser. php.net's own pages, its news feed (where upcoming security releases are announced) and the framework fit (Packagist and each framework's CI workflow) need the server feed.";
+      msg = "The server feed did not answer, so this page read endoflife.date and php-src's tags straight from your browser. php.net's own pages, its news feed (where upcoming security releases are announced) and the framework fit (Packagist, Laravel's support table and CREED's own framework tests) need the server feed.";
       cls += " pl-alert--fallback";
     } else if (mode === "stale") {
       msg = "The sources were last merged " + ago(doc.generated_at) + ". What you see is the last good answer, not a fresh one.";
@@ -639,22 +639,47 @@
     if (e.key === "Escape" && !els.detail.hidden) hideDetail(true);
   });
 
-  // One framework cell. "tested": require.php allows the line and the major's own CI runs it.
-  // "untested": Composer would install it, the framework does not test it yet. "allowed": the
-  // CI workflow was not read, so the page says what Composer allows and claims nothing more.
-  // Each mark differs in shape as well as color: a filled disc, a dashed ring, a thin ring, a cross.
+  // One framework cell. Green ("supported") needs two things: the framework announced the line
+  // (Laravel's support table) AND CREED's own test of the official skeleton passed on it.
+  // "announced-untested": announced, our test is missing, failed or was refused. "allowed":
+  // Composer would install it, Laravel has not announced it. "unknown": Composer would install
+  // it and there is no announcement a server can read (CakePHP, Slim, or Laravel's table this
+  // refresh). "no": require.php refuses it. Every mark differs in shape as well as color: a
+  // filled disc, a solid ring, a dashed ring, a dashed square with a question mark, a cross.
   var FIT = {
-    tested: { cls: "pl-yes", sr: function (f, c) { return "PHP " + c + ": tested in " + f.name + " " + f.major + "'s CI"; } },
-    untested: { cls: "pl-maybe", sr: function (f, c) { return "PHP " + c + ": Composer allows it, " + f.name + " " + f.major + "'s CI does not test it yet"; } },
-    allowed: { cls: "pl-maybe pl-maybe--unread", sr: function (f, c) { return "PHP " + c + ": Composer allows it; tested lines not read"; } },
-    no: { cls: "pl-no-fit", text: "×", sr: function (f, c) { return "PHP " + c + ": not allowed by require.php"; } }
+    supported: { cls: "pl-yes", label: "Supported: announced and passed our test" },
+    "announced-untested": { cls: "pl-fit-ann", label: "Announced, not passed our test yet" },
+    allowed: { cls: "pl-maybe", label: "Allowed by Composer, support not announced" },
+    unknown: { cls: "pl-fit-unk", text: "?", label: "Allowed by Composer, support not published in a readable form" },
+    no: { cls: "pl-no-fit", text: "\u00d7", label: "Not allowed" }
   };
 
   function fitOf(f, c) {
-    if (f.fit && Object.prototype.hasOwnProperty.call(f.fit, c)) return f.fit[c];
-    // A feed from before the CI read: what Composer allows, and no claim about tests.
+    if (f.fit && Object.prototype.hasOwnProperty.call(f.fit, c) && FIT[f.fit[c]]) return f.fit[c];
+    // A feed from before announcements were read: what Composer allows, and no claim past it.
     var v = f.allows ? f.allows[c] : null;
-    return v === true ? "allowed" : v === false ? "no" : null;
+    return v === true ? "unknown" : v === false ? "no" : null;
+  }
+
+  // What our own test said about this cell, in words: the title and the screen reader both get it.
+  function ourTestText(f, c) {
+    var t = f.our_test ? f.our_test[c] : null;
+    if (!t) return "our test: not run";
+    var day = t.date ? ", " + t.date : "";
+    var on = "PHP " + (t.php_version || c) + (t.version ? ", " + f.name + " " + t.version : "");
+    if (t.state === "pass") return "our test: pass on " + on + day;
+    if (t.state === "pass-deprecations") return "our test: pass with deprecations on " + on + day;
+    // A failure's first line ends in its own punctuation, so the date goes before it.
+    var when = t.date ? "our test, " + t.date + ": " : "our test: ";
+    if (t.state === "refused") return when + "Composer refused PHP " + (t.php_version || c) + (t.first_error ? ": " + t.first_error : "");
+    return when + "fail at " + (t.step || "a step") + (t.first_error ? ": " + t.first_error : "");
+  }
+
+  function cellText(f, c, key) {
+    var k = FIT[key];
+    var words = k ? k.label : "Unknown: no require.php to read";
+    if (key === "unknown" && f.announced_ok === false && f.announced_reason) words += " (" + f.name + "'s support table not read: " + f.announced_reason + ")";
+    return "PHP " + c + ": " + words + ". " + ourTestText(f, c).replace(/^our/, "Our");
   }
 
   function renderFit(doc) {
@@ -663,16 +688,17 @@
     var cols = supported(doc).map(function (b) { return b.branch; });
     if (!fw.length || !cols.length) {
       els.fit.appendChild(h("p", { class: "pl-card__empty", text: state.mode === "fallback" || state.mode === "down"
-        ? "Framework fit needs the server feed (Packagist and the frameworks' CI workflows are read there)."
+        ? "Framework fit needs the server feed (Packagist, Laravel's support table and our own framework tests are read there)."
         : "Packagist could not be read." }));
       return;
     }
     var table = h("table", { class: "pl-fit" }, [
-      h("caption", { class: "wsu-sr-only", text: "For each supported PHP branch: whether each framework's newest releases allow it (require.php on Packagist) and whether that major's own CI tests it (its GitHub Actions workflow)." }),
+      h("caption", { class: "wsu-sr-only", text: "For each supported PHP branch: whether each framework's newest release allows it (require.php on Packagist), whether the framework announced it (Laravel's support table; CakePHP and Slim publish none a server can read), and what CREED's own test of the official skeleton said." }),
       h("thead", null, [h("tr", null, [h("th", { scope: "col", text: "Release" })].concat(cols.map(function (c) { return h("th", { scope: "col", text: c }); })))])
     ]);
     var tb = h("tbody");
     var legacy = [];
+    var policy = null;
     fw.forEach(function (f) {
       var old = f.lifecycle === "legacy";
       // CakePHP and Slim sit under one "Legacy: being phased out" band; their fit is read like Laravel's.
@@ -687,33 +713,37 @@
         ])]));
       }
       if (old && legacy.indexOf(f.name) === -1) legacy.push(f.name);
-      var read = Array.isArray(f.tested_lines);
-      var ciTitle = read
-        ? f.name + " " + f.major + ".x CI runs PHP " + (f.tested_lines.length ? f.tested_lines.join(", ") : "no line it names") + " (GitHub Actions)"
-        : f.name + " " + f.major + ".x CI workflow: tested lines not read";
+      var read = f.announced_ok === true;
+      if (f.announced_link && !policy) policy = f.announced_link;
+      var srcTitle = read
+        ? f.name + " " + f.major + ": support policy announces PHP " + (f.announced_lines || []).join(", ") + (f.announced_fetched_at ? " (read " + ago(f.announced_fetched_at) + ")" : "")
+        : f.name + " " + f.major + ": support table not read" + (f.announced_reason ? " (" + f.announced_reason + ")" : "");
       var tr = h("tr", { class: old ? "pl-fit__legacy" : null }, [h("th", { scope: "row" }, [
         h("span", { class: "pl-fw" }, [
           h("a", { href: f.url, text: f.name + " " + f.major }),
-          f.tested_source ? h("a", { class: "pl-fw__ci" + (read ? "" : " pl-fw__ci--unread"), href: f.tested_source, title: ciTitle, "aria-label": ciTitle, text: "CI" }) : null
+          f.announced_link ? h("a", { class: "pl-fw__src" + (read ? "" : " pl-fw__src--unread"), href: f.announced_link, title: srcTitle, "aria-label": srcTitle, text: "policy" }) : null
         ]),
         old ? h("span", { class: "wsu-sr-only", text: ", legacy, being phased out" }) : null,
         h("span", { class: "pl-fw__req", title: "require.php of " + f.version, text: f.version + " · " + (f.php || "no php constraint") }),
-        read ? null : h("span", { class: "pl-fw__note", text: "tested lines not read" })
+        f.announced_ok === false ? h("span", { class: "pl-fw__note", text: "support table not read" }) : null
       ])]);
       cols.forEach(function (c) {
-        var k = FIT[fitOf(f, c)];
-        var sr = k ? k.sr(f, c) : "PHP " + c + ": unknown";
+        var key = fitOf(f, c);
+        var k = FIT[key];
+        var sr = cellText(f, c, key);
         var cell = k
           ? h("span", { class: k.cls, "aria-hidden": "true", title: sr, text: k.text || null })
-          : h("span", { class: "pl-unknown", "aria-hidden": "true", text: "?" });
+          : h("span", { class: "pl-unknown", "aria-hidden": "true", title: sr, text: "?" });
         tr.appendChild(h("td", null, [cell, h("span", { class: "wsu-sr-only", text: sr })]));
       });
       tb.appendChild(tr);
     });
     table.appendChild(tb);
     els.fit.appendChild(table);
+    // The key links Laravel's table on the branch the feed read, when it read one.
+    var link = document.querySelector("[data-pl-laravel-policy]");
+    if (link && policy) link.setAttribute("href", policy);
   }
-
   /* ------------------------------------------------------------ timelines */
 
   var TL_STATE = { active: "Active", security: "Security only", eol: "End of life", planned: "Planned", future: "To come", unknown: "Dates not on php.net" };
@@ -961,7 +991,7 @@
       if (!groups[s.group]) { groups[s.group] = []; order.push(s.group); }
       groups[s.group].push(s);
     });
-    var names = { "php.net": "php.net", "php-src": "php-src", wiki: "php.net wiki", "cross-check": "endoflife.date", frameworks: "Packagist", "framework-ci": "framework CI" };
+    var names = { "php.net": "php.net", "php-src": "php-src", wiki: "php.net wiki", "cross-check": "endoflife.date", frameworks: "Packagist", announced: "Laravel support table" };
     var rank = { ok: 0, stale: 1, down: 2 };
     order.forEach(function (g) {
       var list = groups[g];

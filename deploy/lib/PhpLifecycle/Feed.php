@@ -21,8 +21,12 @@ use DateTimeZone;
  *    refresh makes one call per live PHP major plus one for the next major,
  *    at most every TTL_MINUTES: about 12 an hour. php-src master's
  *    php_version.h comes from raw.githubusercontent.com, outside that budget,
- *    and so do the frameworks' CI workflows (one per framework major, read in
- *    the same round as the tags).
+ *    and so does Laravel's releases.md (one file, read in the same round as
+ *    the tags).
+ *  - Framework fit joins three answers: what Packagist's require.php allows,
+ *    what Laravel's support table announces (CakePHP and Slim publish nothing
+ *    a server can read, so they stay unknown), and CREED's own matrix in
+ *    data/framework-php-tests.json, read from the deployed tree each refresh.
  *  - The php.net wiki is asked one page a second, never in parallel. Its
  *    index names every release page; supported and future releases are
  *    re-read each refresh, a closed release's page once (WIKI_BACKFILL new
@@ -49,18 +53,22 @@ final class Feed
     ];
 
     /**
-     * Where each framework's own CI says which PHP lines it tests: the GitHub repo, the
-     * workflow file under .github/workflows/, and the branch a major lives on (%s is the
-     * major Packagist named). Config, not a version list: the lines come out of the file.
-     * Read from raw.githubusercontent.com, outside GitHub's 60-an-hour API budget.
-     * Paths confirmed 2026-11-20 on laravel/framework 12.x and 13.x, cakephp/cakephp 4.x
-     * and 5.x, slimphp/Slim 3.x and 4.x.
+     * Where a framework announces the PHP lines each major supports, in a form a server can
+     * read. Only Laravel does: the Support Policy table in laravel/docs' releases.md. It is
+     * read from the branch of the newest major Packagist knows (%s), because older branches
+     * lag. Config, not a version list: the lines come out of the file. CakePHP and Slim have
+     * no entry, so their cells say "unknown" (research/framework-php-announced-1120.md).
      */
-    public const WORKFLOWS = [
-        'laravel/framework' => ['repo' => 'laravel/framework', 'file' => 'tests.yml', 'branch' => '%s.x'],
-        'cakephp/cakephp' => ['repo' => 'cakephp/cakephp', 'file' => 'ci.yml', 'branch' => '%s.x'],
-        'slim/slim' => ['repo' => 'slimphp/Slim', 'file' => 'tests.yml', 'branch' => '%s.x'],
+    public const ANNOUNCED = [
+        'laravel/framework' => [
+            'url' => 'https://raw.githubusercontent.com/laravel/docs/%s/releases.md',
+            'link' => 'https://laravel.com/framework/docs/%s/releases#support-policy',
+            'branch' => '%s.x',
+        ],
     ];
+
+    /** Why a framework without an ANNOUNCED entry shows as unknown. */
+    public const UNREADABLE = 'does not publish its supported PHP lines in a form a server can read';
 
     /**
      * Frameworks the department is phasing out (D-124; CREED handbook, Code, "Frameworks").
@@ -80,9 +88,14 @@ final class Feed
     /** @var array<string, true> closed-release timetables fetched this refresh for the first time */
     private array $backfill = [];
 
+    /**
+     * @param ?string $testsFile CREED's matrix results; null reads data/framework-php-tests.json
+     *                           from the deployed tree (this file is deploy/lib/PhpLifecycle/Feed.php)
+     */
     public function __construct(
         private readonly string $dir,
         private readonly Http $http,
+        private readonly ?string $testsFile = null,
     ) {}
 
     /**
@@ -183,19 +196,13 @@ final class Feed
                 $in['wiki'][substr($id, 5)] = $s['parsed'] ?? null;
             }
         }
+        $announcePlan = $this->planAnnounced($state);
         foreach (self::FRAMEWORKS as $package => $name) {
-            // Each major's CI workflow: the lines it runs (null when it was never read) and where it lives.
-            $workflows = [];
-            foreach ($this->planWorkflows($state) as $id => $p) {
-                if (str_starts_with($id, 'ci-' . $package . '@')) {
-                    $workflows[substr($id, strlen('ci-' . $package . '@'))] = ['lines' => $state[$id]['parsed'] ?? null, 'url' => $p['link']];
-                }
-            }
             $in['frameworks'][$package] = [
                 'name' => $name,
                 'url' => 'https://packagist.org/packages/' . $package,
                 'majors' => $state['packagist-' . $package]['parsed'] ?? null,
-                'workflows' => $workflows,
+                'announced' => $this->announced($package, $name, $announcePlan, $state),
                 'lifecycle' => isset(self::LEGACY[$package]) ? 'legacy' : null,
                 'lifecycle_note' => self::LEGACY[$package] ?? null,
             ];
@@ -237,6 +244,11 @@ final class Feed
                 'browser' => false,
             ];
         }
+
+        // Read every refresh, so a deploy with new results shows them within TTL_MINUTES.
+        $testsFile = $this->testsFile ?? dirname(__DIR__, 3) . '/data/framework-php-tests.json';
+        $raw = is_file($testsFile) ? @file_get_contents($testsFile) : false;
+        $in['tests'] = $raw === false ? null : Parse::frameworkTests($raw);
 
         /** @phpstan-ignore argument.type (the cache holds what Parse returned; Merge re-checks shapes it relies on) */
         $doc = Merge::build($in, $now, $sources);
@@ -289,8 +301,8 @@ final class Feed
     public function planLate(array $state, string $today): array
     {
         $this->backfill = [];
-        // The frameworks' CI workflows need only Packagist's majors, not the branch list.
-        $ci = $this->planWorkflows($state);
+        // Laravel's support table needs only Packagist's majors, not the branch list.
+        $announce = $this->planAnnounced($state);
         $branches = [];
         foreach (['states', 'endoflife'] as $id) {
             $parsed = $state[$id]['parsed'] ?? null;
@@ -307,7 +319,7 @@ final class Feed
             }
         }
         if ($branches === []) {
-            return $ci;
+            return $announce;
         }
         $all = array_keys($branches);
         usort($all, static fn(string $a, string $b): int => version_compare($b, $a));
@@ -351,41 +363,80 @@ final class Feed
                 'parse' => static fn(string $b): mixed => Parse::wiki($b)];
         }
 
-        return $plan + $ci;
+        return $plan + $announce;
     }
 
     /**
-     * One CI workflow read per framework major Packagist named: `ci-<package>@<major>`.
+     * One support-table read per framework in ANNOUNCED, `announced-<package>`, from the branch
+     * of the newest major Packagist named. Nothing when Packagist was never read.
      *
      * @param array<string, array<string, mixed>> $state
      *
      * @return array<string, array{url: string, link: string, label: string, group: string, browser: bool, parse: callable(string): mixed}>
      */
-    private function planWorkflows(array $state): array
+    private function planAnnounced(array $state): array
     {
         $plan = [];
-        foreach (self::WORKFLOWS as $package => $wf) {
+        foreach (self::ANNOUNCED as $package => $a) {
+            $newest = null;
             $majors = $state['packagist-' . $package]['parsed'] ?? null;
             foreach (is_array($majors) ? $majors : [] as $m) {
-                if (!is_array($m) || !is_string($m['major'] ?? null)) {
-                    continue;
+                if (is_array($m) && is_string($m['major'] ?? null) && ctype_digit($m['major']) && ($newest === null || (int) $m['major'] > $newest)) {
+                    $newest = (int) $m['major'];
                 }
-                $branch = sprintf($wf['branch'], $m['major']);
-                $path = $wf['repo'] . '/' . $branch . '/.github/workflows/' . $wf['file'];
-                $plan['ci-' . $package . '@' . $m['major']] = [
-                    'url' => 'https://raw.githubusercontent.com/' . $path,
-                    'link' => 'https://github.com/' . $wf['repo'] . '/blob/' . $branch . '/.github/workflows/' . $wf['file'],
-                    'label' => 'GitHub: ' . self::FRAMEWORKS[$package] . ' ' . $branch . ' CI workflow',
-                    'group' => 'framework-ci',
-                    'browser' => false,
-                    'parse' => static fn(string $b): mixed => Parse::workflowPhp($b),
-                ];
             }
+            if ($newest === null) {
+                continue;
+            }
+            $branch = sprintf($a['branch'], $newest);
+            $plan['announced-' . $package] = [
+                'url' => sprintf($a['url'], $branch),
+                'link' => sprintf($a['link'], $branch),
+                'label' => self::FRAMEWORKS[$package] . ' support policy (' . $branch . ' docs)',
+                'group' => 'announced',
+                'browser' => false,
+                'parse' => static fn(string $b): mixed => Parse::laravelSupport($b),
+            ];
         }
 
         return $plan;
     }
 
+    /**
+     * What a framework has announced, as Merge reads it. The lines count only when this
+     * refresh read and parsed them: a failed read never keeps an old answer, so the page
+     * drops to "unknown" instead of staying green on a stale guess.
+     *
+     * @param array<string, array{url: string, link: string, label: string, group: string, browser: bool, parse: callable(string): mixed}> $plan
+     * @param array<string, array<string, mixed>> $state
+     *
+     * @return array{ok: ?bool, source: ?string, link: ?string, fetched_at: ?string, reason: ?string, lines: ?array<int, list<string>>}
+     */
+    private function announced(string $package, string $name, array $plan, array $state): array
+    {
+        if (!isset(self::ANNOUNCED[$package])) {
+            return ['ok' => null, 'source' => null, 'link' => null, 'fetched_at' => null, 'reason' => $name . ' ' . self::UNREADABLE, 'lines' => null];
+        }
+        $p = $plan['announced-' . $package] ?? null;
+        if ($p === null) {
+            return ['ok' => false, 'source' => null, 'link' => null, 'fetched_at' => null, 'reason' => 'Packagist was not read, so the newest ' . $name . ' major (and its docs branch) is not known', 'lines' => null];
+        }
+        $s = $state['announced-' . $package] ?? [];
+        $ok = ($s['ok'] ?? false) === true && is_array($s['parsed'] ?? null);
+        $error = is_string($s['error'] ?? null) ? $s['error'] : 'not read';
+
+        /** @var ?array<int, list<string>> $lines */
+        $lines = $ok ? $s['parsed'] : null;
+
+        return [
+            'ok' => $ok,
+            'source' => $p['url'],
+            'link' => $p['link'],
+            'fetched_at' => $ok && is_string($s['ok_at'] ?? null) ? $s['ok_at'] : null,
+            'reason' => $ok ? null : ($error === 'unreadable answer' ? 'the Support Policy table did not parse' : $error),
+            'lines' => $lines,
+        ];
+    }
     /**
      * The wiki index's pages as branch => page name, newest first; null when the index was never read.
      *

@@ -31,7 +31,9 @@ Each cell reads one of:
 | **not run** (-) | the release's `require.php` excludes the line |
 
 This is half of what the [live PHP page](live-php.md) calls supported. The other half is what the framework's
-maintainers have announced; a line we passed but they have not announced is not supported yet.
+maintainers have announced (Laravel's support table; CakePHP and Slim publish nothing a server can read, so they show as
+unknown there): a line we passed but they have not announced is not supported yet, and a line they announced that we
+have not passed shows as announced, not passed. The page reads this file from the deployed tree on every refresh.
 
 ## The results
 

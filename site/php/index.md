@@ -1,6 +1,6 @@
 ---
 title: "PHP, as of now | CREED"
-description: "The whole PHP lifecycle, live: every supported branch with its latest patch, the support timeline, the next announced or tagged release, every release's timeline from first alpha to last security fix, and which PHP lines Laravel, CakePHP and Slim allow and actually test. Read from php.net, php-src, the php.net wiki, endoflife.date, Packagist and each framework's CI workflow, at most 30 minutes behind."
+description: "The whole PHP lifecycle, live: every supported branch with its latest patch, the support timeline, the next announced or tagged release, every release's timeline from first alpha to last security fix, and which PHP lines Laravel, CakePHP and Slim allow, which Laravel announces, and which passed our own test of each skeleton. Read from php.net, php-src, the php.net wiki, endoflife.date, Packagist and Laravel's support table, at most 30 minutes behind."
 url: https://creed.apps.wayne.edu/php/
 llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
@@ -45,11 +45,13 @@ Not read yet.
 
 Not read yet.
 
-- Tested
-- Allowed, not tested yet
-- Not allowed
+- **Supported: announced and passed our test** Laravel's support table names the line; our skeleton test passed.
+- **Announced, not passed our test yet** Laravel names it; our test is missing, failed or refused.
+- **Allowed by Composer, support not announced** `require.php` allows it; Laravel's table does not name it.
+- **Allowed by Composer, support not published in a readable form** CakePHP and Slim publish no readable table; Laravel too, if unread.
+- **Not allowed** `require.php` refuses it; Composer will not install it.
 
-Allowed: the release's `require.php` on Packagist lets Composer install it. Tested: that major's own CI on GitHub runs the line too.
+Read live: [Laravel's support policy table](https://laravel.com/framework/docs/releases#support-policy) and `require.php` on Packagist. Ours: [our framework tests](https://creed.apps.wayne.edu/docs/guides/framework-php-tests.html), each official skeleton created, tested and served. Every cell's title gives our test's result; our test alone never makes a cell green.
 
 ## §2A.4 Sources
 

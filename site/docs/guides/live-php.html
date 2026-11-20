@@ -5,7 +5,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>The live PHP page | CREED docs</title>
-<meta name="description" content="How /php reads the PHP lifecycle live from php.net, php-src, the php.net wiki, endoflife.date, Packagist and the frameworks&#039; CI workflows, what it shows (every release&#039;s timeline included), and what happens when a source is down.">
+<meta name="description" content="How /php reads the PHP lifecycle live from php.net, php-src, the php.net wiki, endoflife.date, Packagist, Laravel&#039;s support table and CREED&#039;s own framework tests, what it shows (every release&#039;s timeline included), and what happens when a source is down.">
 <meta name="docs-version" content="0.1.14">
 <link rel="stylesheet" href="../../assets/wayne-ui/wayne-ui.css">
 <link rel="stylesheet" href="../../assets/docs.css">
@@ -107,15 +107,20 @@ the evening before a security release.</p>
 <td>server</td>
 </tr>
 <tr>
-<td>Each framework's GitHub Actions workflow on the major's branch (<code>raw.githubusercontent.com</code>)</td>
-<td>the PHP lines that major's own CI runs: Laravel <code>tests.yml</code>, CakePHP <code>ci.yml</code>, Slim <code>tests.yml</code>, on <code>13.x</code>, <code>5.x</code>, <code>3.x</code> and so on</td>
+<td>Laravel's <code>releases.md</code> in laravel/docs, on the newest major's branch (<code>raw.githubusercontent.com</code>)</td>
+<td>the Support Policy table: the PHP lines Laravel announces for each major (Laravel 13: 8.3 - 8.5)</td>
+<td>server</td>
+</tr>
+<tr>
+<td><code>data/framework-php-tests.json</code> in the deployed tree</td>
+<td>CREED's own test of each framework's official skeleton on each PHP line Composer allows (<a href="framework-php-tests.html">Our framework tests</a>)</td>
 <td>server</td>
 </tr>
 </tbody>
 </table></div>
 <p>php.net and its news feed send no CORS headers, so the browser cannot read them itself. GitHub allows 60 calls an hour
 per address without a token; the server makes one tag call per live PHP major plus one for the next major, at most
-every ten minutes. php-src master's version file and the frameworks' workflows are raw files, outside that budget.</p>
+every ten minutes. php-src master's version file and Laravel's releases.md are raw files, outside that budget.</p>
 <p>The wiki is read gently. Release pages are found only through the index, never by guessing names, and asked for one at
 a time, at least a second apart; the first page that does not answer ends that round. The index, the pages of
 supported releases and the pages of releases still to come are read again on the ten-minute schedule. A closed
@@ -177,9 +182,10 @@ no date is published. The page never projects PHP's four-week patch rhythm.</li>
 <li>Releases past end of life sit under &quot;Older releases&quot;, complete, one click away. A closed release whose page has not
 been read yet says so until its turn comes.</li>
 </ul>
-<h3 id="framework-fit-tested-allowed-or-no">Framework fit: tested, allowed, or <span class="docs-heading-tail"><span>no</span><a class="docs-heading-link" aria-label="Link to this section" href="#framework-fit-tested-allowed-or-no">#</a></span></h3>
+<h3 id="framework-fit-supported-means-announced-and-passed-our-test">Framework fit: supported means announced and passed our <span class="docs-heading-tail"><span>test</span><a class="docs-heading-link" aria-label="Link to this section" href="#framework-fit-supported-means-announced-and-passed-our-test">#</a></span></h3>
 <p>A <code>require.php</code> such as <code>^8.3</code> or <code>&gt;=8.2</code> lets Composer install the framework on every PHP line to come, including
-ones the framework has never run. So each cell joins two sources and reads one of three states:</p>
+ones nobody has announced or tried. A framework's own CI matrix is not an announcement either: CakePHP 5.4.4 &quot;added
+PHP 8.6 to the CI matrix&quot; without saying it supports 8.6. So each cell joins three answers and reads one of five states:</p>
 <div class="docs-table" role="region" aria-label="Table" tabindex="0"><table>
 <thead>
 <tr>
@@ -190,50 +196,73 @@ ones the framework has never run. So each cell joins two sources and reads one o
 </thead>
 <tbody>
 <tr>
-<td><strong>Tested</strong></td>
-<td><code>require.php</code> allows the line and the major's own CI runs it</td>
-<td>the filled cloth disc</td>
+<td><strong>Supported</strong> (<code>supported</code>)</td>
+<td>Laravel announced the line AND our own test of the official skeleton passed on it, with or without deprecations</td>
+<td>the filled cloth disc, &quot;Supported: announced and passed our test&quot;</td>
 </tr>
 <tr>
-<td><strong>Allowed, not tested yet</strong></td>
-<td><code>require.php</code> allows the line, the CI does not run it: Composer would install it, but the framework does not test it yet (Laravel 13 on 8.6 the day 8.6 shipped)</td>
-<td>a dashed pencil ring, never the fit color</td>
+<td><strong>Announced, not passed</strong> (<code>announced-untested</code>)</td>
+<td>Laravel announced the line, but our test is missing, failed or was refused; the cell's title says which</td>
+<td>an empty solid ring in the same cloth, &quot;Announced, not passed our test yet&quot;</td>
 </tr>
 <tr>
-<td><strong>No</strong></td>
-<td><code>require.php</code> refuses the line</td>
-<td>a cross</td>
+<td><strong>Allowed</strong> (<code>allowed</code>)</td>
+<td>Composer allows the line and Laravel's table does not announce it (Laravel 13 and 12 on 8.6, today)</td>
+<td>a dashed pencil ring, &quot;Allowed by Composer, support not announced&quot;</td>
+</tr>
+<tr>
+<td><strong>Unknown</strong> (<code>unknown</code>)</td>
+<td>Composer allows the line and there is no announcement a server can read: CakePHP and Slim always, Laravel when its table cannot be read</td>
+<td>a dashed square with a question mark, &quot;Allowed by Composer, support not published in a readable form&quot;</td>
+</tr>
+<tr>
+<td><strong>No</strong> (<code>no</code>)</td>
+<td><code>require.php</code> refuses the line, whatever anyone announced or tested</td>
+<td>a cross, &quot;Not allowed&quot;</td>
 </tr>
 </tbody>
 </table></div>
-<p>The CI part is read from the framework's GitHub Actions workflow on that major's branch (<code>13.x</code> for Laravel 13). Which
-repository and file belong to each framework is configuration in <code>Feed::WORKFLOWS</code>; the PHP lines come out of the file.
-Every PHP value counts: the matrix list (<code>php:</code> or <code>php-version:</code>, quoted or not, flow or block form) and <code>include:</code>
-entries. An <code>exclude:</code> entry drops a line only when it removes every combination that line was in, so Laravel 13's
-exclusion of one PHPUnit pairing on 8.3 does not drop 8.3. <code>nightly</code> and expressions are not lines. A line the CI runs
-but the constraint refuses is still <strong>No</strong>: Slim 4 runs 8.6 with <code>--ignore-platform-req</code>, and Composer would not
-install it there.</p>
-<p>The feed carries all three: <code>frameworks[].allows</code> (unchanged), <code>frameworks[].tested</code> (the same shape, keyed by PHP line,
-true where the CI runs it), <code>frameworks[].tested_lines</code>, <code>frameworks[].tested_source</code> (the workflow's URL) and
-<code>frameworks[].fit</code> (<code>tested</code>, <code>untested</code>, <code>allowed</code> or <code>no</code> per line). When a workflow cannot be read, <code>tested</code> is null,
-<code>fit</code> says <code>allowed</code> wherever Composer allows the line, and the row shows a thin ring and &quot;tested lines not read&quot;: the
-page never claims Tested without having read the CI.</p>
+<p>Our test alone never makes a cell green, and it never makes one red: a Laravel 12 cell that failed our test on 8.6 is
+still <strong>Allowed</strong>, because Laravel has not announced 8.6, and the failure shows in its title. Every cell's title and
+screen-reader text give our test's result, for CakePHP and Slim too: &quot;our test: pass on PHP 8.5.13, Laravel 13.43.0,
+2026-11-20&quot;, &quot;our test, 2026-11-20: fail at tests: ...&quot; or &quot;our test: not run&quot;.</p>
+<p><strong>Where the announcement comes from.</strong> Laravel only. The feed reads <code>releases.md</code> from laravel/docs on the branch of
+the newest Laravel major Packagist knows (<code>13.x</code> today; older branches lag), takes the rows of the Support Policy
+table (<code>| 13 | 8.3 - 8.5 | ...</code>, only under that heading) and expands each range to its lines. Which file belongs to
+Laravel is configuration in <code>Feed::ANNOUNCED</code>; the lines come out of the file. CakePHP and Slim publish their PHP
+support as book pages and changelog prose (research in the coordination repo), so they have no entry and show as
+<strong>Unknown</strong>. No list of announcements is kept by hand.</p>
+<p><strong>Fail-safe.</strong> The table counts only when this refresh read and parsed it. When the fetch fails, the layout changes so
+no row parses, or the table has no row for a major, that major's cells drop to <strong>Unknown</strong>: never green from an older
+read, never red. The feed says so: <code>frameworks[].announced_ok</code> is false with <code>announced_reason</code> (<code>timed out</code>, <code>the Support Policy table did not parse</code>, <code>the Support Policy table has no row for Laravel 14</code>), the row shows &quot;support
+table not read&quot;, and a note says why.</p>
+<p><strong>Where our test comes from.</strong> <code>data/framework-php-tests.json</code>, committed and shipped with the deployed tree (Citadel
+deploys the whole checkout; the feed reads it from beside <code>deploy/</code>), read on every refresh. See
+<a href="framework-php-tests.html">Our framework tests</a> for how it is made. When the file is missing or is not the matrix, every
+cell's test reads &quot;not run&quot;, so no cell is <strong>Supported</strong>, and a note says so.</p>
+<p>The feed carries, per framework major: <code>allows</code> (unchanged), <code>announced</code> (the same shape keyed by PHP line, null when
+nothing readable was announced), <code>announced_lines</code>, <code>announced_source</code> (the raw URL read), <code>announced_link</code> (the
+rendered table), <code>announced_fetched_at</code>, <code>announced_ok</code> (true, false, or null for a framework with no readable source),
+<code>announced_reason</code>, <code>our_test</code> (per line: state, PHP patch, framework version, date, failing step and first error, or
+null when not run) and <code>fit</code>. The document carries <code>framework_tests</code> (whether the results file was read, its date, and
+links to it and its docs page).</p>
 <h3 id="legacy-frameworks">Legacy <span class="docs-heading-tail"><span>frameworks</span><a class="docs-heading-link" aria-label="Link to this section" href="#legacy-frameworks">#</a></span></h3>
 <p>CakePHP and Slim are being phased out (department rule D-124: new apps use raw PHP or Laravel). Their rows in the
 framework fit sit under a &quot;Legacy: being phased out&quot; band, styled apart from the support colors, with the note &quot;Don't
 start new apps on CakePHP or Slim. New apps use raw PHP or Laravel.&quot; and a link to Booster's framework hops guide.
-Their fit is read from Packagist and their CI exactly as Laravel's is. The label lives in the feed (<code>frameworks[].lifecycle</code>), not
+Their fit is read from Packagist and our tests as Laravel's is; with no readable announcement, a line Composer allows is <strong>Unknown</strong>. The label lives in the feed (<code>frameworks[].lifecycle</code>), not
 in <code>policy/policy.json</code>: the policy schema allows no extra component fields, and an older schema copy would refuse a
 policy file that carried one.</p>
 <p>Each rule has a test on frozen copies of the feeds from 2026-11-19, the night 8.6.0 shipped, and of the wiki from
 2026-11-20 (<code>tests/PhpLifecycleMergeTest.php</code>, <code>tests/PhpLifecycleFeedTest.php</code>, <code>tests/PhpLifecycleParseTest.php</code>,
-fixtures in <code>tests/fixtures/php-lifecycle/</code>). The framework workflows are trimmed copies read on 2026-11-20, with one
-made-up workflow for the exclude rules, labelled as made up. One fixture, a made-up 8.7 timetable, is labelled as made up; it proves a
+fixtures in <code>tests/fixtures/php-lifecycle/</code>). Laravel's <code>releases.md</code> is a trimmed copy of the 13.x branch read on
+2026-11-20, with two made-up variants labelled as made up (the table rewritten as a list, which must not parse, and the
+table without its Laravel 13 row); the test results are a copy of <code>data/framework-php-tests.json</code> from 2026-11-20. One fixture, a made-up 8.7 timetable, is labelled as made up; it proves a
 new page in the index is picked up and replaces &quot;no timeline released yet&quot; with its dates.</p>
 <h2 id="when-the-server-cannot-answer">When the server cannot <span class="docs-heading-tail"><span>answer</span><a class="docs-heading-link" aria-label="Link to this section" href="#when-the-server-cannot-answer">#</a></span></h2>
 <p>If <code>php-feed.php</code> fails (or the server cannot reach out), the page reads endoflife.date and php-src's tags straight
 from the browser, marks itself <strong>Fallback</strong> and says what it could not read: php.net's own pages, its news feed,
-php-src master, the wiki's timetables and the framework fit (Packagist and the frameworks' CI workflows are read on
+php-src master, the wiki's timetables and the framework fit (Packagist, Laravel's support table and our test results are read on
 the server only). For that, the front controller's CSP lists
 <code>https://endoflife.date</code> and <code>https://api.github.com</code> in <code>connect-src</code>. If both paths fail, the page says <strong>No data</strong>
 and shows nothing rather than something made up.</p>
@@ -244,7 +273,7 @@ to read. The merger takes a <code>platforms</code> input for it already; a sourc
     </main>
     <nav class="docs-pager" aria-label="Pages"><a class="docs-pager__link" href="../../docs/guides/support-states.html"><span class="docs-pager__dir">Previous</span><span class="docs-pager__title">Support states and the grace period</span></a><a class="docs-pager__link docs-pager__link--next" href="../../docs/guides/framework-php-tests.html"><span class="docs-pager__dir">Next</span><span class="docs-pager__title">Our framework tests</span></a></nav>
   </div>
-  <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#what-it-reads">What it reads</a></li><li class="docs-toc__item"><a href="#how-the-server-keeps-it-fresh">How the server keeps it fresh</a></li><li class="docs-toc__item"><a href="#the-merge-rules">The merge rules</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#lines-with-no-timeline-yet">Lines with no timeline yet</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#release-timelines">Release timelines</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#framework-fit-tested-allowed-or-no">Framework fit: tested, allowed, or no</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#legacy-frameworks">Legacy frameworks</a></li><li class="docs-toc__item"><a href="#when-the-server-cannot-answer">When the server cannot answer</a></li><li class="docs-toc__item"><a href="#not-there-yet">Not there yet</a></li></ul></nav>
+  <nav class="docs-toc" aria-label="On this page"><h2 class="docs-toc__title">On this page</h2><ul class="docs-toc__list"><li class="docs-toc__item"><a href="#what-it-reads">What it reads</a></li><li class="docs-toc__item"><a href="#how-the-server-keeps-it-fresh">How the server keeps it fresh</a></li><li class="docs-toc__item"><a href="#the-merge-rules">The merge rules</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#lines-with-no-timeline-yet">Lines with no timeline yet</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#release-timelines">Release timelines</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#framework-fit-supported-means-announced-and-passed-our-test">Framework fit: supported means announced and passed our test</a></li><li class="docs-toc__item docs-toc__item--sub"><a href="#legacy-frameworks">Legacy frameworks</a></li><li class="docs-toc__item"><a href="#when-the-server-cannot-answer">When the server cannot answer</a></li><li class="docs-toc__item"><a href="#not-there-yet">Not there yet</a></li></ul></nav>
 </div>
 <footer class="docs-footer">
   <span>Documents CREED <span data-docs-version>0.1.14</span></span>

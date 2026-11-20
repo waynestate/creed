@@ -330,28 +330,29 @@ final class PhpLifecycleMergeTest extends TestCase
     }
 
     /**
-     * tonight() plus each major's CI workflow lines, as Feed hands them over.
+     * tonight() plus Laravel's support table and CREED's own test results, as Feed hands them over.
      *
      * @return array<string, mixed>
      */
-    private static function withWorkflows(): array
+    private static function withAnnounced(): array
     {
         $in = self::tonight();
         self::assertIsArray($in['frameworks']);
-        $files = ['laravel/framework' => 'laravel', 'cakephp/cakephp' => 'cakephp', 'slim/slim' => 'slim'];
-        foreach ($files as $package => $short) {
-            self::assertIsArray($in['frameworks'][$package]['majors']);
-            foreach ($in['frameworks'][$package]['majors'] as $m) {
-                $in['frameworks'][$package]['workflows'][$m['major']] = [
-                    'lines' => Parse::workflowPhp(self::fixture('workflow-' . $short . '-' . $m['major'] . '.yml')),
-                    'url' => 'https://github.com/example/' . $short . '/blob/' . $m['major'] . '.x/.github/workflows/ci.yml',
-                ];
-            }
+        $in['frameworks']['laravel/framework']['announced'] = [
+            'ok' => true,
+            'source' => 'https://raw.githubusercontent.com/laravel/docs/13.x/releases.md',
+            'link' => 'https://laravel.com/framework/docs/13.x/releases#support-policy',
+            'fetched_at' => '2026-11-19T22:00:00Z',
+            'reason' => null,
+            'lines' => Parse::laravelSupport(self::fixture('laravel-releases-13x.md')),
+        ];
+        foreach (['cakephp/cakephp' => 'CakePHP', 'slim/slim' => 'Slim'] as $package => $name) {
+            $in['frameworks'][$package]['announced'] = ['ok' => null, 'source' => null, 'link' => null, 'fetched_at' => null, 'reason' => $name . ' does not publish its supported PHP lines in a form a server can read', 'lines' => null];
         }
+        $in['tests'] = Parse::frameworkTests(self::fixture('framework-php-tests-1120.json'));
 
         return $in;
     }
-
     /**
      * @param array<string, mixed> $doc
      *
@@ -370,48 +371,77 @@ final class PhpLifecycleMergeTest extends TestCase
     }
 
     #[Test]
-    public function frameworkFitSaysTestedOnlyWhereItsOwnCiRunsTheLine(): void
+    public function greenNeedsLaravelsAnnouncementAndOurPass(): void
     {
-        $fw = self::frameworks(self::build(self::withWorkflows()));
+        $fw = self::frameworks(self::build(self::withAnnounced()));
         $cols = array_flip(['8.2', '8.3', '8.4', '8.5', '8.6']);
         $row = static fn(string $name): array => array_intersect_key($fw[$name]['fit'], $cols);
 
-        // The question from 2026-11-20: ^8.3 lets Composer install Laravel 13 on 8.6; Laravel does not test it.
-        self::assertTrue($fw['Laravel 13']['allows']['8.6']);
-        self::assertFalse($fw['Laravel 13']['tested']['8.6']);
-        self::assertSame(['8.2' => 'no', '8.3' => 'tested', '8.4' => 'tested', '8.5' => 'tested', '8.6' => 'untested'], $row('Laravel 13'));
-        self::assertSame(['8.2' => 'tested', '8.3' => 'tested', '8.4' => 'tested', '8.5' => 'tested', '8.6' => 'untested'], $row('Laravel 12'), '8.5 comes from include: entries');
-        self::assertSame(['8.2' => 'tested', '8.3' => 'tested', '8.4' => 'tested', '8.5' => 'tested', '8.6' => 'tested'], $row('CakePHP 5'));
-        self::assertSame(['8.2' => 'tested', '8.3' => 'untested', '8.4' => 'untested', '8.5' => 'tested', '8.6' => 'untested'], $row('CakePHP 4'));
-        self::assertSame(['8.2' => 'tested', '8.3' => 'tested', '8.4' => 'tested', '8.5' => 'tested', '8.6' => 'no'], $row('Slim 4'), 'CI runs 8.6 past the platform check; Composer still refuses it');
-        self::assertSame(['8.2' => 'tested', '8.3' => 'tested', '8.4' => 'tested', '8.5' => 'tested', '8.6' => 'untested'], $row('Slim 3'));
-        self::assertSame(['8.3', '8.4', '8.5'], $fw['Laravel 13']['tested_lines']);
-        self::assertSame('https://github.com/example/laravel/blob/13.x/.github/workflows/ci.yml', $fw['Laravel 13']['tested_source']);
-        self::assertSame(array_keys($fw['Laravel 13']['allows']), array_keys($fw['Laravel 13']['tested']), 'tested has the shape of allows');
+        // The question from 2026-11-20: our Laravel 13 cell passes on 8.6, but Laravel has not announced 8.6.
+        self::assertSame(['8.2' => 'no', '8.3' => 'supported', '8.4' => 'supported', '8.5' => 'supported', '8.6' => 'allowed'], $row('Laravel 13'));
+        self::assertSame(['8.2' => 'supported', '8.3' => 'supported', '8.4' => 'supported', '8.5' => 'supported', '8.6' => 'allowed'], $row('Laravel 12'));
+        self::assertSame('pass', $fw['Laravel 13']['our_test']['8.6']['state'], 'the title still says our test passed');
+        self::assertSame('fail', $fw['Laravel 12']['our_test']['8.6']['state']);
+        // CakePHP and Slim: unknown wherever Composer allows the line, even where our test passed.
+        foreach (['CakePHP 5', 'CakePHP 4', 'Slim 4', 'Slim 3'] as $name) {
+            self::assertSame([], array_diff(array_unique(array_values($row($name))), ['unknown', 'no']), $name);
+        }
+        self::assertSame('unknown', $fw['CakePHP 5']['fit']['8.6']);
+        self::assertSame('pass', $fw['CakePHP 5']['our_test']['8.6']['state'], 'our test alone never makes a cell green');
+        self::assertSame('no', $fw['Slim 4']['fit']['8.6']);
+        self::assertSame(['8.3', '8.4', '8.5'], $fw['Laravel 13']['announced_lines']);
+        self::assertSame(array_keys($fw['Laravel 13']['allows']), array_keys($fw['Laravel 13']['our_test']), 'our_test has the shape of allows');
     }
 
     #[Test]
-    public function aWorkflowNotReadClaimsNothingTested(): void
+    public function announcedButNotPassedSaysWhichAndNeverTurnsGreen(): void
     {
-        $in = self::withWorkflows();
-        self::assertIsArray($in['frameworks']);
-        $in['frameworks']['laravel/framework']['workflows']['13']['lines'] = null;
-        unset($in['frameworks']['slim/slim']['workflows']);
+        $in = self::withAnnounced();
+        self::assertIsArray($in['tests']);
+        $in['tests']['cells']['laravel/framework@13']['8.4']['state'] = 'fail';
+        $in['tests']['cells']['laravel/framework@13']['8.5']['state'] = 'refused';
+        unset($in['tests']['cells']['laravel/framework@13']['8.3']);
+        $in['tests']['cells']['laravel/framework@12']['8.2']['state'] = 'pass-deprecations';
         $fw = self::frameworks(self::build($in));
 
-        foreach (['Laravel 13', 'Slim 4', 'Slim 3'] as $name) {
-            self::assertNull($fw[$name]['tested'], $name);
-            self::assertNotContains('tested', $fw[$name]['fit'], $name . ' never says Tested');
-            self::assertNotContains('untested', $fw[$name]['fit'], $name . ' never says not tested either');
-        }
-        self::assertSame('allowed', $fw['Laravel 13']['fit']['8.6']);
-        self::assertSame('no', $fw['Laravel 13']['fit']['8.2']);
-        self::assertSame(self::frameworks(self::build(self::withWorkflows()))['Laravel 13']['allows'], $fw['Laravel 13']['allows'], 'allows is unchanged');
-        self::assertNotNull($fw['Laravel 13']['tested_source'], 'the page can still link to what it tried to read');
-        self::assertNull($fw['Slim 4']['tested_source']);
-        self::assertSame('tested', $fw['Laravel 12']['fit']['8.5'], 'one failed read does not touch another major');
+        self::assertSame('announced-untested', $fw['Laravel 13']['fit']['8.3']);
+        self::assertNull($fw['Laravel 13']['our_test']['8.3'], 'missing: not run');
+        self::assertSame('announced-untested', $fw['Laravel 13']['fit']['8.4']);
+        self::assertSame('fail', $fw['Laravel 13']['our_test']['8.4']['state']);
+        self::assertSame('announced-untested', $fw['Laravel 13']['fit']['8.5']);
+        self::assertSame('refused', $fw['Laravel 13']['our_test']['8.5']['state']);
+        self::assertSame('supported', $fw['Laravel 12']['fit']['8.2'], 'deprecations still pass');
+
+        // An announcement never overrides Composer: a line require.php refuses stays "no".
+        $in = self::withAnnounced();
+        self::assertIsArray($in['frameworks']);
+        $in['frameworks']['laravel/framework']['announced']['lines'][13] = ['8.2', '8.3', '8.4', '8.5'];
+        self::assertSame('no', self::frameworks(self::build($in))['Laravel 13']['fit']['8.2']);
     }
 
+    #[Test]
+    public function noReadableAnnouncementMeansUnknownNotAllowed(): void
+    {
+        $fw = self::frameworks(self::build(self::tonight()));
+        foreach ($fw as $name => $f) {
+            self::assertNotContains('supported', $f['fit'], $name);
+            self::assertNotContains('allowed', $f['fit'], $name);
+            self::assertNull($f['announced'], $name);
+        }
+
+        $in = self::withAnnounced();
+        self::assertIsArray($in['frameworks']);
+        $in['frameworks']['laravel/framework']['announced'] = ['ok' => false, 'source' => 'https://raw.githubusercontent.com/laravel/docs/13.x/releases.md', 'link' => null, 'fetched_at' => null, 'reason' => 'HTTP 503', 'lines' => null];
+        $doc = self::build($in);
+        $fw = self::frameworks($doc);
+        self::assertSame('unknown', $fw['Laravel 13']['fit']['8.5']);
+        self::assertSame('unknown', $fw['Laravel 12']['fit']['8.6']);
+        self::assertSame('no', $fw['Laravel 13']['fit']['8.2']);
+        self::assertFalse($fw['Laravel 13']['announced_ok']);
+        self::assertSame('HTTP 503', $fw['Laravel 13']['announced_reason']);
+        self::assertIsArray($doc['notes']);
+        self::assertContains("Laravel's support table could not be read (HTTP 503), so its cells say unknown, never supported.", $doc['notes']);
+    }
     #[Test]
     public function cakeAndSlimRowsCarryTheLegacyLabelAndTheSameFit(): void
     {

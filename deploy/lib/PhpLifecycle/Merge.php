@@ -55,6 +55,11 @@ final class Merge
 
     public const RFC_LINK = 'https://wiki.php.net/rfc';
 
+    /** The committed results of CREED's own framework x PHP matrix, and the page that explains them. */
+    public const TESTS_SOURCE = 'https://git.wayne.edu/enterprise-apps/creed/-/blob/main/data/framework-php-tests.json';
+
+    public const TESTS_DOCS = 'https://creed.apps.wayne.edu/docs/guides/framework-php-tests.html';
+
     /** How many dated patch releases a timeline lists; the rest are counted. */
     private const PATCHES_SHOWN = 6;
 
@@ -68,7 +73,8 @@ final class Merge
      *     wiki?: array<string, ?array{ga: ?string, rows: list<array{date: string, label: string, skipped: bool, kind: string, note: ?string, announce: ?string, links: list<array{label: string, url: string}>}>}>,
      *     wikiPages?: ?list<array{branch: string, page: string}>,
      *     master?: ?array{version: string, branch: string, major: int, minor: int, extra: string},
-     *     frameworks?: array<string, array{name: string, url: string, majors: ?list<array{version: string, major: string, released: ?string, php: ?string}>, workflows?: array<string, array{lines: ?list<string>, url: string}>, lifecycle?: ?string, lifecycle_note?: ?string}>,
+     *     frameworks?: array<string, array{name: string, url: string, majors: ?list<array{version: string, major: string, released: ?string, php: ?string}>, announced?: array{ok: ?bool, source: ?string, link: ?string, fetched_at: ?string, reason: ?string, lines: ?array<int, list<string>>}, lifecycle?: ?string, lifecycle_note?: ?string}>,
+     *     tests?: ?array{generated: ?string, cells: array<string, array<string, array{state: string, php_version: ?string, date: ?string, version: ?string, step: ?string, first_error: ?string}>>},
      *     platforms?: array<string, ?list<string>>,
      * } $in
      * @param list<array<string, mixed>> $sources
@@ -299,28 +305,45 @@ final class Merge
             return [$da, self::rank($a['status'])] <=> [$db, self::rank($b['status'])];
         });
 
-        // Framework fit: what each framework's newest majors declare in require.php (allows), what
-        // that major's own CI runs (tested), and the two together (fit). A constraint like ^8.3
-        // "allows" every 8.x to come; only the CI matrix says the framework has tried it.
+        // Framework fit joins three answers per major and PHP line: what require.php on Packagist
+        // allows, what the framework has announced (Laravel's support table; CakePHP and Slim
+        // publish nothing a server can read), and CREED's own test of the official skeleton
+        // (data/framework-php-tests.json). Green needs the announcement AND our pass. A constraint
+        // like ^8.3 "allows" every 8.x to come, and a CI matrix is not an announcement.
+        $tests = $in['tests'] ?? null;
         $frameworks = [];
         foreach ($in['frameworks'] ?? [] as $package => $f) {
+            $a = $f['announced'] ?? ['ok' => null, 'source' => null, 'link' => null, 'fetched_at' => null, 'reason' => null, 'lines' => null];
+            if ($a['ok'] === false) {
+                $notes[] = $f['name'] . "'s support table could not be read (" . ($a['reason'] ?? 'no reason given') . "), so its cells say unknown, never supported.";
+            }
             foreach ($f['majors'] ?? [] as $m) {
-                $ci = $f['workflows'][$m['major']] ?? null;
-                $lines = $ci['lines'] ?? null;
+                $lines = $a['ok'] === true ? ($a['lines'][(int) $m['major']] ?? null) : null;
+                $ok = $a['ok'] === true && $lines === null ? false : $a['ok'];
+                $reason = $a['ok'] === true && $lines === null ? 'the Support Policy table has no row for ' . $f['name'] . ' ' . $m['major'] : $a['reason'];
+                $ours = $tests['cells'][$package . '@' . $m['major']] ?? [];
                 $allows = [];
-                $tested = $lines === null ? null : [];
+                $announced = $lines === null ? null : [];
+                $ourTest = [];
                 $fit = [];
                 foreach (array_keys($branches) as $branch) {
                     $allows[$branch] = $m['php'] === null ? null : Constraint::allowsBranch($m['php'], $branch);
-                    if ($tested !== null) {
-                        $tested[$branch] = in_array($branch, $lines ?? [], true);
+                    if ($announced !== null) {
+                        $announced[$branch] = in_array($branch, $lines ?? [], true);
                     }
-                    $fit[$branch] = self::fit($allows[$branch], $tested === null ? null : $tested[$branch]);
+                    $cell = $ours[$branch] ?? null;
+                    // A cell the matrix planned but never ran (not allowed, no image) is "not run" here.
+                    $ourTest[$branch] = $cell !== null && in_array($cell['state'], ['pass', 'pass-deprecations', 'fail', 'refused'], true) ? $cell : null;
+                    $fit[$branch] = self::fit($allows[$branch], $announced === null ? null : $announced[$branch], $ourTest[$branch]['state'] ?? null);
                 }
                 $frameworks[] = ['package' => $package, 'name' => $f['name'], 'url' => $f['url'], 'major' => $m['major'], 'version' => $m['version'], 'released' => $m['released'], 'php' => $m['php'], 'allows' => $allows,
-                    'tested' => $tested, 'tested_lines' => $lines, 'tested_source' => $ci['url'] ?? null, 'fit' => $fit,
+                    'announced' => $announced, 'announced_lines' => $lines, 'announced_source' => $a['source'], 'announced_link' => $a['link'], 'announced_fetched_at' => $a['fetched_at'], 'announced_ok' => $ok, 'announced_reason' => $reason,
+                    'our_test' => $ourTest, 'fit' => $fit,
                     'lifecycle' => $f['lifecycle'] ?? null, 'lifecycle_note' => $f['lifecycle_note'] ?? null];
             }
+        }
+        if ($frameworks !== [] && $tests === null) {
+            $notes[] = "CREED's own framework test results (data/framework-php-tests.json) could not be read, so every cell says not run and none is supported.";
         }
 
         // endoflife.date behind php.net is worth saying out loud.
@@ -354,6 +377,8 @@ final class Merge
             'upcoming' => $upcoming,
             'timelines' => $timelines,
             'frameworks' => $frameworks,
+            // Where the "our test" half of the fit comes from, and whether it was read.
+            'framework_tests' => ['ok' => $tests !== null, 'generated' => $tests['generated'] ?? null, 'source' => self::TESTS_SOURCE, 'docs' => self::TESTS_DOCS],
             'platforms' => $platforms,
             'sources' => $sources,
             'notes' => $notes,
@@ -661,20 +686,27 @@ final class Merge
     }
 
     /**
-     * One framework cell: "tested" (require.php allows the line and the major's CI runs it),
-     * "untested" (Composer would install it; the CI does not run it yet), "allowed" (allowed,
-     * and the CI workflow was not read, so nothing is claimed), "no" (require.php refuses it),
-     * or null (no constraint to read). A CI run on a line the constraint refuses is still "no":
-     * Slim 4 runs 8.6 with --ignore-platform-req, Composer would not install it.
+     * One framework cell:
+     *  - "supported": the framework announced the line AND our test of it passed (with or
+     *    without deprecations);
+     *  - "announced-untested": announced, but our test is missing, failed or was refused;
+     *  - "allowed": Composer would install it, and the framework's readable table does not
+     *    announce it;
+     *  - "unknown": Composer would install it, and there is no announcement to read (CakePHP,
+     *    Slim, or Laravel's table could not be read this refresh);
+     *  - "no": require.php refuses it, whatever anyone announced or tested;
+     *  - null: no constraint to read.
+     * Our test alone never makes a cell green.
      */
-    private static function fit(?bool $allows, ?bool $tested): ?string
+    private static function fit(?bool $allows, ?bool $announced, ?string $ours): ?string
     {
         return match (true) {
             $allows === null => null,
             $allows === false => 'no',
-            $tested === null => 'allowed',
-            $tested => 'tested',
-            default => 'untested',
+            $announced === null => 'unknown',
+            $announced === false => 'allowed',
+            in_array($ours, ['pass', 'pass-deprecations'], true) => 'supported',
+            default => 'announced-untested',
         };
     }
 

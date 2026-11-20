@@ -57,7 +57,8 @@ final class PhpLifecycleParseTest extends TestCase
         self::assertNull(Parse::endoflife($html));
         self::assertNull(Parse::wiki($html));
         self::assertNull(Parse::packagist($html, 'slim/slim'));
-        self::assertNull(Parse::workflowPhp($html));
+        self::assertNull(Parse::laravelSupport($html));
+        self::assertNull(Parse::frameworkTests($html));
     }
 
     #[Test]
@@ -215,78 +216,61 @@ final class PhpLifecycleParseTest extends TestCase
         self::assertSame('2026-11-01', $min[0]['released']);
     }
 
-    /**
-     * Each framework's CI workflow on its major's branch, trimmed copies read 2026-11-20.
-     *
-     * @return iterable<string, array{0: string, 1: list<string>}>
-     */
-    public static function workflows(): iterable
-    {
-        yield 'Laravel 13: unquoted list; the exclude drops a PHPUnit pairing, not 8.3' => ['workflow-laravel-13.yml', ['8.3', '8.4', '8.5']];
-        yield 'Laravel 12: 8.5 only in include entries' => ['workflow-laravel-12.yml', ['8.2', '8.3', '8.4', '8.5']];
-        yield 'CakePHP 5: quoted php-version list plus include; env and step versions do not count' => ['workflow-cakephp-5.yml', ['8.2', '8.3', '8.4', '8.5', '8.6']];
-        yield 'CakePHP 4: an exclude on a db-type the matrix lacks removes nothing; no 8.3, 8.4 or 8.6' => ['workflow-cakephp-4.yml', ['7.4', '8.0', '8.1', '8.2', '8.5']];
-        yield 'Slim 4: nightly is not a line' => ['workflow-slim-4.yml', ['7.4', '8.0', '8.1', '8.2', '8.3', '8.4', '8.5', '8.6']];
-        yield 'Slim 3: four-space indents' => ['workflow-slim-3.yml', ['8.1', '8.2', '8.3', '8.4', '8.5']];
-        yield 'made up: block list, comments, excludes that remove whole lines, include at the key indent' => ['workflow-synthetic-exclude.yml', ['8.2', '8.5', '8.6']];
-    }
-
-    /**
-     * @param list<string> $expected
-     */
     #[Test]
-    #[DataProvider('workflows')]
-    public function aWorkflowGivesThePhpLinesItsMatricesRun(string $file, array $expected): void
+    public function laravelsSupportTableGivesEachMajorsAnnouncedLines(): void
     {
-        self::assertSame($expected, Parse::workflowPhp(self::fixture($file)));
+        $got = Parse::laravelSupport(self::fixture('laravel-releases-13x.md'));
+        self::assertNotNull($got);
+        self::assertSame(['8.3', '8.4', '8.5'], $got['13'], 'the 13.x branch, read 2026-11-20: 8.3 - 8.5, no 8.6');
+        self::assertSame(['8.2', '8.3', '8.4', '8.5'], $got['12']);
+        self::assertSame(['8.1', '8.2', '8.3'], $got['10']);
+        self::assertSame([10, 11, 12, 13], array_keys($got));
     }
 
     #[Test]
-    public function aWorkflowThatNamesNoPhpVersionIsNotRead(): void
+    public function aSupportTableInAnotherLayoutIsNotGuessedAt(): void
     {
-        self::assertNull(Parse::workflowPhp(self::fixture('workflow-no-php.yml')), 'an expression and nightly are not lines; null, never "tests nothing"');
-        self::assertNull(Parse::workflowPhp('404: Not Found'));
-        self::assertNull(Parse::workflowPhp(''));
+        self::assertNull(Parse::laravelSupport(self::fixture('laravel-releases-list-layout.md')), 'a list, not the table: null, so Laravel shows as unknown');
+        self::assertNull(Parse::laravelSupport('404: Not Found'));
+        self::assertNull(Parse::laravelSupport(''));
+        self::assertNull(Parse::laravelSupport("| 13 | 8.3 - 8.5 | March 17th, 2026 |\n"), 'a row outside a Support Policy section does not count');
     }
 
     #[Test]
-    public function anExcludeThatRemovesEveryPairingLeavesTheLineOut(): void
+    public function aMajorWithNoRowIsAbsentNotGuessed(): void
     {
-        $yml = "jobs:
-  t:
-    strategy:
-      matrix:
-        php: ['8.3', '8.4']
-        exclude:
-          - php: '8.3'
-";
-        self::assertSame(['8.4'], Parse::workflowPhp($yml));
-        $all = "jobs:
-  t:
-    strategy:
-      matrix:
-        php: [8.4]
-        exclude:
-          - php: 8.4
-";
-        self::assertSame([], Parse::workflowPhp($all), 'read, and it runs no line: an answer, not an outage');
+        $got = Parse::laravelSupport(self::fixture('laravel-releases-no-13.md'));
+        self::assertNotNull($got);
+        self::assertArrayNotHasKey('13', $got, 'the row under the next heading is not part of the table');
+        self::assertSame(['8.2', '8.3', '8.4', '8.5'], $got['12']);
     }
 
     #[Test]
-    public function aFlowListMayRunOverSeveralLines(): void
+    public function aRangeAcrossPhpMajorsExpandsThroughTheLastMinor(): void
     {
-        $yml = "jobs:
-  t:
-    strategy:
-      matrix:
-        php-version: [
-          '8.4', # the floor
-          \"8.5\"
-        ]
-";
-        self::assertSame(['8.4', '8.5'], Parse::workflowPhp($yml));
+        $md = "## Support Policy\n\n| 8 | 7.3 - 8.1 | September 8th, 2020 |\n| 99 | 8.5 - 8.3 | backward |\n| 98 | 6.0 - 8.0 | no PHP 6 |\n";
+        self::assertSame(['8' => ['7.3', '7.4', '8.0', '8.1']], Parse::laravelSupport($md), 'a backward range and an unknown major are dropped, not guessed');
     }
 
+    #[Test]
+    public function ourFrameworkTestsAreKeyedByPackageMajorAndLine(): void
+    {
+        $got = Parse::frameworkTests(self::fixture('framework-php-tests-1120.json'));
+        self::assertNotNull($got);
+        $l13 = $got['cells']['laravel/framework@13']['8.5'];
+        self::assertSame('pass', $l13['state']);
+        self::assertSame('8.5.13', $l13['php_version']);
+        self::assertSame('2026-11-20', $l13['date']);
+        self::assertSame('13.43.0', $l13['version']);
+        $l12 = $got['cells']['laravel/framework@12']['8.6'];
+        self::assertSame('fail', $l12['state']);
+        self::assertSame('tests', $l12['step']);
+        self::assertStringContainsString('500 is identical to 200', (string) $l12['first_error']);
+        self::assertSame('refused', $got['cells']['cakephp/cakephp@4']['8.4']['state']);
+        self::assertSame('no', $got['cells']['slim/slim@4']['8.6']['state'], 'require.php refuses it: the matrix planned no run');
+        self::assertNull(Parse::frameworkTests('{"cells": []}'), 'no frameworks list: not the matrix');
+        self::assertNull(Parse::frameworkTests('not json'));
+    }
     /**
      * @return iterable<string, array{0: string, 1: string, 2: ?bool}>
      */

@@ -139,8 +139,9 @@ class Http
             ]);
             $body = @file_get_contents($url, false, $context);
             $code = 0;
-            // PHP 8.4 added the function; 8.5 deprecates the magic variable.
-            $headers = function_exists('http_get_last_response_headers') ? (http_get_last_response_headers() ?? []) : $http_response_header;
+            // PHP 8.4 added the function; 8.5 deprecates the magic variable, and naming it at all
+            // raises the deprecation when the file compiles, so older PHP reads it by name instead.
+            $headers = function_exists('http_get_last_response_headers') ? (http_get_last_response_headers() ?? []) : get_defined_vars()['http_response_header'];
             foreach ($headers as $line) {
                 if (preg_match('#^HTTP/\S+\s+(\d{3})#', $line, $m)) {
                     $code = (int) $m[1];

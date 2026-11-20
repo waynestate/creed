@@ -440,327 +440,118 @@ final class Parse
         return stripos($start, '<!doctype') === 0 || stripos($start, '<html') === 0;
     }
 
-    /** A matrix larger than this is not expanded: an exclude then drops a line only when it names nothing else. */
-    private const MATRIX_CAP = 4096;
+    /** A row of the Support Policy table in Laravel's releases.md: `| 13 | 8.3 - 8.5 | March 17th, 2026 | ...`. */
+    private const LARAVEL_ROW = '/^\|\s*(\d+)\s*\|\s*(\d+\.\d+)\s*-\s*(\d+\.\d+)\s*\|/';
 
-    /** The matrix key that holds the PHP version: `php`, `php-version`, `php_versions` and the like. */
-    private const PHP_KEY = '/^php(?:[-_]?versions?)?$/i';
-
-    /** One `key: value` pair; the value is optional (a block follows). */
-    private const YAML_PAIR = '/^([A-Za-z0-9_-]+|"[^"]*"|\'[^\']*\')\s*:(?:\s+(.*))?$/';
+    /** The last minor of a closed PHP major, so a range across majors (Laravel 8: 7.3 - 8.1) expands. Facts, not announcements. */
+    private const LAST_MINOR = [5 => 6, 7 => 4];
 
     /**
-     * A GitHub Actions workflow file: the PHP lines its matrices run, as X.Y, oldest first.
+     * Laravel's releases.md (laravel/docs, the newest major's branch): the PHP lines the Support
+     * Policy table announces for each Laravel major, as major => X.Y lines, oldest first.
      *
-     * Every `strategy.matrix` block counts: the PHP key's list (`php:` or `php-version:`,
-     * flow `[8.3, '8.4']` or block `- 8.3` form, quoted or not), every `include:` entry that
-     * names a PHP value, and `exclude:` entries, which drop a line only when they remove
-     * every combination it was in. Laravel 13 excludes PHPUnit 13 on 8.3; that is not
-     * excluding 8.3. `nightly` and `${{ ... }}` expressions are not lines.
+     * Only rows under the "Support Policy" heading count, up to the next heading. Null when that
+     * section is gone or no row in it parses: a layout this cannot read claims nothing, so the
+     * page shows Laravel as unknown rather than guess. A major with no row is simply absent.
      *
-     * Null when no matrix names a PHP value: a workflow this cannot read is not a workflow
-     * that tests nothing. Not a YAML parser, just the shapes workflows give a matrix. Like
-     * Creed Bratton's resume, it reads what is written down and asks no follow-up questions.
-     *
-     * @return list<string>|null
+     * @return array<int, list<string>>|null
      */
-    public static function workflowPhp(string $body): ?array
+    public static function laravelSupport(string $body): ?array
     {
-        if (self::isHtml($body) || !preg_match('/^jobs\s*:/m', $body)) {
-            return null;
-        }
-        $lines = array_map(self::yamlUncomment(...), preg_split('/\R/', str_replace("\t", '    ', $body)) ?: []);
-        $count = count($lines);
-        $found = null;
-        for ($i = 0; $i < $count; $i++) {
-            if (!preg_match('/^(\s*)matrix\s*:\s*$/', $lines[$i], $m)) {
-                continue;
-            }
-            $indent = strlen($m[1]);
-            $block = [];
-            $j = $i + 1;
-            for (; $j < $count; $j++) {
-                if (trim($lines[$j]) === '') {
-                    continue;
-                }
-                if (self::indentOf($lines[$j]) <= $indent) {
-                    break;
-                }
-                $block[] = $lines[$j];
-            }
-            $i = $j - 1;
-            $got = self::matrixPhp(self::yamlMap($block));
-            if ($got !== null) {
-                $found = array_merge($found ?? [], $got);
-            }
-        }
-        if ($found === null) {
-            return null;
-        }
-        $found = array_values(array_unique($found));
-        usort($found, static fn(string $a, string $b): int => version_compare($a, $b));
-
-        return $found;
-    }
-
-    /**
-     * The PHP lines one parsed matrix runs, or null when it names no PHP version.
-     *
-     * @param array<string, list<string|array<string, string|list<string>>>> $map
-     *
-     * @return list<string>|null
-     */
-    private static function matrixPhp(array $map): ?array
-    {
-        $include = array_values(array_filter($map['include'] ?? [], is_array(...)));
-        $exclude = array_values(array_filter($map['exclude'] ?? [], is_array(...)));
-        $dims = [];
-        foreach (array_diff_key($map, ['include' => true, 'exclude' => true]) as $k => $list) {
-            $dims[$k] = array_map(static fn(string|array $v): string => is_string($v) ? $v : (string) json_encode($v), $list);
-        }
-        $key = null;
-        foreach (array_merge(array_keys($dims), ...array_map(array_keys(...), $include)) as $k) {
-            if (preg_match(self::PHP_KEY, $k)) {
-                $key = $k;
-                break;
-            }
-        }
-        if ($key === null) {
-            return null;
-        }
-
-        $values = [];
-        if (isset($dims[$key])) {
-            $combos = [[]];
-            foreach ($dims as $k => $list) {
-                $next = [];
-                foreach ($combos as $c) {
-                    foreach ($list as $v) {
-                        $next[] = $c + [$k => $v];
-                    }
-                }
-                $combos = $next;
-                if (count($combos) > self::MATRIX_CAP) {
-                    $combos = null;
-                    break;
-                }
-            }
-            if ($combos === null) {
-                foreach ($dims[$key] as $v) {
-                    if (!in_array([$key => $v], $exclude, true)) {
-                        $values[] = $v;
-                    }
-                }
-            } else {
-                foreach ($combos as $c) {
-                    foreach ($exclude as $e) {
-                        if (self::matrixMatches($c, $e)) {
-                            continue 2;
-                        }
-                    }
-                    $values[] = $c[$key];
-                }
-            }
-        }
-        // Includes come after excludes (GitHub's order), so an include always runs.
-        foreach ($include as $e) {
-            $v = $e[$key] ?? [];
-            foreach (is_array($v) ? $v : [$v] as $one) {
-                $values[] = $one;
-            }
-        }
-
-        $line = '/^(\d+)\.(\d+)(?:\.\d+)?$/';
-        // Named no version at all (only nightly, or an expression): not read, rather than "tests nothing".
-        if (preg_grep($line, array_merge($dims[$key] ?? [], $values)) === []) {
+        if (self::isHtml($body)) {
             return null;
         }
         $out = [];
-        foreach ($values as $v) {
-            if (preg_match($line, $v, $m)) {
-                $out[$m[1] . '.' . $m[2]] = true;
-            }
-        }
-
-        return array_map('strval', array_keys($out));
-    }
-
-    /**
-     * Does an exclude entry match a combination? Every key it names must be there with that value.
-     *
-     * @param array<string, string> $combo
-     * @param array<string, string|list<string>> $exclude
-     */
-    private static function matrixMatches(array $combo, array $exclude): bool
-    {
-        if ($exclude === []) {
-            return false;
-        }
-        foreach ($exclude as $k => $v) {
-            if (!is_string($v) || ($combo[$k] ?? null) !== $v) {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * One level of a YAML block mapping: each key's list of values. A scalar is a list of one.
-     *
-     * @param list<string> $block
-     *
-     * @return array<string, list<string|array<string, string|list<string>>>>
-     */
-    private static function yamlMap(array $block): array
-    {
-        $out = [];
-        if ($block === []) {
-            return $out;
-        }
-        $base = self::indentOf($block[0]);
-        $count = count($block);
-        for ($i = 0; $i < $count; $i++) {
-            if (self::indentOf($block[$i]) !== $base || !preg_match(self::YAML_PAIR, trim($block[$i]), $m)) {
-                continue;
-            }
-            $value = trim($m[2] ?? '');
-            $children = [];
-            // A block list may sit at the key's own indent ("include:" then "- php: 8.5" under it).
-            while ($i + 1 < $count && (self::indentOf($block[$i + 1]) > $base
-                || ($value === '' && self::indentOf($block[$i + 1]) === $base && str_starts_with(trim($block[$i + 1]), '-')))) {
-                $children[] = $block[++$i];
-            }
-            $out[self::unquote($m[1])] = match (true) {
-                str_starts_with($value, '[') => self::flowList($value . ' ' . implode(' ', array_map('trim', $children))),
-                $value !== '' => [self::unquote($value)],
-                default => self::blockList($children),
-            };
-        }
-
-        return $out;
-    }
-
-    /**
-     * A YAML block list: scalars (`- 8.3`) or mappings (`- php: 8.5` and the keys under it).
-     *
-     * @param list<string> $lines
-     *
-     * @return list<string|array<string, string|list<string>>>
-     */
-    private static function blockList(array $lines): array
-    {
-        $items = [];
-        if ($lines === []) {
-            return $items;
-        }
-        $dash = self::indentOf($lines[0]);
-        $current = null;
-        foreach ($lines as $line) {
-            $text = trim($line);
-            if (self::indentOf($line) === $dash && str_starts_with($text, '-')) {
-                if ($current !== null) {
-                    $items[] = $current;
-                }
-                $rest = trim(substr($text, 1));
-                $current = preg_match(self::YAML_PAIR, $rest, $m)
-                    ? [self::unquote($m[1]) => self::yamlValue(trim($m[2] ?? ''))]
-                    : ($rest === '' ? [] : self::unquote($rest));
-            } elseif (is_array($current) && self::indentOf($line) > $dash && preg_match(self::YAML_PAIR, $text, $m)) {
-                $current[self::unquote($m[1])] = self::yamlValue(trim($m[2] ?? ''));
-            }
-        }
-        if ($current !== null) {
-            $items[] = $current;
-        }
-
-        return $items;
-    }
-
-    /**
-     * @return string|list<string>
-     */
-    private static function yamlValue(string $value): string|array
-    {
-        return str_starts_with($value, '[') ? self::flowList($value) : self::unquote($value);
-    }
-
-    /**
-     * `[8.3, '8.4', "8.5"]`, up to its closing bracket.
-     *
-     * @return list<string>
-     */
-    private static function flowList(string $text): array
-    {
-        $items = [];
-        $buf = '';
-        $quote = null;
-        $len = strlen($text);
-        for ($i = (int) strpos($text, '[') + 1; $i < $len; $i++) {
-            $ch = $text[$i];
-            if ($quote !== null) {
-                $buf .= $ch;
-                if ($ch === $quote) {
-                    $quote = null;
-                }
-            } elseif ($ch === '"' || $ch === "'") {
-                $quote = $ch;
-                $buf .= $ch;
-            } elseif ($ch === ',' || $ch === ']') {
-                if (trim($buf) !== '') {
-                    $items[] = self::unquote($buf);
-                }
-                $buf = '';
-                if ($ch === ']') {
+        $inside = false;
+        foreach (preg_split('/\R/', $body) ?: [] as $line) {
+            if (preg_match('/^#{1,6}\s/', $line) === 1) {
+                if ($inside) {
                     break;
                 }
-            } else {
-                $buf .= $ch;
+                $inside = preg_match('/^#{1,6}\s+Support Policy\s*$/i', $line) === 1;
+
+                continue;
             }
-        }
-        // The closing bracket on a line of its own, back at the key's indent, is not in $text.
-        if (trim($buf) !== '') {
-            $items[] = self::unquote($buf);
-        }
-
-        return $items;
-    }
-
-    private static function unquote(string $value): string
-    {
-        $value = trim($value);
-        if (strlen($value) >= 2 && $value[0] === "'" && str_ends_with($value, "'")) {
-            return str_replace("''", "'", substr($value, 1, -1));
-        }
-        if (strlen($value) >= 2 && $value[0] === '"' && str_ends_with($value, '"')) {
-            return stripcslashes(substr($value, 1, -1));
-        }
-
-        return $value;
-    }
-
-    /** A line without its `# comment` (a # inside quotes, or glued to a word, is not one). */
-    private static function yamlUncomment(string $line): string
-    {
-        $quote = null;
-        $len = strlen($line);
-        for ($i = 0; $i < $len; $i++) {
-            $ch = $line[$i];
-            if ($quote !== null) {
-                $quote = $ch === $quote ? null : $quote;
-            } elseif ($ch === '"' || $ch === "'") {
-                $quote = $ch;
-            } elseif ($ch === '#' && ($i === 0 || ctype_space($line[$i - 1]))) {
-                return rtrim(substr($line, 0, $i));
+            if (!$inside || preg_match(self::LARAVEL_ROW, trim($line), $m) !== 1) {
+                continue;
+            }
+            $lines = self::phpRange($m[2], $m[3]);
+            if ($lines !== null) {
+                $out[(int) $m[1]] = $lines;
             }
         }
 
-        return rtrim($line);
+        return $out === [] ? null : $out;
     }
 
-    private static function indentOf(string $line): int
+    /**
+     * Every PHP line from one X.Y to another, both included; null when the range runs backward or
+     * crosses a major whose last minor is not known.
+     *
+     * @return list<string>|null
+     */
+    private static function phpRange(string $from, string $to): ?array
     {
-        return strlen($line) - strlen(ltrim($line, ' '));
+        [$fromMajor, $fromMinor] = array_map('intval', explode('.', $from));
+        [$toMajor, $toMinor] = array_map('intval', explode('.', $to));
+        if ($fromMajor > $toMajor || ($fromMajor === $toMajor && $fromMinor > $toMinor)) {
+            return null;
+        }
+        $lines = [];
+        for ($major = $fromMajor; $major <= $toMajor; $major++) {
+            $last = $major === $toMajor ? $toMinor : (self::LAST_MINOR[$major] ?? null);
+            if ($last === null) {
+                return null;
+            }
+            for ($minor = $major === $fromMajor ? $fromMinor : 0; $minor <= $last; $minor++) {
+                $lines[] = $major . '.' . $minor;
+            }
+        }
+
+        return $lines;
+    }
+
+    /**
+     * CREED's own framework x PHP matrix (data/framework-php-tests.json, written by
+     * `php bin/framework-matrix.php report`): every cell's result, keyed "<package>@<major>",
+     * then PHP line. Null when the file is not that matrix.
+     *
+     * @return array{generated: ?string, cells: array<string, array<string, array{state: string, php_version: ?string, date: ?string, version: ?string, step: ?string, first_error: ?string}>>}|null
+     */
+    public static function frameworkTests(string $body): ?array
+    {
+        $data = self::json($body);
+        if (!is_array($data) || !is_array($data['frameworks'] ?? null) || !is_array($data['cells'] ?? null)) {
+            return null;
+        }
+        $keys = [];
+        foreach ($data['frameworks'] as $f) {
+            if (is_array($f) && is_string($f['id'] ?? null) && is_string($f['package'] ?? null) && is_int($f['major'] ?? null)) {
+                $keys[$f['id']] = $f['package'] . '@' . $f['major'];
+            }
+        }
+        if ($keys === []) {
+            return null;
+        }
+        $text = static fn(mixed $v): ?string => is_string($v) && $v !== '' ? $v : null;
+        $cells = [];
+        foreach ($data['cells'] as $c) {
+            if (!is_array($c) || !is_string($c['framework'] ?? null) || !isset($keys[$c['framework']]) || !is_string($c['php_line'] ?? null) || !is_string($c['state'] ?? null)) {
+                continue;
+            }
+            $version = is_array($c['framework_package'] ?? null) ? $text($c['framework_package']['version'] ?? null) : null;
+            $date = $text($c['date'] ?? null);
+            $cells[$keys[$c['framework']]][$c['php_line']] = [
+                'state' => $c['state'],
+                'php_version' => $text($c['php_version'] ?? null),
+                'date' => $date === null ? null : substr($date, 0, 10),
+                'version' => $version === null ? null : ltrim($version, 'v'),
+                'step' => $text($c['step'] ?? null),
+                'first_error' => $text($c['first_error'] ?? null),
+            ];
+        }
+
+        return ['generated' => $text($data['generated'] ?? null), 'cells' => $cells];
     }
 
     /**

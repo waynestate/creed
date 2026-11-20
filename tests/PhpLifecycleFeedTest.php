@@ -129,55 +129,142 @@ final class PhpLifecycleFeedTest extends TestCase
         return $out;
     }
 
+    private const TESTS = __DIR__ . '/fixtures/php-lifecycle/framework-php-tests-1120.json';
+
+    /**
+     * One refresh with no cache, so every scenario reads the sources itself.
+     *
+     * @param list<string> $down
+     * @param array<string, string> $files
+     *
+     * @return array<string, mixed>
+     */
+    private function fresh(array $down = [], array $files = [], ?string $tests = self::TESTS): array
+    {
+        return (new Feed($this->dir, self::net($down, $files), $tests))->refresh(null, new DateTimeImmutable('2026-11-19T22:00:00Z'))['doc'];
+    }
+
     #[Test]
-    public function eachFrameworkMajorsCiWorkflowIsReadFromItsBranch(): void
+    public function frameworkFitJoinsLaravelsSupportTableAndOurOwnTests(): void
     {
         $net = self::net();
-        $doc = (new Feed($this->dir, $net))->get(new DateTimeImmutable('2026-11-19T22:00:00Z'));
+        $doc = (new Feed($this->dir, $net, self::TESTS))->get(new DateTimeImmutable('2026-11-19T22:00:00Z'));
 
-        self::assertSame('https://raw.githubusercontent.com/laravel/framework/13.x/.github/workflows/tests.yml', $net->urls['ci-laravel/framework@13']);
-        self::assertSame('https://raw.githubusercontent.com/cakephp/cakephp/4.x/.github/workflows/ci.yml', $net->urls['ci-cakephp/cakephp@4']);
-        self::assertSame('https://raw.githubusercontent.com/slimphp/Slim/3.x/.github/workflows/tests.yml', $net->urls['ci-slim/slim@3']);
+        // Laravel's table comes from the newest major's docs branch; no CI workflow is read any more.
+        self::assertSame('https://raw.githubusercontent.com/laravel/docs/13.x/releases.md', $net->urls['announced-laravel/framework']);
+        self::assertSame([], array_values(array_filter($net->asked, static fn(string $id): bool => str_starts_with($id, 'ci-'))));
         $s = self::sources($doc);
-        self::assertTrue($s['ci-laravel/framework@13']['ok']);
-        self::assertSame('framework-ci', $s['ci-laravel/framework@13']['group']);
-        self::assertSame('GitHub: Laravel 13.x CI workflow', $s['ci-laravel/framework@13']['label']);
-        self::assertFalse($s['ci-laravel/framework@13']['browser']);
+        self::assertTrue($s['announced-laravel/framework']['ok']);
+        self::assertSame('announced', $s['announced-laravel/framework']['group']);
+        self::assertSame('Laravel support policy (13.x docs)', $s['announced-laravel/framework']['label']);
+        self::assertFalse($s['announced-laravel/framework']['browser']);
 
-        // The feed's shape: allows stays, tested sits beside it keyed the same, fit joins them.
         $fw = self::frameworks($doc);
         $l13 = $fw['Laravel 13'];
-        self::assertIsArray($l13['allows']);
-        self::assertIsArray($l13['tested']);
-        self::assertSame(array_keys($l13['allows']), array_keys($l13['tested']));
-        self::assertTrue($l13['allows']['8.6']);
-        self::assertFalse($l13['tested']['8.6']);
         self::assertIsArray($l13['fit']);
-        self::assertSame('untested', $l13['fit']['8.6']);
-        self::assertSame('tested', $l13['fit']['8.5']);
-        self::assertSame('https://github.com/laravel/framework/blob/13.x/.github/workflows/tests.yml', $l13['tested_source']);
+        self::assertSame('allowed', $l13['fit']['8.6'], 'Composer allows 8.6 and our test passed, but Laravel has not announced it');
+        self::assertSame('supported', $l13['fit']['8.5'], 'announced and our cell passed');
+        self::assertSame('supported', $l13['fit']['8.3']);
+        self::assertSame('no', $l13['fit']['8.2']);
+        self::assertSame(['8.3', '8.4', '8.5'], $l13['announced_lines']);
+        self::assertTrue($l13['announced_ok']);
+        self::assertSame('https://raw.githubusercontent.com/laravel/docs/13.x/releases.md', $l13['announced_source']);
+        self::assertSame('https://laravel.com/framework/docs/13.x/releases#support-policy', $l13['announced_link']);
+        self::assertSame('2026-11-19T22:00:00Z', $l13['announced_fetched_at']);
+        self::assertArrayNotHasKey('tested', $l13);
+        self::assertIsArray($l13['our_test']);
+        self::assertIsArray($l13['our_test']['8.5']);
+        self::assertSame('pass', $l13['our_test']['8.5']['state']);
+        self::assertSame('8.5.13', $l13['our_test']['8.5']['php_version']);
+
+        $l12 = $fw['Laravel 12'];
+        self::assertIsArray($l12['fit']);
+        self::assertSame('allowed', $l12['fit']['8.6'], 'not announced; our failed test does not make it red');
+        self::assertSame('supported', $l12['fit']['8.5']);
+        self::assertIsArray($l12['our_test']);
+        self::assertIsArray($l12['our_test']['8.6']);
+        self::assertSame('fail', $l12['our_test']['8.6']['state']);
+
+        // CakePHP and Slim publish nothing a server can read: unknown, whatever our test says.
         self::assertIsArray($fw['CakePHP 5']['fit']);
-        self::assertSame('tested', $fw['CakePHP 5']['fit']['8.6']);
+        self::assertSame('unknown', $fw['CakePHP 5']['fit']['8.6']);
+        self::assertSame('unknown', $fw['CakePHP 5']['fit']['8.5']);
+        self::assertNull($fw['CakePHP 5']['announced_ok']);
+        self::assertStringContainsString('does not publish', (string) $fw['CakePHP 5']['announced_reason']);
+        self::assertIsArray($fw['Slim 4']['fit']);
+        self::assertSame('unknown', $fw['Slim 4']['fit']['8.5']);
+        self::assertIsArray($doc['framework_tests']);
+        self::assertTrue($doc['framework_tests']['ok']);
     }
 
     #[Test]
-    public function aWorkflowThatFailsLeavesTestedNullAndTheAllowsState(): void
+    public function anUnreadSupportTableDropsLaravelToUnknownNeverRed(): void
     {
-        $doc = (new Feed($this->dir, self::net(['ci-laravel/framework@13'], ['ci-slim/slim@3' => 'wiki-php87-404.html'])))->get(new DateTimeImmutable('2026-11-19T22:00:00Z'));
+        $doc = $this->fresh(['announced-laravel/framework']);
         $fw = self::frameworks($doc);
-        $s = self::sources($doc);
-
-        self::assertNull($fw['Laravel 13']['tested']);
-        self::assertIsArray($fw['Laravel 13']['fit']);
-        self::assertSame('allowed', $fw['Laravel 13']['fit']['8.6']);
-        self::assertSame('no', $fw['Laravel 13']['fit']['8.2']);
-        self::assertFalse($s['ci-laravel/framework@13']['ok']);
-        self::assertSame('timed out', $s['ci-laravel/framework@13']['error']);
-        self::assertNull($fw['Slim 3']['tested'], 'an HTML page is not a workflow');
-        self::assertSame('unreadable answer', $s['ci-slim/slim@3']['error']);
-        self::assertIsArray($fw['Laravel 12']['tested'], 'the other majors are still read');
+        foreach (['8.3', '8.4', '8.5', '8.6'] as $line) {
+            self::assertIsArray($fw['Laravel 13']['fit']);
+            self::assertSame('unknown', $fw['Laravel 13']['fit'][$line], 'PHP ' . $line);
+        }
+        self::assertSame('no', $fw['Laravel 13']['fit']['8.2'], 'what Composer refuses stays refused');
+        self::assertFalse($fw['Laravel 13']['announced_ok']);
+        self::assertSame('timed out', $fw['Laravel 13']['announced_reason']);
+        self::assertNull($fw['Laravel 13']['announced_fetched_at']);
+        self::assertSame('https://raw.githubusercontent.com/laravel/docs/13.x/releases.md', $fw['Laravel 13']['announced_source']);
+        self::assertIsArray($doc['notes']);
+        self::assertNotEmpty(array_filter($doc['notes'], static fn(mixed $n): bool => is_string($n) && str_contains($n, "Laravel's support table could not be read")));
     }
 
+    #[Test]
+    public function aGoodTableReadEarlierDoesNotKeepCellsGreenAfterAFailedRead(): void
+    {
+        $now = new DateTimeImmutable('2026-11-19T22:00:00Z');
+        $first = (new Feed($this->dir, self::net(), self::TESTS))->refresh(null, $now);
+        $fw = self::frameworks($first['doc']);
+        self::assertIsArray($fw['Laravel 13']['fit']);
+        self::assertSame('supported', $fw['Laravel 13']['fit']['8.5']);
+
+        $again = (new Feed($this->dir, self::net(['announced-laravel/framework']), self::TESTS))->refresh($first, $now->modify('+11 minutes'));
+        $fw = self::frameworks($again['doc']);
+        self::assertIsArray($fw['Laravel 13']['fit']);
+        self::assertSame('unknown', $fw['Laravel 13']['fit']['8.5'], 'no stale green: the last good table is not reused');
+    }
+
+    #[Test]
+    public function aTableInAnotherLayoutOrWithoutTheMajorIsUnknown(): void
+    {
+        $fw = self::frameworks($this->fresh([], ['announced-laravel/framework' => 'laravel-releases-list-layout.md']));
+        self::assertIsArray($fw['Laravel 13']['fit']);
+        self::assertSame('unknown', $fw['Laravel 13']['fit']['8.5']);
+        self::assertSame('the Support Policy table did not parse', $fw['Laravel 13']['announced_reason']);
+
+        $fw = self::frameworks($this->fresh([], ['announced-laravel/framework' => 'laravel-releases-no-13.md']));
+        self::assertIsArray($fw['Laravel 13']['fit']);
+        self::assertSame('unknown', $fw['Laravel 13']['fit']['8.5']);
+        self::assertFalse($fw['Laravel 13']['announced_ok']);
+        self::assertSame('the Support Policy table has no row for Laravel 13', $fw['Laravel 13']['announced_reason']);
+        self::assertIsArray($fw['Laravel 12']['fit']);
+        self::assertSame('supported', $fw['Laravel 12']['fit']['8.5'], 'the rows that are there still count');
+    }
+
+    #[Test]
+    public function withoutOurTestDataNoCellIsSupported(): void
+    {
+        $doc = $this->fresh([], [], $this->dir . '/no-such-file.json');
+        $fw = self::frameworks($doc);
+        self::assertIsArray($fw['Laravel 13']['fit']);
+        self::assertSame('announced-untested', $fw['Laravel 13']['fit']['8.5']);
+        self::assertSame('allowed', $fw['Laravel 13']['fit']['8.6']);
+        self::assertIsArray($fw['Laravel 13']['our_test']);
+        self::assertNull($fw['Laravel 13']['our_test']['8.5']);
+        self::assertIsArray($doc['framework_tests']);
+        self::assertFalse($doc['framework_tests']['ok']);
+
+        $doc = $this->fresh([], [], __DIR__ . '/fixtures/php-lifecycle/states.json');
+        $fw = self::frameworks($doc);
+        self::assertIsArray($fw['Laravel 13']['fit']);
+        self::assertSame('announced-untested', $fw['Laravel 13']['fit']['8.5'], 'a file that is not the matrix counts as missing');
+    }
     #[Test]
     public function theWikiIsAskedForIndexedPagesOnlyOneASecond(): void
     {
@@ -343,12 +430,8 @@ final class PhpLifecycleFakeHttp extends Http
             'wiki-7.4' => 'wiki-php74.txt',
             'wiki-5.6' => 'wiki-php56.txt',
             'wiki-5.4' => 'wiki-php54.txt',
-            'ci-laravel/framework@13' => 'workflow-laravel-13.yml',
-            'ci-laravel/framework@12' => 'workflow-laravel-12.yml',
-            'ci-cakephp/cakephp@5' => 'workflow-cakephp-5.yml',
-            'ci-cakephp/cakephp@4' => 'workflow-cakephp-4.yml',
-            'ci-slim/slim@4' => 'workflow-slim-4.yml',
-            'ci-slim/slim@3' => 'workflow-slim-3.yml',
+            'announced-laravel/framework' => 'laravel-releases-13x.md',
+
         ];
         $map = $this->files + $map;
         $out = [];
