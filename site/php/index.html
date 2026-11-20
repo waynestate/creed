@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en" data-theme="wsu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="stack-env" content="auto">
+<script src="../assets/stack-env.js" defer></script>
+<title>PHP, as of now | CREED</title>
+<meta name="description" content="The whole PHP lifecycle, live: every supported branch with its latest patch, the support timeline, the next announced or tagged release, and which PHP lines Laravel, CakePHP and Slim allow. Read from php.net, php-src, endoflife.date and Packagist, at most 30 minutes behind.">
+<meta name="theme-color" content="#0c5449" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1a1b18" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://creed.apps.wayne.edu/php/">
+<link rel="alternate" type="text/markdown" href="index.md">
+<link rel="icon" href="../brand/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="../brand/favicon-32.png">
+<link rel="stylesheet" href="../assets/wayne-ui/wayne-ui.css">
+<link rel="stylesheet" href="../assets/creed.css">
+<link rel="stylesheet" href="../assets/php-lifecycle.css">
+<script>
+  /* Bars that draw themselves and a release that pulses once, for people
+     who are happy with motion. Everyone else gets the chart already printed. */
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+    document.documentElement.classList.add("motion");
+  }
+</script>
+</head>
+<body class="pl">
+<a class="wsu-skip-link" href="#main">Skip to content</a>
+<div class="binding" aria-hidden="true"></div>
+
+<header class="runhead">
+  <div class="wsu-container runhead__inner">
+    <a class="runhead__brand" href="../" aria-label="CREED front page">
+      <img src="../brand/creed-avatar-256.png" width="28" height="28" alt="">
+      <span>CREED</span>
+    </a>
+    <span class="runhead__edition" aria-hidden="true">Wayne State App Stack Code · 2026 Edition</span>
+    <nav class="runhead__nav" aria-label="Site">
+      <a href="../handbook/">Handbook</a>
+      <a href="../docs/index.html">Docs</a>
+      <a href="./" aria-current="page">PHP</a>
+      <a href="../#contents">Contents</a>
+      <a href="../#inspection">Inspect</a>
+      <a href="../#errata">Errata</a>
+      <a href="../#appendix-a">Adopt</a>
+      <a href="https://proof.apps.wayne.edu/creed/">Proof</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="pl-main" data-pl>
+  <div class="wsu-container">
+
+    <div class="pl-head">
+      <div class="pl-head__title">
+        <p class="pl-kicker"><span>Supplement 2-A</span><span aria-hidden="true">·</span><span>to Chapter 2, Versions</span><span aria-hidden="true">·</span><span>Live</span></p>
+        <h1 class="pl-title">PHP, as of now</h1>
+      </div>
+      <div class="pl-status" data-pl-status>
+        <p class="stamp pl-mode" data-pl-mode>Reading</p>
+        <p class="pl-status__line"><span data-pl-checked>Reading the sources…</span> <span class="pl-status__rule" aria-hidden="true">·</span> <span data-pl-cadence>refreshes every 10 minutes while open</span></p>
+      </div>
+    </div>
+
+    <noscript><p class="pl-empty">This page reads the PHP lifecycle live and needs JavaScript. The same data is at <a href="../php-feed.php">php-feed.php</a> as JSON, and the sources are <a href="https://www.php.net/supported-versions.php">php.net's supported versions</a> and <a href="https://endoflife.date/php">endoflife.date</a>.</p></noscript>
+
+    <p class="pl-alert" role="status" data-pl-alert hidden></p>
+
+    <!-- §2A.1 Now: the newest version, every supported branch's latest patch, the next known release. -->
+    <section class="pl-now" aria-labelledby="now-h">
+      <h2 id="now-h" class="wsu-sr-only">Now</h2>
+      <div class="pl-card pl-card--newest" data-pl-newest>
+        <p class="pl-card__label"><span class="pl-no">§2A.1</span> Newest</p>
+        <p class="pl-card__empty">Not read yet.</p>
+      </div>
+      <div class="pl-card pl-card--patches">
+        <p class="pl-card__label" id="patches-label">Latest patch of every supported branch</p>
+        <ul class="pl-patches" aria-labelledby="patches-label" data-pl-patches></ul>
+      </div>
+      <div class="pl-card pl-card--next" data-pl-next>
+        <p class="pl-card__label">Next known release</p>
+        <p class="pl-card__empty">Not read yet.</p>
+      </div>
+    </section>
+
+    <div class="pl-grid">
+      <!-- §2A.2 The lifecycle: a table underneath, a chart on top. -->
+      <section class="pl-panel pl-panel--timeline" aria-labelledby="life-h">
+        <div class="pl-panel__head">
+          <h2 id="life-h" class="pl-h2"><span class="pl-no">§2A.2</span> Lifecycle</h2>
+          <ul class="pl-legend" aria-label="Legend">
+            <li><span class="pl-swatch pl-swatch--active" aria-hidden="true"></span>Active support</li>
+            <li><span class="pl-swatch pl-swatch--security" aria-hidden="true"></span>Security fixes only</li>
+            <li><span class="pl-swatch pl-swatch--eol" aria-hidden="true"></span>End of life</li>
+            <li><span class="pl-swatch pl-swatch--today" aria-hidden="true"></span>Today</li>
+          </ul>
+        </div>
+        <div class="pl-chart" data-pl-chart>
+          <table class="pl-table">
+            <caption class="wsu-sr-only">PHP branches from the oldest still in use to the newest: support dates, latest patch and what comes next. Focus or hover a branch for its details.</caption>
+            <thead>
+              <tr>
+                <th scope="col">Branch</th>
+                <th scope="col" class="pl-axis-cell"><span class="wsu-sr-only">Support timeline</span><span class="pl-axis" aria-hidden="true" data-pl-axis></span></th>
+                <th scope="col">Latest</th>
+                <th scope="col" class="pl-col-left">Days left</th>
+              </tr>
+            </thead>
+            <tbody data-pl-rows>
+              <tr><td colspan="4" class="pl-card__empty">Not read yet.</td></tr>
+            </tbody>
+          </table>
+          <div class="pl-detail" data-pl-detail hidden aria-hidden="true"></div>
+        </div>
+      </section>
+
+      <!-- §2A.3 Framework fit: what each framework's newest majors declare in require.php. -->
+      <section class="pl-panel pl-panel--fit" aria-labelledby="fit-h">
+        <div class="pl-panel__head">
+          <h2 id="fit-h" class="pl-h2"><span class="pl-no">§2A.3</span> Framework fit</h2>
+        </div>
+        <div data-pl-fit><p class="pl-card__empty">Not read yet.</p></div>
+        <p class="pl-fine">From each release's <code>require.php</code> on Packagist: what the framework allows, not a test result.</p>
+      </section>
+    </div>
+
+    <!-- §2A.4 Sources: how fresh each one is, and what they disagree about. -->
+    <section class="pl-sources" aria-labelledby="src-h">
+      <h2 id="src-h" class="pl-h2 pl-h2--inline"><span class="pl-no">§2A.4</span> Sources</h2>
+      <ul class="pl-src" data-pl-sources></ul>
+      <details class="pl-more">
+        <summary>Every source and note</summary>
+        <div class="pl-more__body">
+          <ul class="pl-src-all" data-pl-sources-all></ul>
+          <ul class="pl-notes" data-pl-notes></ul>
+          <p class="pl-fine">The page asks <a href="../php-feed.php">php-feed.php</a>, which reads php.net's supported versions, releases and news feed, php-src's tags, the php.net wiki's timetables, endoflife.date and Packagist, and keeps the merge for ten minutes. If that fails, the page reads endoflife.date and php-src's tags straight from your browser and says so. A source that cannot be read is shown as stale or down; nothing on this page is typed in by hand. php.net wins when sources disagree on a date.</p>
+        </div>
+      </details>
+    </section>
+
+  </div>
+</main>
+
+<footer class="colophon">
+  <div class="wsu-container colophon__inner">
+    <div class="colophon__mark"><img src="../brand/creed-avatar-256.png" width="48" height="48" alt=""></div>
+    <div>
+      <p>CREED's dates for the gates stay in <code>policy.json</code>, refreshed on a schedule and reviewed. This page is the live view: it tells you what shipped this morning before the policy file catches up.</p>
+      <p class="colophon__fine">Creed Bratton once claimed to have been in a dozen bands at once. PHP keeps five branches going and at least tells you which ones.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/php-lifecycle.js" defer></script>
+</body>
+</html>

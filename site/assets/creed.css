@@ -114,7 +114,7 @@ img { max-width: 100%; height: auto; }
 @media (max-width: 900px) { .runhead__edition { display: none; } }
 /* Phone: six links and the name no longer fit one line (Creed would just
    keep walking off the edge of the page), so the head sets like the docs:
-   name over menu, the menu as a form's two ruled lines of three, and it
+   name over menu, the menu as a form's two ruled lines (four over three), and it
    stops riding along so it never covers half the screen. Errata steps out;
    the contents link reaches it. */
 @media (max-width: 600px) {
@@ -122,7 +122,7 @@ img { max-width: 100%; height: auto; }
   .runhead { position: static; }
   .runhead__inner { flex-wrap: wrap; gap: 0 .75rem; }
   .runhead__brand { min-height: 2.75rem; }
-  .runhead__nav { flex-basis: 100%; display: grid; grid-template-columns: repeat(3, auto); justify-content: space-between; gap: 0 .7rem; margin-left: 0; padding-bottom: .35rem; }
+  .runhead__nav { flex-basis: 100%; display: grid; grid-template-columns: repeat(4, auto); justify-content: space-between; gap: 0 .7rem; margin-left: 0; padding-bottom: .35rem; }
   .runhead__nav a { font-size: .68rem; letter-spacing: .04em; }
   .runhead__nav a[href="#errata"] { display: none; }
 }

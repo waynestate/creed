@@ -1,0 +1,171 @@
+===== PHP 8.6 Preparation Tasks =====
+
+  * Elect managers
+  * Triage GitHub issues for PHP 8.6
+  * Triage GitHub pull requests
+  * Push appropriate RFC at appropriate time
+
+===== Timetable =====
+
+Based upon a target GA in late November. Individual releases may be added or removed to accommodate development progress.
+
+  * Tag on Tuesday, release on Thursday
+  * 5 months pre-release phase
+
+^ Date           ^ Release ^
+| Jul 02 2026    | Alpha 1 [[https://www.php.net/archive/2026.php#2026-07-02-3|Announce]] [[https://downloads.php.net/~mbeccati/|Files]] |
+| Jul 16 2026    | Alpha 2 [[https://www.php.net/archive/2026.php#2026-07-16-1|Announce]] [[https://downloads.php.net/~svpernova09/|Files]] |
+| Jul 30 2026    | Alpha 3 [[https://www.php.net/archive/2026.php#2026-07-30-3|Announce]] [[https://downloads.php.net/~mbeccati/|Files]] |
+| Aug 11 2026    | All RFCs targeting 8.6 **should** have been merged, so they can be in Beta 1. |
+| Aug 13 2026    | Beta 1 + Soft feature freeze: all RFCs must have their voting concluded [[https://www.php.net/archive/2026.php#2026-08-13-1|Announce]] [[https://downloads.php.net/~svpernova09/|Files]] |
+| Aug 27 2026    | Beta 2 [[https://www.php.net/archive/2026.php#2026-08-27-1|Announce]] [[https://downloads.php.net/~mbeccati/|Files]] |
+| Sep 10 2026    | Beta 3 [[https://www.php.net/archive/2026.php#2026-09-10-1|Announce]] [[https://downloads.php.net/~svpernova09/|Files]] |
+| Sep 22 2026    | Hard feature freeze: features, whether requiring an RFC or not, **must** be merged only with approval from the RMs. |
+| Sep 24 2026    | <del>RC1</del> (skipped, [[https://scherzer.dev/Blog/20260923-no-php86-rc-1|explanation]]) |
+| Sep 24 2026    | RC2 [[https://www.php.net/archive/2026.php#2026-09-24-1|Announce]] [[https://downloads.php.net/~mbeccati/|Files]] |
+| Oct 08 2026    | RC3 [[https://www.php.net/archive/2026.php#2026-10-08-1|Announce]] [[https://downloads.php.net/~svpernova09/|Files]] |
+| Oct 21 2026    | RC4 [[https://www.php.net/archive/2026.php#2026-10-21-6|Announce]] [[https://downloads.php.net/~mbeccati/|Files]] |
+| Nov 05 2026    | RC5 [[https://www.php.net/archive/2026.php#2026-11-05-1|Announce]] [[https://downloads.php.net/~svpernova09/|Files]] |
+| Nov 12 2026    | RC6 (extra unplanned RC release, tagged but then skipped, see [[https://scherzer.dev/Blog/20261111-release-candidate-7|explanation]]) |
+| Nov 12 2026    | RC7 [[https://www.php.net/archive/2026.php#2026-11-12-1|Announce]] [[https://downloads.php.net/~svpernova09/|Files]] (extra unplanned RC release, see [[https://scherzer.dev/Blog/20261111-release-candidate-7|explanation]]) |
+| Nov 19 2026    | GA |
+
+
+===== Release Managers =====
+
+  * Veteran: [[https://news-web.php.net/php.internals/130245|Daniel Scherzer]]
+  * Rookie: Matteo Beccati
+  * Rookie: Joe Ferguson
+
+==== Volunteers ====
+
+This list only contains individuals who have formally and publicly volunteered via the internals mailing list.
+
+Veteran volunteer(s) listed in the order in which they formally volunteered:
+
+  * [[https://news-web.php.net/php.internals/130245|Daniel Scherzer]]
+  * [[https://news-web.php.net/php.internals/130400|Sara Golemon]] [[https://news-web.php.net/php.internals/130523|(retracted)]]
+
+Rookie candidates listed in the order in which they formally volunteered:
+
+  * [[https://news-web.php.net/php.internals/130241|Joe Ferguson]]
+  * [[https://news-web.php.net/php.internals/130242|Jordi Kroon]]
+  * [[https://news-web.php.net/php.internals/130244|Paul Dragoonis]]
+  * [[https://news-web.php.net/php.internals/130248|Matteo Beccati]]
+  * [[https://news-web.php.net/php.internals/130404|Aggelos Bellos]]
+  * [[https://news-web.php.net/php.internals/130455|Pierre Tondereau]]
+  * [[https://news-web.php.net/php.internals/130524|Patrick Martin]]
+
+===== Voting =====
+
+There are 7 candidates for two available seats. While it might not be likely that all preferences are necessary, you are encouraged to use all votes. If you vote for the same person twice, this will not help that person's chances; it will only throw away one of your votes and deprioritize the remaining ones, so please cast //unique// votes.
+
+Voting using STV (Single Transferable Vote) started on 31 March 2026 18:00:00 UTC. Voting will be open until 15 April 2026 18:00:00 UTC. Tiebreaking will be at the discretion of the prior branch RMs.
+
+Results: https://externals.io/message/130526#130645
+
+==== 1st Preference ====
+
+Select your first preference for 8.6 Release Manager here.
+
+**If you wish to __fully__ abstain from voting, please select "Abstain" here and skip the remaining voting widgets.
+
+To abstain from further preferences down the list, please cast your first X votes and simply skip the remaining widgets."
+**
+
+<doodle title="PHP 8.6 RM 1st Preference" auth="user" voteType="single" closed="true" closeon="2026-04-15T18:00:00Z">
+   * Joe Ferguson
+   * Jordi Kroon
+   * Paul Dragoonis
+   * Matteo Beccati
+   * Aggelos Bellos
+   * Pierre Tondereau
+   * Patrick Martin
+   * Abstain
+</doodle>
+
+
+==== 2nd Preference ====
+
+Select your second preference for 8.6 Release Manager here.
+
+<doodle title="PHP 8.6 RM 2nd Preference" auth="user" voteType="single" closed="true" closeon="2026-04-15T18:00:00Z">
+   * Joe Ferguson
+   * Jordi Kroon
+   * Paul Dragoonis
+   * Matteo Beccati
+   * Aggelos Bellos
+   * Pierre Tondereau
+   * Patrick Martin
+</doodle>
+
+==== 3rd Preference ====
+
+Select your third preference for 8.6 Release Manager here.
+
+<doodle title="PHP 8.6 RM 3rd Preference" auth="user" voteType="single" closed="true" closeon="2026-04-15T18:00:00Z">
+   * Joe Ferguson
+   * Jordi Kroon
+   * Paul Dragoonis
+   * Matteo Beccati
+   * Aggelos Bellos
+   * Pierre Tondereau
+   * Patrick Martin
+</doodle>
+
+==== 4th Preference ====
+
+Select your fourth preference for 8.6 Release Manager here.
+
+<doodle title="PHP 8.6 RM 4th Preference" auth="user" voteType="single" closed="true" closeon="2026-04-15T18:00:00Z">
+   * Joe Ferguson
+   * Jordi Kroon
+   * Paul Dragoonis
+   * Matteo Beccati
+   * Aggelos Bellos
+   * Pierre Tondereau
+   * Patrick Martin
+</doodle>
+
+==== 5th Preference ====
+
+Select your fifth preference for 8.6 Release Manager here.
+
+<doodle title="PHP 8.6 RM 5th Preference" auth="user" voteType="single" closed="true" closeon="2026-04-15T18:00:00Z">
+   * Joe Ferguson
+   * Jordi Kroon
+   * Paul Dragoonis
+   * Matteo Beccati
+   * Aggelos Bellos
+   * Pierre Tondereau
+   * Patrick Martin
+</doodle>
+
+==== 6th Preference ====
+
+Select your sixth preference for 8.6 Release Manager here.
+
+<doodle title="PHP 8.6 RM 6th Preference" auth="user" voteType="single" closed="true" closeon="2026-04-15T18:00:00Z">
+   * Joe Ferguson
+   * Jordi Kroon
+   * Paul Dragoonis
+   * Matteo Beccati
+   * Aggelos Bellos
+   * Pierre Tondereau
+   * Patrick Martin
+</doodle>
+
+==== 7th Preference ====
+
+Select your seventh preference for 8.6 Release Manager here.
+
+<doodle title="PHP 8.6 RM 7th Preference" auth="user" voteType="single" closed="true" closeon="2026-04-15T18:00:00Z">
+   * Joe Ferguson
+   * Jordi Kroon
+   * Paul Dragoonis
+   * Matteo Beccati
+   * Aggelos Bellos
+   * Pierre Tondereau
+   * Patrick Martin
+</doodle>
+

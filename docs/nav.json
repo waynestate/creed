@@ -31,6 +31,10 @@
           "path": "guides/support-states"
         },
         {
+          "title": "The live PHP page",
+          "path": "guides/live-php"
+        },
+        {
           "title": "Keeping the patches fresh",
           "path": "guides/patch-refresh"
         },

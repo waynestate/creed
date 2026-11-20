@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Shaped like php.net's feed.atom (copied from the 2026-11-18 notice), dated one day later: a notice for "tomorrow". -->
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>PHP.net news &amp; announcements</title>
+  <updated>2026-11-19T17:09:51+00:00</updated>
+  <entry xmlns="http://www.w3.org/2005/Atom">
+  <title>Upcoming Critical PHP Security Release</title>
+  <id>https://www.php.net/archive/2026.php#2026-11-19-9</id>
+  <published>2026-11-19T17:09:51+00:00</published>
+  <updated>2026-11-19T17:09:51+00:00</updated>
+  <link href="https://www.php.net/index.php#2026-11-19-9" rel="alternate" type="text/html"/>
+  <content type="xhtml">
+    <div xmlns="http://www.w3.org/1999/xhtml">
+      <p>
+        The PHP security team announces upcoming security releases
+        <b>scheduled for Friday, 20 November 2026, between 14:00 and
+        14:30 UTC.</b>
+      </p>
+      <p>These releases will address security vulnerabilities affecting all supported PHP versions.</p>
+    </div>
+  </content>
+</entry>
+  <entry xmlns="http://www.w3.org/2005/Atom">
+  <title>Upcoming PHP 8.5 Security Release</title>
+  <id>https://www.php.net/archive/2026.php#2026-11-19-8</id>
+  <published>2026-11-19T17:00:00+00:00</published>
+  <link href="https://www.php.net/index.php#2026-11-19-8" rel="alternate" type="text/html"/>
+  <content type="xhtml">
+    <div xmlns="http://www.w3.org/1999/xhtml"><p>A release of PHP 8.5 is planned for November 21, 2026 at 15:00 UTC.</p></div>
+  </content>
+</entry>
+</feed>

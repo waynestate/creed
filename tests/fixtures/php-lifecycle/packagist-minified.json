@@ -1,0 +1,8 @@
+{"minified":"composer/2.0","packages":{"acme/framework":[
+{"name":"acme/framework","version":"v3.1.0","time":"2026-11-01T10:00:00+00:00","require":{"php":"^8.3"}},
+{"version":"v3.1.0-beta1","time":"2026-10-01T10:00:00+00:00"},
+{"version":"v3.0.2","time":"2026-09-01T10:00:00+00:00"},
+{"version":"v2.9.9","time":"2026-08-01T10:00:00+00:00","require":{"php":">=7.4,<8.6"}},
+{"version":"v2.9.8","time":"2026-07-01T10:00:00+00:00","require":"__unset"},
+{"version":"v1.0.0","time":"2020-01-01T10:00:00+00:00","require":{"php":">=5.6"}}
+]}}

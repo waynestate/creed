@@ -25,8 +25,19 @@ require __DIR__ . '/../vendor/autoload.php';
 use function Waynestate\Helmet\helmet_boot;
 
 // HELMET's citadel preset names the platform's front proxy.
+// CREED's solo: /php (site/php/) falls back to reading endoflife.date and
+// php-src's tags from the browser when php-feed.php cannot answer, so those
+// two read-only APIs join connect-src. Keep this when Squire syncs this file.
 $helmet = helmet_boot([
     'preset' => 'citadel',
+    'csp' => [
+        'connect-src' => [
+            "'self'",
+            'https://wayneui.apps.wayne.edu',
+            'https://endoflife.date',
+            'https://api.github.com',
+        ],
+    ],
 ]);
 
 $notFound = static function (): never {
