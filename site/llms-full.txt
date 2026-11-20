@@ -947,6 +947,10 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+### 0.1.14 (2026-11-19) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-14-2026-11-19)
+
+- Changed: the PHP 8.6 line now carries its `latest_patch` (8.6.0, from php.net active.php, filled by `bin/refresh-patches.php`) and its Docker image, `images.docker` `php:8.6-cli-trixie`, set by hand as the other lines are, so Sourdough and WELD bakes can target 8.6. The official 8.6 image is ZTS and ships without PECL extensions or mbstring: a consumer adds what it needs. No `minimum_patch` yet: 8.6.0 is the first release.
+
 ### 0.1.13 (2026-11-19) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-13-2026-11-19)
 
 - Changed: policy refresh: PHP 8.6 and the 2026-11-19 security patches (the policy robot added the 8.6 line from php.net states.php; latest patches 8.5.13, 8.4.28, 8.3.37 and 8.2.36; Laravel latest patches 12.73.0 and 13.43.0). The front page's inspector copy of the dates gained 8.6.
