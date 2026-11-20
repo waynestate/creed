@@ -1,0 +1,70 @@
+{
+    "$comment": "The framework x PHP test matrix (bin/framework-matrix.php, scripts/framework-matrix.ps1 and .sh). Each major names the package whose newest release decides, through its require.php on Packagist p2, which PHP lines are worth a run, and the official skeleton that gets created, tested and served on each of them.",
+    "php_lines": ["8.0", "8.1", "8.2", "8.3", "8.4", "8.5", "8.6"],
+    "run_order": ["8.5", "8.6", "8.4", "8.3", "8.2", "8.1", "8.0"],
+    "image": "php:%s-cli",
+    "prerelease_image": "php:%s-rc-cli",
+    "extensions": ["intl", "mbstring", "zip", "pdo_mysql"],
+    "frameworks": [
+        {
+            "id": "laravel-13",
+            "name": "Laravel",
+            "major": 13,
+            "package": "laravel/framework",
+            "skeleton": "laravel/laravel",
+            "skeleton_constraint": "^13.0",
+            "docroot": "public",
+            "test": ["vendor/bin/phpunit"]
+        },
+        {
+            "id": "laravel-12",
+            "name": "Laravel",
+            "major": 12,
+            "package": "laravel/framework",
+            "skeleton": "laravel/laravel",
+            "skeleton_constraint": "^12.0",
+            "docroot": "public",
+            "test": ["vendor/bin/phpunit"]
+        },
+        {
+            "id": "cakephp-5",
+            "name": "CakePHP",
+            "major": 5,
+            "package": "cakephp/cakephp",
+            "skeleton": "cakephp/app",
+            "skeleton_constraint": "^5.0",
+            "docroot": "webroot",
+            "test": ["vendor/bin/phpunit"]
+        },
+        {
+            "id": "cakephp-4",
+            "name": "CakePHP",
+            "major": 4,
+            "package": "cakephp/cakephp",
+            "skeleton": "cakephp/app",
+            "skeleton_constraint": "^4.0",
+            "docroot": "webroot",
+            "test": ["vendor/bin/phpunit"]
+        },
+        {
+            "id": "slim-4",
+            "name": "Slim",
+            "major": 4,
+            "package": "slim/slim",
+            "skeleton": "slim/slim-skeleton",
+            "skeleton_constraint": "^4.0",
+            "docroot": "public",
+            "test": ["vendor/bin/phpunit"]
+        },
+        {
+            "id": "slim-3",
+            "name": "Slim",
+            "major": 3,
+            "package": "slim/slim",
+            "skeleton": "slim/slim-skeleton",
+            "skeleton_constraint": "^3.0",
+            "docroot": "public",
+            "test": ["vendor/bin/phpunit"]
+        }
+    ]
+}

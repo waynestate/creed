@@ -34,6 +34,8 @@ tools/a11y/check.mjs text eol=lf
 /bin/agent-ready.php       export-ignore
 /bin/build-handbook-site.php export-ignore
 /bin/docs-site.php          export-ignore
+/bin/framework-matrix.php   export-ignore
+/bin/framework-matrix-cell.php export-ignore
 /bin/front-versions.php     export-ignore
 /bin/lint-handbook.php      export-ignore
 /bin/mysql56-probe.php      export-ignore
@@ -43,3 +45,4 @@ tools/a11y/check.mjs text eol=lf
 /bin/refresh-policy.php     export-ignore
 /bin/validate-policy.php    export-ignore
 /site export-ignore
+/data export-ignore

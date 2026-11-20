@@ -298,6 +298,12 @@ starts the server in Docker and runs `bin/mysql56-probe.php`, 32 probes written 
 `8.4` (`-Server 8.4` in PowerShell) and the same probes ask MySQL 8.4.13 instead, which is how the chapter's "Moving to
 8.4" section is proven. Creed Bratton tells stories about 1966 that nobody can check; 5.6 gets no such courtesy.
 
+The frameworks are tested here too, not taken at their `require.php`: `scripts/framework-matrix.ps1` (or `.sh`)
+creates the official Laravel 13 and 12, CakePHP 5 and 4, and Slim 4 and 3 skeletons on every PHP line from 8.0 to 8.6
+that each major's newest release allows, runs their own tests, serves them and counts every deprecation PHP prints.
+The results are `data/framework-php-tests.json`, summed up in
+[Our framework tests](docs/guides/framework-php-tests.md).
+
 ## Strongly recommended: a git.wayne.edu instance runner
 
 git.wayne.edu now has an instance runner, and the stack's CI runs on it.

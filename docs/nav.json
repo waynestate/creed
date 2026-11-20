@@ -35,6 +35,10 @@
           "path": "guides/live-php"
         },
         {
+          "title": "Our framework tests",
+          "path": "guides/framework-php-tests"
+        },
+        {
           "title": "Keeping the patches fresh",
           "path": "guides/patch-refresh"
         },
