@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+## 0.1.13 (2026-11-19)
+
+- Changed: policy refresh: PHP 8.6 and the 2026-11-19 security patches (the policy robot added the 8.6 line from php.net states.php; latest patches 8.5.13, 8.4.28, 8.3.37 and 8.2.36; Laravel latest patches 12.73.0 and 13.43.0). The front page's inspector copy of the dates gained 8.6.
 - Added: the handbook's "Frameworks" section in `handbook/code.md`: new apps SHOULD be raw PHP or Laravel; CakePHP and Slim apps are legacy, still supported and upgraded by Booster, and the rule is advice only, never a failing check.
 
 ## 0.1.12 (2026-11-19)

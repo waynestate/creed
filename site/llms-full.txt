@@ -487,14 +487,14 @@ Table 2-1 Adopted editions, with the state on 2026-10-29
 | Runtime | Active until | Security until | Latest patch | State |
 | --- | --- | --- | --- | --- |
 | PHP floor **8.2** |  |  |  |  |
-| 8.5 | 2027-12-31 | 2029-12-31 | 8.5.12 | Active |
-| 8.4 | 2026-12-31 | 2028-12-31 | 8.4.27 | Active |
-| 8.3 | 2025-12-31 | 2027-12-31 | 8.3.36 | Security |
-| 8.2 | 2024-12-31 | 2026-12-31 | 8.2.35 | Security |
+| 8.5 | 2027-12-31 | 2029-12-31 | 8.5.13 | Active |
+| 8.4 | 2026-12-31 | 2028-12-31 | 8.4.28 | Active |
+| 8.3 | 2025-12-31 | 2027-12-31 | 8.3.37 | Security |
+| 8.2 | 2024-12-31 | 2026-12-31 | 8.2.36 | Security |
 | 8.1 | 2023-11-25 | 2025-12-31 | n/a | Grace expired |
 | Laravel floor **12** |  |  |  |  |
-| 13 | 2027-09-30 | 2028-03-17 | 13.42.0 | Active |
-| 12 | 2026-08-13 | 2027-02-24 | 12.72.0 | Security |
+| 13 | 2027-09-30 | 2028-03-17 | 13.43.0 | Active |
+| 12 | 2026-08-13 | 2027-02-24 | 12.73.0 | Security |
 | 11 | 2025-09-03 | 2026-03-12 | 11.57.1 | Grace expired |
 | 10 | 2024-08-06 | 2025-02-04 | 10.50.4 | Grace expired |
 | Node floor **22** |  |  |  |  |
@@ -946,6 +946,11 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 ## Changelog [#](https://creed.apps.wayne.edu/docs/changelog.html#changelog)
 
 ### Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
+
+### 0.1.13 (2026-11-19) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-13-2026-11-19)
+
+- Changed: policy refresh: PHP 8.6 and the 2026-11-19 security patches (the policy robot added the 8.6 line from php.net states.php; latest patches 8.5.13, 8.4.28, 8.3.37 and 8.2.36; Laravel latest patches 12.73.0 and 13.43.0). The front page's inspector copy of the dates gained 8.6.
+- Added: the handbook's "Frameworks" section in `handbook/code.md`: new apps SHOULD be raw PHP or Laravel; CakePHP and Slim apps are legacy, still supported and upgraded by Booster, and the rule is advice only, never a failing check.
 
 ### 0.1.12 (2026-11-19) [#](https://creed.apps.wayne.edu/docs/changelog.html#0-1-12-2026-11-19)
 
@@ -2561,7 +2566,7 @@ Chapter 3
 
 ## Code
 
-13 sections · 43 provisions · **MUST NOT** 8 · **MUST** 23 · **SHOULD** 5
+14 sections · 46 provisions · **MUST NOT** 8 · **MUST** 23 · **SHOULD** 7
 
 Partly decided
 
@@ -2575,13 +2580,19 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - An app gets the preset through Pint's config: a root `pint.json` with a `preset` key (what [Sourdough](https://sourdough.apps.wayne.edu/) bakes ship), or `--config vendor/waynestate/pinstripe/pint/<preset>.json` (what [Pinstripe](https://pinstripe.apps.wayne.edu/)'s docs show) (the stack's coding standard).
 - Files **MUST** be UTF-8 without a BOM, with LF line endings (the stack's every-OS design). [PROCTOR](https://proctor.apps.wayne.edu/) check: `gitattributes-eol` (the LF pins; nothing checks for a BOM yet).
 
-### [§3.2](https://creed.apps.wayne.edu/handbook/code.html#reading-the-code) Reading the code
+### [§3.2](https://creed.apps.wayne.edu/handbook/code.html#frameworks) Frameworks
+
+- New apps **SHOULD** be raw PHP or Laravel (the department's framework direction). Sourdough starts both shapes, and [WELD](https://weld.apps.wayne.edu/) is the Laravel one, ready-made. Held by: advice only, never a check (D-124).
+- CakePHP and Slim apps are legacy. They stay supported: CREED keeps their `cakephp` and `slim` policy lines, and [Booster](https://booster.apps.wayne.edu/) upgrades them to PHP 8.5 on CakePHP 5 or Slim 4. When one of them needs a larger change, the team **SHOULD** plan its move to Laravel (Booster's Laravel hops are coming next) or to raw PHP. Held by: advice only, never a check (D-124).
+- This is advice, not a gate. No PROCTOR check fails an app for its framework; PROCTOR and [ADVISOR](https://advisor.apps.wayne.edu/) only mention it.
+
+### [§3.3](https://creed.apps.wayne.edu/handbook/code.html#reading-the-code) Reading the code
 
 - Comment where it helps: complex logic, areas that could improve, business rules that would otherwise be a mystery (**SHOULD**). Version history **MUST NOT** live in comments; git is the change log (WSU developer standards, 2024). No check exists yet.
 - Code that no longer runs **MUST** be removed, not commented out; git keeps it (WSU developer standards, 2024). No check exists yet.
 - Variable, class and database names **SHOULD** be complete and descriptive; avoid ambiguous abbreviations (WSU developer standards, 2024). No check exists yet.
 
-### [§3.3](https://creed.apps.wayne.edu/handbook/code.html#source-control-and-documentation) Source control and documentation
+### [§3.4](https://creed.apps.wayne.edu/handbook/code.html#source-control-and-documentation) Source control and documentation
 
 - All source **MUST** be kept in git. Access to a repo **MUST** be removed when someone leaves the project or the university (WSU developer standards, 2024). No check exists yet.
 - The stack's code has its primary home on git.wayne.edu; the standards name git.wayne.edu as the preferred home.
@@ -2589,7 +2600,7 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 - Every repo's README **MUST** say how to install, configure and deploy the code for local development, on every OS (see `every-os.md`), and how to update an existing deployment (WSU developer standards, 2024). No check exists yet.
 - If the Help Desk might be contacted about the project, the repo **SHOULD** keep an overview: what it does, who uses it, known common issues and who to call for an incident, and changes **SHOULD** be delivered to the Help Desk when it changes (WSU developer standards, 2024). No check exists yet.
 
-### [§3.4](https://creed.apps.wayne.edu/handbook/code.html#static-analysis) Static analysis
+### [§3.5](https://creed.apps.wayne.edu/handbook/code.html#static-analysis) Static analysis
 
 - New code **MUST** run PHPStan at level 8: the stack's own packages and every app Sourdough generates (the stack's coding standard). Held by: [Preflight](https://preflight.apps.wayne.edu/)'s `phpstan` component, running Pinstripe's level 8 preset.
 - Larastan loads only where Laravel is present (the stack's coding standard).
@@ -2601,12 +2612,12 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
   - The starters begin clean, so new apps pass from day one (the stack's coding standard).
   - Null handling is the class of bug level 8 adds; in the stack's auth and header code, a null bug is a security bug (the stack's coding standard).
 
-### [§3.5](https://creed.apps.wayne.edu/handbook/code.html#input-and-files) Input and files
+### [§3.6](https://creed.apps.wayne.edu/handbook/code.html#input-and-files) Input and files
 
 - All input (forms, API calls, headers, cookies, and data read from a database you do not control) **MUST** be validated on the server; SQL uses bound parameters, and output is escaped for where it lands. That guards against SQL injection and cross-site scripting (WSU developer standards, 2024). No check exists yet.
 - Files from untrusted sources **MUST** be checked against the expected type, **MUST NOT** be passed to include, class-loading or reflection calls, **MUST** be stored outside the served folder with limited permissions, and **MUST NOT** be executable (WSU developer standards, 2024). No check exists yet.
 
-### [§3.6](https://creed.apps.wayne.edu/handbook/code.html#banned-patterns) Banned patterns
+### [§3.7](https://creed.apps.wayne.edu/handbook/code.html#banned-patterns) Banned patterns
 
 Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowed-calls` for plain bans, and a custom rule only when neither fits.
 
@@ -2615,7 +2626,7 @@ Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowe
 - SQL **MUST NOT** be built by joining strings; use bindings (OWASP SQL Injection Prevention Cheat Sheet). Held by: Pinstripe's banned-call rule `pinstripe.banned.joinedSql` (since Pinstripe 0.3.0): a variable joined into the SQL given to PDO, mysqli, `oci_parse()` (and the old `ociparse()`) or Laravel's `DB::` calls fails; literal SQL with bindings passes.
 - Debug leftovers and dynamic code **MUST NOT** appear: `eval()`, `extract()`, `var_dump()`, `dd()` and `dump()`. Held by: `phpstan-disallowed-calls`, which bans them as `pinstripe.banned.eval`, `pinstripe.banned.extract`, `pinstripe.banned.varDump`, `pinstripe.banned.dd` and `pinstripe.banned.dump` (Pinstripe 0.2.0, [https://pinstripe.apps.wayne.edu/docs/reference/banned-calls.html](https://pinstripe.apps.wayne.edu/docs/reference/banned-calls.html)).
 
-### [§3.7](https://creed.apps.wayne.edu/handbook/code.html#vue-and-javascript) Vue and JavaScript
+### [§3.8](https://creed.apps.wayne.edu/handbook/code.html#vue-and-javascript) Vue and JavaScript
 
 - JavaScript **MUST** use ESLint's flat config (the stack's coding standard). Held by: Pinstripe's flat configs, run in CI by Preflight's `eslint` component.
 - Vue apps **MUST** use `eslint-plugin-vue`'s `flat/recommended-error`: the recommended rules with every warning raised to an error, so the editor, a local run and CI agree on what fails; the `-warn` presets keep warnings while an app adopts gradually (the stack's coding standard). Held by: Pinstripe's flat configs, run in CI by Preflight's `eslint` component.
@@ -2625,18 +2636,18 @@ Each ban becomes a PHPStan rule: Larastan's where it has one, `phpstan-disallowe
 - The stack's Inertia starter uses TypeScript; the raw Vue and Blade island starters use plain JavaScript, which stays fully supported (the stack's coding standard).
 - The lint tools **MUST** run on Node 22.13 or newer (the stack's coding standard). No check exists yet.
 
-### [§3.8](https://creed.apps.wayne.edu/handbook/code.html#security-analysis) Security analysis
+### [§3.9](https://creed.apps.wayne.edu/handbook/code.html#security-analysis) Security analysis
 
 - An app **MUST NOT** rely on GitLab SAST: the stack's GitLab instances run the Free tier (the stack's coding standard). No check exists yet.
 - The open tools instead: Larastan's env rule, `phpstan-disallowed-calls`, and a Psalm taint-analysis pilot on one app (the stack's coding standard).
 
-### [§3.9](https://creed.apps.wayne.edu/handbook/code.html#how-it-is-enforced) How it is enforced
+### [§3.10](https://creed.apps.wayne.edu/handbook/code.html#how-it-is-enforced) How it is enforced
 
 - Pint, PHPStan, Rector dry-runs and ESLint run in CI through Preflight components, not in the deploy gate (the stack's coding standard). Preflight 0.9.0 ships the `pint`, `phpstan` and `eslint` components; a Rector dry-run component is Planned.
 - New rules arrive as warnings and become errors on a stated date, the same staging as PHP versions (the stack's enforcement design).
 - PROCTOR reports whether an app uses the presets (the stack's coding standard). The PROCTOR report is Planned.
 
-### [§3.10](https://creed.apps.wayne.edu/handbook/code.html#which-preset-enforces-each-rule) Which preset enforces each rule
+### [§3.11](https://creed.apps.wayne.edu/handbook/code.html#which-preset-enforces-each-rule) Which preset enforces each rule
 
 Table 3-1
 
@@ -2651,18 +2662,18 @@ Table 3-1
 | Vue and JavaScript | `eslint/javascript.js` and `eslint/typescript.js` (npm `@waynestate/pinstripe`) | Built (Pinstripe 0.1.4) |
 | Security analysis | `phpstan/laravel.neon` (the env rule) and `phpstan/disallowed.neon` (the banned calls) are built; the Psalm taint pilot is not yet | Planned |
 
-### [§3.11](https://creed.apps.wayne.edu/handbook/code.html#not-adopted) Not adopted
+### [§3.12](https://creed.apps.wayne.edu/handbook/code.html#not-adopted) Not adopted
 
 - Mago and PHP_CodeSniffer 4 are not adopted; apps **MUST** use Pint as their only formatter (the stack's coding standard). No check exists yet.
 - Mago is looked at again before Pinstripe 1.0 (the stack's coding standard).
 
-### [§3.12](https://creed.apps.wayne.edu/handbook/code.html#to-be-decided) To be decided
+### [§3.13](https://creed.apps.wayne.edu/handbook/code.html#to-be-decided) To be decided
 
 - `declare(strict_types=1)` in every file. The sources recommend it, but the stack's coding standard does not decide it.
 - `phpstan-strict-rules` for the stack's packages (the stack's coding standard).
 - Where the ESLint package is published (the stack's coding standard).
 
-### [§3.13](https://creed.apps.wayne.edu/handbook/code.html#sources) Sources
+### [§3.14](https://creed.apps.wayne.edu/handbook/code.html#sources) Sources
 
 - PER Coding Style 3.1: [https://www.php-fig.org/per/coding-style/](https://www.php-fig.org/per/coding-style/)
 - PSR-1 Basic Coding Standard: [https://www.php-fig.org/psr/psr-1/](https://www.php-fig.org/psr/psr-1/)
@@ -2685,7 +2696,7 @@ Table 3-1
 - GitLab Code Quality: [https://docs.gitlab.com/ci/testing/code_quality/](https://docs.gitlab.com/ci/testing/code_quality/)
 - OWASP ASVS: [https://asvs.owasp.org/](https://asvs.owasp.org/)
 
-Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `3fc54f5`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/code.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/code.md), impression `df39391`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -2933,13 +2944,13 @@ The handbook · 2026 Edition
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a "Not decided here" heading.
 
-Fifteen chapters · 216 provisions · **MUST** 162 · **SHOULD** 26 · **MAY** 2
+Fifteen chapters · 219 provisions · **MUST** 162 · **SHOULD** 28 · **MAY** 2
 
 ### Contents
 
 1. [1 Versions Latest patches · Base images · Node · Tool minimums](https://creed.apps.wayne.edu/handbook/versions.html)4 sections · 4 provisions · **MUST NOT** 2 · **MUST** 5Decided
 2. [2 Dependencies Private packages](https://creed.apps.wayne.edu/handbook/dependencies.html)1 section · 16 provisions · **MUST NOT** 6 · **MUST** 11 · **SHOULD NOT** 1 · **SHOULD** 3Decided
-3. [3 Code PHP style · Reading the code · Source control and documentation · Static analysis · Input and files · Banned patterns · Vue and JavaScript · Security analysis · How it is enforced · Which preset enforces each rule · Not adopted · To be decided · Sources](https://creed.apps.wayne.edu/handbook/code.html)13 sections · 43 provisions · **MUST NOT** 8 · **MUST** 23 · **SHOULD** 5Partly decided
+3. [3 Code PHP style · Frameworks · Reading the code · Source control and documentation · Static analysis · Input and files · Banned patterns · Vue and JavaScript · Security analysis · How it is enforced · Which preset enforces each rule · Not adopted · To be decided · Sources](https://creed.apps.wayne.edu/handbook/code.html)14 sections · 46 provisions · **MUST NOT** 8 · **MUST** 23 · **SHOULD** 7Partly decided
 4. [4 Auth](https://creed.apps.wayne.edu/handbook/auth.html)14 provisions · **MUST** 11 · **SHOULD** 1Decided
 5. [5 Databases What the stack supports · Which MySQL lines the policy lists · Grace period · Names, comments and connections · Conventions that keep 5.6 working · Avoid until the server is upgraded · Moving to 8.4 · How the stack checks it · How the claims are proven · Sources](https://creed.apps.wayne.edu/handbook/databases.html)10 sections · 31 provisions · **MUST NOT** 3 · **MUST** 14 · **SHOULD** 3 · **MAY** 1Decided
 6. [6 Oracle, Banner and people Reading Oracle · Credentials and the client · People · LDAP · Not decided here](https://creed.apps.wayne.edu/handbook/oracle-and-people.html)5 sections · 15 provisions · **MUST NOT** 6 · **MUST** 6 · **SHOULD** 2Decided
