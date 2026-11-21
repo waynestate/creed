@@ -594,7 +594,7 @@ Checked
 
 #### §3.6 Pin CI components to a tag or SHA.
 
-Include shared CI components at a tag or a full commit SHA, never `~latest`. CREED's own pipeline pins its six Preflight components to the 0.9.0 tag.
+Include shared CI components at a tag or a full commit SHA, never `~latest`. CREED's own pipeline pins its six Preflight components to the 0.12.0 tag.
 
 Held by `ci.md` writes the rule. [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `preflight-pinned` (since 0.12.0) warns when any CI component include, [Preflight](https://creed.apps.wayne.edu/#ahj-preflight)'s or anyone else's, is not pinned to a full release tag or a commit SHA.
 
@@ -957,6 +957,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Changed: CI pins Preflight 0.12.0 (components and the a11y checker copy). The php-test component now also runs an advisory PHP 8.6 job that may fail and never gates the pipeline.
 - Docs: SECURITY.md says how to report a vulnerability privately.
 - Docs: four hand-written lines said `images.docker` is filled for PHP 8.3 to 8.5; the policy fills 8.3 to 8.6 (BEST_PRACTICES.md, docs/reference/policy-format.md, OPEN_QUESTIONS.md).
 - Docs: current pages no longer name the stack's internal GitLab host.
@@ -2685,14 +2686,14 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 - An automated accessibility check **SHOULD** run in CI on the app's key pages (the stack's accessibility design). Held by: Preflight's `a11y` component, below.
 - A manual keyboard and screen reader pass **MUST** happen before launch. An automated tool catches regressions; it is not proof of conformance, and it never replaces the pass (the stack's accessibility design). No check exists yet.
-- Preflight's `a11y` component (since 0.2.0; the pin is 0.9.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core in light and dark at 320 and 1280 px, and fails the pipeline on any violation. An app **SHOULD** add `wcag22aa` to its tags for the WCAG 2.2 AA target above. Held by: Preflight's a11y component (templates/a11y/template.yml).
+- Preflight's `a11y` component (since 0.2.0; the pin is 0.12.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core in light and dark at 320 and 1280 px, and fails the pipeline on any violation. An app **SHOULD** add `wcag22aa` to its tags for the WCAG 2.2 AA target above. Held by: Preflight's a11y component (templates/a11y/template.yml).
 
 ### [§10.4](https://creed.apps.wayne.edu/handbook/accessibility.html#not-decided-here) Not decided here
 
 - Whether and when the ADA Title II web rule applies to a given WSU unit. The rule applies WCAG 2.1 AA to public entities on dates that depend on the entity's size; the answer is for WSU's counsel and accessibility office, and this chapter does not decide it.
 - Which pages need a manual audit.
 
-Set from [`handbook/accessibility.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/accessibility.md), impression `14f1557`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/accessibility.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/accessibility.md), impression `a86e3af`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 

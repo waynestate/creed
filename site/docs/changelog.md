@@ -10,6 +10,7 @@ generator: Squire agent-ready
 
 ## Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Changed: CI pins Preflight 0.12.0 (components and the a11y checker copy). The php-test component now also runs an advisory PHP 8.6 job that may fail and never gates the pipeline.
 - Docs: SECURITY.md says how to report a vulnerability privately.
 - Docs: four hand-written lines said `images.docker` is filled for PHP 8.3 to 8.5; the policy fills 8.3 to 8.6 (BEST_PRACTICES.md, docs/reference/policy-format.md, OPEN_QUESTIONS.md).
 - Docs: current pages no longer name the stack's internal GitLab host.
