@@ -744,8 +744,7 @@ merge request approval, pipeline execution, vulnerability management, dependency
 not depend on them. Pipeline secret detection is listed for
 Free, Premium and Ultimate, but its findings in merge request reports and the vulnerability report are Ultimate only. GitLab
 accessibility testing (Pa11y) is listed for Free, Premium and Ultimate. git.wayne.edu, the home of every stack repo, runs
-GitLab 19.5.1 Community Edition, which is the Free tier; nougat, which keeps the stack's container registry, runs the same
-version.
+GitLab 19.5.1 Community Edition, which is the Free tier.
 
 Why: a gate that needs a license the instance may not have is a gate that never runs.
 
@@ -756,11 +755,10 @@ Sources: [GitLab dependency scanning](https://docs.gitlab.com/user/application_s
 [secret push protection](https://docs.gitlab.com/user/application_security/secret_detection/secret_push_protection/).
 
 How the stack holds it: `Documented`. The rule is written in `handbook/code.md`: the stack's GitLab instances run the
-Free tier, so nothing relies on GitLab SAST. git.wayne.edu (and nougat, which keeps the container registry) runs GitLab
-19.5.1 Community Edition (the Free tier). The five components CREED uses run PHPUnit (`php-test`), `composer audit`
-(`composer-audit`), PROCTOR (`proctor`), axe-core in Playwright (`a11y`) and a MySQL 5.6.51 service
-(`mysql56-migrate`), not a GitLab scanner (Preflight 0.9.0,
-the pin in `.gitlab-ci.yml`), so they fit it.
+Free tier, so nothing relies on GitLab SAST. git.wayne.edu runs GitLab 19.5.1 Community Edition (the Free tier). The
+five components CREED uses run PHPUnit (`php-test`), `composer audit` (`composer-audit`), PROCTOR (`proctor`), axe-core
+in Playwright (`a11y`) and a MySQL 5.6.51 service (`mysql56-migrate`), not a GitLab scanner (Preflight 0.9.0, the pin in
+`.gitlab-ci.yml`), so they fit it.
 
 ### 43. Treat `APP_KEY` as a code-execution key
 
