@@ -792,7 +792,7 @@ Why: pinning without rebuilding freezes the bugs; rebuilding without pinning cha
 
 Sources: [Docker build best practices](https://docs.docker.com/build/building/best-practices/).
 
-How the stack holds it: `Partially`. `policy.json` fills `images.docker` for PHP 8.3 to 8.5 with the official images,
+How the stack holds it: `Partially`. `policy.json` fills `images.docker` for PHP 8.3 to 8.6 with the official images,
 and the rebuild rule is written in `handbook/versions.md`; `tests/PolicyImagesTest.php` keeps the entries valid. The
 `citadel` names wait for Citadel to publish its image names.
 
@@ -1181,7 +1181,7 @@ Added in the second pass (2026-10-27):
     written in `handbook/code.md`; practice 42).
 25. Partly done: PROCTOR 0.7.0's `app-key` warns on a committed `.env` or `APP_KEY` and the cookie session driver, on
     every OS (practice 43). The secrets chapter names the check; the general secret scan is item 10.
-26. Partly done: `images.docker` is filled for PHP 8.3 to 8.5 and the rebuild rule is in `handbook/versions.md`;
+26. Partly done: `images.docker` is filled for PHP 8.3 to 8.6 and the rebuild rule is in `handbook/versions.md`;
     `citadel` waits for Citadel's image names.
 27. Ask the owners of git.wayne.edu to publish its GitLab patch level and a patch routine (practice 45).
 28. Done: policy.json records each Laravel release's minimum database (practice 46), and PROCTOR's `mysql-minimum`
