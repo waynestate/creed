@@ -405,8 +405,8 @@ Sources: [Composer basic usage](https://getcomposer.org/doc/01-basic-usage.md) (
 commit SHA, which it calls preferred, or to a release tag; it says to avoid `~latest`). The pinning rule itself is the
 stack's own, from the first-repos design.
 
-How the stack holds it: `Checked`. `ci.md` states it, and CREED's `.gitlab-ci.yml` pins its five Preflight
-components (`php-test`, `composer-audit`, `proctor`, `a11y` and `mysql56-migrate`) to the 0.9.0 tag. PROCTOR 0.12.0's
+How the stack holds it: `Checked`. `ci.md` states it, and CREED's `.gitlab-ci.yml` pins its six Preflight
+components (`php-test`, `composer-audit`, `secret-detection`, `proctor`, `a11y` and `mysql56-migrate`) to the 0.9.0 tag. PROCTOR 0.12.0's
 `proctor/preflight-pinned` warns when an app includes any CI component (Preflight's or anyone else's) at a branch, `~latest`, a partial version
 such as `0.3` or no ref; a full release tag (such as `@0.3.0`) or a full commit SHA passes.
 
@@ -756,9 +756,9 @@ Sources: [GitLab dependency scanning](https://docs.gitlab.com/user/application_s
 
 How the stack holds it: `Documented`. The rule is written in `handbook/code.md`: the stack's GitLab instances run the
 Free tier, so nothing relies on GitLab SAST. git.wayne.edu runs GitLab 19.5.1 Community Edition (the Free tier). The
-five components CREED uses run PHPUnit (`php-test`), `composer audit` (`composer-audit`), PROCTOR (`proctor`), axe-core
-in Playwright (`a11y`) and a MySQL 5.6.51 service (`mysql56-migrate`), not a GitLab scanner (Preflight 0.9.0, the pin in
-`.gitlab-ci.yml`), so they fit it.
+six components CREED uses run PHPUnit (`php-test`), `composer audit` (`composer-audit`), Gitleaks
+(`secret-detection`), PROCTOR (`proctor`), axe-core in Playwright (`a11y`) and a MySQL 5.6.51 service
+(`mysql56-migrate`), not a GitLab scanner (Preflight 0.9.0, the pin in `.gitlab-ci.yml`), so they fit it.
 
 ### 43. Treat `APP_KEY` as a code-execution key
 

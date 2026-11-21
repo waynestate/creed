@@ -290,7 +290,7 @@ Checked
 
 ### §3.6 Pin CI components to a tag or SHA.
 
-Include shared CI components at a tag or a full commit SHA, never `~latest`. CREED's own pipeline pins its five Preflight components to the 0.9.0 tag.
+Include shared CI components at a tag or a full commit SHA, never `~latest`. CREED's own pipeline pins its six Preflight components to the 0.9.0 tag.
 
 Held by `ci.md` writes the rule. [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `preflight-pinned` (since 0.12.0) warns when any CI component include, [Preflight](https://creed.apps.wayne.edu/#ahj-preflight)'s or anyone else's, is not pinned to a full release tag or a commit SHA.
 
