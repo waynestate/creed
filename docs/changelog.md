@@ -9,6 +9,8 @@ description: All notable changes to this project.
 
 ## Unreleased
 
+- Docs: SECURITY.md says how to report a vulnerability privately.
+- Docs: four hand-written lines said `images.docker` is filled for PHP 8.3 to 8.5; the policy fills 8.3 to 8.6 (BEST_PRACTICES.md, docs/reference/policy-format.md, OPEN_QUESTIONS.md).
 - Docs: current pages no longer name the stack's internal GitLab host.
 - Fixed: right after the framework fit deploy, `/php` on production said "tested lines not read" in every framework row and showed "?" for Laravel on 8.3 to 8.5, though the feed was right (`announced_ok` true, `framework_tests.ok` true, Laravel 8.5 `supported`, 13 and 12 on 8.6 `allowed`). The page is never cached, but the front controller cached scripts for an hour, so a browser that had opened `/php` before the deploy ran the old script on the new feed. `deploy/public/index.php` now serves scripts, styles and data with `Cache-Control: no-cache` and an ETag (a 304 when unchanged); images and fonts keep an hour. `tests/DeployLayoutTest.php` runs the front controller on the deployed layout and holds that, the test data path (`Feed::defaultTestsFile()`) and every asset `/php` links. When a source cannot be used, the fit names it under the table with its reason in plain words; the feed adds `framework_tests.reason`. The same hour-long script cache is in Squire's static and raw templates and every stack site's copy.
 - Removed: Squire's parity kit files (D-095). Parity runs the app locally: `parity up` in `deploy/`; `deploy/parity.json` is committed.

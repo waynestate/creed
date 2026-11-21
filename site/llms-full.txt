@@ -304,6 +304,8 @@ instance runner, so that capacity stays there.
 Creed Bratton, whose quality assurance work we all admire. His past is a
 mystery. Ours is in `policy/policy.json`, where it belongs.
 
+Found a security problem? See [SECURITY.md](https://github.com/waynestate/creed/blob/HEAD/SECURITY.md); please do not open a public issue.
+
 ---
 
 Source: https://creed.apps.wayne.edu/
@@ -955,6 +957,8 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Docs: SECURITY.md says how to report a vulnerability privately.
+- Docs: four hand-written lines said `images.docker` is filled for PHP 8.3 to 8.5; the policy fills 8.3 to 8.6 (BEST_PRACTICES.md, docs/reference/policy-format.md, OPEN_QUESTIONS.md).
 - Docs: current pages no longer name the stack's internal GitLab host.
 - Fixed: right after the framework fit deploy, `/php` on production said "tested lines not read" in every framework row and showed "?" for Laravel on 8.3 to 8.5, though the feed was right (`announced_ok` true, `framework_tests.ok` true, Laravel 8.5 `supported`, 13 and 12 on 8.6 `allowed`). The page is never cached, but the front controller cached scripts for an hour, so a browser that had opened `/php` before the deploy ran the old script on the new feed. `deploy/public/index.php` now serves scripts, styles and data with `Cache-Control: no-cache` and an ETag (a 304 when unchanged); images and fonts keep an hour. `tests/DeployLayoutTest.php` runs the front controller on the deployed layout and holds that, the test data path (`Feed::defaultTestsFile()`) and every asset `/php` links. When a source cannot be used, the fit names it under the table with its reason in plain words; the feed adds `framework_tests.reason`. The same hour-long script cache is in Squire's static and raw templates and every stack site's copy.
 - Removed: Squire's parity kit files (D-095). Parity runs the app locally: `parity up` in `deploy/`; `deploy/parity.json` is committed.
@@ -2365,7 +2369,7 @@ Each component holds a `versions` object that maps a version to a line. Every li
 | `latest_patch_checked` | string | A date. Optional. |
 | `current` | boolean | Marks the line as current. Optional. |
 | `requires` | object | May hold `php` (an object with required `min` and `max`, each a version string matching `^\d+(\.\d+)*$`) and `mysql` and `mariadb` (each a version string matching the same pattern), and nothing else. Optional. The bundled policy fills it for the Laravel lines, from Laravel's release notes and database pages. |
-| `images` | object | May hold `citadel`, `docker`, `openshift` and `coolify`, each a non-empty string. Optional. Today `docker` is filled for PHP 8.3 to 8.5; the other keys are not filled. |
+| `images` | object | May hold `citadel`, `docker`, `openshift` and `coolify`, each a non-empty string. Optional. Today `docker` is filled for PHP 8.3 to 8.6; the other keys are not filled. |
 
 The `current` rule is the only conditional in the schema: a line with `"current": true` must not carry `security_until`, and every other line must. A line marked `"current": false`, or with no `current` at all, therefore needs a `security_until`: CREED does not list a line before its dates are known. `bin/validate-policy.php` checks this rule before the schema and names the line and the fix, for example `php 9.9: the line has neither security_until nor "current": true; add security_until (...) or mark the line "current": true.` The rule matters at runtime too: the reader does not guess the state of an undated line, so `supported()` and `oldestSupported()` would throw for that whole component.
 
