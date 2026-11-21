@@ -62,7 +62,7 @@ Nothing changes for a consumer in how the policy is kept: the policy robot's Mon
 
 ## 0.1.6 (2026-11-03)
 
-A `policy-bot` CI job runs `bin/policy-bot.php run` with `CREED_BOT_TOKEN` on a weekly schedule (the one carrying `CREED_JOB=policy-bot`) or by hand; without the token it skips green, and the check-only `refresh-patches` job now skips that schedule. Docs and package metadata name nougat as the canonical repository, with git.wayne.edu and GitHub as read-only mirrors, until git.wayne.edu has CI runners.
+A `policy-bot` CI job runs `bin/policy-bot.php run` with `CREED_BOT_TOKEN` on a weekly schedule (the one carrying `CREED_JOB=policy-bot`) or by hand; without the token it skips green, and the check-only `refresh-patches` job now skips that schedule. Docs and package metadata named the stack's earlier GitLab instance as the canonical repository, with git.wayne.edu and GitHub as read-only mirrors, until git.wayne.edu had CI runners.
 
 ## 0.1.5 (2026-11-03)
 
