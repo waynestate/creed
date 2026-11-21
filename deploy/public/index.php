@@ -245,17 +245,25 @@ if ($extension === 'html') {
     exit;
 }
 
-// Everything else: a stable identity, a cache life of an hour, and a 304
-// when the client already holds this copy.
+// Everything else: a stable identity and a 304 when the client already holds
+// this copy. Scripts, styles and data are asked about on every load (no-cache
+// still caches; it only revalidates), because the HTML is never cached: an
+// hour-long script under a fresh page ran the old renderer on the new feed
+// and /php showed "tested lines not read" after a deploy (2026-11-20).
+// Images and fonts keep an hour. CREED's solo until Squire's template takes
+// it; keep this when Squire syncs this file.
+$revalidate = ['css', 'js', 'mjs', 'json', 'md', 'txt', 'xml', 'webmanifest'];
 $stat = stat($resolved);
 $etag = '"' . sha1($stat['mtime'] . '-' . $stat['size']) . '"';
 $lastModified = gmdate('D, d M Y H:i:s', $stat['mtime']) . ' GMT';
 
 $ifNoneMatch = $_SERVER['HTTP_IF_NONE_MATCH'] ?? '';
+$cacheControl = in_array($extension, $revalidate, true) ? 'no-cache' : 'public, max-age=3600';
 $matches = $ifNoneMatch !== ''
     && ($ifNoneMatch === '*' || in_array($etag, array_map('trim', explode(',', $ifNoneMatch)), true));
 if ($matches) {
     http_response_code(304);
+    header('Cache-Control: ' . $cacheControl);
     header('ETag: ' . $etag);
     header('Last-Modified: ' . $lastModified);
     exit;
@@ -264,7 +272,7 @@ if ($matches) {
 header('Content-Type: ' . $mime[$extension]);
 header('ETag: ' . $etag);
 header('Last-Modified: ' . $lastModified);
-header('Cache-Control: public, max-age=3600');
+header('Cache-Control: ' . $cacheControl);
 header('Content-Length: ' . $stat['size']);
 if ($method === 'GET') {
     readfile($resolved);

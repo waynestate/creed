@@ -56,6 +56,11 @@ front controller. It builds the document with `deploy/lib/PhpLifecycle`:
 - php.net asks for its JSON to be cached for up to 30 days. The fetcher ignores that and asks for a fresh copy.
 - A source that fails keeps its last good answer, marked stale with the time it was last read. A source that has never
   answered shows as down and contributes nothing.
+- The page and its script always match. `deploy/public/index.php` serves HTML uncached and scripts, styles and data
+  (`.js`, `.css`, `.json`, `.md`, `.txt`, `.xml`) with `Cache-Control: no-cache` and an ETag, so a browser asks on
+  every load and gets a 304 when nothing changed. Images and fonts keep an hour. Before 2026-11-20 scripts were cached
+  for an hour: right after a deploy, a browser that had opened `/php` earlier ran the old script on the new feed and
+  showed "tested lines not read" in every row. `tests/DeployLayoutTest.php` runs the front controller and holds this.
 - The cache lives in `CREED_PHP_FEED_CACHE` when that variable is set, otherwise in the system temp folder
   (`creed-php-lifecycle`).
 
@@ -132,19 +137,22 @@ support as book pages and changelog prose (research in the coordination repo), s
 no row parses, or the table has no row for a major, that major's cells drop to **Unknown**: never green from an older
 read, never red. The feed says so: `frameworks[].announced_ok` is false with `announced_reason` (`timed out`, `the
 Support Policy table did not parse`, `the Support Policy table has no row for Laravel 14`), the row shows "support
-table not read", and a note says why.
+table not read, see below", and a line under the table names the source and the reason in plain words.
 
 **Where our test comes from.** `data/framework-php-tests.json`, committed and shipped with the deployed tree (Citadel
 deploys the whole checkout; the feed reads it from beside `deploy/`), read on every refresh. See
 [Our framework tests](framework-php-tests.md) for how it is made. When the file is missing or is not the matrix, every
-cell's test reads "not run", so no cell is **Supported**, and a note says so.
+cell's test reads "not run", so no cell is **Supported**. `framework_tests.reason` says why (`data/framework-php-tests.json
+is not in the deployed tree`, `... could not be read on the server` or `... is not a framework test matrix`), and the
+same words show under the table. `tests/DeployLayoutTest.php` holds the path: `Feed::defaultTestsFile()` must resolve
+to the committed file, and it must parse.
 
 The feed carries, per framework major: `allows` (unchanged), `announced` (the same shape keyed by PHP line, null when
 nothing readable was announced), `announced_lines`, `announced_source` (the raw URL read), `announced_link` (the
 rendered table), `announced_fetched_at`, `announced_ok` (true, false, or null for a framework with no readable source),
 `announced_reason`, `our_test` (per line: state, PHP patch, framework version, date, failing step and first error, or
-null when not run) and `fit`. The document carries `framework_tests` (whether the results file was read, its date, and
-links to it and its docs page).
+null when not run) and `fit`. The document carries `framework_tests` (whether the results file was read, the reason
+when it was not, its date, and links to it and its docs page).
 ### Legacy frameworks
 
 CakePHP and Slim are being phased out (department rule D-124: new apps use raw PHP or Laravel). Their rows in the

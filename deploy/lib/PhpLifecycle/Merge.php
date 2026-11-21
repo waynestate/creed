@@ -74,6 +74,7 @@ final class Merge
      *     wikiPages?: ?list<array{branch: string, page: string}>,
      *     master?: ?array{version: string, branch: string, major: int, minor: int, extra: string},
      *     frameworks?: array<string, array{name: string, url: string, majors: ?list<array{version: string, major: string, released: ?string, php: ?string}>, announced?: array{ok: ?bool, source: ?string, link: ?string, fetched_at: ?string, reason: ?string, lines: ?array<int, list<string>>}, lifecycle?: ?string, lifecycle_note?: ?string}>,
+     *     tests_reason?: ?string,
      *     tests?: ?array{generated: ?string, cells: array<string, array<string, array{state: string, php_version: ?string, date: ?string, version: ?string, step: ?string, first_error: ?string}>>},
      *     platforms?: array<string, ?list<string>>,
      * } $in
@@ -311,6 +312,7 @@ final class Merge
         // (data/framework-php-tests.json). Green needs the announcement AND our pass. A constraint
         // like ^8.3 "allows" every 8.x to come, and a CI matrix is not an announcement.
         $tests = $in['tests'] ?? null;
+        $testsReason = $tests === null ? ($in['tests_reason'] ?? 'the file could not be read') : null;
         $frameworks = [];
         foreach ($in['frameworks'] ?? [] as $package => $f) {
             $a = $f['announced'] ?? ['ok' => null, 'source' => null, 'link' => null, 'fetched_at' => null, 'reason' => null, 'lines' => null];
@@ -343,7 +345,7 @@ final class Merge
             }
         }
         if ($frameworks !== [] && $tests === null) {
-            $notes[] = "CREED's own framework test results (data/framework-php-tests.json) could not be read, so every cell says not run and none is supported.";
+            $notes[] = "CREED's own framework test results could not be used (" . $testsReason . '), so every cell says not run and none is supported.';
         }
 
         // endoflife.date behind php.net is worth saying out loud.
@@ -378,7 +380,7 @@ final class Merge
             'timelines' => $timelines,
             'frameworks' => $frameworks,
             // Where the "our test" half of the fit comes from, and whether it was read.
-            'framework_tests' => ['ok' => $tests !== null, 'generated' => $tests['generated'] ?? null, 'source' => self::TESTS_SOURCE, 'docs' => self::TESTS_DOCS],
+            'framework_tests' => ['ok' => $tests !== null, 'reason' => $testsReason, 'generated' => $tests['generated'] ?? null, 'source' => self::TESTS_SOURCE, 'docs' => self::TESTS_DOCS],
             'platforms' => $platforms,
             'sources' => $sources,
             'notes' => $notes,

@@ -180,6 +180,9 @@
 .pl-fw .pl-fw__src:hover { text-decoration: none; background: color-mix(in srgb, currentColor 12%, transparent); }
 .pl-fw .pl-fw__src--unread { color: var(--ink-2); border-style: dashed; }
 .pl-fw__note { display: block; font-family: var(--mono); font-size: .62rem; color: var(--ink-2); font-style: italic; }
+/* A source the fit could not use, named with its reason under the table: a rule on the left, never a color alone. */
+.pl-fit__why { margin: .5rem 0 0; padding: .1rem 0 .1rem .6rem; list-style: none; border-left: 2px solid var(--ink-2); font-size: .76rem; line-height: 1.45; color: var(--ink); }
+.pl-fit__why li + li { margin-top: .25rem; }
 /* The key: one line per state, the mark, its name, and where it comes from. */
 .pl-fitkey { display: grid; gap: .3rem; margin: .7rem 0 0; padding: .55rem 0 0; border-top: 1px solid var(--rule); list-style: none; font-size: .76rem; line-height: 1.25; color: var(--ink); }
 .pl-fitkey li { display: grid; grid-template-columns: 1rem minmax(0, 1fr); column-gap: .55rem; align-items: start; }

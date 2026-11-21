@@ -89,6 +89,15 @@ final class Feed
     private array $backfill = [];
 
     /**
+     * Where the deployed tree keeps CREED's matrix results. Citadel checks out the whole repository and
+     * serves deploy/, so data/ sits two levels above deploy/lib (tests/DeployLayoutTest.php holds this).
+     */
+    public static function defaultTestsFile(): string
+    {
+        return dirname(__DIR__, 3) . '/data/framework-php-tests.json';
+    }
+
+    /**
      * @param ?string $testsFile CREED's matrix results; null reads data/framework-php-tests.json
      *                           from the deployed tree (this file is deploy/lib/PhpLifecycle/Feed.php)
      */
@@ -245,10 +254,17 @@ final class Feed
             ];
         }
 
-        // Read every refresh, so a deploy with new results shows them within TTL_MINUTES.
-        $testsFile = $this->testsFile ?? dirname(__DIR__, 3) . '/data/framework-php-tests.json';
+        // Read every refresh, so a deploy with new results shows them within TTL_MINUTES. When it
+        // cannot be used, the feed says why in plain words, so the page can too.
+        $testsFile = $this->testsFile ?? self::defaultTestsFile();
         $raw = is_file($testsFile) ? @file_get_contents($testsFile) : false;
         $in['tests'] = $raw === false ? null : Parse::frameworkTests($raw);
+        $in['tests_reason'] = match (true) {
+            !is_file($testsFile) => 'data/framework-php-tests.json is not in the deployed tree',
+            $raw === false => 'data/framework-php-tests.json could not be read on the server',
+            $in['tests'] === null => 'data/framework-php-tests.json is not a framework test matrix',
+            default => null,
+        };
 
         /** @phpstan-ignore argument.type (the cache holds what Parse returned; Merge re-checks shapes it relies on) */
         $doc = Merge::build($in, $now, $sources);

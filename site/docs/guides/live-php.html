@@ -138,6 +138,11 @@ front controller. It builds the document with <code>deploy/lib/PhpLifecycle</cod
 <li>php.net asks for its JSON to be cached for up to 30 days. The fetcher ignores that and asks for a fresh copy.</li>
 <li>A source that fails keeps its last good answer, marked stale with the time it was last read. A source that has never
 answered shows as down and contributes nothing.</li>
+<li>The page and its script always match. <code>deploy/public/index.php</code> serves HTML uncached and scripts, styles and data
+(<code>.js</code>, <code>.css</code>, <code>.json</code>, <code>.md</code>, <code>.txt</code>, <code>.xml</code>) with <code>Cache-Control: no-cache</code> and an ETag, so a browser asks on
+every load and gets a 304 when nothing changed. Images and fonts keep an hour. Before 2026-11-20 scripts were cached
+for an hour: right after a deploy, a browser that had opened <code>/php</code> earlier ran the old script on the new feed and
+showed &quot;tested lines not read&quot; in every row. <code>tests/DeployLayoutTest.php</code> runs the front controller and holds this.</li>
 <li>The cache lives in <code>CREED_PHP_FEED_CACHE</code> when that variable is set, otherwise in the system temp folder
 (<code>creed-php-lifecycle</code>).</li>
 </ul>
@@ -235,17 +240,19 @@ support as book pages and changelog prose (research in the coordination repo), s
 <p><strong>Fail-safe.</strong> The table counts only when this refresh read and parsed it. When the fetch fails, the layout changes so
 no row parses, or the table has no row for a major, that major's cells drop to <strong>Unknown</strong>: never green from an older
 read, never red. The feed says so: <code>frameworks[].announced_ok</code> is false with <code>announced_reason</code> (<code>timed out</code>, <code>the Support Policy table did not parse</code>, <code>the Support Policy table has no row for Laravel 14</code>), the row shows &quot;support
-table not read&quot;, and a note says why.</p>
+table not read, see below&quot;, and a line under the table names the source and the reason in plain words.</p>
 <p><strong>Where our test comes from.</strong> <code>data/framework-php-tests.json</code>, committed and shipped with the deployed tree (Citadel
 deploys the whole checkout; the feed reads it from beside <code>deploy/</code>), read on every refresh. See
 <a href="framework-php-tests.html">Our framework tests</a> for how it is made. When the file is missing or is not the matrix, every
-cell's test reads &quot;not run&quot;, so no cell is <strong>Supported</strong>, and a note says so.</p>
+cell's test reads &quot;not run&quot;, so no cell is <strong>Supported</strong>. <code>framework_tests.reason</code> says why (<code>data/framework-php-tests.json is not in the deployed tree</code>, <code>... could not be read on the server</code> or <code>... is not a framework test matrix</code>), and the
+same words show under the table. <code>tests/DeployLayoutTest.php</code> holds the path: <code>Feed::defaultTestsFile()</code> must resolve
+to the committed file, and it must parse.</p>
 <p>The feed carries, per framework major: <code>allows</code> (unchanged), <code>announced</code> (the same shape keyed by PHP line, null when
 nothing readable was announced), <code>announced_lines</code>, <code>announced_source</code> (the raw URL read), <code>announced_link</code> (the
 rendered table), <code>announced_fetched_at</code>, <code>announced_ok</code> (true, false, or null for a framework with no readable source),
 <code>announced_reason</code>, <code>our_test</code> (per line: state, PHP patch, framework version, date, failing step and first error, or
-null when not run) and <code>fit</code>. The document carries <code>framework_tests</code> (whether the results file was read, its date, and
-links to it and its docs page).</p>
+null when not run) and <code>fit</code>. The document carries <code>framework_tests</code> (whether the results file was read, the reason
+when it was not, its date, and links to it and its docs page).</p>
 <h3 id="legacy-frameworks">Legacy <span class="docs-heading-tail"><span>frameworks</span><a class="docs-heading-link" aria-label="Link to this section" href="#legacy-frameworks">#</a></span></h3>
 <p>CakePHP and Slim are being phased out (department rule D-124: new apps use raw PHP or Laravel). Their rows in the
 framework fit sit under a &quot;Legacy: being phased out&quot; band, styled apart from the support colors, with the note &quot;Don't

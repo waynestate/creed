@@ -725,7 +725,7 @@
         ]),
         old ? h("span", { class: "wsu-sr-only", text: ", legacy, being phased out" }) : null,
         h("span", { class: "pl-fw__req", title: "require.php of " + f.version, text: f.version + " · " + (f.php || "no php constraint") }),
-        f.announced_ok === false ? h("span", { class: "pl-fw__note", text: "support table not read" }) : null
+        f.announced_ok === false ? h("span", { class: "pl-fw__note", text: "support table not read, see below" }) : null
       ])]);
       cols.forEach(function (c) {
         var key = fitOf(f, c);
@@ -740,6 +740,21 @@
     });
     table.appendChild(tb);
     els.fit.appendChild(table);
+    // A source that could not be used is named under the table, with its reason, in plain words.
+    var why = [];
+    var said = {};
+    fw.forEach(function (f) {
+      if (f.announced_ok !== false) return;
+      var line = f.name + "'s support table could not be used" + (f.announced_reason ? ": " + f.announced_reason : "") + ". Those cells show unknown, never supported.";
+      if (!said[line]) { said[line] = true; why.push(line); }
+    });
+    var tests = doc.framework_tests;
+    if (tests && tests.ok === false) {
+      why.push("CREED's own test results could not be used" + (tests.reason ? ": " + tests.reason : "") + ". Every cell says our test was not run, so none is supported.");
+    }
+    if (why.length) {
+      els.fit.appendChild(h("ul", { class: "pl-fit__why", "aria-label": "Sources the framework fit could not use" }, why.map(function (t) { return h("li", { text: t }); })));
+    }
     // The key links Laravel's table on the branch the feed read, when it read one.
     var link = document.querySelector("[data-pl-laravel-policy]");
     if (link && policy) link.setAttribute("href", policy);

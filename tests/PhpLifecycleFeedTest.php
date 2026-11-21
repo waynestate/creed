@@ -195,6 +195,7 @@ final class PhpLifecycleFeedTest extends TestCase
         self::assertSame('unknown', $fw['Slim 4']['fit']['8.5']);
         self::assertIsArray($doc['framework_tests']);
         self::assertTrue($doc['framework_tests']['ok']);
+        self::assertNull($doc['framework_tests']['reason']);
     }
 
     #[Test]
@@ -259,8 +260,14 @@ final class PhpLifecycleFeedTest extends TestCase
         self::assertNull($fw['Laravel 13']['our_test']['8.5']);
         self::assertIsArray($doc['framework_tests']);
         self::assertFalse($doc['framework_tests']['ok']);
+        // The page says why in plain words, never a vague "not read".
+        self::assertSame('data/framework-php-tests.json is not in the deployed tree', $doc['framework_tests']['reason']);
+        self::assertIsArray($doc['notes']);
+        self::assertContains("CREED's own framework test results could not be used (data/framework-php-tests.json is not in the deployed tree), so every cell says not run and none is supported.", $doc['notes']);
 
         $doc = $this->fresh([], [], __DIR__ . '/fixtures/php-lifecycle/states.json');
+        self::assertIsArray($doc['framework_tests']);
+        self::assertSame('data/framework-php-tests.json is not a framework test matrix', $doc['framework_tests']['reason']);
         $fw = self::frameworks($doc);
         self::assertIsArray($fw['Laravel 13']['fit']);
         self::assertSame('announced-untested', $fw['Laravel 13']['fit']['8.5'], 'a file that is not the matrix counts as missing');
