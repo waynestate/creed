@@ -46,6 +46,9 @@
 <h2 id="unreleased"><span class="docs-heading-tail"><span>Unreleased</span><a class="docs-heading-link" aria-label="Link to this section" href="#unreleased">#</a></span></h2>
 <ul>
 <li>
+<p>Docs: current pages no longer name the stack's internal GitLab host.</p>
+</li>
+<li>
 <p>Fixed: right after the framework fit deploy, <code>/php</code> on production said &quot;tested lines not read&quot; in every framework row and showed &quot;?&quot; for Laravel on 8.3 to 8.5, though the feed was right (<code>announced_ok</code> true, <code>framework_tests.ok</code> true, Laravel 8.5 <code>supported</code>, 13 and 12 on 8.6 <code>allowed</code>). The page is never cached, but the front controller cached scripts for an hour, so a browser that had opened <code>/php</code> before the deploy ran the old script on the new feed. <code>deploy/public/index.php</code> now serves scripts, styles and data with <code>Cache-Control: no-cache</code> and an ETag (a 304 when unchanged); images and fonts keep an hour. <code>tests/DeployLayoutTest.php</code> runs the front controller on the deployed layout and holds that, the test data path (<code>Feed::defaultTestsFile()</code>) and every asset <code>/php</code> links. When a source cannot be used, the fit names it under the table with its reason in plain words; the feed adds <code>framework_tests.reason</code>. The same hour-long script cache is in Squire's static and raw templates and every stack site's copy.</p>
 </li>
 <li>
