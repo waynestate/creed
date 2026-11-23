@@ -10,5 +10,5 @@ PROCTOR 0.11.0
 PROCTOR 0.12.0
 PROCTOR 0.14.0
 Parity 0.2.0
-Preflight 0.9.0
+Preflight 0.12.0
 WayneUI 2.0.8
