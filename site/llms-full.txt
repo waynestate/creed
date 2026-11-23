@@ -247,7 +247,7 @@ PROCTOR, Booster and Rollcall each carry a generated copy of the reader
 under their own namespace, so two tools in one app never fight over a class
 name (the generator below keeps the copies in step). ADVISOR carries CREED's
 policy and handbook as a data bundle instead. The copies began
-because CREED was not on Packagist. It is now (`waynestate/creed`, 0.1.12 at this writing), so
+because CREED was not on Packagist. It is now (`waynestate/creed`, 0.1.14 at this writing), so
 each copy can become a real `require`, one consumer at a time; until a
 consumer switches, its copy stays. CREED owns the generator and the check:
 
@@ -495,6 +495,7 @@ Table 2-1 Adopted editions, with the state on 2026-10-29
 | Runtime | Active until | Security until | Latest patch | State |
 | --- | --- | --- | --- | --- |
 | PHP floor **8.2** |  |  |  |  |
+| 8.6 | 2028-12-31 | 2030-12-31 | 8.6.0 | Active |
 | 8.5 | 2027-12-31 | 2029-12-31 | 8.5.13 | Active |
 | 8.4 | 2026-12-31 | 2028-12-31 | 8.4.28 | Active |
 | 8.3 | 2025-12-31 | 2027-12-31 | 8.3.37 | Security |
@@ -752,7 +753,7 @@ CREED writes the rules down. These are the other projects in the stack, and the 
 - ![Booster logo: a syringe with rocket fins and a gold flame](https://creed.apps.wayne.edu/assets/marks/booster.png)[Booster](https://booster.apps.wayne.edu/) *new*Upgrades PHP and Laravel one version at a time.Gets you off a Grace expired row
 - ![ADVISOR logo: a speech bubble with a gold compass needle](https://creed.apps.wayne.edu/assets/marks/advisor.png)[ADVISOR](https://advisor.apps.wayne.edu/) *new*An MCP server your agent can ask about the rules and dates.Explains; never gates (§6.4)
 - ![Squire logo: a satchel with a gold buckle](https://creed.apps.wayne.edu/assets/marks/squire.png)[Squire](https://squire.apps.wayne.edu/) *new*Carries the release to Citadel. This page deploys with it.The deploy gate, proposed
-- ![Parity logo: a spirit level with a gold bubble](https://creed.apps.wayne.edu/assets/marks/parity.png)[Parity](https://parity.apps.wayne.edu/) *new*Runs Citadel on your computer: its PHP image, its proxy and MySQL 5.6. Version 0.1.0 is out.[§6.5](https://creed.apps.wayne.edu/#c-6-5)
+- ![Parity logo: a spirit level with a gold bubble](https://creed.apps.wayne.edu/assets/marks/parity.png)[Parity](https://parity.apps.wayne.edu/) *new*Runs Citadel on your computer: its PHP image, its proxy and MySQL 5.6. Version 0.2.0 is out.[§6.5](https://creed.apps.wayne.edu/#c-6-5)
 - ![Drawbridge logo: a castle tower with its bridge down on a gold chain](https://creed.apps.wayne.edu/assets/marks/drawbridge.png)[Drawbridge](https://drawbridge.apps.wayne.edu/) *new*The Citadel sign-in gateway.Erratum E-8
 
 Appendix A
@@ -763,7 +764,7 @@ Two ways in: read the policy from your own PHP tool, or clone CREED and run its 
 
 #### A.1 Read the policy from PHP
 
-Any OS with PHP 8.3 or newer and Composer. On Packagist, 0.1.12, the thirteenth printing
+Any OS with PHP 8.3 or newer and Composer. On Packagist, 0.1.14, the fifteenth printing
 
 `$ composer require waynestate/creed`
 
