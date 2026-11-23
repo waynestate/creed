@@ -304,6 +304,8 @@ instance runner, so that capacity stays there.
 Creed Bratton, whose quality assurance work we all admire. His past is a
 mystery. Ours is in `policy/policy.json`, where it belongs.
 
+Found a security problem? See [SECURITY.md](https://github.com/waynestate/creed/blob/HEAD/SECURITY.md); please do not open a public issue.
+
 ---
 
 Source: https://creed.apps.wayne.edu/
@@ -593,7 +595,7 @@ Checked
 
 #### §3.6 Pin CI components to a tag or SHA.
 
-Include shared CI components at a tag or a full commit SHA, never `~latest`. CREED's own pipeline pins its six Preflight components to the 0.9.0 tag.
+Include shared CI components at a tag or a full commit SHA, never `~latest`. CREED's own pipeline pins its six Preflight components to the 0.12.0 tag.
 
 Held by `ci.md` writes the rule. [PROCTOR](https://creed.apps.wayne.edu/#ahj-proctor) `preflight-pinned` (since 0.12.0) warns when any CI component include, [Preflight](https://creed.apps.wayne.edu/#ahj-preflight)'s or anyone else's, is not pinned to a full release tag or a commit SHA.
 
@@ -958,6 +960,9 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 - Added: `bin/front-mentions.php` (`composer site:mentions` rewrites it, `site:mentions-check` is wired into `composer ci`) holds the front page's stack-project version mentions ("since PROCTOR 0.10.0", "HELMET 1.0.0 sends no header", "On Packagist, 0.1.12") to `site/version-mentions.txt`. A mention is a three-part version whose own line names a stack project before it (the nearest name wins, so "six Preflight components to the 0.9.0 tag" reads as Preflight); when the line names nothing, the tool looks up to eight lines back and stops at a line carrying its own version, so GitLab's 19.5.1 in the errata is never read as HELMET's. Two-part versions, names inside paths or filenames (waynestate/creed, .squire/) and docker tags behind a colon are not mentions; Table 2-1 stays with `site:versions-check`. `tests/FrontPageMentionsTest.php` runs the script against the committed page and throwaway roots.
 - Added: `FrontPageInspectorTest` holds Table 2-1's Latest patch cells to `policy/policy.json` in both `site/index.html` and its Markdown twin `site/index.md`: every rendered row whose policy line carries a `latest_patch` must print it, and a row without one must print n/a; the failure names the component, what the cell says and what the policy says. `composer site:versions-check` already held the HTML table, but nothing held the twin, so a policy refresh could leave the Markdown copy printing last month's patch.
+- Changed: CI pins Preflight 0.12.0 (components and the a11y checker copy). The php-test component now also runs an advisory PHP 8.6 job that may fail and never gates the pipeline.
+- Docs: SECURITY.md says how to report a vulnerability privately.
+- Docs: four hand-written lines said `images.docker` is filled for PHP 8.3 to 8.5; the policy fills 8.3 to 8.6 (BEST_PRACTICES.md, docs/reference/policy-format.md, OPEN_QUESTIONS.md).
 - Docs: current pages no longer name the stack's internal GitLab host.
 - Fixed: right after the framework fit deploy, `/php` on production said "tested lines not read" in every framework row and showed "?" for Laravel on 8.3 to 8.5, though the feed was right (`announced_ok` true, `framework_tests.ok` true, Laravel 8.5 `supported`, 13 and 12 on 8.6 `allowed`). The page is never cached, but the front controller cached scripts for an hour, so a browser that had opened `/php` before the deploy ran the old script on the new feed. `deploy/public/index.php` now serves scripts, styles and data with `Cache-Control: no-cache` and an ETag (a 304 when unchanged); images and fonts keep an hour. `tests/DeployLayoutTest.php` runs the front controller on the deployed layout and holds that, the test data path (`Feed::defaultTestsFile()`) and every asset `/php` links. When a source cannot be used, the fit names it under the table with its reason in plain words; the feed adds `framework_tests.reason`. The same hour-long script cache is in Squire's static and raw templates and every stack site's copy.
 - Removed: Squire's parity kit files (D-095). Parity runs the app locally: `parity up` in `deploy/`; `deploy/parity.json` is committed.
@@ -2368,7 +2373,7 @@ Each component holds a `versions` object that maps a version to a line. Every li
 | `latest_patch_checked` | string | A date. Optional. |
 | `current` | boolean | Marks the line as current. Optional. |
 | `requires` | object | May hold `php` (an object with required `min` and `max`, each a version string matching `^\d+(\.\d+)*$`) and `mysql` and `mariadb` (each a version string matching the same pattern), and nothing else. Optional. The bundled policy fills it for the Laravel lines, from Laravel's release notes and database pages. |
-| `images` | object | May hold `citadel`, `docker`, `openshift` and `coolify`, each a non-empty string. Optional. Today `docker` is filled for PHP 8.3 to 8.5; the other keys are not filled. |
+| `images` | object | May hold `citadel`, `docker`, `openshift` and `coolify`, each a non-empty string. Optional. Today `docker` is filled for PHP 8.3 to 8.6; the other keys are not filled. |
 
 The `current` rule is the only conditional in the schema: a line with `"current": true` must not carry `security_until`, and every other line must. A line marked `"current": false`, or with no `current` at all, therefore needs a `security_until`: CREED does not list a line before its dates are known. `bin/validate-policy.php` checks this rule before the schema and names the line and the fix, for example `php 9.9: the line has neither security_until nor "current": true; add security_until (...) or mark the line "current": true.` The rule matters at runtime too: the reader does not guess the state of an undated line, so `supported()` and `oldestSupported()` would throw for that whole component.
 
@@ -2684,14 +2689,14 @@ Key words The key words **MUST**, **MUST NOT**, **SHOULD**, **SHOULD NOT** and *
 
 - An automated accessibility check **SHOULD** run in CI on the app's key pages (the stack's accessibility design). Held by: Preflight's `a11y` component, below.
 - A manual keyboard and screen reader pass **MUST** happen before launch. An automated tool catches regressions; it is not proof of conformance, and it never replaces the pass (the stack's accessibility design). No check exists yet.
-- Preflight's `a11y` component (since 0.2.0; the pin is 0.9.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core in light and dark at 320 and 1280 px, and fails the pipeline on any violation. An app **SHOULD** add `wcag22aa` to its tags for the WCAG 2.2 AA target above. Held by: Preflight's a11y component (templates/a11y/template.yml).
+- Preflight's `a11y` component (since 0.2.0; the pin is 0.12.0) is the stack's CI check: it opens the app's pages in Chromium, runs axe-core in light and dark at 320 and 1280 px, and fails the pipeline on any violation. An app **SHOULD** add `wcag22aa` to its tags for the WCAG 2.2 AA target above. Held by: Preflight's a11y component (templates/a11y/template.yml).
 
 ### [§10.4](https://creed.apps.wayne.edu/handbook/accessibility.html#not-decided-here) Not decided here
 
 - Whether and when the ADA Title II web rule applies to a given WSU unit. The rule applies WCAG 2.1 AA to public entities on dates that depend on the entity's size; the answer is for WSU's counsel and accessibility office, and this chapter does not decide it.
 - Which pages need a manual audit.
 
-Set from [`handbook/accessibility.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/accessibility.md), impression `14f1557`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/accessibility.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/accessibility.md), impression `a86e3af`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 

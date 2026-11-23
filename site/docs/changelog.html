@@ -50,6 +50,13 @@
 </li>
 <li>
 <p>Added: <code>FrontPageInspectorTest</code> holds Table 2-1's Latest patch cells to <code>policy/policy.json</code> in both <code>site/index.html</code> and its Markdown twin <code>site/index.md</code>: every rendered row whose policy line carries a <code>latest_patch</code> must print it, and a row without one must print n/a; the failure names the component, what the cell says and what the policy says. <code>composer site:versions-check</code> already held the HTML table, but nothing held the twin, so a policy refresh could leave the Markdown copy printing last month's patch.</p>
+<p>Changed: CI pins Preflight 0.12.0 (components and the a11y checker copy). The php-test component now also runs an advisory PHP 8.6 job that may fail and never gates the pipeline.</p>
+</li>
+<li>
+<p>Docs: SECURITY.md says how to report a vulnerability privately.</p>
+</li>
+<li>
+<p>Docs: four hand-written lines said <code>images.docker</code> is filled for PHP 8.3 to 8.5; the policy fills 8.3 to 8.6 (BEST_PRACTICES.md, docs/reference/policy-format.md, OPEN_QUESTIONS.md).</p>
 </li>
 <li>
 <p>Docs: current pages no longer name the stack's internal GitLab host.</p>

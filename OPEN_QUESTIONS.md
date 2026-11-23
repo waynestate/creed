@@ -32,7 +32,7 @@ These are numbers the stack's maintainers choose. CREED ships the data model, so
    Meanwhile CREED treats the CI host as part of the supply chain and says nothing about its schedule. Changes: a
    published patch level and routine, which practice 45 can then cite.
 3. **When the platform adds a PHP image, and how it retires one** (practices 44 and 48, backlog items 26 and 30, front
-   page E-13). `images.docker` is filled for PHP 8.3 to 8.5; `images.citadel` waits for Citadel's image names, and no
+   page E-13). `images.docker` is filled for PHP 8.3 to 8.6; `images.citadel` waits for Citadel's image names, and no
    target says how soon a new PHP image arrives or how much notice comes before one is dropped. Changes: Citadel's
    image names fill `images.citadel`, and a stated target and notice period go into `handbook/versions.md`.
 4. **The shared MySQL 5.6 server's replacement timeline** (practices 17 and 47, backlog item 8, front page E-14). PROCTOR's
