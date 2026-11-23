@@ -47,7 +47,7 @@ site freshness check. On Windows, if tests fail oddly after a Docker install, de
 
 ## CI
 
-- **GitLab:** Preflight components (`php-test` on PHP 8.3, 8.4 and 8.5, `composer-audit`, `proctor` for the
+- **GitLab:** Preflight components (`php-test` on PHP 8.3, 8.4 and 8.5, `composer-audit`, `secret-detection`, `proctor` for the
   `deploy/` layer, which blocks on a failing check, `a11y`, which runs axe-core on every page in `site/`, and `mysql56-migrate` as the `mysql56-probe` job, which asks a real
   MySQL 5.6.51 about the databases chapter on main and tag pipelines, and again as the `mysql84-probe` job, which asks MySQL 8.4.13), plus `composer-ci` and `wayneui-copies` jobs. On scheduled pipelines, `refresh-patches`
   (check-only) runs on a schedule without `CREED_JOB`, and `policy-bot` on the Monday schedule that carries
@@ -100,7 +100,7 @@ The older-reader contract is pinned by `tests/OlderReaderContractTest.php`; chan
 ## Releasing
 
 1. Move the lines under `## Unreleased` in `CHANGELOG.md` to a new `## X.Y.Z (YYYY-MM-DD)` heading, leaving an empty
-   `## Unreleased`. (0.1.0 predates the heading convention, so it has none.)
+   `## Unreleased`.
 2. `composer ci` green locally, then on the git.wayne.edu pipeline for that commit.
 3. Run a secrets scan of the history and check that nothing internal (server names, people, IDs) is in the tree.
 4. Tag `X.Y.Z` (no `v`) on git.wayne.edu. The mirror carries the tag to GitHub, and Packagist picks it up from there.
