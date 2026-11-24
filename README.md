@@ -108,6 +108,8 @@ The reader's public members, one line each:
 - `abandonedPackages()`, `overrideMaxDays()`, `overrideSelfApproval()`: one rule each, with the stack's default when the policy predates it (`fail`, 90, `warn`).
 - `fixWithinDays($severity)`: the days an app has to ship a fix for an advisory of that severity (`critical`, `high`, `medium` or `low`), or null while the policy states none.
 - `gateStage($checkId, $on)`: the deploy-gate stage (`report`, `warn` or `block`) of one PROCTOR check on a date.
+- `deprecationWindowDays()`: the days a removal must wait after the release that announced the deprecation (28 when the policy sets none; a value that is not a positive integer throws `InvalidArgumentException`).
+- `deprecations()`: the announcements recorded in the policy's `deprecations` list, in file order, each entry as written (empty when the policy has none; an entry that lacks a required key, has a bad date, or removes inside the window throws `InvalidArgumentException`).
 
 One last time: the reader answers, it does not guess.
 

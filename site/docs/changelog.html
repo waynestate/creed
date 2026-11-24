@@ -52,6 +52,9 @@
 <p>Added: practice 62 and section 12 (&quot;Deprecation and removal&quot;) in BEST_PRACTICES.md, and a &quot;Deprecations&quot; section in <code>handbook/dependencies.md</code>, for the D-174 deprecation window: a removal of a stack package's API ships no sooner than 4 weeks after the release that announced the deprecation (packages below 1.0) or in the next major (1.0 and later); the announcement is an entry in CREED's policy <code>deprecations</code>, recorded before or with the announcing release; PROCTOR's <code>deprecations</code> check warns, and never fails, while an app's <code>composer.lock</code> still holds the package (the check ships in a later PROCTOR release).</p>
 </li>
 <li>
+<p>Docs: the reader API page and the README list <code>deprecations()</code> and <code>deprecationWindowDays()</code> (the D-174 deprecation window), which <code>ReferenceDocsTest</code> requires.</p>
+</li>
+<li>
 <p>Docs: the databases chapter no longer states which MySQL version Citadel's shared server runs.</p>
 </li>
 <li>
