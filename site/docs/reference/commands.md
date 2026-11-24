@@ -26,6 +26,8 @@ This page lists every command CREED ships, what each one does, and the exit code
 | `composer site:handbook-check` | Fail when `site/handbook/` is stale against `handbook/*.md`. |
 | `composer site:agent-ready` | Rewrite the Markdown twins, `llms.txt`, `llms-full.txt`, `robots.txt` and `sitemap.xml` in `site/` (SQUIRE's agent-ready kit). |
 | `composer site:agent-ready-check` | Fail when those agent-ready files are stale. |
+| `composer site:tally` | Write the front page's counts from `BEST_PRACTICES.md`: the practice count in the meta description, the title-page tally, the contents heading, each contents row's clause range and stamp bar (a new chapter gets a row), and the errata's backlog count. |
+| `composer site:tally-check` | Fail when one of those counts is stale; `composer ci` runs it. |
 | `composer analyse` | PHPStan. |
 
 Tip

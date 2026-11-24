@@ -1,6 +1,6 @@
 ---
 title: "CREED: The standard everything rests on."
-description: "CREED is the Wayne State app stack's written standard: 61 numbered practices, policy.json with the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader that tells a tool what state a version is in on a given day."
+description: "CREED is the Wayne State app stack's written standard: 62 numbered practices, policy.json with the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader that tells a tool what state a version is in on a given day."
 url: https://creed.apps.wayne.edu/
 llms: https://creed.apps.wayne.edu/llms.txt
 generator: Squire agent-ready
@@ -27,14 +27,14 @@ These are the stack's written standards. The handbook has the practices, and `po
 - **Enforced**: 7
 - **Checked**: 20
 - **Partially**: 12
-- **Documented**: 18
+- **Documented**: 19
 - **Not yet**: 4
 
 Table of contents
 
-## Eleven chapters, 61 practices
+## Twelve chapters, 62 practices
 
-Each practice has a reason, its sources and a stamp for how the stack holds it today. Clause numbers follow the chapters, so §2.1 is practice 11 in [BEST_PRACTICES.md](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md). This page prints the clauses people ask about most. All 61 are in that file, and the rules themselves are in [the handbook](https://creed.apps.wayne.edu/handbook/).
+Each practice has a reason, its sources and a stamp for how the stack holds it today. Clause numbers follow the chapters, so §2.1 is practice 11 in [BEST_PRACTICES.md](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md). This page prints the clauses people ask about most. All 62 are in that file, and the rules themselves are in [the handbook](https://creed.apps.wayne.edu/handbook/).
 
 1. [1 The version policy as data §1.1 to §1.10](https://creed.apps.wayne.edu/#ch-1)
 2. [2 PHP and framework versions §2.1 to §2.7](https://creed.apps.wayne.edu/#ch-2)
@@ -47,6 +47,7 @@ Each practice has a reason, its sources and a stamp for how the stack holds it t
 9. [9 Policy data §9.1 to §9.3](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#9-policy-data-second-pass)
 10. [10 Accessibility and the legal floor §10.1 to §10.3](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#10-accessibility-and-the-legal-floor-second-pass)
 11. [11 WSU developer standards §11.1 to §11.7](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#11-wsu-developer-standards-2024)
+12. [12 Deprecation and removal §12.1 to §12.1](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#12-deprecation-and-removal-d-174)
 
 ### Key to the stamps
 

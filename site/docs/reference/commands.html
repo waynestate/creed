@@ -101,6 +101,14 @@
 <td>Fail when those agent-ready files are stale.</td>
 </tr>
 <tr>
+<td><code>composer site:tally</code></td>
+<td>Write the front page's counts from <code>BEST_PRACTICES.md</code>: the practice count in the meta description, the title-page tally, the contents heading, each contents row's clause range and stamp bar (a new chapter gets a row), and the errata's backlog count.</td>
+</tr>
+<tr>
+<td><code>composer site:tally-check</code></td>
+<td>Fail when one of those counts is stale; <code>composer ci</code> runs it.</td>
+</tr>
+<tr>
 <td><code>composer analyse</code></td>
 <td>PHPStan.</td>
 </tr>
