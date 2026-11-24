@@ -114,8 +114,9 @@
 <h2 id="what-the-stack-supports"><a class="hb-sec" href="#what-the-stack-supports">§5.1</a> What the stack supports</h2>
 <p>The policy lists the MySQL versions in <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json"><code>policy/policy.json</code></a>, under <code>mysql</code>:
 5.6, 5.7, 8.0, 8.4 and 9.7, each with its <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json" title="components.*.versions.*.active_until in policy.json"><code>active_until</code></a> and <a class="hb-policy-key" href="https://github.com/waynestate/creed/blob/main/policy/policy.json" title="components.*.versions.*.security_until in policy.json"><code>security_until</code></a>
-dates. The shared server runs 5.6, which is past security support; its
-<code>security_until</code> is 2021-02-28. Laravel 13 documents MySQL 5.7 or later, and
+dates. The shared server runs an older MySQL line that is past security
+support; the policy gives each line's <code>active_until</code> and <code>security_until</code>
+dates. Laravel 13 documents MySQL 5.7 or later, and
 each Laravel line in the policy records the oldest MySQL and MariaDB it needs
 (<code>requires.mysql</code> and <code>requires.mariadb</code>); <a class="tool" href="https://proctor.apps.wayne.edu/"><img src="../assets/marks/proctor.png" alt="" width="16" height="16">PROCTOR</a> 0.10.0's <code>mysql-minimum</code>
 warns when an app's declared database image is below that minimum. The
@@ -139,7 +140,8 @@ second support window: the fix is still the upgrade. PROCTOR check:
 <code>mysql-eol</code>.</p>
 <ul>
 <li>For MySQL and MariaDB the check warns and does not fail yet. While Citadel's
-shared server runs 5.6, an app has no supported MySQL to move to there, so a
+shared server runs an older MySQL line, an app has no supported MySQL to
+move to there, so a
 security-only, <code>Eol</code> or <code>EolGraceExpired</code> version warns, and still says to
 move to 8.4 or later. It starts failing past the window when Citadel offers a
 supported MySQL <span class="hb-cite">(the stack's MySQL gate decision)</span>. PROCTOR check: <code>mysql-eol</code>
@@ -273,8 +275,8 @@ and 1.2, per its release notes), which current hosts may refuse.
 The probes cannot show this one: the stock 5.6.51 image starts with TLS off.
 Both are reasons to plan the move rather than wait for it.</p>
 <h2 id="how-the-stack-checks-it"><a class="hb-sec" href="#how-the-stack-checks-it">§5.8</a> How the stack checks it</h2>
-<p>PROCTOR's <code>mysql56</code> check warns on the patterns the shared 5.6 server
-rejects: JSON columns and queries, generated columns, <code>renameColumn</code> and
+<p>PROCTOR's <code>mysql56</code> check warns on the patterns the shared server rejects:
+JSON columns and queries, generated columns, <code>renameColumn</code> and
 <code>renameIndex</code>, vector, invisible and spatial columns, column introspection,
 the raw-SQL syntax, the upsert row alias, indexed strings over 191
 characters, a missing <code>Schema::defaultStringLength(191)</code>, <code>date</code> columns
@@ -346,7 +348,7 @@ its owners know; a probe that says &quot;the default&quot; means the image's.</p
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="auth.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 4</span><span class="hb-pager__name">Auth</span></a><a class="hb-pager__link hb-pager__link--next" href="oracle-and-people.html" rel="next"><span class="hb-pager__dir">Next · Chapter 6</span><span class="hb-pager__name">Oracle, Banner and people</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/databases.md"><code>handbook/databases.md</code> on GitHub</a>, impression <code>6ff9960</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/databases.md"><code>handbook/databases.md</code> on GitHub</a>, impression <code>daaf00a</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 
