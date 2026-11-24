@@ -114,8 +114,8 @@ One real line from `policy/policy.json`, verbatim (the PHP 8.2 entry):
 "8.2": {
     "active_until": "2024-12-31",
     "security_until": "2026-12-31",
-    "latest_patch": "8.2.35",
-    "latest_patch_checked": "2026-10-28"
+    "latest_patch": "8.2.36",
+    "latest_patch_checked": "2026-11-20"
 },
 ```
 

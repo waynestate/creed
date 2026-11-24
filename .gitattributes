@@ -36,6 +36,7 @@ tools/a11y/check.mjs text eol=lf
 /bin/docs-site.php          export-ignore
 /bin/framework-matrix.php   export-ignore
 /bin/framework-matrix-cell.php export-ignore
+/bin/front-mentions.php      export-ignore
 /bin/front-versions.php     export-ignore
 /bin/lint-handbook.php      export-ignore
 /bin/mysql56-probe.php      export-ignore
