@@ -46,6 +46,8 @@ This page lists every public member of the `Waynestate\Creed\Policy` reader, in 
 | `overrideSelfApproval()` | What PROCTOR does with a self-approved override: `warn` or `fail` (`warn` when the policy sets none) | `public function overrideSelfApproval(): string` |
 | `fixWithinDays($severity)` | The days an app has to ship a fix for an advisory of that severity, or null while the policy states none | `public function fixWithinDays(string $severity): ?int` |
 | `gateStage($checkId, $on)` | The deploy-gate stage of one PROCTOR check on a date: `report`, `warn` or `block` (`block` when the policy has no `gate` block) | `public function gateStage(string $checkId, DateTimeImmutable $on): string` |
+| `deprecationWindowDays()` | The days a removal must wait after the release that announced the deprecation (28 when the policy sets none; a value that is not a positive integer throws `InvalidArgumentException`) | `public function deprecationWindowDays(): int` |
+| `deprecations()` | The announcements recorded in the policy's `deprecations` list, in file order, each entry as written (empty when the policy has none; an entry that lacks a required key, has a bad date, or removes inside the window throws `InvalidArgumentException`) | `public function deprecations(): array` |
 
 Note
 
