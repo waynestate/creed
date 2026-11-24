@@ -229,7 +229,7 @@ ceiling: we do not go lower, no matter how the crowd sings for more.</p>
           <div>
             <p class="chap-head__kicker">Chapter 2</p>
             <h2 id="dependencies-title" class="hb-book__title">Dependencies</h2>
-            <p class="hb-register">1 section · 16 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 6 · <strong class="kw kw--must">MUST</strong> 11 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 3</p>
+            <p class="hb-register">2 sections · 19 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 7 · <strong class="kw kw--must">MUST</strong> 12 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 4</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -307,6 +307,26 @@ per ecosystem) and rule 4 (the canonical entry and the Packagist exclusion)
 are planned, not built: earlier versions of this chapter named them as
 <code>package-sources</code> and <code>internal-vendor-shadowing</code>, but PROCTOR has never
 shipped either.</p>
+<h3 id="dependencies--deprecations"><a class="hb-sec" href="#dependencies--deprecations">§2.2</a> Deprecations</h3>
+<p>A removal of a stack package's API ships no sooner than 4 weeks after the
+release that announced the deprecation (packages below 1.0), or in the next
+major (1.0 and later). Announcements are entries in CREED's policy
+<code>deprecations</code>, and the window is <code>rules.deprecation_window_days</code> (28 days).
+PROCTOR's <code>deprecations</code> check warns while an app still uses a deprecated
+package and never fails on it. An emergency removal (a security fix that
+cannot wait) is allowed, and its changelog entry names it as an emergency.</p>
+<ul>
+<li>A stack package <strong class="kw kw--must">MUST</strong> record a deprecation in CREED's policy
+<code>deprecations</code> before or with the release that announces it (decision
+D-174). No check exists yet.</li>
+<li>A stack package <strong class="kw kw--must-not">MUST NOT</strong> remove the deprecated API before
+<code>removal_not_before</code>: the announcement date plus
+<code>rules.deprecation_window_days</code> (28 days) for a package below 1.0, or the
+next major for 1.0 and later (decision D-174). No check exists yet.</li>
+<li>An app that still uses a deprecated package <strong class="kw kw--should">SHOULD</strong> move to the
+replacement named in the entry before that date (decision D-174). PROCTOR
+check: <code>deprecations</code> (a warning, added in a later PROCTOR release).</li>
+</ul>
 <div class="hb-policy" role="note"><p class="hb-policy__title">In <a href="https://github.com/waynestate/creed/blob/main/policy/policy.json"><code>policy.json</code></a></p><dl><div><dt><code>rules.abandoned_packages</code></dt><dd><code>&quot;fail&quot;</code></dd></div><div><dt><code>rules.audit_severity_threshold</code></dt><dd><code>&quot;high&quot;</code></dd></div></dl></div>
           </div>
       </article>
@@ -1306,7 +1326,7 @@ a permanent override <span class="hb-cite">(the stack's deploy-gate decision)</s
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>3074774</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>0a822d0</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

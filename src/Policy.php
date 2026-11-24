@@ -69,7 +69,7 @@ abstract class PolicyDeprecations
     public function deprecations(): array
     {
         $list = $this->deprecationsRaw();
-        if (!is_array($list)) {
+        if (!array_is_list($list)) {
             throw new InvalidArgumentException('Policy "deprecations" must be a list of entries.');
         }
         $required = ['package', 'api', 'announced_in', 'announced_on', 'removal_not_before', 'replacement'];

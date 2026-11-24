@@ -60,7 +60,7 @@
   <p class="hb-nav__title"><a href="./">The Handbook</a></p>
   <ol class="hb-nav__list">
       <li><a href="versions.html"><span class="hb-nav__no">1</span><span class="hb-nav__name">Versions</span></a></li>
-      <li class="is-here"><a href="dependencies.html" aria-current="page"><span class="hb-nav__no">2</span><span class="hb-nav__name">Dependencies</span></a><ol class="hb-nav__sub"><li><a href="#private-packages" data-toc="private-packages">Private packages</a></li></ol></li>
+      <li class="is-here"><a href="dependencies.html" aria-current="page"><span class="hb-nav__no">2</span><span class="hb-nav__name">Dependencies</span></a><ol class="hb-nav__sub"><li><a href="#private-packages" data-toc="private-packages">Private packages</a></li><li><a href="#deprecations" data-toc="deprecations">Deprecations</a></li></ol></li>
       <li><a href="code.html"><span class="hb-nav__no">3</span><span class="hb-nav__name">Code</span></a></li>
       <li><a href="auth.html"><span class="hb-nav__no">4</span><span class="hb-nav__name">Auth</span></a></li>
       <li><a href="databases.html"><span class="hb-nav__no">5</span><span class="hb-nav__name">Databases</span></a></li>
@@ -86,7 +86,7 @@
           <div>
             <p class="chap-head__kicker">Chapter 2</p>
             <h1 id="page-title">Dependencies</h1>
-            <p class="hb-register">1 section · 16 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 6 · <strong class="kw kw--must">MUST</strong> 11 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 3</p>
+            <p class="hb-register">2 sections · 19 provisions · <strong class="kw kw--must-not">MUST NOT</strong> 7 · <strong class="kw kw--must">MUST</strong> 12 · <strong class="kw kw--should-not">SHOULD NOT</strong> 1 · <strong class="kw kw--should">SHOULD</strong> 4</p>
           </div>
           <span class="stamp stamp--enforced hb-status">Decided</span>
         </header>
@@ -95,6 +95,7 @@
         <p class="hb-toc__title">On this page</p>
         <ol>
             <li class="hb-toc__l2"><a href="#private-packages" data-toc="private-packages"><span class="hb-toc__no">2.1</span> Private packages</a></li>
+            <li class="hb-toc__l2"><a href="#deprecations" data-toc="deprecations"><span class="hb-toc__no">2.2</span> Deprecations</a></li>
         </ol>
       </nav>
           <div class="hb-prose" data-hb-prose>
@@ -171,13 +172,33 @@ per ecosystem) and rule 4 (the canonical entry and the Packagist exclusion)
 are planned, not built: earlier versions of this chapter named them as
 <code>package-sources</code> and <code>internal-vendor-shadowing</code>, but PROCTOR has never
 shipped either.</p>
+<h2 id="deprecations"><a class="hb-sec" href="#deprecations">§2.2</a> Deprecations</h2>
+<p>A removal of a stack package's API ships no sooner than 4 weeks after the
+release that announced the deprecation (packages below 1.0), or in the next
+major (1.0 and later). Announcements are entries in CREED's policy
+<code>deprecations</code>, and the window is <code>rules.deprecation_window_days</code> (28 days).
+PROCTOR's <code>deprecations</code> check warns while an app still uses a deprecated
+package and never fails on it. An emergency removal (a security fix that
+cannot wait) is allowed, and its changelog entry names it as an emergency.</p>
+<ul>
+<li>A stack package <strong class="kw kw--must">MUST</strong> record a deprecation in CREED's policy
+<code>deprecations</code> before or with the release that announces it (decision
+D-174). No check exists yet.</li>
+<li>A stack package <strong class="kw kw--must-not">MUST NOT</strong> remove the deprecated API before
+<code>removal_not_before</code>: the announcement date plus
+<code>rules.deprecation_window_days</code> (28 days) for a package below 1.0, or the
+next major for 1.0 and later (decision D-174). No check exists yet.</li>
+<li>An app that still uses a deprecated package <strong class="kw kw--should">SHOULD</strong> move to the
+replacement named in the entry before that date (decision D-174). PROCTOR
+check: <code>deprecations</code> (a warning, added in a later PROCTOR release).</li>
+</ul>
 <div class="hb-policy" role="note"><p class="hb-policy__title">In <a href="https://github.com/waynestate/creed/blob/main/policy/policy.json"><code>policy.json</code></a></p><dl><div><dt><code>rules.abandoned_packages</code></dt><dd><code>&quot;fail&quot;</code></dd></div><div><dt><code>rules.audit_severity_threshold</code></dt><dd><code>&quot;high&quot;</code></dd></div></dl></div>
           </div>
         </div>
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="versions.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 1</span><span class="hb-pager__name">Versions</span></a><a class="hb-pager__link hb-pager__link--next" href="code.html" rel="next"><span class="hb-pager__dir">Next · Chapter 3</span><span class="hb-pager__name">Code</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/dependencies.md"><code>handbook/dependencies.md</code> on GitHub</a>, impression <code>409d93c</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/dependencies.md"><code>handbook/dependencies.md</code> on GitHub</a>, impression <code>3246de6</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

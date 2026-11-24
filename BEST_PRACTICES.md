@@ -24,7 +24,7 @@ Each practice has a reason, sources, and a tag that says how the stack holds it 
 | `Not yet` | A gap. |
 
 Tags describe the repository and design documents as they stand on 2026-10-29. Practices 55 to 61 were added on
-2026-11-02. Nine tags were re-checked against the tree on 2026-11-06 (practices 14, 24, 39, 42, 44, 46, 49, 50 and
+2026-11-02, and practice 62 (section 12) on 2026-11-24. Nine tags were re-checked against the tree on 2026-11-06 (practices 14, 24, 39, 42, 44, 46, 49, 50 and
 51). On 2026-11-08 every tag, count and named file was re-checked against this tree, PROCTOR main, Preflight 0.2.0,
 HELMET main and Rollcall main, and five tags moved (practices 8, 17, 23, 34 and 53). Later that day the pin moved to
 Preflight 0.3.0, and the practices that name it (23 and 42) were re-read against 0.3.0. PROCTOR v0.1 is specified in

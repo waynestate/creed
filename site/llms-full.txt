@@ -1,6 +1,6 @@
 # CREED: everything in one file
 
-> CREED is the Wayne State app stack's written standard: 61 numbered practices, policy.json with the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader that tells a tool what state a version is in on a given day.
+> CREED is the Wayne State app stack's written standard: 62 numbered practices, policy.json with the support dates for PHP, Laravel, Node, MySQL, Vue and Inertia, and a small PHP reader that tells a tool what state a version is in on a given day.
 
 The README and the Markdown twin of every page, joined. The index is https://creed.apps.wayne.edu/llms.txt. Written by Squire's agent-ready kit; do not edit.
 
@@ -331,14 +331,14 @@ These are the stack's written standards. The handbook has the practices, and `po
 - **Enforced**: 7
 - **Checked**: 20
 - **Partially**: 12
-- **Documented**: 18
+- **Documented**: 19
 - **Not yet**: 4
 
 Table of contents
 
-### Eleven chapters, 61 practices
+### Twelve chapters, 62 practices
 
-Each practice has a reason, its sources and a stamp for how the stack holds it today. Clause numbers follow the chapters, so §2.1 is practice 11 in [BEST_PRACTICES.md](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md). This page prints the clauses people ask about most. All 61 are in that file, and the rules themselves are in [the handbook](https://creed.apps.wayne.edu/handbook/).
+Each practice has a reason, its sources and a stamp for how the stack holds it today. Clause numbers follow the chapters, so §2.1 is practice 11 in [BEST_PRACTICES.md](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md). This page prints the clauses people ask about most. All 62 are in that file, and the rules themselves are in [the handbook](https://creed.apps.wayne.edu/handbook/).
 
 1. [1 The version policy as data §1.1 to §1.10](https://creed.apps.wayne.edu/#ch-1)
 2. [2 PHP and framework versions §2.1 to §2.7](https://creed.apps.wayne.edu/#ch-2)
@@ -351,6 +351,7 @@ Each practice has a reason, its sources and a stamp for how the stack holds it t
 9. [9 Policy data §9.1 to §9.3](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#9-policy-data-second-pass)
 10. [10 Accessibility and the legal floor §10.1 to §10.3](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#10-accessibility-and-the-legal-floor-second-pass)
 11. [11 WSU developer standards §11.1 to §11.7](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#11-wsu-developer-standards-2024)
+12. [12 Deprecation and removal §12.1 to §12.1](https://github.com/waynestate/creed/blob/main/BEST_PRACTICES.md#12-deprecation-and-removal-d-174)
 
 #### Key to the stamps
 
@@ -958,6 +959,8 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Added: `bin/front-tally.php` (`composer site:tally` writes, `site:tally-check` is wired into `composer ci`) writes the front page's counts from `BEST_PRACTICES.md`, the record: the practice count in the meta description, the title-page tally, the contents heading, the "All N are in that file" line, each contents row's clause range and stamp bar, and the errata's backlog count. A chapter with no contents row gets one, linked to its heading. Practice 62 (section 12) made the front page say 61 practices and eleven chapters with Documented at 18; it now says 62, twelve and 19, and lists section 12 in the contents. `tests/FrontTallyTest.php` runs the script against throwaway roots; `FrontPageTallyTest` still holds the stamp on each reprinted clause.
+- Added: practice 62 and section 12 ("Deprecation and removal") in BEST_PRACTICES.md, and a "Deprecations" section in `handbook/dependencies.md`, for the D-174 deprecation window: a removal of a stack package's API ships no sooner than 4 weeks after the release that announced the deprecation (packages below 1.0) or in the next major (1.0 and later); the announcement is an entry in CREED's policy `deprecations`, recorded before or with the announcing release; PROCTOR's `deprecations` check warns, and never fails, while an app's `composer.lock` still holds the package (the check ships in a later PROCTOR release).
 - Handbook: the stack's Prometheus server runs, so the final store can be picked (sqlite stays interim until then).
 - Changed: `deploy/` requires PROCTOR `^0.18` (was `^0.16`, which does not allow 0.18); 0.18.0 adds the update notice, the fake-driver check and the app-env warning (D-133).
 - Added: `bin/front-mentions.php` (`composer site:mentions` rewrites it, `site:mentions-check` is wired into `composer ci`) holds the front page's stack-project version mentions ("since PROCTOR 0.10.0", "HELMET 1.0.0 sends no header", "On Packagist, 0.1.12") to `site/version-mentions.txt`. A mention is a three-part version whose own line names a stack project before it (the nearest name wins, so "six Preflight components to the 0.9.0 tag" reads as Preflight); when the line names nothing, the tool looks up to eight lines back and stops at a line carrying its own version, so GitLab's 19.5.1 in the errata is never read as HELMET's. Two-part versions, names inside paths or filenames (waynestate/creed, .squire/) and docker tags behind a colon are not mentions; Table 2-1 stays with `site:versions-check`. `tests/FrontPageMentionsTest.php` runs the script against the committed page and throwaway roots.
@@ -1269,7 +1272,7 @@ This is CREED's real maintenance job.
 
 `site/` is the static front page. It is served on Citadel at `https://creed.apps.wayne.edu/` (pre-production first) by the raw-PHP layer in `deploy/`: HELMET's headers in front, PROCTOR and this policy in the release. `deploy/` is its own Composer project, separate from the library. Most of it is generated by Squire (`deploy/.squire.json` records what), so regenerate it rather than hand-editing it. Only `deploy/public/index.php`, `deploy/public/.htaccess` and `deploy/composer.json` are written by hand. Run it locally with [Parity](https://git.wayne.edu/enterprise-apps/parity): `parity init --from-squire` once inside `deploy/`, then `parity up`.
 
-When a stamp in `BEST_PRACTICES.md` changes, or a practice is added, update the front page in the same commit: the tally on the title page, the contents heading, that chapter's stamp bar and clause range, and the stamp on any clause the page reprints. `FrontPageTallyTest` recounts the stamps from `BEST_PRACTICES.md` and fails `composer ci` until `site/index.html` agrees; then run `composer site:agent-ready` so `site/index.md` and `llms-full.txt` follow.
+When a stamp in `BEST_PRACTICES.md` changes, or a practice or chapter is added, run `composer site:tally` in the same commit. It writes the front page's counts from `BEST_PRACTICES.md`: the tally on the title page, the meta description, the contents heading, each chapter's stamp bar and clause range (a new chapter gets a contents row linked to its heading), and the errata's backlog count; `site:tally-check` in `composer ci` fails while one is stale. The stamp on a clause the page reprints is still yours to change, because it means rereading the clause, and `FrontPageTallyTest` fails `composer ci` until it agrees. Then run `composer site:agent-ready` so `site/index.md` and `llms-full.txt` follow.
 
 ### Open questions [#](https://creed.apps.wayne.edu/docs/contributing.html#open-questions)
 
@@ -2134,6 +2137,8 @@ This page lists every command CREED ships, what each one does, and the exit code
 | `composer site:handbook-check` | Fail when `site/handbook/` is stale against `handbook/*.md`. |
 | `composer site:agent-ready` | Rewrite the Markdown twins, `llms.txt`, `llms-full.txt`, `robots.txt` and `sitemap.xml` in `site/` (SQUIRE's agent-ready kit). |
 | `composer site:agent-ready-check` | Fail when those agent-ready files are stale. |
+| `composer site:tally` | Write the front page's counts from `BEST_PRACTICES.md`: the practice count in the meta description, the title-page tally, the contents heading, each contents row's clause range and stamp bar (a new chapter gets a row), and the errata's backlog count. |
+| `composer site:tally-check` | Fail when one of those counts is stale; `composer ci` runs it. |
 | `composer analyse` | PHPStan. |
 
 Tip
@@ -3079,7 +3084,7 @@ Chapter 2
 
 ## Dependencies
 
-1 section · 16 provisions · **MUST NOT** 6 · **MUST** 11 · **SHOULD NOT** 1 · **SHOULD** 3
+2 sections · 19 provisions · **MUST NOT** 7 · **MUST** 12 · **SHOULD NOT** 1 · **SHOULD** 4
 
 Decided
 
@@ -3110,12 +3115,20 @@ CREED's [`abandoned_packages`](https://github.com/waynestate/creed/blob/main/pol
 
 Today PROCTOR's `repo-url-credentials` check holds rule 2 and Preflight's `package-publish` component holds rule 5. Checks for rule 1 (one registry per ecosystem) and rule 4 (the canonical entry and the Packagist exclusion) are planned, not built: earlier versions of this chapter named them as `package-sources` and `internal-vendor-shadowing`, but PROCTOR has never shipped either.
 
+### [§2.2](https://creed.apps.wayne.edu/handbook/dependencies.html#deprecations) Deprecations
+
+A removal of a stack package's API ships no sooner than 4 weeks after the release that announced the deprecation (packages below 1.0), or in the next major (1.0 and later). Announcements are entries in CREED's policy `deprecations`, and the window is `rules.deprecation_window_days` (28 days). PROCTOR's `deprecations` check warns while an app still uses a deprecated package and never fails on it. An emergency removal (a security fix that cannot wait) is allowed, and its changelog entry names it as an emergency.
+
+- A stack package **MUST** record a deprecation in CREED's policy `deprecations` before or with the release that announces it (decision D-174). No check exists yet.
+- A stack package **MUST NOT** remove the deprecated API before `removal_not_before`: the announcement date plus `rules.deprecation_window_days` (28 days) for a package below 1.0, or the next major for 1.0 and later (decision D-174). No check exists yet.
+- An app that still uses a deprecated package **SHOULD** move to the replacement named in the entry before that date (decision D-174). PROCTOR check: `deprecations` (a warning, added in a later PROCTOR release).
+
 In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.json)
 
 - **`rules.abandoned_packages`**: `"fail"`
 - **`rules.audit_severity_threshold`**: `"high"`
 
-Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `409d93c`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `3246de6`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
@@ -3188,12 +3201,12 @@ The handbook · 2026 Edition
 
 The rules for the Wayne State app stack, chapter by chapter. Each chapter states what the ADRs have decided or what WSU's developer standards (2024) already require, and names its undecided points under a "Not decided here" heading.
 
-Fifteen chapters · 219 provisions · **MUST** 162 · **SHOULD** 28 · **MAY** 2
+Fifteen chapters · 222 provisions · **MUST** 164 · **SHOULD** 29 · **MAY** 2
 
 ### Contents
 
 1. [1 Versions Latest patches · Base images · Node · Tool minimums](https://creed.apps.wayne.edu/handbook/versions.html)4 sections · 4 provisions · **MUST NOT** 2 · **MUST** 5Decided
-2. [2 Dependencies Private packages](https://creed.apps.wayne.edu/handbook/dependencies.html)1 section · 16 provisions · **MUST NOT** 6 · **MUST** 11 · **SHOULD NOT** 1 · **SHOULD** 3Decided
+2. [2 Dependencies Private packages · Deprecations](https://creed.apps.wayne.edu/handbook/dependencies.html)2 sections · 19 provisions · **MUST NOT** 7 · **MUST** 12 · **SHOULD NOT** 1 · **SHOULD** 4Decided
 3. [3 Code PHP style · Frameworks · Reading the code · Source control and documentation · Static analysis · Input and files · Banned patterns · Vue and JavaScript · Security analysis · How it is enforced · Which preset enforces each rule · Not adopted · To be decided · Sources](https://creed.apps.wayne.edu/handbook/code.html)14 sections · 46 provisions · **MUST NOT** 8 · **MUST** 23 · **SHOULD** 7Partly decided
 4. [4 Auth](https://creed.apps.wayne.edu/handbook/auth.html)14 provisions · **MUST** 11 · **SHOULD** 1Decided
 5. [5 Databases What the stack supports · Which MySQL lines the policy lists · Grace period · Names, comments and connections · Conventions that keep 5.6 working · Avoid until the server is upgraded · Moving to 8.4 · How the stack checks it · How the claims are proven · Sources](https://creed.apps.wayne.edu/handbook/databases.html)10 sections · 31 provisions · **MUST NOT** 3 · **MUST** 14 · **SHOULD** 3 · **MAY** 1Decided

@@ -10,7 +10,7 @@ Chapter 2
 
 # Dependencies
 
-1 section · 16 provisions · **MUST NOT** 6 · **MUST** 11 · **SHOULD NOT** 1 · **SHOULD** 3
+2 sections · 19 provisions · **MUST NOT** 7 · **MUST** 12 · **SHOULD NOT** 1 · **SHOULD** 4
 
 Decided
 
@@ -41,9 +41,17 @@ CREED's [`abandoned_packages`](https://github.com/waynestate/creed/blob/main/pol
 
 Today PROCTOR's `repo-url-credentials` check holds rule 2 and Preflight's `package-publish` component holds rule 5. Checks for rule 1 (one registry per ecosystem) and rule 4 (the canonical entry and the Packagist exclusion) are planned, not built: earlier versions of this chapter named them as `package-sources` and `internal-vendor-shadowing`, but PROCTOR has never shipped either.
 
+## [§2.2](https://creed.apps.wayne.edu/handbook/dependencies.html#deprecations) Deprecations
+
+A removal of a stack package's API ships no sooner than 4 weeks after the release that announced the deprecation (packages below 1.0), or in the next major (1.0 and later). Announcements are entries in CREED's policy `deprecations`, and the window is `rules.deprecation_window_days` (28 days). PROCTOR's `deprecations` check warns while an app still uses a deprecated package and never fails on it. An emergency removal (a security fix that cannot wait) is allowed, and its changelog entry names it as an emergency.
+
+- A stack package **MUST** record a deprecation in CREED's policy `deprecations` before or with the release that announces it (decision D-174). No check exists yet.
+- A stack package **MUST NOT** remove the deprecated API before `removal_not_before`: the announcement date plus `rules.deprecation_window_days` (28 days) for a package below 1.0, or the next major for 1.0 and later (decision D-174). No check exists yet.
+- An app that still uses a deprecated package **SHOULD** move to the replacement named in the entry before that date (decision D-174). PROCTOR check: `deprecations` (a warning, added in a later PROCTOR release).
+
 In [`policy.json`](https://github.com/waynestate/creed/blob/main/policy/policy.json)
 
 - **`rules.abandoned_packages`**: `"fail"`
 - **`rules.audit_severity_threshold`**: `"high"`
 
-Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `409d93c`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/dependencies.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/dependencies.md), impression `3246de6`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
