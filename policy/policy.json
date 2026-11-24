@@ -263,10 +263,23 @@
             "dev-*",
             "*"
         ],
+        "deprecation_window_days": 28,
         "eol_grace_days": 90,
         "override_max_days": 90,
         "override_self_approval": "warn"
     },
+    "deprecations": [
+        {
+            "package": "waynestate/sesame",
+            "api": "the wayne-cas shim",
+            "announced_in": "0.7.5",
+            "announced_on": "2026-11-14",
+            "removal_not_before": "2026-11-14",
+            "replacement": "SESAME's own sign-in classes (see the SESAME 0.8.0 upgrade notes)",
+            "removed_in": "0.8.0",
+            "note": "Announced and removed on the same day, which is why CREED has a deprecation window."
+        }
+    ],
     "gate": {
         "default_stage": "block",
         "stages": {}

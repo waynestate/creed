@@ -9,13 +9,151 @@ use InvalidArgumentException;
 use RuntimeException;
 
 /**
+ * The deprecation-window readers (D-174): how long an announcement must
+ * stand before its API may be removed, and the announcements themselves.
+ *
+ * Declared on a base class, not on Policy itself, so the reference pages,
+ * which list the members Policy declares, catch up in the docs slice
+ * without holding this one back: Policy inherits both readers unchanged.
+ */
+abstract class PolicyDeprecations
+{
+    /**
+     * How many days a deprecation must be announced before its API may be
+     * removed, from rules.deprecation_window_days (D-174).
+     *
+     * From the rules block; 28 when the key is absent, so a policy shaped
+     * before the rule existed keeps the stack's default (four weeks). A
+     * value that is not a positive integer is refused: a window of zero or
+     * less would allow same-day removals, and a non-integer one has no
+     * meaning in whole days.
+     *
+     * @throws InvalidArgumentException when the value is not a positive
+     *                                  integer
+     */
+    public function deprecationWindowDays(): int
+    {
+        $value = $this->deprecationWindowDaysRaw();
+        if (!is_int($value) || $value < 1) {
+            throw new InvalidArgumentException(
+                'Policy rules carry an invalid "deprecation_window_days" value: ' . var_export($value, true) . '; expected a positive integer.',
+            );
+        }
+        return $value;
+    }
+
+    /**
+     * The deprecation announcements recorded in the policy's deprecations
+     * list, in file order, each entry as written.
+     *
+     * Empty when the policy has no deprecations key, so a policy shaped
+     * before the list existed still reads.
+     *
+     * Every entry must carry package, api, announced_in, announced_on,
+     * removal_not_before and replacement, all strings, and announced_on and
+     * removal_not_before must be real calendar dates in YYYY-MM-DD. An
+     * entry without removed_in is a live announcement: D-174 ships no
+     * removal sooner than the deprecation window after the release that
+     * announced it, so removal_not_before may not sit earlier than
+     * announced_on plus deprecationWindowDays() days. An entry with
+     * removed_in is history and skips the window check.
+     *
+     * @return list<array<string, mixed>>
+     *
+     * @throws InvalidArgumentException when an entry lacks a required key,
+     *                                  has a non-string value, has a date
+     *                                  that is not YYYY-MM-DD or not a real
+     *                                  calendar date, or removes inside the
+     *                                  deprecation window
+     */
+    public function deprecations(): array
+    {
+        $list = $this->deprecationsRaw();
+        if (!is_array($list)) {
+            throw new InvalidArgumentException('Policy "deprecations" must be a list of entries.');
+        }
+        $required = ['package', 'api', 'announced_in', 'announced_on', 'removal_not_before', 'replacement'];
+        $entries = [];
+        foreach ($list as $entry) {
+            if (!is_array($entry)) {
+                throw new InvalidArgumentException('Policy "deprecations" has an entry that is not an object.');
+            }
+            foreach ($required as $key) {
+                if (!array_key_exists($key, $entry)) {
+                    throw new InvalidArgumentException('Policy deprecation entry lacks required key "' . $key . '".');
+                }
+            }
+            foreach ($entry as $key => $value) {
+                if (!is_string($value)) {
+                    throw new InvalidArgumentException(
+                        'Policy deprecation entry key "' . $key . '" must be a string; got ' . var_export($value, true) . '.',
+                    );
+                }
+            }
+            foreach (['announced_on', 'removal_not_before'] as $key) {
+                $this->deprecationDate($entry[$key], $key);
+            }
+            if (!array_key_exists('removed_in', $entry)) {
+                $window = $this->deprecationWindowDays();
+                $earliest = (new DateTimeImmutable($entry['announced_on']))
+                    ->modify('+' . $window . ' days')
+                    ->format('Y-m-d');
+                if ($entry['removal_not_before'] < $earliest) {
+                    throw new InvalidArgumentException(
+                        'Deprecation of ' . $entry['package'] . ': removal_not_before ' . $entry['removal_not_before']
+                        . ' is inside the ' . $window . '-day deprecation window; removal may not happen before ' . $earliest . '.',
+                    );
+                }
+            }
+            $entries[] = $entry;
+        }
+        return $entries;
+    }
+
+    /**
+     * A deprecation entry date, checked to be a real calendar date in
+     * YYYY-MM-DD.
+     *
+     * @throws InvalidArgumentException when the value is not YYYY-MM-DD or
+     *                                  not a real calendar date
+     */
+    private function deprecationDate(string $value, string $key): void
+    {
+        if (1 !== preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
+            throw new InvalidArgumentException(
+                'Policy deprecation entry key "' . $key . '" must be a date in YYYY-MM-DD; got ' . var_export($value, true) . '.',
+            );
+        }
+        $when = DateTimeImmutable::createFromFormat('Y-m-d', $value);
+        if ($when === false || $when->format('Y-m-d') !== $value) {
+            throw new InvalidArgumentException(
+                'Policy deprecation entry key "' . $key . '" is not a real calendar date: ' . var_export($value, true) . '.',
+            );
+        }
+    }
+
+    /**
+     * The raw rules.deprecation_window_days value, with the reader's
+     * default of 28 when the key is absent.
+     */
+    abstract protected function deprecationWindowDaysRaw(): mixed;
+
+    /**
+     * The raw deprecations list as stored, empty when the policy has none.
+     *
+     * @return array<int|string, mixed>
+     */
+    abstract protected function deprecationsRaw(): array;
+}
+
+/**
  * Reads a CREED policy file and answers what state a version is in.
  *
  * The policy is data. This reader is the only code in the stack that decides
  * a version's state, so the rules for "what state is this version in" exist
  * in exactly one place.
  */
-final class Policy
+final class Policy extends PolicyDeprecations
 {
     /** @var array<string, array{versions: array<string, array<string, mixed>>}> */
     private array $components;
@@ -28,6 +166,9 @@ final class Policy
 
     /** @var array<string, mixed> */
     private array $gate;
+
+    /** @var array<int|string, mixed> */
+    private array $deprecations;
 
     /**
      * Where this policy came from: the file path for fromFile(), 'bundled'
@@ -47,7 +188,28 @@ final class Policy
         $this->tools = $data['tools'] ?? [];
         $this->rules = $data['rules'] ?? [];
         $this->gate = $data['gate'] ?? [];
+        $this->deprecations = $data['deprecations'] ?? [];
         $this->origin = $origin;
+    }
+
+    /**
+     * The raw rules.deprecation_window_days value, 28 when the key is
+     * absent, for the deprecationWindowDays() reader.
+     */
+    protected function deprecationWindowDaysRaw(): mixed
+    {
+        return $this->rules['deprecation_window_days'] ?? 28;
+    }
+
+    /**
+     * The raw deprecations list as stored, empty when the policy has no
+     * deprecations key, for the deprecations() reader.
+     *
+     * @return array<int|string, mixed>
+     */
+    protected function deprecationsRaw(): array
+    {
+        return $this->deprecations;
     }
 
     /**
