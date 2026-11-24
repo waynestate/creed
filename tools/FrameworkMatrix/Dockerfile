@@ -10,7 +10,7 @@ ARG BASE=php:8.6-cli@sha256:d84acf3155d907afaa5afa9b9457c5f12016b6dc7ade84659f40
 FROM ${BASE}
 
 COPY --from=docker.io/mlocati/php-extension-installer:2.13.2@sha256:4fd45396c16685266d32bf147a24ecd5e81029d3820295895bf4a90131190ac9 /usr/bin/install-php-extensions /usr/local/bin/
-COPY --from=docker.io/library/composer:2.11.2@sha256:50ea4d33fdcde1adb0f045547295faa1548b33872e5f789dae5b02ce2fb5de93 /usr/bin/composer /usr/local/bin/composer
+COPY --from=docker.io/library/composer:2.11.2@sha256:cd3a90dc5624c59a2f9ddf80dad08569f06416db31de519024f249d63bca554b /usr/bin/composer /usr/local/bin/composer
 
 ARG EXTENSIONS="intl mbstring zip pdo_mysql"
 # An end-of-life line's Debian (bullseye under php:8.0) leaves deb.debian.org for
