@@ -6,8 +6,9 @@ The key words MUST, MUST NOT, SHOULD, SHOULD NOT and MAY in this chapter are to 
 
 The policy lists the MySQL versions in `policy/policy.json`, under `mysql`:
 5.6, 5.7, 8.0, 8.4 and 9.7, each with its `active_until` and `security_until`
-dates. The shared server runs 5.6, which is past security support; its
-`security_until` is 2021-02-28. Laravel 13 documents MySQL 5.7 or later, and
+dates. The shared server runs an older MySQL line that is past security
+support; the policy gives each line's `active_until` and `security_until`
+dates. Laravel 13 documents MySQL 5.7 or later, and
 each Laravel line in the policy records the oldest MySQL and MariaDB it needs
 (`requires.mysql` and `requires.mariadb`); PROCTOR 0.10.0's `mysql-minimum`
 warns when an app's declared database image is below that minimum. The
@@ -35,7 +36,8 @@ second support window: the fix is still the upgrade. PROCTOR check:
 `mysql-eol`.
 
 - For MySQL and MariaDB the check warns and does not fail yet. While Citadel's
-  shared server runs 5.6, an app has no supported MySQL to move to there, so a
+  shared server runs an older MySQL line, an app has no supported MySQL to
+  move to there, so a
   security-only, `Eol` or `EolGraceExpired` version warns, and still says to
   move to 8.4 or later. It starts failing past the window when Citadel offers a
   supported MySQL (the stack's MySQL gate decision). PROCTOR check: `mysql-eol`
@@ -175,8 +177,8 @@ Both are reasons to plan the move rather than wait for it.
 
 ## How the stack checks it
 
-PROCTOR's `mysql56` check warns on the patterns the shared 5.6 server
-rejects: JSON columns and queries, generated columns, `renameColumn` and
+PROCTOR's `mysql56` check warns on the patterns the shared server rejects:
+JSON columns and queries, generated columns, `renameColumn` and
 `renameIndex`, vector, invisible and spatial columns, column introspection,
 the raw-SQL syntax, the upsert row alias, indexed strings over 191
 characters, a missing `Schema::defaultStringLength(191)`, `date` columns
