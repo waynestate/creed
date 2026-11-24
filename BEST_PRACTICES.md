@@ -1086,6 +1086,35 @@ Sources: the WSU developer standards, 2024 (an internal WSU document).
 
 How the stack holds it: `Documented`. `handbook/code.md` and `handbook/ci.md` write the rule.
 
+## 12. Deprecation and removal (D-174)
+
+### 62. Announce a deprecation, then wait for the window before removing it
+
+A removal of a stack package's API ships no sooner than 4 weeks after the
+release that announced the deprecation, for packages below 1.0. For 1.0 and
+later it ships in the next major. The rule covers stack packages only. The
+announcement is an entry in CREED's policy `deprecations`, naming the
+package, the API, the release and date it was announced, the
+`removal_not_before` date and the replacement. A removal needs the
+announcement date plus the window (`rules.deprecation_window_days`, 28 days)
+before it can ship. An emergency removal, such as a security fix that cannot
+wait, is allowed, but the changelog must say so.
+
+Why: an app that upgrades past the announcement without a window meets a
+breaking change nobody gave it time to plan. The SESAME wayne-cas shim was
+announced deprecated in 0.7.5 and removed in 0.8.0, both dated 2026-11-14,
+so the announcement and the removal shipped on the same day and there was no
+window at all.
+
+Sources: `sesame/CHANGELOG.md` (0.7.5 and 0.8.0, both dated 2026-11-14),
+[Semantic Versioning 2.0.0](https://semver.org/).
+
+How the stack holds it: `Documented`. The rule is written in
+`handbook/dependencies.md` ("Deprecations"), and the announcements live in
+CREED's policy `deprecations` (decision D-174). PROCTOR will warn, and never
+fail, while an app's `composer.lock` holds a package with an open entry
+(PROCTOR check: `deprecations`, added in a later PROCTOR release).
+
 ## Checks against the web
 
 These are places where a source disagrees with the repository or with an earlier note.
