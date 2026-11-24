@@ -6,7 +6,7 @@
 # Composer, Composer itself, and an ini that shows every deprecation, warning and notice
 # on stderr. Nothing else: the matrix tests the frameworks on PHP as it ships, not on a
 # PHP we tuned for them.
-ARG BASE=php:8.6-cli@sha256:d84acf3155d907afaa5afa9b9457c5f12016b6dc7ade84659f40cdc505cc087d
+ARG BASE=php:8.6-cli@sha256:fc9ca34c7c35745ff63d571057ce505f49537003a2f9c8f7b791be4f196b4e29
 FROM ${BASE}
 
 COPY --from=docker.io/mlocati/php-extension-installer:2.13.2@sha256:4fd45396c16685266d32bf147a24ecd5e81029d3820295895bf4a90131190ac9 /usr/bin/install-php-extensions /usr/local/bin/
