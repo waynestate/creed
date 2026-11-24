@@ -163,8 +163,9 @@ warning.</li>
 step, which writes the file at deploy time <span class="hb-cite">(the stack's metrics decision)</span>. PROCTOR check: <code>app-key</code>
 (<code>proctor/app-key/committed-env</code> flags a committed <code>.env</code>).</li>
 <li>On Citadel, request counts use the <code>sqlite</code> store for now (<code>HELMET_METRICS_STORAGE=sqlite</code>, with
-<code>HELMET_METRICS_SQLITE_PATH</code> on a file in the app's writable storage); the final store is picked when the stack's
-Prometheus server exists <span class="hb-cite">(the stack's metrics decision)</span>. Documented only.</li>
+<code>HELMET_METRICS_SQLITE_PATH</code> on a file in the app's writable storage); the stack's Prometheus server runs
+(since 2026-11-23), so the final store can be picked now; sqlite stays the interim store until it is
+picked <span class="hb-cite">(the stack's metrics decision)</span>. Documented only.</li>
 </ul>
 <h2 id="errors-in-production"><a class="hb-sec" href="#errors-in-production">§7.7</a> Errors in production</h2>
 <ul>
@@ -185,7 +186,7 @@ warning <code>helmet.debug_enabled_in_production</code> when it is true in the p
       </article>
       <nav class="hb-pager" aria-label="Previous and next chapters"><a class="hb-pager__link hb-pager__link--prev" href="oracle-and-people.html" rel="prev"><span class="hb-pager__dir">Previous · Chapter 6</span><span class="hb-pager__name">Oracle, Banner and people</span></a><a class="hb-pager__link hb-pager__link--next" href="deploy-gate.html" rel="next"><span class="hb-pager__dir">Next · Chapter 8</span><span class="hb-pager__name">Deploy gate</span></a></nav>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md"><code>handbook/runtime-and-headers.md</code> on GitHub</a>, impression <code>975949c</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md"><code>handbook/runtime-and-headers.md</code> on GitHub</a>, impression <code>fe83352</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

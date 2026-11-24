@@ -54,7 +54,7 @@ The headers are the setlist: the same one on every response. The HSTS encore pla
 
 - HELMET's metrics endpoint speaks the Prometheus text format and is off by default. It stays off until a Prometheus server scrapes the app; then the app turns it on with `HELMET_METRICS_ENABLED=true` (the stack's metrics decision). HELMET: with neither `HELMET_METRICS_TOKEN` nor `HELMET_METRICS_ALLOW` set, the endpoint answers 404 and logs a warning.
 - The scrape token **MUST NOT** be committed. On Citadel it goes in the app's `.env` through Citadel's configuration files step, which writes the file at deploy time (the stack's metrics decision). PROCTOR check: `app-key` (`proctor/app-key/committed-env` flags a committed `.env`).
-- On Citadel, request counts use the `sqlite` store for now (`HELMET_METRICS_STORAGE=sqlite`, with `HELMET_METRICS_SQLITE_PATH` on a file in the app's writable storage); the final store is picked when the stack's Prometheus server exists (the stack's metrics decision). Documented only.
+- On Citadel, request counts use the `sqlite` store for now (`HELMET_METRICS_STORAGE=sqlite`, with `HELMET_METRICS_SQLITE_PATH` on a file in the app's writable storage); the stack's Prometheus server runs (since 2026-11-23), so the final store can be picked now; sqlite stays the interim store until it is picked (the stack's metrics decision). Documented only.
 
 ## [§7.7](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#errors-in-production) Errors in production
 
@@ -65,4 +65,4 @@ The headers are the setlist: the same one on every response. The HSTS encore pla
 
 - The Content-Security-Policy report endpoints.
 
-Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `975949c`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `fe83352`. Found a mistake? Fix the Markdown; this page is rebuilt from it.

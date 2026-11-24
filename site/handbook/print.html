@@ -966,8 +966,9 @@ warning.</li>
 step, which writes the file at deploy time <span class="hb-cite">(the stack's metrics decision)</span>. PROCTOR check: <code>app-key</code>
 (<code>proctor/app-key/committed-env</code> flags a committed <code>.env</code>).</li>
 <li>On Citadel, request counts use the <code>sqlite</code> store for now (<code>HELMET_METRICS_STORAGE=sqlite</code>, with
-<code>HELMET_METRICS_SQLITE_PATH</code> on a file in the app's writable storage); the final store is picked when the stack's
-Prometheus server exists <span class="hb-cite">(the stack's metrics decision)</span>. Documented only.</li>
+<code>HELMET_METRICS_SQLITE_PATH</code> on a file in the app's writable storage); the stack's Prometheus server runs
+(since 2026-11-23), so the final store can be picked now; sqlite stays the interim store until it is
+picked <span class="hb-cite">(the stack's metrics decision)</span>. Documented only.</li>
 </ul>
 <h3 id="runtime-and-headers--errors-in-production"><a class="hb-sec" href="#runtime-and-headers--errors-in-production">§7.7</a> Errors in production</h3>
 <ul>
@@ -1305,7 +1306,7 @@ a permanent override <span class="hb-cite">(the stack's deploy-gate decision)</s
           </div>
       </article>
 
-  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>392b912</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
+  <p class="hb-source">Set from <a href="https://github.com/waynestate/creed/tree/main/handbook/"><code>handbook/</code> on GitHub</a>, impression <code>3074774</code>. Found a mistake? Fix the Markdown; this page is rebuilt from it.</p>
 </main>
 </div>
 

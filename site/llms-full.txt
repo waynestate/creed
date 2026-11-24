@@ -958,6 +958,7 @@ Source: https://creed.apps.wayne.edu/docs/changelog.html
 
 ### Unreleased [#](https://creed.apps.wayne.edu/docs/changelog.html#unreleased)
 
+- Handbook: the stack's Prometheus server runs, so the final store can be picked (sqlite stays interim until then).
 - Changed: `deploy/` requires PROCTOR `^0.18` (was `^0.16`, which does not allow 0.18); 0.18.0 adds the update notice, the fake-driver check and the app-env warning (D-133).
 - Added: `bin/front-mentions.php` (`composer site:mentions` rewrites it, `site:mentions-check` is wired into `composer ci`) holds the front page's stack-project version mentions ("since PROCTOR 0.10.0", "HELMET 1.0.0 sends no header", "On Packagist, 0.1.12") to `site/version-mentions.txt`. A mention is a three-part version whose own line names a stack project before it (the nearest name wins, so "six Preflight components to the 0.9.0 tag" reads as Preflight); when the line names nothing, the tool looks up to eight lines back and stops at a line carrying its own version, so GitLab's 19.5.1 in the errata is never read as HELMET's. Two-part versions, names inside paths or filenames (waynestate/creed, .squire/) and docker tags behind a colon are not mentions; Table 2-1 stays with `site:versions-check`. `tests/FrontPageMentionsTest.php` runs the script against the committed page and throwaway roots.
 - Added: `FrontPageInspectorTest` holds Table 2-1's Latest patch cells to `policy/policy.json` in both `site/index.html` and its Markdown twin `site/index.md`: every rendered row whose policy line carries a `latest_patch` must print it, and a row without one must print n/a; the failure names the component, what the cell says and what the policy says. `composer site:versions-check` already held the HTML table, but nothing held the twin, so a policy refresh could leave the Markdown copy printing last month's patch.
@@ -3388,7 +3389,7 @@ The headers are the setlist: the same one on every response. The HSTS encore pla
 
 - HELMET's metrics endpoint speaks the Prometheus text format and is off by default. It stays off until a Prometheus server scrapes the app; then the app turns it on with `HELMET_METRICS_ENABLED=true` (the stack's metrics decision). HELMET: with neither `HELMET_METRICS_TOKEN` nor `HELMET_METRICS_ALLOW` set, the endpoint answers 404 and logs a warning.
 - The scrape token **MUST NOT** be committed. On Citadel it goes in the app's `.env` through Citadel's configuration files step, which writes the file at deploy time (the stack's metrics decision). PROCTOR check: `app-key` (`proctor/app-key/committed-env` flags a committed `.env`).
-- On Citadel, request counts use the `sqlite` store for now (`HELMET_METRICS_STORAGE=sqlite`, with `HELMET_METRICS_SQLITE_PATH` on a file in the app's writable storage); the final store is picked when the stack's Prometheus server exists (the stack's metrics decision). Documented only.
+- On Citadel, request counts use the `sqlite` store for now (`HELMET_METRICS_STORAGE=sqlite`, with `HELMET_METRICS_SQLITE_PATH` on a file in the app's writable storage); the stack's Prometheus server runs (since 2026-11-23), so the final store can be picked now; sqlite stays the interim store until it is picked (the stack's metrics decision). Documented only.
 
 ### [§7.7](https://creed.apps.wayne.edu/handbook/runtime-and-headers.html#errors-in-production) Errors in production
 
@@ -3399,7 +3400,7 @@ The headers are the setlist: the same one on every response. The HSTS encore pla
 
 - The Content-Security-Policy report endpoints.
 
-Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `975949c`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
+Set from [`handbook/runtime-and-headers.md` on GitHub](https://github.com/waynestate/creed/blob/main/handbook/runtime-and-headers.md), impression `fe83352`. Found a mistake? Fix the Markdown; this page is rebuilt from it.
 
 ---
 
