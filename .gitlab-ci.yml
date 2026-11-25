@@ -70,23 +70,20 @@ include:
       tags: []
       migrate_command: "php bin/mysql56-probe.php --wait=60"
 
-# D-176: mysql84-probe is heavy, so it runs only on the full tier. The
-# mysql56-migrate component has no tier input, so this entry gates the job:
-# GitLab merges it into the included job, and the local rules replace the
-# component's, so the component's own rules (Preflight 0.13.0's
+# D-176: mysql84-probe is heavy, so it runs only on the full tier: nightly,
+# on tags and on manual runs of main. The mysql56-migrate component has no
+# tier input, so this entry gates the job: GitLab merges it into the
+# included job, and the local rules replace the component's, so the
+# component's own rules (Preflight 0.13.0's
 # templates/mysql56-migrate/template.yml, with this include's inputs) follow
 # the gate.
 mysql84-probe:
   rules:
     - if: '$PREFLIGHT_TIER != "full"'
       when: never
-    - if: '$CI_COMMIT_TAG && "full" == "release-only"'
-      when: never
-    - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: never
     - if: $CI_COMMIT_TAG
       when: on_success
-    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "schedule" || $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
       when: on_success
     - if: $CI_MERGE_REQUEST_IID
       when: manual

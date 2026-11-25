@@ -30,17 +30,6 @@ final class PreflightPinMentionsTest extends TestCase
         'six' => 6, 'seven' => 7, 'eight' => 8, 'nine' => 9, 'ten' => 10,
     ];
 
-    /**
-     * Present-tense pin sentences in files this change cannot edit
-     * (site/index.html, handbook/accessibility.md). While an entry matches a
-     * statement exactly, the statement is held out of the pin check; the lead
-     * re-syncs those files with the pin and drops the entry.
-     */
-    private const HELD_OUT_STATEMENTS = [
-        'site/index.html' => ['pins its six Preflight components to the 0.12.0'],
-        'handbook/accessibility.md' => ["Preflight's `a11y` component (since 0.2.0; the pin is 0.12.0"],
-    ];
-
     #[Test]
     public function everyIncludeSharesOneTag(): void
     {
@@ -59,11 +48,7 @@ final class PreflightPinMentionsTest extends TestCase
         $problems = [];
 
         foreach (self::files() as $path) {
-            $heldOut = self::HELD_OUT_STATEMENTS[$path] ?? [];
             foreach (self::statements(self::flatten(self::read($path))) as $statement) {
-                if (in_array($statement['text'], $heldOut, true)) {
-                    continue;
-                }
                 if ($statement['tag'] !== null && $statement['tag'] !== $tag) {
                     $problems[] = "{$path}: \"{$statement['text']}\" names {$statement['tag']}; the pin is {$tag}.";
                 }
