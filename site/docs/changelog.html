@@ -46,6 +46,9 @@
 <h2 id="unreleased"><span class="docs-heading-tail"><span>Unreleased</span><a class="docs-heading-link" aria-label="Link to this section" href="#unreleased">#</a></span></h2>
 <ul>
 <li>
+<p>Changed: CI follows D-176 and pins Preflight 0.13.0 (axe-core 4.14.1 in the a11y checker copy). A push runs the fast tier (composer ci, the audits, PROCTOR, secret detection, the WayneUI copies check); the full tier (PHP matrix and advisory PHP, browser a11y, the MySQL 8.4 probe) runs nightly, on tags and on manual runs. The robot schedules run the fast tier. Branch pipelines only, so an open MR no longer doubles a push, and a new commit cancels the pipeline it replaces.</p>
+</li>
+<li>
 <p>Added: <code>bin/front-tally.php</code> (<code>composer site:tally</code> writes, <code>site:tally-check</code> is wired into <code>composer ci</code>) writes the front page's counts from <code>BEST_PRACTICES.md</code>, the record: the practice count in the meta description, the title-page tally, the contents heading, the &quot;All N are in that file&quot; line, each contents row's clause range and stamp bar, and the errata's backlog count. A chapter with no contents row gets one, linked to its heading. Practice 62 (section 12) made the front page say 61 practices and eleven chapters with Documented at 18; it now says 62, twelve and 19, and lists section 12 in the contents. <code>tests/FrontTallyTest.php</code> runs the script against throwaway roots; <code>FrontPageTallyTest</code> still holds the stamp on each reprinted clause.</p>
 </li>
 <li>
